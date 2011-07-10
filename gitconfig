@@ -2,8 +2,10 @@
 	name = Miquel Sabaté
 	email = mikisabate@gmail.com
 
-[url "https://github.com/mssola/"]
+[url "git://github.com/mssola/"]
 	insteadOf = mssola:
+[url "ssh://git@github.com:mssola/"]
+	pushInsteadOf = mssola:
 
 [url "git://anongit.kde.org/"]
 	insteadOf = kde:
