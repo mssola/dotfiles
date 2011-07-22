@@ -1,0 +1,15 @@
+.bundle
+*.gem
+pkg
+db/*.sqlite3
+log/*
+tmp/*
+tmp/**/*
+doc/app
+doc/api
+*.sassc
+.sass-cache/
+vendor/bundle
+config/*.yml
+Gemfile.lock
+.rvmrc
