@@ -16,3 +16,5 @@ export KDEDIR=$KDEV_DIR
 export KDEDIRS=$KDEDIR
 export KDEV=/home/mssola/Projects/kdevelop4
 export RUBY=$KDEV/kdev-ruby
+
+PATH=$KDEV_DIR/bin:$PATH
