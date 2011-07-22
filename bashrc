@@ -18,7 +18,7 @@ PS1='\u:\w$(__git_ps1 "\[\033[0;32m\]@\[\033[1;32m\]%s\[\033[0m\]\]") $ '
 export KDEV_DIR=/home/mssola/kde/kdevelop
 export KDEDIR=$KDEV_DIR
 export KDEDIRS=$KDEDIR
-export KDEV=/home/mssola/Projects/kdevelop4
+export KDEV=/home/mssola/Projects/kdevelop
 export RUBY=$KDEV/kdev-ruby
 
 PATH=$KDEV_DIR/bin:$PATH
