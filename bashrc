@@ -1,3 +1,4 @@
+# beautifying ls command
 alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
@@ -7,8 +8,11 @@ export EDITOR=vim
 export VISUAL=vim
 alias vi=vim
 
-# prompt
-PS1='\u:\w $ '
+# git completion
+source $HOME/.gitcompletion.sh
+
+# prompt with git completion
+PS1='\u:\w$(__git_ps1 "\[\033[0;32m\]@\[\033[1;32m\]%s\[\033[0m\]\]") $ '
 
 # Paths
 export KDEV_DIR=/home/mssola/kde/kdevelop
