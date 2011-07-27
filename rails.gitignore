@@ -11,5 +11,7 @@ doc/api
 .sass-cache/
 vendor/bundle
 config/*.yml
+config.ru
 Gemfile.lock
 .rvmrc
+.rspec
