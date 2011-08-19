@@ -1,3 +1,4 @@
 == README
 
+To automatically install everything, just execute the install.rb script.
 Use it at your own risk ;)
