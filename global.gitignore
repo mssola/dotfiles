@@ -4,5 +4,6 @@
 # KDE
 build/
 .kdev4/
+*.kdev4
 .directory
 *.kate-swp
