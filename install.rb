@@ -22,4 +22,6 @@ home ||= '$HOME'
 `cp gitcompletion #{home}/.gitcompletion.sh`
 `cp gitconfig #{home}/.gitconfig`
 `cp global.gitignore #{home}/.gitignore`
+`cp vimrc #{home}/.vimrc`
+`cp hgrc #{home}/.hgrc`
 
