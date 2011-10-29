@@ -15,13 +15,35 @@ source $HOME/.gitcompletion.sh
 PS1='\u:\w$(__git_ps1 "\[\033[0;32m\]@\[\033[1;32m\]%s\[\033[0m\]\]") $ '
 
 # Paths
-export KDEV_DIR=/home/mssola/kde/kdevelop
-export KDEDIR=$KDEV_DIR
+export KDEDIR=/home/mssola/kde
 export KDEDIRS=$KDEDIR
-export KDEV=/home/mssola/Projects/kdevelop
+export KDEV=$HOME/Projects/kde
 export RUBY=$KDEV/kdev-ruby
 
-PATH=$KDEV_DIR/bin:$PATH
+PATH=$KDEDIR/bin:$PATH
 
 # Load RVM into a shell session *as a function*
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+# Including shortucts, idea from https://github.com/fxn/dotfiles
+GO_SHORTCUTS=(
+  rem
+  $HOME/Desktop/fib/ac/pxc/rem
+
+  ruby
+  $HOME/Projects/kde-unstable/kdevelop/kdev-ruby
+)
+
+# This is the function that takes advantage of the defined shortcuts.
+function go {
+  local target=$1
+  local len=${#GO_SHORTCUTS[@]}
+  for (( i=0; i<$len; i+=2 ));
+  do
+    if [[ "$1" = "${GO_SHORTCUTS[$i]}" ]]; then
+      cd "${GO_SHORTCUTS[$i+1]}"
+      return
+    fi
+  done
+  echo "unknown shortcut"
+}
