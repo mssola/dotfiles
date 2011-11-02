@@ -14,6 +14,9 @@ source $HOME/.gitcompletion.sh
 # prompt with git completion
 PS1='\u:\w$(__git_ps1 "\[\033[0;32m\]@\[\033[1;32m\]%s\[\033[0m\]\]") $ '
 
+# Rake completion
+complete -C $HOME/.rake_completion -o default rake
+
 # Paths
 export KDEDIR=/home/mssola/kde
 export KDEDIRS=$KDEDIR
@@ -34,7 +37,7 @@ GO_SHORTCUTS=(
   $HOME/Projects/kde-unstable/kdevelop/kdev-ruby
 )
 
-# This is the function that takes advantage of the defined shortcuts.
+
 function go {
   local target=$1
   local len=${#GO_SHORTCUTS[@]}

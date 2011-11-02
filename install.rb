@@ -24,4 +24,5 @@ home ||= '$HOME'
 `cp global.gitignore #{home}/.gitignore`
 `cp vimrc #{home}/.vimrc`
 `cp hgrc #{home}/.hgrc`
-
+`cp rake_completion #{home}/.rake_completion`
+`chmod +x #{home}/.rake_completion`
