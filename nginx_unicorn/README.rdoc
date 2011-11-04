@@ -31,6 +31,11 @@ it goes:
   $ cp nginx.server.conf /home/mssola/myapp/config/nginx.conf
   $ vim /home/mssola/myapp/config/nginx.conf
 
+  # Finally create a soft link pointing to the specific configuration file for
+  # this new site we want to enable.
+
+  $ sudo ln -s /home/mssola/myapp/config/nginx.conf /etc/nginx/sites-enabled/my_app_name
+
 After going through the steps shown above, you should be able to start the
 nginx daemon successfully. If you try to access to localhost you'll see the
 500 page because Unicorn is not configured yet, but at least it proves that
