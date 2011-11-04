@@ -8,15 +8,15 @@ NCORES = `cat /proc/cpuinfo | grep 'cores' | uniq | sed 's/[^0-9]//g'`.to_i
 # Setting up the working directory and some paths
 working_directory WD
 pid "#{WD}/tmp/pids/unicorn.pid"
-stderr_path "#{WD}/log/unicorn.rem.sock"
-stdout_path "#{WD}/log/unicorn.rem.sock"
+stderr_path "#{WD}/log/unicorn.my_app_name.sock"
+stdout_path "#{WD}/log/unicorn.my_app_name.sock"
 
 # We want one worker per core.
 worker_processes NCORES
 
 # Listen on a Unix domain socket. I'm using a shorter backlog
 # for quicker failover when busy.
-listen '/tmp/unicorn.rem.sock', backlog: 64
+listen '/tmp/unicorn.my_app_name.sock', backlog: 64
 
 # nuke workers after 30 seconds instead of 60 seconds (the default)
 timeout 30
