@@ -1,7 +1,8 @@
 ##
-# This is the configuration file for Unicorn. It m
+# This is the configuration file for Unicorn.
 
-# TODO: Change it at your own needs
+
+# Feel free to change any of the following constants for your app:
 WD = '/my/app/root'
 NCORES = `cat /proc/cpuinfo | grep 'cores' | uniq | sed 's/[^0-9]//g'`.to_i
 
