@@ -34,7 +34,7 @@ GO_SHORTCUTS=(
   $HOME/Desktop/fib/ac/pxc/rem
 
   ruby
-  $HOME/Projects/kde-unstable/kdevelop/kdev-ruby
+  $HOME/Projects/kde/kdev-ruby
 )
 
 
