@@ -10,6 +10,7 @@ begin
   require 'wirble'
 rescue LoadError
   puts 'The .irbrc file requires wirble and you haven\'t this gem installed!'
+  exit
 end
 
 # You can change your home directory ;)
