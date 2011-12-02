@@ -30,6 +30,9 @@ PATH=$KDEDIR/bin:$PATH
 
 # Including shortucts, idea from https://github.com/fxn/dotfiles
 GO_SHORTCUTS=(
+  home
+  $HOME
+
   rem
   $HOME/Desktop/fib/ac/pxc/rem
 
