@@ -23,7 +23,9 @@ export KDEDIRS=$KDEDIR
 export KDEV=$HOME/Projects/kde
 export RUBY=$KDEV/kdev-ruby
 
-PATH=$KDEDIR/bin:$PATH
+export PATH=$KDEDIR/bin:$PATH
+export LD_LIBRARY_PATH=$KDEDIR/lib:$LD_LIBRARY_PATH
+export XDG_DATA_DIRS=$XDG_DATA_DIRS:$KDEDIR/share
 
 # Load RVM into a shell session *as a function*
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
