@@ -36,13 +36,16 @@ export CMAKE_INCLUDE_PATH=$KDEDIR/include:$CMAKE_INCLUDE_PATH
 # Load RVM into a shell session *as a function*
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
-# Including shortucts, idea from https://github.com/fxn/dotfiles
+# Including shortcuts, idea from https://github.com/fxn/dotfiles
 GO_SHORTCUTS=(
   home
   $HOME
 
+  kde
+  $KDEV
+
   ruby
-  $HOME/Projects/kde/kdev-ruby
+  $RUBY
 )
 
 
