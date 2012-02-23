@@ -1054,7 +1054,7 @@ _git_show ()
 
 _git_stash ()
 {
-    __gitcomp 'list show apply clear'
+    __gitcomp 'list show apply clear pop'
 }
 
 _git_submodule ()
