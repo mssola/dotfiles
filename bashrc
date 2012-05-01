@@ -36,6 +36,9 @@ export CMAKE_INCLUDE_PATH=$KDEDIR/include:$CMAKE_INCLUDE_PATH
 # Load RVM into a shell session *as a function*
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
+# Alias bundle exec
+alias be='bundle exec'
+
 # Including shortcuts, idea from https://github.com/fxn/dotfiles
 GO_SHORTCUTS=(
   home
