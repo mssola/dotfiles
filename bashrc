@@ -49,6 +49,9 @@ GO_SHORTCUTS=(
 
   ruby
   $RUBY
+
+  build
+  $KDEV/build/kdev-ruby
 )
 
 
