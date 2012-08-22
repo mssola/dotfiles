@@ -1,17 +1,20 @@
 [user]
-	name = Miquel Sabaté
-	email = mikisabate@gmail.com
-
-[url "git://github.com/mssola/"]
-	insteadOf = mssola:
-[url "git@github.com:mssola/"]
-	pushInsteadOf = mssola:
-
-[url "git://anongit.kde.org/"]
-	insteadOf = kde:
-[url "ssh://git@git.kde.org/"]
-	pushInsteadOf = kde:
+  name = Miquel Sabaté
+  email = mikisabate@gmail.com
 
 [core]
-	editor = vim
-	excludesfile = ~/.gitignore
+  editor = vim
+  excludesfile = ~/.gitignore
+
+[alias]
+  down = pull --rebase --stat
+
+[url "git://github.com/mssola/"]
+  insteadOf = mssola:
+[url "git@github.com:mssola/"]
+  pushInsteadOf = mssola:
+
+[url "git://anongit.kde.org/"]
+  insteadOf = kde:
+[url "ssh://git@git.kde.org/"]
+  pushInsteadOf = kde:
