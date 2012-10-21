@@ -62,7 +62,7 @@ GO_SHORTCUTS=(
 )
 
 
-function go {
+function g {
   local target=$1
   local len=${#GO_SHORTCUTS[@]}
   for (( i=0; i<$len; i+=2 ));
