@@ -42,6 +42,10 @@ alias wduchain='rm -rf $HOME/.kdevduchain/*'
 # Alias bundle exec
 alias be='bundle exec'
 
+# Go things
+export GOROOT=$HOME/Projects/go
+export PATH=$GOROOT/bin:$PATH
+
 # Including shortcuts, idea from https://github.com/fxn/dotfiles
 GO_SHORTCUTS=(
   home
