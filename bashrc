@@ -33,8 +33,11 @@ export CMAKE_PREFIX_PATH=$KDEDIR:$CMAKE_PREFIX_PATH
 export CMAKE_LIBRARY_PATH=$KDEDIR/lib:$CMAKE_LIBRARY_PATH
 export CMAKE_INCLUDE_PATH=$KDEDIR/include:$CMAKE_INCLUDE_PATH
 
-# Alias to whip the KDevelop cache
-alias wduchain='rm -rf $HOME/.kdevduchain/*'
+# Function to whip the KDevelop cache
+function wduchain {
+  rm -rf $HOME/.kdevduchain
+  rm -rf $HOME/.cache/kdevduchain/*
+}
 
 # Load RVM into a shell session *as a function*
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
@@ -44,7 +47,8 @@ alias be='bundle exec'
 
 # Go things
 export GOROOT=$HOME/Projects/go
-export PATH=$GOROOT/bin:$PATH
+export GOPATH=$HOME/.go
+export PATH=$HOME/.go/bin:$HOME/Projects/go/bin:$PATH
 
 # Including shortcuts, idea from https://github.com/fxn/dotfiles
 GO_SHORTCUTS=(
