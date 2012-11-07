@@ -1,3 +1,6 @@
+# Set LC_ALL always to UTF-8
+export LC_ALL=en_US.UTF-8
+
 # beautifying ls command
 alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
