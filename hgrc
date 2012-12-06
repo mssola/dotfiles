@@ -1,2 +1,8 @@
 [ui]
 username = Miquel Sabaté <mikisabate@gmail.com>
+
+[pager]
+pager = LESS='FSRX' less
+
+[extensions]
+pager =
