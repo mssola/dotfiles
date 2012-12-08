@@ -3,7 +3,7 @@
 
 _cfgdir=/etc/nginx
 _tmpdir=/var/lib/nginx
-_nginx=~/nginx-tmp
+_nginx=/tmp/nginx
 _version="trunk"
 _configure="./configure"
 
