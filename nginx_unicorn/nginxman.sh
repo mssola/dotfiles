@@ -8,7 +8,7 @@ _version="trunk"
 _configure="./configure"
 
 
-# Fetch and extract SPDY
+# Fetch and extract NGinx
 if [ $_version == "trunk" ]; then
   echo -e "\033[32mFetching NGinx using svn (trunk)\033[0m"
   svn co svn://svn.nginx.org/nginx/trunk $_nginx
