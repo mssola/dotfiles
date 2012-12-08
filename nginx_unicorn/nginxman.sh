@@ -6,6 +6,7 @@ _tmpdir=/var/lib/nginx
 _nginx=/tmp/nginx
 _version="trunk"
 _configure="./configure"
+_pwd=`pwd`
 
 
 # Fetch and extract NGinx
@@ -58,6 +59,8 @@ echo -e "\033[32mCompiling\033[0m"
 make -j 4
 echo -e "\033[32mInstalling\033[0m"
 sudo make install
+sudo cp $_pwd/nginx.service /usr/lib/systemd/system/nginx.service
+sudo mkdir -p /var/lib/nginx
 
 # Cleanup
 echo -e "\033[32mCleaning up\033[0m"
