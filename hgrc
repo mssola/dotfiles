@@ -1,6 +1,9 @@
 [ui]
 username = Miquel Sabaté <mikisabate@gmail.com>
 
+[alias]
+show = log -pr
+
 [pager]
 pager = LESS='FSRX' less
 
