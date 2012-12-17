@@ -14,7 +14,14 @@
 [url "git@github.com:mssola/"]
   pushInsteadOf = mssola:
 
+[url "git://github.com/"]
+    insteadOf = github:
+[url "git@github.com"]
+    pushInsteadOf = github:
+
 [url "git://anongit.kde.org/"]
   insteadOf = kde:
 [url "ssh://git@git.kde.org/"]
   pushInsteadOf = kde:
+[push]
+	default = matching
