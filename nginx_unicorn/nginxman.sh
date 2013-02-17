@@ -26,7 +26,7 @@ cd $_nginx
 # Fetch and apply the Nginx SPDY patch
 echo -e "\033[32mFetching SPDY patch\033[0m"
 wget http://nginx.org/patches/spdy/patch.spdy.txt
-patch -p0 < patch.spdy.txt
+patch -p1 < patch.spdy.txt
 
 # Configure
 echo -e "\033[32mConfiguring\033[0m"
