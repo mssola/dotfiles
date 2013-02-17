@@ -1,6 +1,7 @@
 #!/bin/bash
 
 
+# Change this values to your own needs.
 _cfgdir=/etc/nginx
 _tmpdir=/var/lib/nginx
 _nginx=/tmp/nginx
