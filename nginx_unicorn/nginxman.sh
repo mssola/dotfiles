@@ -53,6 +53,7 @@ $_configure \
   --with-http_realip_module \
   --with-http_ssl_module \
   --with-http_stub_status_module \
+  --with-cc-opt="-O3"
   
 # Compile & install
 echo -e "\033[32mCompiling\033[0m"
