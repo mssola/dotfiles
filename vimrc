@@ -29,4 +29,5 @@ filetype plugin on
 
 autocmd FileType ruby set shiftwidth=2
 autocmd FileType c set shiftwidth=4 tabstop=4
+autocmd FileType yacc set shiftwidth=4 tabstop=4
 
