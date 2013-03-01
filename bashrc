@@ -6,6 +6,10 @@ alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=au
 alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 
+# Alias related to cd
+alias ..='cd ..'
+alias cd..='cd ..'
+
 # Set vim as the default editor
 export EDITOR=vim
 export VISUAL=vim
@@ -13,8 +17,6 @@ alias vi=vim
 
 # git completion
 source $HOME/.gitcompletion.sh
-
-# prompt with git completion
 PS1='\u:\w$(__git_ps1 "\[\033[0;32m\]@\[\033[1;32m\]%s\[\033[0m\]\]") $ '
 
 # Rake completion
