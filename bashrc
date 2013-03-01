@@ -50,5 +50,24 @@ export GOROOT=$HOME/Projects/go
 export GOPATH=$HOME/.go
 export PATH=$HOME/.go/bin:$HOME/Projects/go/bin:$PATH
 
-# Exporting our own CDPATH
-export CDPATH=$CDPATH:$HOME/.cd
+# Including shortcuts, idea from https://github.com/fxn/dotfiles
+GO_SHORTCUTS=(
+  ruby
+  $RUBY
+
+  build
+  $KDEV/build/kdev-ruby
+)
+
+function g {
+  local target=$1
+  local len=${#GO_SHORTCUTS[@]}
+  for (( i=0; i<$len; i+=2 )); do
+    if [[ "$1" = "${GO_SHORTCUTS[$i]}" ]]; then
+      cd "${GO_SHORTCUTS[$i+1]}"
+      return
+    fi
+  done
+  echo "unknown shortcut"
+}
+
