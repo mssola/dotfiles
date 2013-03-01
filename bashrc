@@ -6,7 +6,7 @@ alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=au
 alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 
-# vim stuff
+# Set vim as the default editor
 export EDITOR=vim
 export VISUAL=vim
 alias vi=vim
@@ -20,7 +20,7 @@ PS1='\u:\w$(__git_ps1 "\[\033[0;32m\]@\[\033[1;32m\]%s\[\033[0m\]\]") $ '
 # Rake completion
 complete -C $HOME/.rake_completion -o default rake
 
-# Paths
+# KDE Paths
 export KDEDIR=/home/mssola/kde
 export KDEDIRS=$KDEDIR
 export KDEV=$HOME/Projects/kde
@@ -37,10 +37,7 @@ export CMAKE_LIBRARY_PATH=$KDEDIR/lib:$CMAKE_LIBRARY_PATH
 export CMAKE_INCLUDE_PATH=$KDEDIR/include:$CMAKE_INCLUDE_PATH
 
 # Function to whip the KDevelop cache
-function wduchain {
-  rm -rf $HOME/.kdevduchain
-  rm -rf $HOME/.cache/kdevduchain/*
-}
+alias wduchain='rm -rf $HOME/.cache/kdevduchain/*'
 
 # Load RVM into a shell session *as a function*
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
@@ -53,31 +50,5 @@ export GOROOT=$HOME/Projects/go
 export GOPATH=$HOME/.go
 export PATH=$HOME/.go/bin:$HOME/Projects/go/bin:$PATH
 
-# Including shortcuts, idea from https://github.com/fxn/dotfiles
-GO_SHORTCUTS=(
-  home
-  $HOME
-
-  kde
-  $KDEV
-
-  ruby
-  $RUBY
-
-  build
-  $KDEV/build/kdev-ruby
-)
-
-
-function g {
-  local target=$1
-  local len=${#GO_SHORTCUTS[@]}
-  for (( i=0; i<$len; i+=2 ));
-  do
-    if [[ "$1" = "${GO_SHORTCUTS[$i]}" ]]; then
-      cd "${GO_SHORTCUTS[$i+1]}"
-      return
-    fi
-  done
-  echo "unknown shortcut"
-}
+# Exporting our own CDPATH
+export CDPATH=$CDPATH:$HOME/.cd
