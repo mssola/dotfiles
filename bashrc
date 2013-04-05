@@ -26,7 +26,7 @@ complete -C $HOME/.rake_completion -o default rake
 export KDEDIR=/home/mssola/kde
 export KDEDIRS=$KDEDIR
 export KDEV=$HOME/Projects/kde
-export RUBY=$KDEV/kdev-ruby
+export KRUBY=$KDEV/kdev-ruby
 
 # Export the standard paths to include KDE
 export PATH=$KDEDIR/bin:$PATH
@@ -55,7 +55,7 @@ export PATH=$HOME/.go/bin:$HOME/Projects/go/bin:$PATH
 # Including shortcuts, idea from https://github.com/fxn/dotfiles
 GO_SHORTCUTS=(
   ruby
-  $RUBY
+  $KRUBY
 
   build
   $KDEV/build/kdev-ruby
