@@ -29,7 +29,7 @@ export KDEV=$HOME/Projects/kde
 export KRUBY=$KDEV/kdev-ruby
 
 # Export the standard paths to include KDE
-export PATH=$KDEDIR/bin:$PATH
+export PATH=$KDEDIR/bin:/usr/local/heroku/bin:$PATH
 export LD_LIBRARY_PATH=$KDEDIR/lib:$LD_LIBRARY_PATH
 export XDG_DATA_DIRS=$XDG_DATA_DIRS:$KDEDIR/share
 
