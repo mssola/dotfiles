@@ -1,6 +1,9 @@
 *.~
 *.swp
 
+# Ruby
+.rbx/
+
 # KDE
 build/
 .kdev4/
