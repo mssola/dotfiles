@@ -1,8 +1,9 @@
 *.~
 *.swp
 
-# Ruby
+# Ruby thingies
 .rbx/
+.rake_tasks
 
 # KDE
 build/
