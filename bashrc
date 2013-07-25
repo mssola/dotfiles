@@ -73,3 +73,19 @@ function g {
   echo "unknown shortcut"
 }
 
+# The path for patches.
+export PATCH=$HOME/.patches
+
+# Create a patch and save it to the directory of patches. If the patch 
+# already exists, it will ask if the user wants to overwrite it.
+p() {
+  path="$PATCH/$1.patch"
+  if [ -f $path ]; then
+    echo "The patch \`$1' already exists."
+    read -p "Do you want to overwrite its contents ? (Y/n) " yn
+    case $yn in
+      n | N | no | NO ) exit 1
+    esac
+  fi
+  git diff > $path
+}
