@@ -5,15 +5,15 @@
 _cfgdir=/etc/nginx
 _tmpdir=/var/lib/nginx
 _nginx=/tmp/nginx
-_version="trunk"
+_version="default"
 _configure="./configure"
 _pwd=`pwd`
 
 
 # Fetch and extract NGinx
-if [ $_version == "trunk" ]; then
-  echo -e "\033[32mFetching NGinx using svn (trunk)\033[0m"
-  svn co svn://svn.nginx.org/nginx/trunk $_nginx
+if [ $_version == "default" ]; then
+  echo -e "\033[32mFetching NGinx using hg (default)\033[0m"
+  hg clone http://hg.nginx.org/nginx/ $_nginx
   _configure="./auto/configure"
 else
   echo -e "\033[32mFetching NGinx using wget ($_version)\033[0m"
@@ -48,6 +48,7 @@ $_configure \
   --with-http_gzip_static_module \
   --with-http_realip_module \
   --with-http_ssl_module \
+  --with-http_spdy_module \
   --with-http_stub_status_module \
   --with-cc-opt="-O3"
   
