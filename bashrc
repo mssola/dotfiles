@@ -80,6 +80,8 @@ export PATCH=$HOME/.patches
 # already exists, it will ask if the user wants to overwrite it.
 p() {
   path="$PATCH/$1.patch"
+
+  # The patch file already exists.
   if [ -f $path ]; then
     echo "The patch \`$1' already exists."
     read -p "Do you want to overwrite its contents ? (Y/n) " yn
@@ -87,5 +89,15 @@ p() {
       n | N | no | NO ) exit 1
     esac
   fi
-  git diff > $path
+
+  # Choose the proper SCM tool.
+  if [ -d .git ]; then
+    git diff > $path
+  elif [ -d .hg ]; then
+    hg diff > $path
+  elif [ -d .svn ]; then
+    svn diff > $path
+  else
+    echo 'Unsupported SCM.'
+  fi
 }
