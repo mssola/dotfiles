@@ -52,52 +52,9 @@ export GOROOT=$HOME/Projects/go
 export GOPATH=$HOME/.go
 export PATH=$HOME/.go/bin:$HOME/Projects/go/bin:$PATH
 
-# Including shortcuts, idea from https://github.com/fxn/dotfiles
-GO_SHORTCUTS=(
-  ruby
-  $KRUBY
+# Completion for the review command. See: https://github.com/mssola/review
+source $HOME/.review_completion.sh
 
-  build
-  $KDEV/build/kdev-ruby
-)
-
-function g {
-  local target=$1
-  local len=${#GO_SHORTCUTS[@]}
-  for (( i=0; i<$len; i+=2 )); do
-    if [[ "$1" = "${GO_SHORTCUTS[$i]}" ]]; then
-      cd "${GO_SHORTCUTS[$i+1]}"
-      return
-    fi
-  done
-  echo "unknown shortcut"
-}
-
-# The path for patches.
-export PATCH=$HOME/.patches
-
-# Create a patch and save it to the directory of patches. If the patch 
-# already exists, it will ask if the user wants to overwrite it.
-p() {
-  path="$PATCH/$1.patch"
-
-  # The patch file already exists.
-  if [ -f $path ]; then
-    echo "The patch \`$1' already exists."
-    read -p "Do you want to overwrite its contents ? (Y/n) " yn
-    case $yn in
-      n | N | no | NO ) exit 1
-    esac
-  fi
-
-  # Choose the proper SCM tool.
-  if [ -d .git ]; then
-    git diff > $path
-  elif [ -d .hg ]; then
-    hg diff > $path
-  elif [ -d .svn ]; then
-    svn diff > $path
-  else
-    echo 'Unsupported SCM.'
-  fi
-}
+# The g utility. See: https://github.com/mssola/g
+source $HOME/.g.sh
+source $HOME/.gcompletion.sh
