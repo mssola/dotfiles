@@ -15,3 +15,17 @@ cp vimrc $HOME/.vimrc
 cp hgrc $HOME/.hgrc
 cp rake_completion $HOME/.rake_completion
 chmod +x $HOME/.rake_completion
+
+# Download and install the review utility.
+cd /tmp
+git clone https://github.com/mssola/review
+cd review
+sudo make install
+cp misc/review_completion.sh $HOME/.review_completion.sh
+
+# Download and install the g utility
+cd /tmp
+git clone https://github.com/mssola/g
+cd g
+cp g.sh $HOME/.g.sh
+cp gcompletion.sh $HOME/.gcompletion.sh
