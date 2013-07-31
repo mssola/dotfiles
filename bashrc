@@ -19,6 +19,9 @@ alias vi=vim
 source $HOME/.gitcompletion.sh
 PS1='\u:\w$(__git_ps1 "\[\033[0;32m\]@\[\033[1;32m\]%s\[\033[0m\]\]") $ '
 
+# hg completion
+source $HOME/.hgcompletion.sh
+
 # Rake completion
 complete -C $HOME/.rake_completion -o default rake
 
