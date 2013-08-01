@@ -13,6 +13,7 @@ cp gitconfig $HOME/.gitconfig
 cp global.gitignore $HOME/.gitignore
 cp vimrc $HOME/.vimrc
 cp hgrc $HOME/.hgrc
+cp global.hgignore $HOME/.hgignore
 cp rake_completion $HOME/.rake_completion
 chmod +x $HOME/.rake_completion
 

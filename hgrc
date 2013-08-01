@@ -1,5 +1,6 @@
 [ui]
 username = Miquel Sabaté Solà <mikisabate@gmail.com>
+ignore = ~/.hgignore
 
 [alias]
 show = log -pr
