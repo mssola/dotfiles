@@ -1,5 +1,5 @@
 [ui]
-username = Miquel Sabaté <mikisabate@gmail.com>
+username = Miquel Sabaté Solà <mikisabate@gmail.com>
 
 [alias]
 show = log -pr
@@ -9,3 +9,11 @@ pager = LESS='FSRX' less
 
 [extensions]
 pager =
+color =
+
+[color]
+status.added = green
+status.modified = red
+status.removed = red
+status.deleted = red
+status.unknown = blue bold
