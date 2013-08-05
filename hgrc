@@ -2,6 +2,9 @@
 username = Miquel Sabaté Solà <mikisabate@gmail.com>
 ignore = ~/.hgignore
 
+[hooks]
+preupdate = hg status --rev .:$HG_PARENT1
+
 [alias]
 show = log -pr
 
