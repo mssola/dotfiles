@@ -13,6 +13,7 @@ cp gitconfig $HOME/.gitconfig
 cp global.gitignore $HOME/.gitignore
 cp vimrc $HOME/.vimrc
 cp hgrc $HOME/.hgrc
+cp hgcompletion.sh $HOME/.hgcompletion.sh
 cp global.hgignore $HOME/.hgignore
 cp rake_completion $HOME/.rake_completion
 chmod +x $HOME/.rake_completion
@@ -21,7 +22,7 @@ chmod +x $HOME/.rake_completion
 cd /tmp
 git clone https://github.com/mssola/review
 cd review
-sudo make install
+perl install.pl
 cp misc/review_completion.sh $HOME/.review_completion.sh
 
 # Download and install the g utility
