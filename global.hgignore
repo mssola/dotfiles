@@ -11,6 +11,7 @@ syntax: glob
 build/
 .kdev4/
 *.kdev4
+.kdev_include_paths
 .directory
 *.kate-swp
 LLEGEIXME.txt
