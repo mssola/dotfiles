@@ -6,6 +6,7 @@ set -e
 
 # Install the files on this repo.
 cp bashrc $HOME/.bashrc
+cp psqlrc $HOME/.psqlrc
 cp irbrc $HOME/.irbrc
 cp gemrc $HOME/.gemrc
 cp gitcompletion.sh $HOME/.gitcompletion.sh

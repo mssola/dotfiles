@@ -1,0 +1,17 @@
+
+-- Show null values to NULL so we can distinguish them from empty strings.
+\pset null NULL
+
+-- Set expanded display on (why isn't this the default behaviour ?)
+\x
+
+-- Show how long a query took to be executed.
+\timing
+
+-- Because everybody loves unicode.
+\encoding unicode
+
+-- Set a beautiful prompt :P
+\set PROMPT1 '%n@%/ > '
+\set PROMPT2 ''
+
