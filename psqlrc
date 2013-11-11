@@ -1,4 +1,6 @@
 
+\set QUIET ON
+
 -- Show null values to NULL so we can distinguish them from empty strings.
 \pset null NULL
 
@@ -15,3 +17,4 @@
 \set PROMPT1 '%n@%/ > '
 \set PROMPT2 ''
 
+\set QUIET OFF
