@@ -23,11 +23,13 @@ set expandtab
 set backspace=indent,eol,start
 
 " Filetypes
+filetype off
+filetype indent plugin off
+set runtimepath+=$GOROOT/misc/vim
 filetype on
-filetype indent on
-filetype plugin on
-
+filetype indent plugin on
 autocmd FileType ruby set shiftwidth=2
 autocmd FileType c set shiftwidth=4 tabstop=4
 autocmd FileType yacc set shiftwidth=4 tabstop=4
+autocmd FileType go set shiftwidth=4 tabstop=4
 
