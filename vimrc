@@ -1,6 +1,7 @@
 " Basics
 set nocompatible
 syntax on
+set encoding=utf-8
 
 " Vim UI
 set incsearch
@@ -33,3 +34,5 @@ autocmd FileType c set shiftwidth=4 tabstop=4
 autocmd FileType yacc set shiftwidth=4 tabstop=4
 autocmd FileType go set shiftwidth=4 tabstop=4
 
+" Re-mappings
+let mapleader = ","
