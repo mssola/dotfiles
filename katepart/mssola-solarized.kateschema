@@ -11,7 +11,7 @@ Function=ff268bd2,ff002b36,,,,,-,ff268bd2,,---
 Keyword=ff859900,ff002b36,1,,,,-,ff859900,,---
 Normal=ff839496,ff93a1a1,,,,,-,ff073642,,---
 Others=ffcb4b16,ff002b36,,,,,-,ffcb4b16,,---
-Region Marker=ff6c71c4,ff002b36,,,,,ffe0e9f8,ff6c71c4,,---
+Region Marker=ff6c71c4,ff002b36,1,,,,ffe0e9f8,ff6c71c4,,---
 String=ff2aa198,ff002b36,,,,,-,ff2aa198,,---
 
 [Editor Colors]
@@ -626,7 +626,7 @@ C:Alert=10,,,,,,,,,,---
 C:Char=6,,,,,,,,,,---
 C:Comment=8,,,,,,,,,,---
 C:Data Type=2,,,,,,,,,,---
-C:Decimal=3,,,,,,,,,,---
+C:Decimal=3,ff2aa198,ff002b36,,,,,,ff2aa198,,---
 C:Error=13,,,,,,,,,,---
 C:Float=5,,,,,,,,,,---
 C:Hex=4,,,,,,,,,,---
@@ -635,7 +635,7 @@ C:Normal Text=0,,,,,,,,,,---
 C:Octal=4,,,,,,,,,,---
 C:Prep. Lib=9,,,,,,,,,,---
 C:Preprocessor=9,,,,,,,,,,---
-C:Region Marker=12,,,,,,,,,,---
+C:Region Marker=12,ff6c71c4,ff002b36,1,,,,ff002b36,ff6c71c4,,---
 C:String=7,,,,,,,,,,---
 C:String Char=6,,,,,,,,,,---
 C:Symbol=0,,,,,,,,,,---
