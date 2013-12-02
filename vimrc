@@ -34,5 +34,11 @@ autocmd FileType c set shiftwidth=4 tabstop=4
 autocmd FileType yacc set shiftwidth=4 tabstop=4
 autocmd FileType go set shiftwidth=4 tabstop=4
 
+"
 " Re-mappings
+"
+
 let mapleader = ","
+
+" Control + S in insert mode: switch to normal mode and write to disk.
+inoremap <C-S> <ESC>:w<CR>
