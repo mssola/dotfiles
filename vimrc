@@ -4,7 +4,6 @@ syntax on
 set encoding=utf-8
 
 " Vim UI
-set incsearch
 set showmatch
 set showcmd
 set ruler
@@ -42,3 +41,4 @@ let mapleader = ","
 
 " Control + S in insert mode: switch to normal mode and write to disk.
 inoremap <C-S> <ESC>:w<CR>
+nnoremap <C-S> :w<CR>
