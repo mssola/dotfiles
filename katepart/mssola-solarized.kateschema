@@ -2417,17 +2417,17 @@ Intel x86 (NASM):Registers=1,,,,,,,,,,---
 Intel x86 (NASM):String=7,,,,,,,,,,---
 
 [Highlighting JSON - Schema mssola-solarized]
-JSON:Style_Decimal=3,,,,,,,,,,---
+JSON:Style_Decimal=3,ff2aa198,ff002b36,,,,,,ff2aa198,,---
 JSON:Style_Error=13,,,,,,,,,,---
-JSON:Style_Float=5,,,,,,,,,,---
-JSON:Style_Keyword=3,,,1,,,,,,,---
+JSON:Style_Float=5,ff2aa198,ff002b36,,,,,,ff2aa198,,---
+JSON:Style_Keyword=3,ff2aa198,ff002b36,,,,,,ff2aa198,,---
 JSON:Style_Normal=0,,,,,,,,,,---
-JSON:Style_Seperator_Array=0,ff0000af,,1,,,,,,,---
-JSON:Style_Seperator_Pair=0,ffef0000,,1,,,,,,,---
-JSON:Style_String_Key=2,,,,,,,,,,---
-JSON:Style_String_Key_Char=2,,,,,,,,,,---
-JSON:Style_String_Value=7,ffff00ff,,,,,,,,,---
-JSON:Style_String_Value_Char=7,ffff00ff,,,,,,,,,---
+JSON:Style_Seperator_Array=0,ffb58900,ff002b36,,,,,,ffb58900,,---
+JSON:Style_Seperator_Pair=0,ffb58900,ff002b36,,,,,,ffb58900,,---
+JSON:Style_String_Key=2,ff2aa198,ff002b36,,,,,,ffb58900,,---
+JSON:Style_String_Key_Char=2,ff2aa198,ff002b36,,,,,,ffb58900,,---
+JSON:Style_String_Value=7,ff2aa198,ff002b36,,,,,,ff2aa198,,---
+JSON:Style_String_Value_Char=7,ff2aa198,ff002b36,,,,,,ff2aa198,,---
 
 [Highlighting JSP - Schema mssola-solarized]
 JSP:Char=6,,,,,,,,,,---
