@@ -7,7 +7,8 @@ preupdate = hg status --rev .:$HG_PARENT1
 
 [alias]
 show = log -pr
-down = !$HG pull; $HG update
+down = !$HG pull --rebase; $HG update
+blame = annotate --user -c
 
 [pager]
 pager = LESS='FSRX' less
@@ -15,6 +16,9 @@ pager = LESS='FSRX' less
 [extensions]
 pager =
 color =
+rebase =
+shelve =
+progress =
 
 [color]
 status.added = green
