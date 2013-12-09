@@ -15,6 +15,10 @@ export EDITOR=vim
 export VISUAL=vim
 alias vi=vim
 
+# Set the LESS and the PAGER environment variables.
+export LESS="FSRX"
+export PAGER=less
+
 # git completion
 source $HOME/.gitcompletion.sh
 PS1='\u:\w$(__git_ps1 "\[\033[0;32m\]@\[\033[1;32m\]%s\[\033[0m\]\]") $ '
