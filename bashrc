@@ -59,8 +59,8 @@ alias be='bundle exec'
 
 # Go things
 export GOROOT=$HOME/Projects/go
-export GOPATH=$HOME/.go
-export PATH=$HOME/.go/bin:$HOME/Projects/go/bin:$PATH
+export GOPATH=$HOME/Projects/golang
+export PATH=$HOME/Projects/golang/bin:$HOME/Projects/go/bin:$PATH
 
 # Completion for the review command. See: https://github.com/mssola/review
 source $HOME/.review_completion.sh
