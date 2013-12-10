@@ -1,18 +1,65 @@
+""
 " Basics
+
+filetype on
 set nocompatible
 syntax on
 set encoding=utf-8
 
+""
 " Vim UI
-set showmatch
-set showcmd
-set ruler
 
+" Show matched result.
+set showmatch
+
+" Don't show the current command in the lower right corner.
+set showcmd
+
+" Show numbers.
+set number
+
+" Don't show the mode, since this will be shown by the status line.
+set noshowmode
+
+""
+" Colorscheme
+
+set background=dark
+colorscheme xoria256
+
+""
+" Status line
+
+" Returns the mode we are currently.
+function! Mode()
+  redraw
+  let l:mode = mode()
+
+  if     mode ==# "n" | return "NORMAL"
+  elseif mode ==# "i" | return "INSERT"
+  elseif mode ==# "R" | return "REPLACE"
+  elseif mode ==# "v" | return "VISUAL"
+  elseif mode ==# "V" | return "VISUAL-LINE"
+  elseif mode ==# ""  | return "VISUAL-BLOCK"
+  else                | return l:mode
+  endif
+endfunc
+
+" My own status line.
+set stl=\ %{Mode()}\ \|\ %f\ %m\ %r\ %=\ Line:\ %l\ Column:\ %v\ Buf:#%n
+
+" Always show the status line.
+set laststatus=2
+
+""
 " Text Formatting/Layout
+
 set ignorecase
 set smartcase
 
+""
 " Tabs, Indentation
+
 set textwidth=79
 set tabstop=2
 set shiftwidth=2
@@ -22,7 +69,9 @@ set smarttab
 set expandtab
 set backspace=indent,eol,start
 
+""
 " Filetypes
+
 filetype off
 filetype indent plugin off
 set runtimepath+=$GOROOT/misc/vim
@@ -33,9 +82,8 @@ autocmd FileType c set shiftwidth=4 tabstop=4
 autocmd FileType yacc set shiftwidth=4 tabstop=4
 autocmd FileType go set shiftwidth=4 tabstop=4
 
-"
+""
 " Re-mappings
-"
 
 let mapleader = ","
 
