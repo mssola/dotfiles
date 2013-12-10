@@ -7,7 +7,7 @@ syntax on
 set encoding=utf-8
 
 ""
-" Vim UI
+" Global stuff
 
 " Show matched result.
 set showmatch
@@ -20,6 +20,20 @@ set number
 
 " Don't show the mode, since this will be shown by the status line.
 set noshowmode
+
+" Make sure that unsaved buffers that are to be put in the background are 
+" must save first error doesn't come up)
+set hidden
+
+" Allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+" Don't wrap lines
+set nowrap
+
+" I don't like the backup and the swapfile thingies.
+set nobackup
+set noswapfile
 
 ""
 " Colorscheme
