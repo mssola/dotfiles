@@ -12,12 +12,17 @@ cp gemrc $HOME/.gemrc
 cp gitcompletion.sh $HOME/.gitcompletion.sh
 cp gitconfig $HOME/.gitconfig
 cp global.gitignore $HOME/.gitignore
-cp vimrc $HOME/.vimrc
 cp hgrc $HOME/.hgrc
 cp hgcompletion.sh $HOME/.hgcompletion.sh
 cp global.hgignore $HOME/.hgignore
 cp rake_completion $HOME/.rake_completion
 chmod +x $HOME/.rake_completion
+
+# Wipe out the current vim config and replace it with this one.
+rm -rf $HOME/.vim
+rm -rf $HOME/.vimrc
+cp -rf vim $HOME/.vim
+cp vimrc $HOME/.vimrc
 
 # Download and install the review utility.
 cd /tmp
