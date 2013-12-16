@@ -104,4 +104,4 @@ let mapleader = ","
 " Control + S in insert mode: switch to normal mode and write to disk.
 inoremap <C-S> <ESC>:w<CR>
 nnoremap <C-S> :w<CR>
-nnoremap <C-A> ggvG
+nnoremap <C-A> ggVG
