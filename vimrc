@@ -104,4 +104,7 @@ let mapleader = ","
 " Control + S in insert mode: switch to normal mode and write to disk.
 inoremap <C-S> <ESC>:w<CR>
 nnoremap <C-S> :w<CR>
+
+" <C-A> in normal mode selects the whole text by using visual mode.
 nnoremap <C-A> ggVG
+
