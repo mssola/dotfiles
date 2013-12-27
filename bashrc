@@ -16,7 +16,7 @@ export VISUAL=vim
 alias vi=vim
 
 # We want a full-fledged 256-color terminal.
-TERM=xterm-256color
+export TERM=xterm-256color
 
 # Set the LESS and the PAGER environment variables.
 export LESS="FSRX"
