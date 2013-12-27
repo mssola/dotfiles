@@ -16,7 +16,7 @@ export VISUAL=vim
 alias vi=vim
 
 # We want a full-fledged 256-color terminal.
-export TERM=xterm-256color
+TERM=xterm-256color
 
 # Set the LESS and the PAGER environment variables.
 export LESS="FSRX"
@@ -51,9 +51,6 @@ export CMAKE_INCLUDE_PATH=$KDEDIR/include:$CMAKE_INCLUDE_PATH
 # Function to whip the KDevelop cache
 alias wduchain='rm -rf $HOME/.cache/kdevduchain/*'
 
-# Load RVM into a shell session *as a function*
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
 # Alias bundle exec
 alias be='bundle exec'
 
@@ -68,3 +65,7 @@ source $HOME/.review_completion.sh
 # The g utility. See: https://github.com/mssola/g
 source $HOME/.g.sh
 source $HOME/.gcompletion.sh
+
+# Finally get RVM straight.
+source $HOME/.rvm/scripts/rvm
+
