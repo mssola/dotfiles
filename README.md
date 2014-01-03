@@ -8,7 +8,7 @@ initializing and updating submodules (in my case, I keep the vundle repo as
 a submodule). Nonetheless, this script won't install the plugins for you. In
 order to do so remember to type the following inside vim:
 
-  :BundleInstall
+    :BundleInstall
 
 And that's about it. Use this at your own risk ;)
 
