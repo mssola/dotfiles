@@ -42,6 +42,15 @@ set background=dark
 colorscheme xoria256
 
 ""
+" Setup the cursor for Konsole.
+" NOTE: change this if you're not using Konsole or a program that makes use
+" of the Konsole part. See
+" http://vim.wikia.com/wiki/Change_cursor_shape_in_different_modes
+
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+""
 " Status line
 
 " Returns the mode we are currently.
