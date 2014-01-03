@@ -4,6 +4,10 @@
 # If something goes wrong, get the f*ck out.
 set -e
 
+# Initialize and update git submodules.
+git submodule init
+git submodule update
+
 # Install the files on this repo.
 cp bashrc $HOME/.bashrc
 cp psqlrc $HOME/.psqlrc
@@ -23,6 +27,13 @@ rm -rf $HOME/.vim
 rm -rf $HOME/.vimrc
 cp -rf vim $HOME/.vim
 cp vimrc $HOME/.vimrc
+echo <<HERE
+You have successfully installed my vim configuration files. However, you have
+to type the following command inside vim to install all the plugins that I'm
+using:
+
+  :BundleInstall
+HERE
 
 # Download and install the review utility.
 cd /tmp
