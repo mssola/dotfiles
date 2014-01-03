@@ -93,13 +93,21 @@ set expandtab
 set backspace=indent,eol,start
 
 ""
-" Filetypes
+" Plugins.
 
 filetype off
 filetype indent plugin off
+
+" Using the Go plugins from the official repo.
 set runtimepath+=$GOROOT/misc/vim
-filetype on
-filetype indent plugin on
+
+" All the plugins are listed in my bundles file, that will be installed
+" inside the ~/.vim directory.
+source ~/.vim/bundles.vim
+
+""
+" Filetypes
+
 autocmd FileType ruby set shiftwidth=2
 autocmd FileType c set shiftwidth=4 tabstop=4
 autocmd FileType yacc set shiftwidth=4 tabstop=4
@@ -110,7 +118,7 @@ autocmd FileType go set shiftwidth=4 tabstop=4
 
 let mapleader = ","
 
-" <C-S> in insert/normal mode: switch to normal mode and write to disk.
+" <C-S> in normal/insert mode: switch to normal mode and write to disk.
 inoremap <C-S> <ESC>:w<CR>
 nnoremap <C-S> :w<CR>
 
