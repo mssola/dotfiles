@@ -21,8 +21,8 @@ set number
 " Don't show the mode, since this will be shown by the status line.
 set noshowmode
 
-" Make sure that unsaved buffers that are to be put in the background are 
-" must save first error doesn't come up)
+" Make sure that unsaved buffers that are to be put in the background are
+" allowed to go in there (ie. the "must save first" error doesn't come up)
 set hidden
 
 " Allow backspacing over everything in insert mode
