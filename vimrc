@@ -125,3 +125,6 @@ nnoremap <C-S> :w<CR>
 " <C-A> in normal mode selects the whole text by using visual mode.
 nnoremap <C-A> ggVG
 
+" vim-surround.vim: <leader>s is used to surround a word.
+map <leader>s ysiw
+
