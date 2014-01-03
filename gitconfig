@@ -9,6 +9,7 @@
 
 [alias]
   down = pull --rebase --stat
+  a = commit -a
 
 [push]
   default = matching
