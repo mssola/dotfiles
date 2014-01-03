@@ -110,7 +110,7 @@ autocmd FileType go set shiftwidth=4 tabstop=4
 
 let mapleader = ","
 
-" <C-S> in insert mode: switch to normal mode and write to disk.
+" <C-S> in insert/normal mode: switch to normal mode and write to disk.
 inoremap <C-S> <ESC>:w<CR>
 nnoremap <C-S> :w<CR>
 
