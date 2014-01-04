@@ -59,6 +59,11 @@ export GOROOT=$HOME/Projects/go
 export GOPATH=$HOME/Projects/golang
 export PATH=$HOME/Projects/golang/bin:$HOME/Projects/go/bin:$PATH
 
+# If Go exists in the system, bring its bash completion in.
+if [ -d "$GOROOT" ]; then
+  source "$GOROOT/misc/bash/go"
+fi
+
 # Completion for the review command. See: https://github.com/mssola/review
 source $HOME/.review_completion.sh
 
