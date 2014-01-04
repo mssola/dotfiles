@@ -99,7 +99,9 @@ filetype off
 filetype indent plugin off
 
 " Using the Go plugins from the official repo.
-set runtimepath+=$GOROOT/misc/vim
+if isdirectory($GOROOT . "/misc/vim")
+  set runtimepath+=$GOROOT/misc/vim
+endif
 
 " All the plugins are listed in my bundles file, that will be installed
 " inside the ~/.vim directory.
