@@ -63,6 +63,7 @@ function! Mode()
   elseif mode ==# "R" | return "REPLACE"
   elseif mode ==# "v" | return "VISUAL"
   elseif mode ==# "V" | return "VISUAL-LINE"
+  elseif mode ==# "s" | return "SELECT"
   elseif mode ==# ""  | return "VISUAL-BLOCK"
   else                | return l:mode
   endif
