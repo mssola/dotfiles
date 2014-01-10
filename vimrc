@@ -121,6 +121,12 @@ autocmd FileType go set shiftwidth=4 tabstop=4
 
 let mapleader = ","
 
+" Make window navigation easier.
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+
 " <C-S> in normal/insert mode: switch to normal mode and write to disk.
 inoremap <C-S> <ESC>:w<CR>
 nnoremap <C-S> :w<CR>
