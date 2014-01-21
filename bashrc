@@ -26,6 +26,9 @@ export PAGER=less
 source $HOME/.gitcompletion.sh
 PS1='\u:\w$(__git_ps1 "\[\033[0;32m\]@\[\033[1;32m\]%s\[\033[0m\]\]") $ '
 
+# A typo I do a lot...
+alias gti=git
+
 # hg completion
 source $HOME/.hgcompletion.sh
 
