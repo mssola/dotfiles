@@ -11,7 +11,7 @@ Function=ff268bd2,ff002b36,,,,,-,ff268bd2,,---
 Keyword=ff859900,ff002b36,1,,,,-,ff859900,,---
 Normal=ff839496,ff93a1a1,,,,,-,ff073642,,---
 Others=ffcb4b16,ff002b36,,,,,-,ffcb4b16,,---
-Region Marker=ff6c71c4,ff002b36,1,,,,ffe0e9f8,ff6c71c4,,---
+Region Marker=ff6c71c4,ff002b36,1,,,,ff073642,ff6c71c4,,---
 String=ff2aa198,ff002b36,,,,,-,ff2aa198,,---
 
 [Editor Colors]
