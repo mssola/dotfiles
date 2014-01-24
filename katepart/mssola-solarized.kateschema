@@ -6222,7 +6222,7 @@ XML:Normal Text=0,,,,,,,,,,---
 XML:Other Text=0,,,,,,,,,,---
 XML:PEntityRef=3,,,,,,,,,,---
 XML:Processing Instruction=1,,,,,,,,,,---
-XML:Value=7,ffaa0000,,,,,,,,,---
+XML:Value=7,ff2aa198,ff002b36,,,,,,ff2aa198,,---
 
 [Highlighting XUL - Schema mssola-solarized]
 Alerts:Alert Level 1=10,ffe85848,ffe85848,,,,,ff451e1a,,,---
