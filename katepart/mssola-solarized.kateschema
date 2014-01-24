@@ -1642,13 +1642,13 @@ Debian Control:Variable=9,,,,,,,,,,---
 Debian Control:Version=3,,,,,,,,,,---
 
 [Highlighting Diff - Schema mssola-solarized]
-Diff:Added line=9,ff0000ff,,,,,,,,,---
-Diff:Changed line (new)=9,ff0000ff,,,,,,,,,---
-Diff:Changed line (old)=7,ffff0000,,,,,,,,,---
-Diff:File=1,,,,,,,,,,---
-Diff:Header=2,,,,,,,,,,---
+Diff:Added line=9,ffcb4b16,ff002b36,,,,,,ffcb4b16,,---
+Diff:Changed line (new)=9,ffcb4b16,ff002b36,,,,,,ffcb4b16,,---
+Diff:Changed line (old)=7,ff2aa198,ff002b36,,,,,,ff2aa198,,---
+Diff:File=1,ff859900,ff002b36,1,,,,,ff859900,,---
+Diff:Header=2,ffb58900,ff002b36,,,,,,ffb58900,,---
 Diff:Normal Text=0,,,,,,,,,,---
-Diff:Removed line=7,ffff0000,,,,,,,,,---
+Diff:Removed line=7,ff2aa198,ff002b36,,,,,,ff2aa198,,---
 
 [Highlighting Django HTML Template - Schema mssola-solarized]
 Alerts:Alert Level 1=10,ffe85848,ffe85848,,,,,ff451e1a,,,---
