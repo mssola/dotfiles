@@ -17,6 +17,7 @@ set showcmd
 
 " Show numbers.
 set number
+set relativenumber
 
 " Don't show the mode, since this will be shown by the status line.
 set noshowmode
