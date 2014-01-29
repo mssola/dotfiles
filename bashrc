@@ -36,7 +36,7 @@ source $HOME/.hgcompletion.sh
 complete -C $HOME/.rake_completion -o default rake
 
 # KDE Paths
-export KDEDIR=/home/mssola/kde
+export KDEDIR=$HOME/kde
 export KDEDIRS=$KDEDIR
 export KDEV=$HOME/Projects/kde
 export KRUBY=$KDEV/kdev-ruby
