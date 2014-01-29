@@ -129,9 +129,9 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 nnoremap <leader>c :close<CR>
 
-" <C-S> in normal/insert mode: switch to normal mode and write to disk.
-inoremap <C-S> <ESC>:w<CR>
-nnoremap <C-S> :w<CR>
+" <C-s> in normal/insert mode: switch to normal mode and write to disk.
+inoremap <C-s> <ESC>:w<CR>
+nnoremap <C-s> :w<CR>
 
 " <C-q> is the same as @q (I use q to store macros).
 nnoremap <C-q> @q
