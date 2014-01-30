@@ -136,6 +136,3 @@ nnoremap <C-s> :w<CR>
 " <C-q> is the same as @q (I use q to store macros).
 nnoremap <C-q> @q
 
-" vim-surround.vim: <leader>s is used to surround a word.
-map <leader>s ysiw
-

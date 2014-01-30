@@ -9,4 +9,14 @@ filetype plugin indent on
 
 " My list of plugins.
 Bundle 'tpope/vim-surround.git'
+Bundle 'kien/ctrlp.vim.git'
+
+""
+" Some small adjustments for the installed plugins.
+
+" vim-surround.vim: <leader>s is used to surround a word.
+map <leader>s ysiw
+
+" Let CtrlP's window to be taller than its default configuration.
+let g:ctrlp_match_window = 'max:40'
 
