@@ -7,6 +7,9 @@
   excludesfile = ~/.gitignore
   whitespace = trailing-space,space-before-tab
 
+[help]
+	autocorrect = 5
+
 [alias]
   down = pull --rebase --stat
   a = commit -a
