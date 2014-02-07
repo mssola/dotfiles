@@ -4721,9 +4721,9 @@ Pascal:String=7,,,,,,,,,,---
 Pascal:Type=2,,,,,,,,,,---
 
 [Highlighting Perl - Schema xoria256]
-Alerts:Alert Level 1=10,ffe85848,ffe85848,,,,,ff451e1a,,,---
-Alerts:Alert Level 2=10,ffca9219,ffca9219,,,,,ff451e1a,,,---
-Alerts:Alert Level 3=10,ff81ca2d,ff81ca2d,,,,,,,,---
+Alerts:Alert Level 1=10,ffafdf87,ffeeeeee,1,,,,,,,---
+Alerts:Alert Level 2=10,ffafdf87,ffeeeeee,1,,,,,,,---
+Alerts:Alert Level 3=10,ffafdf87,ffeeeeee,1,,,,,,,---
 Alerts:Normal Text=0,,,,,,,,,,---
 Perl:Bin=4,,,,,,,,,,---
 Perl:Comment=8,,,,,,,,,,---
@@ -4737,14 +4737,14 @@ Perl:Keyword=1,,,,,,,,,,---
 Perl:Normal Text=0,,,,,,,,,,---
 Perl:Nothing=8,,,,,,,,,,---
 Perl:Octal=4,,,,,,,,,,---
-Perl:Operator=1,ff008000,,,,,,,,,---
+Perl:Operator=1,ff87afdf,ffeeeeee,,,,,,,,---
 Perl:Pattern=9,,,,,,,,,,---
 Perl:Pattern Character Class=4,,,,,,,,,,---
 Perl:Pattern Internal Operator=6,,,,,,,,,,---
 Perl:Pod=8,,,,,,,,,,---
 Perl:Pragma=1,,,,,,,,,,---
-Perl:Special Variable=2,ffc00000,ffc00000,0,0,,,,,,---
-Perl:String=7,ffff6c6c,ffff6c6c,0,0,,,,,,---
+Perl:Special Variable=2,ffafafdf,ffeeeeee,0,0,,,,,,---
+Perl:String=7,ffffffaf,ffeeeeee,0,0,,,,,,---
 Perl:String (interpolated)=7,,,,,,,,,,---
 Perl:String Special Character=6,,,,,,,,,,---
 
