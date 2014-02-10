@@ -22,15 +22,21 @@ TERM=xterm-256color
 export LESS="FSRX"
 export PAGER=less
 
-# git completion
+# git thingies.
 source $HOME/.gitcompletion.sh
-PS1='\u:\w$(__git_ps1 "\[\033[0;32m\]@\[\033[1;32m\]%s\[\033[0m\]\]") $ '
-
-# A typo I do a lot...
 alias gti=git
 
-# hg completion
+# hg thingies.
 source $HOME/.hgcompletion.sh
+__hg_branch() {
+  if [ -d .hg ]; then
+    local b=`cat .hg/branch`
+    echo -e "\033[0;32m@\033[1;32m$b\033[0m"
+  fi
+}
+
+# Setting up PS1.
+PS1='\u:\w$(__hg_branch)$(__git_ps1 "\[\033[0;32m\]@\[\033[1;32m\]%s\[\033[0m\]\]") $ '
 
 # Rake completion
 complete -C $HOME/.rake_completion -o default rake
