@@ -112,11 +112,15 @@ source ~/.vim/bundles.vim
 ""
 " Filetypes
 
+" Some rules regarding indentation on different languages.
 autocmd FileType ruby set shiftwidth=2
 autocmd FileType c set shiftwidth=4 tabstop=4
 autocmd FileType yacc set shiftwidth=4 tabstop=4
 autocmd FileType go set shiftwidth=4 tabstop=4
 autocmd FileType go autocmd BufWritePre <buffer> Fmt
+
+" Clean up trailing whitespaces on save.
+autocmd BufWritePre * :%s/\s\+$//e
 
 ""
 " Re-mappings
