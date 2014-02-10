@@ -116,6 +116,7 @@ autocmd FileType ruby set shiftwidth=2
 autocmd FileType c set shiftwidth=4 tabstop=4
 autocmd FileType yacc set shiftwidth=4 tabstop=4
 autocmd FileType go set shiftwidth=4 tabstop=4
+autocmd FileType go autocmd BufWritePre <buffer> Fmt
 
 ""
 " Re-mappings
