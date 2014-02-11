@@ -109,6 +109,9 @@ endif
 " inside the ~/.vim directory.
 source ~/.vim/bundles.vim
 
+" Enable plugins again.
+filetype plugin indent on
+
 ""
 " Filetypes
 
