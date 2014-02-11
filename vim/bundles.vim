@@ -7,6 +7,7 @@ Bundle 'gmarik/vundle'
 " My list of plugins.
 Bundle 'tpope/vim-surround.git'
 Bundle 'kien/ctrlp.vim.git'
+Bundle 'derekwyatt/vim-scala.git'
 
 ""
 " Some small adjustments for the installed plugins.
