@@ -10,5 +10,10 @@ order to do so remember to type the following inside vim:
 
     :BundleInstall
 
+Notice though that in MacOS X the user should install the GNU coreutils
+package. In order to do this you should perform the following command:
+
+    $ brew install coreutils
+
 And that's about it. Use this at your own risk ;)
 
