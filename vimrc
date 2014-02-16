@@ -77,10 +77,16 @@ set stl=\ %{Mode()}\ \|\ %f\ %m\ %r\ %=\ Line:\ %l\ Column:\ %v\ Buf:#%n
 set laststatus=2
 
 ""
-" Text Formatting/Layout
+" Searching stuff.
 
+" Ignore the case on search by default.
 set ignorecase
+
+" Case sensitive if we start the search by an uppercase letter.
 set smartcase
+
+" Find as you type search.
+set incsearch
 
 ""
 " Tabs, Indentation
