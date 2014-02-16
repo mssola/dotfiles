@@ -10,6 +10,7 @@ git submodule update
 
 # Install the files on this repo.
 cp bashrc $HOME/.bashrc
+cp bashrc_profile $HOME/.bashrc_profile
 cp psqlrc $HOME/.psqlrc
 cp irbrc $HOME/.irbrc
 cp gemrc $HOME/.gemrc
