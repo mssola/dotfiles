@@ -13,3 +13,4 @@ build/
 .directory
 *.kate-swp
 LLEGEIXME.txt
+*.kilepr
