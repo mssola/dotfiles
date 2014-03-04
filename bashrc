@@ -48,8 +48,6 @@ complete -C $HOME/.rake_completion -o default rake
 # KDE Paths
 export KDEDIR=$HOME/kde
 export KDEDIRS=$KDEDIR
-export KDEV=$HOME/Projects/kde
-export KRUBY=$KDEV/kdev-ruby
 
 # Export the standard paths to include KDE
 export PATH=$KDEDIR/bin:/usr/local/heroku/bin:$PATH
