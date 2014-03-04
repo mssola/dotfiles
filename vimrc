@@ -123,6 +123,7 @@ filetype plugin indent on
 
 " Some rules regarding indentation on different languages.
 autocmd FileType ruby set shiftwidth=2
+autocmd FileType perl set shiftwidth=4 tabstop=4
 autocmd FileType c set shiftwidth=4 tabstop=4
 autocmd FileType yacc set shiftwidth=4 tabstop=4
 autocmd FileType go set shiftwidth=4 tabstop=4
