@@ -77,7 +77,8 @@ if [ -d "$GOROOT" ]; then
   source "$GOROOT/misc/bash/go"
 fi
 
-# Completion for the review command. See: https://github.com/mssola/review
+# The Review utility. See: https://github.com/mssola/review
+export PATH=/opt/review:$PATH
 source $HOME/.review_completion.sh
 
 # The g utility. See: https://github.com/mssola/g
