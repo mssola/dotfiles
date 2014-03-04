@@ -29,6 +29,7 @@ rm -rf $HOME/.vimrc
 cp -rf vim $HOME/.vim
 cp vimrc $HOME/.vimrc
 cat <<HERE
+
 You have successfully installed my vim configuration files. However, you have
 to type the following command inside vim to install all the plugins that I'm
 using:
@@ -44,3 +45,17 @@ git clone https://github.com/mssola/g
 cd g
 cp g.sh $HOME/.g.sh
 cp gcompletion.sh $HOME/.gcompletion.sh
+
+# Download and install the review utility
+cat <<HERE
+
+We'll now proceed to install the Review utility. The Review utility will be
+installed in /opt/review, that's why we ask for root permissions.
+
+HERE
+
+cd /tmp
+rm -rf review
+git clone https://github.com/mssola/review
+cd review
+sudo ./install.sh
