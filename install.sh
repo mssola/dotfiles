@@ -58,4 +58,4 @@ cd /tmp
 rm -rf review
 git clone https://github.com/mssola/review
 cd review
-sudo ./install.sh
+./install.sh
