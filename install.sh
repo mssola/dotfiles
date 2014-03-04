@@ -37,14 +37,6 @@ using:
 
 HERE
 
-# Download and install the review utility.
-cd /tmp
-rm -rf review
-git clone https://github.com/mssola/review
-cd review
-perl install.pl
-cp misc/review_completion.sh $HOME/.review_completion.sh
-
 # Download and install the g utility
 cd /tmp
 rm -rf g
