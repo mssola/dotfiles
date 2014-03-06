@@ -26,7 +26,6 @@ kbookmarks
 kcmutils
 solid
 kjobwidgets
-libdbusmenu-qt5
 knotifications
 kio
 kdeclarative
@@ -35,9 +34,8 @@ kded
 kplotting
 kpty
 kdesu
-kwallet-framework
+kwallet
 kparts
-kdewebkit
 kdesignerplugin
 kdnssd-framework
 kemoticons
@@ -51,7 +49,6 @@ kprintutils
 kross
 kunitconversion
 threadweaver
-kde4support
 kfileaudiopreview
 khtml
 knewstuff

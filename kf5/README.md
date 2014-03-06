@@ -1,12 +1,12 @@
 # KDE Frameworks
 
-This directory has all the files that I use to compile KDE Frameworks. Note,
-that I don't guarantee that all the modules are nicely compiling, I've just
-checked the ones I need to compile Kate. Moreover, the KTextEditor library is
-not included in the list of modules to be compiled. This is because it's the
-only library from Frameworks that I contribute and, therefore, I want to keep
-it separately. I will remove this directory when the KDE Frameworks is stable
-and all the KDE apps are ported to Frameworks.
+This directory has all the files that I use to compile KDE Frameworks. The
+following packages are not included: kdewebkit and kde4support.
+Moreover, the KTextEditor library is not included in the list of modules
+to be compiled. This is because it's the only library from Frameworks
+that I contribute and, therefore, I want to keep it separately. I will
+remove this directory when the KDE Frameworks is stable and all the
+KDE apps are ported to Frameworks.
 
 This directory assumes that you have my Git configuration (things like the
 "down" alias, the "kde:" prefix, etc.). This directory also assumes that
