@@ -48,6 +48,7 @@ complete -C $HOME/.rake_completion -o default rake
 # KDE Paths
 export KDEDIR=$HOME/kde
 export KDEDIRS=$KDEDIR
+export KF5_SRC=$HOME/Projects/kde/kf5
 
 # Export the standard paths to include KDE
 export PATH=$KDEDIR/bin:/usr/local/heroku/bin:$PATH
@@ -61,6 +62,9 @@ export CMAKE_INCLUDE_PATH=$KDEDIR/include:$CMAKE_INCLUDE_PATH
 
 # Function to whip the KDevelop cache
 alias wduchain='rm -rf $HOME/.cache/kdevduchain/*'
+
+# Let's change to KF5 mode.
+alias frameworks='source $KF5_SRC/kf5.sh'
 
 # Alias bundle exec
 alias be='bundle exec'
