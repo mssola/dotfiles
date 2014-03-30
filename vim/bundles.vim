@@ -8,6 +8,7 @@ Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-surround.git'
 Bundle 'kien/ctrlp.vim.git'
 Bundle 'derekwyatt/vim-scala.git'
+Bundle 'fatih/vim-go'
 
 ""
 " Some small adjustments for the installed plugins.
