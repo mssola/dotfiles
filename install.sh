@@ -21,6 +21,7 @@ cp hgrc $HOME/.hgrc
 cp hgcompletion.sh $HOME/.hgcompletion.sh
 cp global.hgignore $HOME/.hgignore
 cp rake_completion $HOME/.rake_completion
+cp rvmrc $HOME/.rvmrc
 chmod +x $HOME/.rake_completion
 
 # Wipe out the current vim config and replace it with this one.
