@@ -5,7 +5,7 @@
 \pset null NULL
 
 -- Set expanded display on (why isn't this the default behaviour ?)
-\x
+\x auto
 
 -- Show how long a query took to be executed.
 \timing
