@@ -138,6 +138,7 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 nnoremap <leader>c :close<CR>
+nnoremap <leader>v :vs<CR>
 
 " <C-s> in normal/insert mode: switch to normal mode and write to disk.
 inoremap <C-s> <ESC>:w<CR>
