@@ -12,6 +12,7 @@ git submodule update
 cp bashrc $HOME/.bashrc
 cp bash_profile $HOME/.bash_profile
 cp psqlrc $HOME/.psqlrc
+cp inputrc $HOME/.inputrc
 cp irbrc $HOME/.irbrc
 cp gemrc $HOME/.gemrc
 cp gitcompletion.sh $HOME/.gitcompletion.sh

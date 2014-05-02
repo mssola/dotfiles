@@ -1,0 +1,34 @@
+
+##
+# Let's initialize a couple of things.
+
+# Include this file so we avoid weird things.
+$include /etc/inputrc
+
+# Use Vi, not Emacs, style editing
+set editing-mode vi
+
+# Don't echo ^C when pressing Ctrl-c (the same goes for other control chars).
+set echo-control-characters off
+
+##
+# Keymaps in Normal mode.
+
+set keymap vi-command
+
+# Insert the arguments from the last command.
+"p": "i !!*\r"
+
+# When hitting q, cycle through the previous commands that start with the
+# prefix we've entered, rather than just cycling the last entered commands.
+"q": history-search-backward
+
+##
+# Keymaps in Insert mode.
+
+set keymap vi-insert
+
+# Needed because binding 'p' in command mode above wipes its insert mode
+# function, too. This fixes that, and will insert 'p' when you type 'p'.
+"p": self-insert
+
