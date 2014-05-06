@@ -36,6 +36,11 @@ set nowrap
 set nobackup
 set noswapfile
 
+" Use always the clipboard.
+" NOTE: this only works if you have vim with clipboard support. You can check
+" this by calling vim --version and see if you have +clipboard.
+set clipboard=unnamed
+
 ""
 " Colorscheme
 
