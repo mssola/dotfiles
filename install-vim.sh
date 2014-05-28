@@ -9,8 +9,10 @@ BASE=/opt
 # Move to $BASE and fetch vim.
 cd $BASE
 if [ -d "vim" ]; then
+  cd vim
   hg pull
   hg update
+  cd ..
 else
   hg clone https://vim.googlecode.com/hg/ vim
 fi
