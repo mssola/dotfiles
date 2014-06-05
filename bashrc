@@ -87,6 +87,11 @@ source $HOME/.review_completion.sh
 source $HOME/.g.sh
 source $HOME/.gcompletion.sh
 
+# Generates a PDF version of the manual of the given command.
+function manpdf() {
+  man -t "$1" | ps2pdf - "$1.pdf"
+}
+
 # Finally get RVM straight.
-source $HOME/.rvm/scripts/rvm
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
