@@ -1,4 +1,4 @@
-export KF5=$HOME/kf5
+export KF5=$KDEDIR/kf5
 export QTDIR=/opt/qt5/qtbase
 export XDG_DATA_DIRS=$KF5/share:$XDG_DATA_DIRS:/usr/share
 export XDG_CONFIG_DIRS=$KF5/etc/xdg:$XDG_CONFIG_DIRS:/etc/xdg
