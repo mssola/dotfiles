@@ -2,6 +2,7 @@
 --memcheck:show-reachable=yes
 --memcheck:track-origins=yes
 --memcheck:smc-check=all
+--memcheck:log-file=/tmp/memcheck.txt
 --callgrind:dump-instr=yes
 --callgrind:compress-strings=no
 --callgrind:compress-pos=no
