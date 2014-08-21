@@ -87,6 +87,11 @@ function manpdf() {
   man -t "$1" | ps2pdf - "$1.pdf"
 }
 
+# Generate the contents for a .gitignore file.
+function gi() {
+  curl http://www.gitignore.io/api/$@
+}
+
 # Finally get RVM straight.
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
