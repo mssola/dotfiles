@@ -144,3 +144,6 @@ nnoremap <C-s> :w<CR>
 " <C-q> is the same as @q (I use q to store macros).
 nnoremap <C-q> @q
 
+" Pressing ^ in order to move to the first non-blank character is inconvenient.
+nnoremap <leader>, ^
+
