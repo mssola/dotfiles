@@ -48,23 +48,20 @@ complete -C $HOME/.rake_completion -o default rake
 # KDE Paths
 export KDEDIR=$HOME/kde
 export KDEDIRS=$KDEDIR
-export KF5_SRC=$HOME/Projects/kde/kf5
-
-# Export the standard paths to include KDE
-export PATH=$KDEDIR/bin:/usr/local/heroku/bin:$PATH
-export LD_LIBRARY_PATH=$KDEDIR/lib:$LD_LIBRARY_PATH
-export XDG_DATA_DIRS=$XDG_DATA_DIRS:$KDEDIR/share
-
-# Export the CMake paths so it searches for KDE in the right places
-export CMAKE_PREFIX_PATH=$KDEDIR:$CMAKE_PREFIX_PATH
-export CMAKE_LIBRARY_PATH=$KDEDIR/lib:$CMAKE_LIBRARY_PATH
-export CMAKE_INCLUDE_PATH=$KDEDIR/include:$CMAKE_INCLUDE_PATH
+export KF5=$KDEDIR/kf5
+export QTDIR=/opt/qt5/qtbase
+export XDG_DATA_DIRS=$KF5/share:$XDG_DATA_DIRS:/usr/share
+export XDG_CONFIG_DIRS=$KF5/etc/xdg:$XDG_CONFIG_DIRS:/etc/xdg
+export PATH=$KF5/bin:$QTDIR/bin:/usr/local/heroku/bin:$PATH
+export QT_PLUGIN_PATH=$KF5/lib/plugins:$KF5/lib64/plugins:$KF5/lib/x86_64-linux-gnu/plugins:$QTDIR/plugins:$QT_PLUGIN_PATH
+export QML2_IMPORT_PATH=$KF5/lib/qml:$KF5/lib64/qml:$KF5/lib/x86_64-linux-gnu/qml:$QTDIR/qml
+export QML_IMPORT_PATH=$QML2_IMPORT_PATH
+export KDE_SESSION_VERSION=5
+export KDE_FULL_SESSION=true
+export CMAKE_PREFIX_PATH=$KF5:$CMAKE_PREFIX_PATH
 
 # Function to whip the KDevelop cache
 alias wduchain='rm -rf $HOME/.cache/kdevduchain/*'
-
-# Let's change to KF5 mode.
-alias frameworks='source $KF5_SRC/kf5.sh'
 
 # Alias bundle exec
 alias be='bundle exec'
