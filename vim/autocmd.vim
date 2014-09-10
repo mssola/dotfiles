@@ -2,6 +2,7 @@
 " Indentation rules for different languages.
 
 " Some rules regarding indentation on different languages.
+autocmd FileType sh set shiftwidth=4 tabstop=4
 autocmd FileType perl set shiftwidth=4 tabstop=4
 autocmd FileType c set shiftwidth=4 tabstop=4
 autocmd FileType yacc set shiftwidth=4 tabstop=4
