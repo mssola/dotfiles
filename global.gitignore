@@ -1,6 +1,8 @@
 *.~
 *.swp
 
+.sass-cache
+
 # Ruby thingies
 .rbx/
 .rake_tasks
