@@ -6,10 +6,10 @@ autocmd FileType sh set shiftwidth=4 tabstop=4
 autocmd FileType perl set shiftwidth=4 tabstop=4
 autocmd FileType c set shiftwidth=4 tabstop=4
 autocmd FileType yacc set shiftwidth=4 tabstop=4
-autocmd FileType go set shiftwidth=4 tabstop=4
+autocmd FileType go set noexpandtab shiftwidth=4 tabstop=4
 autocmd FileType ruby set shiftwidth=2 tabstop=2
 autocmd FileType cpp set shiftwidth=4 tabstop=4
-autocmd FileType php set shiftwidth=4 tabstop=4
+autocmd FileType php set noexpandtab shiftwidth=4 tabstop=4
 autocmd FileType javascript set shiftwidth=2 tabstop=2
 
 " Call gofmt on save.
