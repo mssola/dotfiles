@@ -30,15 +30,7 @@ rm -rf $HOME/.vim
 rm -rf $HOME/.vimrc
 cp -rf vim $HOME/.vim
 cp vimrc $HOME/.vimrc
-cat <<HERE
-
-You have successfully installed my vim configuration files. However, you have
-to type the following command inside vim to install all the plugins that I'm
-using:
-
-  :BundleInstall
-
-HERE
+vim +PluginInstall +qall
 
 # Download and install the g utility
 cd /tmp

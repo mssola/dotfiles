@@ -1,14 +1,17 @@
 
 " Vundle setup
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-Bundle 'gmarik/vundle'
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'
 
 " My list of plugins.
-Bundle 'tpope/vim-surround.git'
-Bundle 'kien/ctrlp.vim.git'
-Bundle 'derekwyatt/vim-scala.git'
-Bundle 'fatih/vim-go'
+Plugin 'tpope/vim-surround.git'
+Plugin 'kien/ctrlp.vim.git'
+Plugin 'derekwyatt/vim-scala.git'
+Plugin 'fatih/vim-go'
+
+call vundle#end()
 
 ""
 " Some small adjustments for the installed plugins.
