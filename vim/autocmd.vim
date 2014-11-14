@@ -12,9 +12,6 @@ autocmd FileType cpp setlocal shiftwidth=4 tabstop=4
 autocmd FileType php setlocal noexpandtab shiftwidth=4 tabstop=4
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 
-" Call gofmt on save.
-autocmd FileType go autocmd BufWritePre <buffer> Fmt
-
 " Clean up trailing whitespaces on save.
 autocmd BufWritePre * :%s/\s\+$//e
 
