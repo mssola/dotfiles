@@ -2,13 +2,9 @@
 export LC_ALL=en_US.UTF-8
 
 # beautifying ls command
-lsc="ls"
-if [ `uname` == "Darwin" ]; then
-  lsc="gls"
-fi
-alias ls='$lsc --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-alias ll='$lsc -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-alias la='$lsc -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
+alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
+alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
+alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 
 # Alias related to cd
 alias ..='cd ..'
