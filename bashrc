@@ -82,6 +82,11 @@ source $HOME/.review_completion.sh
 source $HOME/.g.sh
 source $HOME/.gcompletion.sh
 
+# The td utility. See: https://github.com/mssola/td
+if [ -f $HOME/.tdcompletion.sh ]; then
+    source $HOME/.tdcompletion.sh
+fi
+
 # Generates a PDF version of the manual of the given command.
 function manpdf() {
   man -t "$1" | ps2pdf - "$1.pdf"
