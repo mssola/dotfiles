@@ -116,7 +116,7 @@ filetype indent plugin off
 source ~/.vim/bundles.vim
 
 " Enable plugins again.
-filetype plugin indent on
+filetype indent plugin on
 
 ""
 " Everything regarding filetypes: indentation rules, gofmt & friends.
@@ -146,4 +146,9 @@ nnoremap <C-q> @q
 
 " Pressing ^ in order to move to the first non-blank character is inconvenient.
 nnoremap <leader>, ^
+
+" Do nothing when <C-z> is pressed. Why would I want to stop the current `vim`
+" process ? (especially shitty if you miss useful commands like <C-x> ...).
+nnoremap <C-z> <nop>
+inoremap <C-z> <nop>
 
