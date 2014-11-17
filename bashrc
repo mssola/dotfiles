@@ -65,6 +65,12 @@ alias frameworks='source $KF5_SRC/kf5.sh'
 # Alias bundle exec
 alias be='bundle exec'
 
+# Set the CC and CXX variables to clang, but allow a fallback shortcut, since
+# some projects do not support clang yet (e.g. HHVM).
+alias GCC='CC=/usr/bin/gcc CXX=/usr/bin/g++'
+export CC=/usr/bin/clang
+export CXX=/usr/bin/clang++
+
 # Go things
 export GOROOT=$HOME/Projects/go
 export GOPATH=$HOME/Projects/golang
