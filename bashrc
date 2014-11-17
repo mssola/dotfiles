@@ -89,6 +89,12 @@ if [ -f $HOME/.tdcompletion.sh ]; then
     source $HOME/.tdcompletion.sh
 fi
 
+# Add the `scripts` dir to the path if possible. See:
+# https://github.com/mssola/scripts.
+if [ -d $HOME/.scripts ]; then
+    export PATH=$HOME/.scripts:$PATH
+fi
+
 # Generates a PDF version of the manual of the given command.
 function manpdf() {
   man -t "$1" | ps2pdf - "$1.pdf"
