@@ -60,7 +60,7 @@ export CMAKE_INCLUDE_PATH=$KDEDIR/include:$CMAKE_INCLUDE_PATH
 alias wduchain='rm -rf $HOME/.cache/kdevduchain/*'
 
 # Let's change to KF5 mode.
-alias frameworks='source $KF5_SRC/kf5.sh'
+alias frameworks='source $KF5_SRC/kf5.sh; eval `dbus-launch`; kdeinit5; echo'
 
 # Alias bundle exec
 alias be='bundle exec'
