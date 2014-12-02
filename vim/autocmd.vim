@@ -15,3 +15,9 @@ autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 " Clean up trailing whitespaces on save.
 autocmd BufWritePre * :%s/\s\+$//e
 
+" If there is a .lvimrc, source it. Note that this works best by calling vim on
+" the root of your project.
+if filereadable(".lvimrc")
+  so .lvimrc
+endif
+
