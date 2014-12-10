@@ -1,13 +1,13 @@
 
 // Tabs 4-spaces wide: C, C++, Bison, PHP and Go.
-kate-mimetype(text/x-c++hdr;text/x-chdr;text/x-c++src;text/x-csrc): indent-width 4; remove-trailing-spaces modified; replace-tabs false; tab-indents true; tab-width 4;
-kate-wildcard(*.y;*.yy): indent-width 4; remove-trailing-spaces modified; replace-tabs false; tab-indents true; tab-width 4;
-kate-mimetype(text/x-php4-src;text/x-php3-src;text/vnd.wap.wml;application/x-php): indent-width 4; remove-trailing-spaces modified; replace-tabs false; tab-indents true; tab-width 4;
-kate-wildcard(*.go): indent-width 4; remove-trailing-spaces modified; replace-tabs false; tab-indents true; tab-width 4;
+kate-mimetype(text/x-c++hdr;text/x-chdr;text/x-c++src;text/x-csrc): indent-width 4; replace-tabs false; tab-indents true; tab-width 4;
+kate-wildcard(*.y;*.yy): indent-width 4; replace-tabs false; tab-indents true; tab-width 4;
+kate-mimetype(text/x-php4-src;text/x-php3-src;text/vnd.wap.wml;application/x-php): indent-width 4; replace-tabs false; tab-indents true; tab-width 4;
+kate-wildcard(*.go): indent-width 4; replace-tabs false; tab-indents true; tab-width 4;
 
 // 2 spaces, no tabs: Ruby & JS.
-kate-mimetype(application/x-ruby): indent-width 2; remove-trailing-spaces modified; replace-tabs true; tab-indents true; tab-width 2;
-kate-mimetype(text/x-javascript;application/x-javascript): indent-width 2; remove-trailing-spaces modified; replace-tabs true; tab-indents true; tab-width 2;
+kate-mimetype(application/x-ruby): indent-width 2; replace-tabs true; tab-indents true; tab-width 2;
+kate-mimetype(text/x-javascript;application/x-javascript): indent-width 2; replace-tabs true; tab-indents true; tab-width 2;
 
 // Any other language is set undefined. The style will be picked according to
 // the defaults as given in the settings dialog (Editing -> Indentation).

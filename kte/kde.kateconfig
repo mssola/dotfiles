@@ -1,5 +1,5 @@
 
 // Tabs 4-spaces wide: C, C++, Bison, PHP and Go.
-kate-mimetype(text/x-c++hdr;text/x-chdr;text/x-c++src;text/x-csrc): indent-width 4; remove-trailing-spaces modified; replace-tabs true; tab-indents true; tab-width 4;
-kate-wildcard(*.y;*.yy): indent-width 4; remove-trailing-spaces modified; replace-tabs true; tab-indents true; tab-width 4;
+kate-mimetype(text/x-c++hdr;text/x-chdr;text/x-c++src;text/x-csrc): indent-width 4; replace-tabs true; tab-indents true; tab-width 4;
+kate-wildcard(*.y;*.yy): indent-width 4; replace-tabs true; tab-indents true; tab-width 4;
 
