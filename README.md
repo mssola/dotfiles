@@ -1,5 +1,4 @@
-README
-------
+# README
 
 To automatically install everything, just execute the install.sh script.
 Take a look at this script since it might perform some actions that are

@@ -32,6 +32,14 @@ cp -rf vim $HOME/.vim
 cp vimrc $HOME/.vimrc
 vim +PluginInstall +qall
 
+# Update the style for KTE users (KWrite, Kate, KDevelop & Kile). Note that
+# there are two configs: the global one and the KDE one. The KDE one assumes
+# that all your KDE projects are stored in the `$HOME/Projects/kde` directory.
+# The global one is installed in the $HOME directory.
+mkdir -p $HOME/Projects/kde
+cp kte/kde.kateconfig $HOME/Projects/kde/.kateconfig
+cp kte/global.kateconfig $HOME/.kateconfig
+
 # Download and install the g utility
 cd /tmp
 rm -rf g
