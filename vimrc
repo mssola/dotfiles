@@ -2,7 +2,6 @@
 " Basics
 
 filetype on
-set nocompatible
 syntax on
 set encoding=utf-8
 
