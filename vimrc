@@ -125,7 +125,7 @@ source ~/.vim/autocmd.vim
 ""
 " Re-mappings
 
-let mapleader = ","
+let g:mapleader = ","
 
 " Make window navigation easier.
 nnoremap <C-j> <C-w>j
