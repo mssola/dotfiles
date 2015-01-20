@@ -42,7 +42,7 @@ PS1='\u:\w$(__hg_branch)$(__git_ps1 "\[\033[0;32m\]@\[\033[1;32m\]%s\[\033[0m\]\
 complete -C $HOME/.rake_completion -o default rake
 
 # KDE Paths
-export KDEDIR=$HOME/kde
+export KDEDIR=$HOME/.kde
 export KDEDIRS=$KDEDIR
 export KF5_SRC=$HOME/Projects/kde/kf5
 
