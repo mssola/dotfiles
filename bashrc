@@ -72,6 +72,7 @@ export CC=/usr/bin/clang
 export CXX=/usr/bin/clang++
 
 # Go things
+export GOROOT_BOOTSTRAP=/opt/go1.4
 export GOROOT=$HOME/Projects/go
 export GOPATH=$HOME/Projects/golang
 export PATH=$HOME/Projects/golang/bin:$HOME/Projects/go/bin:$PATH
