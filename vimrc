@@ -151,3 +151,7 @@ nnoremap <leader>, ^
 nnoremap <C-z> <nop>
 inoremap <C-z> <nop>
 
+" Do nothing for the <S-K> command. I never use it and it appears when I
+" misstype <S-J>.
+nnoremap K <nop>
+
