@@ -2906,17 +2906,17 @@ J:String=12,ff0000ff,,,,,,,,,---
 J:Verb=1,ff009966,,,,,,,,,---
 
 [Highlighting JSON - Schema xoria256]
-JSON:Style_Decimal=3,,,,,,,,,,---
+JSON:Style_Decimal=3,ffdfaf87,,,,,,,,,---
 JSON:Style_Error=13,,,,,,,,,,---
-JSON:Style_Float=5,,,,,,,,,,---
+JSON:Style_Float=5,ffdfaf87,,,,,,,,,---
 JSON:Style_Keyword=1,,,,,,,,,,---
-JSON:Style_Normal=0,,,,,,,,,,---
-JSON:Style_Seperator_Array=9,ffafdf87,ffeeeeee,0,,,,,,,---
-JSON:Style_Seperator_Pair=11,ff87afdf,ffeeeeee,0,,,,,,,---
-JSON:Style_String_Key=2,,,,,,,,,,---
-JSON:Style_String_Key_Char=6,,,,,,,,,,---
-JSON:Style_String_Value=7,,,,,,,,,,---
-JSON:Style_String_Value_Char=6,,,,,,,,,,---
+JSON:Style_Normal=0,ffd0d0d0,,,,,,,,,---
+JSON:Style_Seperator_Array=9,ffdfaf87,ffeeeeee,,,,,,,,---
+JSON:Style_Seperator_Pair=11,ffd0d0d0,ffeeeeee,,,,,,,,---
+JSON:Style_String_Key=2,ff87afdf,,,,,,,,,---
+JSON:Style_String_Key_Char=6,ff87afdf,,,,,,,,,---
+JSON:Style_String_Value=7,ffffffaf,,,,,,,,,---
+JSON:Style_String_Value_Char=6,ffffffaf,,,,,,,,,---
 
 [Highlighting JSP - Schema xoria256]
 JSP:Char=6,,,,,,,,,,---
@@ -8590,5 +8590,5 @@ yacas:Symbol=9,,,,,,,,,,---
 [KateSchema]
 Font=Monospace,9,-1,5,50,0,0,0,0,0
 full schema=true
-highlightings=Agda,ABAP,ActionScript 2.0,REXX,Ruby,Quake Script,R Script,Sieve,Tcl/Tk,Scheme,sed,Pig,Pike,PHP (HTML),PHP/PHP,q,QML,Puppet,Python,XML (Debug),xslt,Wesnoth Markup Language,XML,ABC,Alerts,XUL,YAML,Textile,Troff Mandoc,SiSU,Texinfo,vCard\\, vCalendar\\, iCalendar,VRML,TT2,txt2tags,reStructuredText,Rich Text Format,RELAX NG,RelaxNG-Compact,SCSS,SGML,Roff,Ruby/Rails/RHTML,MediaWiki,Metapost/Metafont,Mako,Markdown,PostScript Printer Description,R Markdown,Pango,PostScript,RenderMan RIB,RPM Spec,POV-Ray,QMake,B-Method,dot,Valgrind Suppression,Ansys,LilyPond,M3U,Jam,JavaScript/PHP,Music Publisher,PGN,Makefile,Modelines,GDB Backtrace,Git Rebase,Dockerfile,Email,Hunspell Thesaurus File,Hunspell Thesaurus Index File,Hunspell Affix File,Hunspell Dictionary File,CMake,CSS/PHP,Alerts_indent,ChangeLog,Debian Control,Diff,CUE Sheet,Debian Changelog,4GL-PER,LDIF,x.org Configuration,4GL,SQL (MySQL),SQL (Oracle),progress,SQL,Kconfig,mergetag text,Gitolite,INI Files,Varnish Test Case language,WINE Config,Nagios,Varnish Configuration Language,.desktop,Apache Configuration,Motorola DSP56k,PicAsm,fstab,Git Ignore,Asterisk,Cisco,AVR Assembler,GNU Assembler,None,Asm6502,MIPS Assembler,Motorola 68k (VASM/Devpac),Intel x86 (FASM),Intel x86 (NASM),Jira,JSON,HTML,Javadoc,LESSCSS,MAB-DB,JSP,LaTeX,DTD,FTL,Doxygen,DoxygenLua,Haml,Hamlet,GlossTex,GNU Gettext,BibTeX,CleanCSS,ASN.1,ASP,CSS,Django HTML Template,ColdFusion,ConTeXt,Spice,SystemC,SQL (PostgreSQL),AHDL,Verilog,VHDL,SystemVerilog,Vera,Lex/Flex,Literate Curry,KBasic,KDev-PG[-Qt] Grammar,LPC,Modelica,Literate Haskell,Logtalk,IDL,ILERPG,Haskell,Haxe,Java,Julia,Inform,ISO C++,FreeBASIC,FSharp,Eiffel,Fortran,GNU M4,Go,GCCExtensions,GLSL,Common Lisp,Component-Pascal,Clipper,Clojure,D,E Language,Crack,Curry,Yacc/Bison,Zonnon,Scala,SML,RSI IDL,Sather,Vala,xHarbour,Stata,TADS 3,OpenCL,Pascal,OORS,OPAL,PureBasic,RapidQ,Prolog,Protobuf,Nemerle,nesC,Modula-2,MonoBasic,Objective-C,Objective-C++,noweb,Objective Caml,LSL,Lua,JavaScript,k,MS-DOS Batch,Perl,Mason,MEL,Erlang,Euphoria,CoffeeScript,CubeScript,Gnuplot,J,ferite,GNU Linker Script,4DOS BatchToMemory,AMPLE,TI Basic,yacas,Bash,Chicken,AutoHotKey,AWK,Mathematica,Matlab,GAP,GDL,Replicode,scilab,Maxima,Octave,Boo,C,ANS-Forth94,ANSI C89,Cg,CGiS,C#,C++,Velocity,Zsh,Tcsh,UnrealScript,Ada
+highlightings=Scheme,sed,Sieve,Tcl/Tk,Quake Script,R Script,REXX,Ruby,Puppet,Python,q,QML,PHP (HTML),PHP/PHP,Pig,Pike,Literate Haskell,Logtalk,LPC,Modelica,KBasic,KDev-PG[-Qt] Grammar,Lex/Flex,Literate Curry,Inform,ISO C++,Java,Julia,Haskell,Haxe,IDL,ILERPG,GCCExtensions,GLSL,GNU M4,Go,Eiffel,Fortran,FreeBASIC,FSharp,Crack,Curry,D,E Language,Clipper,Clojure,Common Lisp,Component-Pascal,Yacc/Bison,Zonnon,Stata,TADS 3,Vala,xHarbour,RSI IDL,Sather,Scala,SML,Prolog,Protobuf,PureBasic,RapidQ,OORS,OPAL,OpenCL,Pascal,noweb,Objective Caml,Objective-C,Objective-C++,Modula-2,MonoBasic,Nemerle,nesC,progress,SQL,SQL (MySQL),SQL (Oracle),x.org Configuration,4GL,4GL-PER,LDIF,Nagios,Varnish Configuration Language,Varnish Test Case language,WINE Config,Gitolite,INI Files,Kconfig,mergetag text,Asterisk,Cisco,fstab,Git Ignore,Motorola DSP56k,PicAsm,.desktop,Apache Configuration,Intel x86 (FASM),Intel x86 (NASM),MIPS Assembler,Motorola 68k (VASM/Devpac),None,Asm6502,AVR Assembler,GNU Assembler,JSP,LaTeX,LESSCSS,MAB-DB,HTML,Javadoc,Jira,JSON,GlossTex,GNU Gettext,Haml,Hamlet,Doxygen,DoxygenLua,DTD,FTL,ColdFusion,ConTeXt,CSS,Django HTML Template,ASN.1,ASP,BibTeX,CleanCSS,SystemVerilog,Vera,Verilog,VHDL,SQL (PostgreSQL),AHDL,Spice,SystemC,XUL,YAML,ABC,Alerts,Wesnoth Markup Language,XML,XML (Debug),xslt,TT2,txt2tags,vCard\\, vCalendar\\, iCalendar,VRML,SiSU,Texinfo,Textile,Troff Mandoc,Roff,Ruby/Rails/RHTML,SCSS,SGML,RELAX NG,RelaxNG-Compact,reStructuredText,Rich Text Format,Pango,PostScript,PostScript Printer Description,R Markdown,Mako,Markdown,MediaWiki,Metapost/Metafont,Valgrind Suppression,Ansys,B-Method,dot,POV-Ray,QMake,RenderMan RIB,RPM Spec,Makefile,Modelines,Music Publisher,PGN,Jam,JavaScript/PHP,LilyPond,M3U,Hunspell Affix File,Hunspell Dictionary File,Hunspell Thesaurus File,Hunspell Thesaurus Index File,Dockerfile,Email,GDB Backtrace,Git Rebase,CUE Sheet,Debian Changelog,Debian Control,Diff,Alerts_indent,ChangeLog,CMake,CSS/PHP,Mason,MEL,MS-DOS Batch,Perl,JavaScript,k,LSL,Lua,ferite,GNU Linker Script,Gnuplot,J,CoffeeScript,CubeScript,Erlang,Euphoria,AutoHotKey,AWK,Bash,Chicken,TI Basic,yacas,4DOS BatchToMemory,AMPLE,Maxima,Octave,Replicode,scilab,GAP,GDL,Mathematica,Matlab,C#,C++,Cg,CGiS,ANS-Forth94,ANSI C89,Boo,C,ABAP,ActionScript 2.0,Ada,Agda,Tcsh,UnrealScript,Velocity,Zsh
 schema=xoria256
