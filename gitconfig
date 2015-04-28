@@ -11,8 +11,9 @@
 	autocorrect = 1
 
 [alias]
-  down = pull --rebase --stat
   a = commit -a
+  down = pull --rebase --stat
+  fork = !git fetch upstream && git merge upstream/$1
 
 [push]
   default = matching
@@ -36,4 +37,6 @@
 [url "git://anongit.kde.org/"]
   insteadOf = kde:
 [url "ssh://git@git.kde.org/"]
+  pushInsteadOf = kde:
+[url "git@git.kde.org:"]
   pushInsteadOf = kde:
