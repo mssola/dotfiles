@@ -1,5 +1,6 @@
 #!/bin/bash
 
+PROJECTS="$HOME/Projects"
 
 # If something goes wrong, get the f*ck out.
 set -e
@@ -36,8 +37,8 @@ vim +PluginInstall +qall
 # there are two configs: the global one and the KDE one. The KDE one assumes
 # that all your KDE projects are stored in the `$HOME/Projects/kde` directory.
 # The global one is installed in the $HOME directory.
-mkdir -p $HOME/Projects/kde
-cp kte/kde.kateconfig $HOME/Projects/kde/.kateconfig
+mkdir -p $PROJECTS/kde
+cp kte/kde.kateconfig $PROJECTS/kde/.kateconfig
 cp kte/global.kateconfig $HOME/.kateconfig
 
 # Download and install the g utility
