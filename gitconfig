@@ -8,12 +8,13 @@
   whitespace = trailing-space,space-before-tab
 
 [help]
-	autocorrect = 1
+  autocorrect = 1
 
 [alias]
   a = commit -a
   down = pull --rebase --stat
   fork = !git fetch upstream && git merge upstream/$1
+  vader = push --force
 
 [push]
   default = matching
