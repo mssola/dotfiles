@@ -62,3 +62,6 @@ rm -rf review
 git clone https://github.com/mssola/review
 cd review
 ./install.sh
+
+# Install the completion file for the `docker` command.
+wget https://raw.githubusercontent.com/docker/docker/master/contrib/completion/bash/docker -O $HOME/.dockercompletion.sh
