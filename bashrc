@@ -90,6 +90,11 @@ if [ -f $HOME/.tdcompletion.sh ]; then
     source $HOME/.tdcompletion.sh
 fi
 
+# Complete the `docker` command if possible.
+if [ -f $HOME/.dockercompletion.sh ]; then
+    source $HOME/.dockercompletion.sh
+fi
+
 # Add the `scripts` dir to the path if possible. See:
 # https://github.com/mssola/scripts.
 if [ -d $HOME/.scripts ]; then
@@ -108,4 +113,4 @@ function gi() {
 
 # Finally get RVM straight.
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
+export PATH="$PATH:$HOME/.rvm/bin"
