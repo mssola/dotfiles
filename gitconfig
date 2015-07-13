@@ -13,7 +13,6 @@
 [alias]
   a = commit -a
   down = pull --rebase --stat
-  fork = !git fetch upstream && git merge upstream/$1
   vader = push --force
 
 [push]
