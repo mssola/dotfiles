@@ -49,6 +49,13 @@ cd g
 cp g.sh $HOME/.g.sh
 cp gcompletion.sh $HOME/.gcompletion.sh
 
+# Install my own custom scripts.
+cd /tmp
+rm -rf scripts
+git clone https://github.com/mssola/scripts
+cd scripts
+./install.sh
+
 # Download and install the review utility
 cat <<HERE
 
