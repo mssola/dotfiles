@@ -47,8 +47,8 @@ export KDEDIRS=$KDEDIR
 export KF5_SRC=$HOME/Projects/kde/kf5
 
 # Export the standard paths to include KDE
-export PATH=$KDEDIR/bin:/usr/local/heroku/bin:$PATH
-export LD_LIBRARY_PATH=$KDEDIR/lib:$LD_LIBRARY_PATH
+export PATH=/usr/local/heroku/bin:$PATH:$KDEDIR/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDEDIR/lib
 export XDG_DATA_DIRS=$XDG_DATA_DIRS:$KDEDIR/share
 
 # Export the CMake paths so it searches for KDE in the right places
