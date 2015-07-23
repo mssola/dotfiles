@@ -75,7 +75,7 @@ export CXX=/usr/bin/clang++
 export GOROOT_BOOTSTRAP=/opt/go1.4
 export GOROOT=$HOME/Projects/go
 export GOPATH=$HOME/Projects/golang
-export PATH=$HOME/Projects/golang/bin:$HOME/Projects/go/bin:$PATH
+export PATH=$GOROOT/bin:$PATH:$GOPATH/bin
 
 # The Review utility. See: https://github.com/mssola/review
 export PATH=/opt/review:$PATH
