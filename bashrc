@@ -47,7 +47,9 @@ __hg_branch() {
 PS1='\u:\w$(__hg_branch)$(__git_ps1 "\[\033[0;32m\]@\[\033[1;32m\]%s\[\033[0m\]\]") $ '
 
 # Rake completion
-complete -C $HOME/.rake_completion -o default rake
+if [ -f $HOME/.rake_completion ]; then
+    complete -C $HOME/.rake_completion -o default rake
+fi
 
 # KDE Paths
 export KDEDIR=$HOME/.kde
@@ -104,16 +106,6 @@ source_maybe $HOME/.dockercompletion.sh
 if [ -d $HOME/.scripts ]; then
     export PATH=$HOME/.scripts:$PATH
 fi
-
-# Generates a PDF version of the manual of the given command.
-manpdf() {
-  man -t "$1" | ps2pdf - "$1.pdf"
-}
-
-# Generate the contents for a .gitignore file.
-function gi() {
-  curl http://www.gitignore.io/api/$@
-}
 
 # Finally get RVM straight.
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
