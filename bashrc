@@ -1,3 +1,4 @@
+
 # Set LC_ALL always to UTF-8
 export LC_ALL=en_US.UTF-8
 
@@ -22,12 +23,19 @@ TERM=xterm-256color
 export LESS="FSRX"
 export PAGER=less
 
+# Sources the given file if it really exists.
+source_maybe() {
+    if [ -f $1 ]; then
+        source $1
+    fi
+}
+
 # git thingies.
-source $HOME/.gitcompletion.sh
+source_maybe $HOME/.gitcompletion.sh
 alias gti=git
 
 # hg thingies.
-source $HOME/.hgcompletion.sh
+source_maybe $HOME/.hgcompletion.sh
 __hg_branch() {
   if [ -d .hg ]; then
     local b=`cat .hg/branch`
@@ -79,21 +87,17 @@ export PATH=$GOROOT/bin:$PATH:$GOPATH/bin
 
 # The Review utility. See: https://github.com/mssola/review
 export PATH=/opt/review:$PATH
-source $HOME/.review_completion.sh
+source_maybe $HOME/.review_completion.sh
 
 # The g utility. See: https://github.com/mssola/g
-source $HOME/.g.sh
-source $HOME/.gcompletion.sh
+source_maybe $HOME/.g.sh
+source_maybe $HOME/.gcompletion.sh
 
 # The td utility. See: https://github.com/mssola/td
-if [ -f $HOME/.tdcompletion.sh ]; then
-    source $HOME/.tdcompletion.sh
-fi
+source_maybe $HOME/.tdcompletion.sh
 
 # Complete the `docker` command if possible.
-if [ -f $HOME/.dockercompletion.sh ]; then
-    source $HOME/.dockercompletion.sh
-fi
+source_maybe $HOME/.dockercompletion.sh
 
 # Add the `scripts` dir to the path if possible. See:
 # https://github.com/mssola/scripts.
@@ -102,7 +106,7 @@ if [ -d $HOME/.scripts ]; then
 fi
 
 # Generates a PDF version of the manual of the given command.
-function manpdf() {
+manpdf() {
   man -t "$1" | ps2pdf - "$1.pdf"
 }
 
