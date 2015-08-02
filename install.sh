@@ -22,6 +22,7 @@ cp global.gitignore $HOME/.gitignore
 cp hgrc $HOME/.hgrc
 cp hgcompletion.sh $HOME/.hgcompletion.sh
 cp global.hgignore $HOME/.hgignore
+cp tmux.conf $HOME/.tmux.conf
 cp rake_completion $HOME/.rake_completion
 cp rvmrc $HOME/.rvmrc
 chmod +x $HOME/.rake_completion
