@@ -155,3 +155,6 @@ inoremap <C-z> <nop>
 " misstype <S-J>.
 nnoremap K <nop>
 
+" Do nothing for <c-o>. I don't use this feature and it confuses me whenever I
+" misstype <c-p> (CtrlP plugin).
+nnoremap <c-o> <nop>
