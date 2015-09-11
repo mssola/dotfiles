@@ -1,5 +1,5 @@
 [user]
-  name = Miquel Sabaté
+  name = Miquel Sabaté Solà
   email = mikisabate@gmail.com
 
 [core]
@@ -11,9 +11,12 @@
   autocorrect = 1
 
 [alias]
-  a = commit -a
+  a = commit -a -s
   down = pull --rebase --stat
   vader = push --force
+
+[format]
+  signoff = true
 
 [push]
   default = matching
@@ -30,9 +33,9 @@
   pushInsteadOf = mssola:
 
 [url "git://github.com/"]
-    insteadOf = github:
+  insteadOf = github:
 [url "git@github.com"]
-    pushInsteadOf = github:
+  pushInsteadOf = github:
 
 [url "git://anongit.kde.org/"]
   insteadOf = kde:
