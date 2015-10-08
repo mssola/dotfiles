@@ -1,4 +1,3 @@
-
 " Indentation rules for different languages.
 
 " Some rules regarding indentation on different languages.
@@ -20,4 +19,3 @@ autocmd BufWritePre * :%s/\s\+$//e
 if filereadable(".lvimrc")
   so .lvimrc
 endif
-

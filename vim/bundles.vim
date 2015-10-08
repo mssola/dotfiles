@@ -1,4 +1,3 @@
-
 " Vundle setup
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -25,3 +24,8 @@ let g:ctrlp_match_window = 'max:40'
 " Tell vim-go to use goimports on save.
 let g:go_fmt_command = "goimports"
 
+" Execute go-lint on save.
+if isdirectory($GOPATH."/src/github.com/golang/lint/misc/vim")
+  set rtp+=$GOPATH/src/github.com/golang/lint/misc/vim
+  autocmd BufWritePost,FileWritePost *.go execute 'Lint' | cwindow
+endif
