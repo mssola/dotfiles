@@ -40,6 +40,9 @@ set noswapfile
 " this by calling vim --version and see if you have +clipboard.
 set clipboard=unnamed
 
+" Paste toggle
+set pastetoggle=<f2>
+
 ""
 " Colorscheme
 
