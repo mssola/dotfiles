@@ -96,6 +96,16 @@ source_maybe $HOME/.g.sh
 source_maybe $HOME/.gcompletion.sh
 
 # The td utility. See: https://github.com/mssola/td
+td() {
+    # TODO: use a proper certificate on the server...
+    docker run -it \
+        -v $HOME/.td:/root/.td \
+        -v $HOME/.vimrc:/root/.vimrc:ro \
+        -v $HOME/.vim:/root/.vim:ro \
+        -e TERM=xterm-256color \
+        -e EDITOR=vim  \
+        mssola/td:latest --tlsverify=false "$@"
+}
 source_maybe $HOME/.tdcompletion.sh
 
 # Complete the `docker` command if possible.
