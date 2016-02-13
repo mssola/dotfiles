@@ -104,6 +104,7 @@ td() {
         -v $HOME/.vim:/root/.vim:ro \
         -e TERM=xterm-256color \
         -e EDITOR=vim  \
+        --detach-keys "ctrl-a,a" \
         mssola/td:latest --tlsverify=false "$@"
 }
 source_maybe $HOME/.tdcompletion.sh
