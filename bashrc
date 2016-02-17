@@ -122,3 +122,8 @@ fi
 # Finally get RVM straight.
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 export PATH="$PATH:$HOME/.rvm/bin"
+
+# Some other misc. alias.
+alias iosc="osc -A https://api.suse.de"
+alias compose="docker-compose"
+alias machine="docker-machine"
