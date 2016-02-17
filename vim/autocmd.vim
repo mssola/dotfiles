@@ -13,6 +13,7 @@ autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 
 " Clean up trailing whitespaces on save.
 autocmd BufWritePre * :%s/\s\+$//e
+au BufRead,BufNewFile Vagrantfile set filetype=ruby
 
 " If there is a .lvimrc, source it. Note that this works best by calling vim on
 " the root of your project.
