@@ -9,6 +9,9 @@ Plugin 'tpope/vim-surround.git'
 Plugin 'kien/ctrlp.vim.git'
 Plugin 'derekwyatt/vim-scala.git'
 Plugin 'fatih/vim-go'
+Plugin 'Glench/Vim-Jinja2-Syntax'
+Plugin 'saltstack/salt-vim'
+Plugin 'b4b4r07/vim-hcl'
 
 call vundle#end()
 
