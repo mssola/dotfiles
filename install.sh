@@ -34,6 +34,10 @@ cp -rf vim $HOME/.vim
 cp vimrc $HOME/.vimrc
 vim +PluginInstall +qall
 
+# Wipe out weechat config and install it again
+rm -r $HOME/.weechat
+cp -r weechat $HOME/.weechat
+
 # Update the style for KTE users (KWrite, Kate, KDevelop & Kile). Note that
 # there are two configs: the global one and the KDE one. The KDE one assumes
 # that all your KDE projects are stored in the `$HOME/Projects/kde` directory.
