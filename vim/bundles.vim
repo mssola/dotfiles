@@ -12,6 +12,7 @@ Plugin 'fatih/vim-go'
 Plugin 'Glench/Vim-Jinja2-Syntax'
 Plugin 'saltstack/salt-vim'
 Plugin 'b4b4r07/vim-hcl'
+Plugin 'fatih/vim-hclfmt'
 
 call vundle#end()
 
