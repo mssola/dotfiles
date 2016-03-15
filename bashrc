@@ -44,7 +44,7 @@ __hg_branch() {
 }
 
 # Setting up PS1.
-PS1='\u:\w$(__hg_branch)$(__git_ps1 "\[\033[0;32m\]@\[\033[1;32m\]%s\[\033[0m\]\]") $ '
+PS1='\u:\w$(__hg_branch)$(__git_ps1 "\[\033[0;32m\]@%s\[\033[0m\]\]") $ '
 
 # Rake completion
 if [ -f $HOME/.rake_completion ]; then
