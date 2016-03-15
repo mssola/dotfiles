@@ -75,11 +75,9 @@ alias frameworks='source $KF5_SRC/kf5.sh; eval `dbus-launch`; kdeinit5; echo'
 # Alias bundle exec
 alias be='bundle exec'
 
-# Set the CC and CXX variables to clang, but allow a fallback shortcut, since
-# some projects do not support clang yet (e.g. HHVM).
-alias GCC='CC=/usr/bin/gcc CXX=/usr/bin/g++'
-export CC=/usr/bin/clang
-export CXX=/usr/bin/clang++
+# After experimenting with GCC & Clang, I'm sticking with GCC.
+export CC=/usr/bin/gcc
+export CXX=/usr/bin/g++
 
 # Go things
 export GOROOT_BOOTSTRAP=/opt/go1.4
@@ -125,5 +123,3 @@ export PATH="$PATH:$HOME/.rvm/bin"
 
 # Some other misc. alias.
 alias iosc="osc -A https://api.suse.de"
-alias compose="docker-compose"
-alias machine="docker-machine"
