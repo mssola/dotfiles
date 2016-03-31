@@ -6,9 +6,13 @@
   editor = vim
   excludesfile = ~/.gitignore
   whitespace = trailing-space,space-before-tab
+  abbrev = 12
 
 [help]
   autocorrect = 1
+
+[http]
+  sslVerify = true
 
 [alias]
   a = commit -a -s
