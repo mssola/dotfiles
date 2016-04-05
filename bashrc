@@ -104,7 +104,7 @@ td() {
         -e EDITOR=vim  \
         --rm \
         --detach-keys "ctrl-a,a" \
-        mssola/td:latest --tlsverify=false "$@"
+        mssola/td:latest "$@"
 }
 source_maybe $HOME/.tdcompletion.sh
 
