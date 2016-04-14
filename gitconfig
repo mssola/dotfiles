@@ -32,6 +32,9 @@
 [color]
   ui = true
 
+[merge]
+  tool = vimdiff
+
 [url "git://github.com/mssola/"]
   insteadOf = mssola:
 [url "git@github.com:mssola/"]
