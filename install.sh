@@ -25,6 +25,7 @@ cp global.hgignore $HOME/.hgignore
 cp tmux.conf $HOME/.tmux.conf
 cp rake_completion $HOME/.rake_completion
 cp rvmrc $HOME/.rvmrc
+cp gnupg/gpg.conf $HOME/.gnupg/gpg.conf
 chmod +x $HOME/.rake_completion
 
 # Wipe out the current vim config and replace it with this one.
