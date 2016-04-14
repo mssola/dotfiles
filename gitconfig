@@ -1,6 +1,7 @@
 [user]
   name = Miquel Sabaté Solà
-  email = mikisabate@gmail.com
+  email = msabate@suse.com
+  signingkey = 0x96BE8C6FD89D6565
 
 [core]
   editor = vim
