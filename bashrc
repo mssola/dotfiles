@@ -95,7 +95,14 @@ source_maybe $HOME/.gcompletion.sh
 
 # The td utility. See: https://github.com/mssola/td
 td() {
-    # TODO: use a proper certificate on the server...
+    # If we are editing, pick the default layout. Otherwise, just execute the
+    # given arguments.
+    if [ -z "$1" ]; then
+        args="--file /root/.td/auto.txt"
+    else
+        args="$@"
+    fi
+
     docker run -it \
         -v $HOME/.td:/root/.td \
         -v $HOME/.vimrc:/root/.vimrc:ro \
@@ -104,7 +111,7 @@ td() {
         -e EDITOR=vim  \
         --rm \
         --detach-keys "ctrl-a,a" \
-        mssola/td:latest "$@"
+        mssola/td:latest "$args"
 }
 source_maybe $HOME/.tdcompletion.sh
 
