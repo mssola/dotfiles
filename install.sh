@@ -28,6 +28,20 @@ cp rvmrc $HOME/.rvmrc
 cp gnupg/gpg.conf $HOME/.gnupg/gpg.conf
 chmod +x $HOME/.rake_completion
 
+# i3 and X stuff. An incomplete list of openSUSE packages that I need in order
+# to have a good i3 environment is: i3 xlockmore dunst i3status nitrogen scrot
+# breeze-icons konsole.
+mkdir -p $HOME/.config/dunst $HOME/.i3
+cp i3/config $HOME/.i3/config
+cp i3status.conf $HOME/.i3status.conf
+cp inputrc $HOME/.inputrc
+cp Xresources $HOME/.Xresources
+cp -r fonts $HOME/.fonts
+cp config/dunst/dunstrc $HOME/config/dunst/dunstrc
+
+# Make Caps Lock an extra control.
+sudo localectl set-x11-keymap es "" cat, 'ctrl:nocaps'
+
 # Wipe out the current vim config and replace it with this one.
 rm -rf $HOME/.vim
 rm -rf $HOME/.vimrc
