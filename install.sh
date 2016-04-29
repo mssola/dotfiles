@@ -40,7 +40,8 @@ cp -r fonts $HOME/.fonts
 cp config/dunst/dunstrc $HOME/config/dunst/dunstrc
 
 # Make Caps Lock an extra control.
-sudo localectl set-x11-keymap es "" cat, 'ctrl:nocaps'
+# sudo localectl set-x11-keymap es "" cat, 'ctrl:nocaps'
+sudo localectl set-x11-keymap us "" us, 'ctrl:nocaps'
 
 # Wipe out the current vim config and replace it with this one.
 rm -rf $HOME/.vim
