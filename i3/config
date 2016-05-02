@@ -201,10 +201,29 @@ bar {
   }
 }
 
+# NOTE: If you are using a laptop, use this bar config.
+#bar {
+#position top
+#status_command i3status
+#workspace_buttons yes
+#tray_output eDP1
+#
+#colors {
+#separator #666666
+#background #333333
+#statusline #bbbbbb
+#focused_workspace #888888 #dddddd #222222
+#active_workspace #333333 #555555 #bbbbbb
+#inactive_workspace #333333 #555555 #bbbbbb
+#urgent_workspace #2f343a #900000 #ffffff
+#}
+#}
+
 # Start dunst notification manager at boot
 exec --no-startup-id dunst
 
 # Proper configuration of multi monitor
+# NOTE: remove this if you are using a laptop.
 exec --no-startup-id xrandr --output DP-1 --right-of DVI-I-1
 
 # Disable system bell
@@ -213,6 +232,10 @@ exec --no-startup-id xset b off
 # Disable screensaver and power saving feature: they may crash on Tumbleweed.
 exec --no-startup-id xset -dpms
 exec --no-startup-id xset s off
+
+# Network manager
+# NOTE: uncomment this if you are in a laptop
+# exec --no-startup-id nm-applet
 
 # Wallpaper
 exec --no-startup-id nitrogen --restore

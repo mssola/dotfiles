@@ -30,7 +30,7 @@ chmod +x $HOME/.rake_completion
 
 # i3 and X stuff. An incomplete list of openSUSE packages that I need in order
 # to have a good i3 environment is: i3 xlockmore dunst i3status nitrogen scrot
-# breeze-icons konsole gpicview (maybe gwenview? not sure) okular.
+# breeze-icons konsole gpicview (maybe gwenview? not sure) okular dmenu.
 mkdir -p $HOME/.config/dunst $HOME/.i3
 cp i3/config $HOME/.i3/config
 cp i3status.conf $HOME/.i3status.conf
