@@ -30,14 +30,14 @@ chmod +x $HOME/.rake_completion
 
 # i3 and X stuff. An incomplete list of openSUSE packages that I need in order
 # to have a good i3 environment is: i3 xlockmore dunst i3status nitrogen scrot
-# breeze-icons konsole gpicview (maybe gwenview? not sure) okular dmenu.
+# breeze5-cursors konsole gpicview okular dmenu weechat.
 mkdir -p $HOME/.config/dunst $HOME/.i3
 cp i3/config $HOME/.i3/config
 cp i3status.conf $HOME/.i3status.conf
 cp inputrc $HOME/.inputrc
 cp Xresources $HOME/.Xresources
 cp -r fonts $HOME/.fonts
-cp config/dunst/dunstrc $HOME/config/dunst/dunstrc
+cp config/dunst/dunstrc $HOME/.config/dunst/dunstrc
 
 # Make Caps Lock an extra control.
 # sudo localectl set-x11-keymap es "" cat, 'ctrl:nocaps'
@@ -51,7 +51,7 @@ cp vimrc $HOME/.vimrc
 vim +PluginInstall +qall
 
 # Wipe out weechat config and install it again
-rm -r $HOME/.weechat
+rm -rf $HOME/.weechat
 cp -r weechat $HOME/.weechat
 
 # Update the style for KTE users (KWrite, Kate, KDevelop & Kile). Note that
