@@ -10,3 +10,5 @@ tmp
 .git
 .hg
 .svn
+build
+node_modules
