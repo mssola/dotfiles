@@ -19,6 +19,7 @@ cp gemrc $HOME/.gemrc
 cp gitcompletion.sh $HOME/.gitcompletion.sh
 cp gitconfig $HOME/.gitconfig
 cp global.gitignore $HOME/.gitignore
+cp agignore $HOME/.agignore
 cp hgrc $HOME/.hgrc
 cp hgcompletion.sh $HOME/.hgcompletion.sh
 cp global.hgignore $HOME/.hgignore
@@ -30,7 +31,7 @@ chmod +x $HOME/.rake_completion
 
 # i3 and X stuff. An incomplete list of openSUSE packages that I need in order
 # to have a good i3 environment is: i3 xlockmore dunst i3status nitrogen scrot
-# breeze5-cursors konsole gpicview okular dmenu weechat.
+# breeze5-cursors konsole gpicview okular dmenu weechat the_silver_searcher.
 mkdir -p $HOME/.config/dunst $HOME/.i3
 cp i3/config $HOME/.i3/config
 cp i3status.conf $HOME/.i3status.conf

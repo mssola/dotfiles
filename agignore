@@ -1,0 +1,12 @@
+.yardoc
+public/images
+public/system
+data
+log
+tmp
+*.exe
+*.so
+*.dat
+.git
+.hg
+.svn

@@ -133,3 +133,4 @@ export PATH="$PATH:$HOME/.rvm/bin"
 
 # Some other misc. alias.
 alias iosc="osc -A https://api.suse.de"
+alias ag='ag --nocolor --path-to-agignore ~/.agignore'

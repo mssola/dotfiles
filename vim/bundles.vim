@@ -25,6 +25,9 @@ map <leader>s ysiw
 " Let CtrlP's window to be taller than its default configuration.
 let g:ctrlp_match_window = 'max:40'
 
+" Hi-yo Silver!
+let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+
 " Tell vim-go to use goimports on save.
 let g:go_fmt_command = "goimports"
 
