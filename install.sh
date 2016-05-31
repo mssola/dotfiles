@@ -29,6 +29,10 @@ cp rvmrc $HOME/.rvmrc
 cp gnupg/gpg.conf $HOME/.gnupg/gpg.conf
 chmod +x $HOME/.rake_completion
 
+# Some random scripts
+cp -r bin $HOME/bin
+rm -r $HOME/bin/test
+
 # i3 and X stuff. An incomplete list of openSUSE packages that I need in order
 # to have a good i3 environment is: i3 xlockmore dunst i3status nitrogen scrot
 # breeze5-cursors konsole gpicview okular dmenu weechat the_silver_searcher.

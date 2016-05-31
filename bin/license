@@ -1,0 +1,134 @@
+#!/usr/bin/perl -w
+# Copyright (C) 2014-2016 Miquel Sabaté Solà <mikisabate@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Yay! A new year! Oops, wait, now I have to update the dates from all my stuff
+# right? Well, this script solves this very specific case. It basically updates
+# all the copyright notices so they match the new year. So, for example
+# (assuming that the current year is 2015):
+#
+#   Copyright (c) John Smith            -> Copyright (c) 2015 John Smith
+#   Copyright (c) 2014 John Smith       -> Copyright (c) 2014-2015 John Smith
+#   Copyright (c) 2009-2014 John Smith  -> Copyright (c) 2009-2015 John Smith
+#
+# The date to be picked is set in the `$current_year` configurable value. This
+# script will apply this to all the files as given as command line arguments.
+# So, for example:
+#
+#   $ ls | xargs license
+#
+# The line above will update the license notice for all the files in the
+# current directory. By default, if you don't pass any arguments, it will do
+# the following:
+#
+#   $ git grep -l 'Copyright' | xargs license
+#
+# This default behavior can be changed through the `$default_cmd` configurable
+# value.
+#
+# Some notes:
+#
+#  - This script will respect the (c) symbol, accepting the following formats:
+#    (c), (C) and &copy; . More on the configurable value `$re`.
+#  - This script will leave intact anything that comes before the (c) symbol
+#    and anything that comes after the range of years.
+#  - This script needs an author, because we don't want to modify the ownership
+#    from other people. More on the configurable value `$name`.
+#  - Don't blindly trust this guy, since it might be quite destructive if
+#    something goes wrong. So I would check the results (e.g. `git status` and
+#    then `git diff`).
+
+use strict;
+
+##
+# Config values. You will have to update for sure the `$name` (unless you're
+# also called Miquel :P) and the `$current_year`.
+
+# The author name. We don't want to mess with copyright notices from other
+# people. Note that just setting the name might be a bit weak, so it might be
+# interesting to add last names, email, etc. (that is, anything that you
+# usually put after the range of years).
+my $name = 'Miquel';
+
+# The current year. I previously thought to be clever and set it to `date +%Y`,
+# but then I decided that I didn't want to be clever here to avoid problems and
+# be more flexible.
+my $current_year = '2015';
+
+# The command that feeds this command if no command line argument was given.
+my $default_cmd = "git grep -l 'Copyright' | xargs";
+
+# The regular expression that matches copyright notices. I wouldn't change it,
+# because if you do, you probably would have to change the `update_file`
+# subroutine.
+my $re = qr/
+    ^(.*)                   # Save all the previous stuff.
+    Copyright               # Our regexp starts with the `Copyright` word.
+    (\ \([Cc]\)|\ &copy;)?  # An optional (c) or markdown symbol.
+    (\ (\d{4})(-\d{4})?)?   # An optional range of dates.
+    \ $name                 # The author name. This word confirms the match.
+    (.*)$                   # Save the rest of the line.
+/x;
+
+
+sub update_file
+{
+    my ($file) = @_;
+
+    open my $in, '<', $file or die "Can't open file $file";
+    my $perm = (stat $in)[2] & 07777;
+    open my $out, '>', "$file.new" or die "Can't open file $file.new";
+
+    while (<$in>) {
+        my $line = $_;
+        if ($line =~ $re) {
+            # Get the values from the regular expression safely.
+            my $prev = ($1) ? $1 : '';
+            my $year = ($3) ? $3 : $current_year;
+            my $c = ($2) ? $2 : '(C)';
+            my $next = ($6) ? $6 : '';
+            $c =~ s/^\s//;
+            $year =~ s/^\s//;
+
+            # Get the range of years straight.
+            my @years = split('-', $year);
+            if ($years[0] ne $current_year) {
+                $year = "$years[0]-$current_year";
+            }
+
+            # Behold! Our majestic line!
+            $line = "${prev}Copyright $c $year $name${next}\n";
+        }
+        print $out "$line";
+    }
+    close($in);
+    close($out);
+
+    # And move the file while preserving the old permission bits.
+    `mv $file.new $file`;
+    open $in, '<', $file or die "Can't open file $file";
+    chmod($perm | 0600, $in);
+    close($in);
+}
+
+
+##
+# Main: get the files from the command line and update them.
+
+my @files = (@ARGV > 0) ? @ARGV : split(' ', `$default_cmd`);
+foreach my $f (@files) {
+   update_file($f);
+}
+

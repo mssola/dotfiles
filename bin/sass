@@ -1,0 +1,78 @@
+#!/bin/sh
+# Copyright (C) 2014-2016 Miquel Sabaté Solà <mikisabate@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Launch a background job that deals with SASS/SCSS.
+#
+# If no arguments were given, then it will try to kill a previous instance
+# of the background job and launch another one. You can prevent the
+# re-launching by passing the "stop" argument. This way, this script will
+# efectively kill the currently running process and quit. Any other argument
+# will be ignored.
+#
+# Therefore, the usage of this script is as follows:
+#
+#   $ sass [stop]
+#
+
+
+##
+# Config values.
+#
+# NOTE: path values should *not* start and/or end with a slash.
+
+# The base directory.
+dir="$( cd "$( dirname "$0" )" && pwd )/.."
+
+# The absolute path to the directory where we can store temporary files. You
+# don't really want to use this default since it can easily clash with other
+# projects ;)
+tmp="/tmp"
+
+# The absolute path to the file that will store the PID of the currently
+# running background job.
+pidfile="$tmp/assets.pid"
+
+# The absolute path to the SASS log.
+csslog="$tmp/sass.log"
+
+# The absolute path of the directory containing the SASS files.
+cssdir="$dir/public/stylesheets"
+
+
+##
+# And here starts the script itself.
+
+
+# Get pidfile.
+mkdir -p $tmp
+touch $pidfile
+
+# Kill off old processes
+while read pid; do
+  kill $pid > /dev/null 2>&1;
+done < $pidfile
+
+# Truncate the PID file
+> $pidfile
+
+# If the user just wanted to stop all old processes, then exit here.
+if [[ $1 == "stop" ]]; then
+  exit 1
+fi
+
+# SASS
+sass --watch "$cssdir" > $csslog 2>&1 &
+echo $! >> $pidfile

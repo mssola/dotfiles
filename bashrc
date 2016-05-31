@@ -121,10 +121,10 @@ source_maybe $HOME/.tdcompletion.sh
 # Complete the `docker` command if possible.
 source_maybe $HOME/.dockercompletion.sh
 
-# Add the `scripts` dir to the path if possible. See:
-# https://github.com/mssola/scripts.
-if [ -d $HOME/.scripts ]; then
-    export PATH=$HOME/.scripts:$PATH
+# Add the `bin` dir to the path if possible. See:
+# https://github.com/mssola/dotfiles.
+if [ -d $HOME/bin ]; then
+    export PATH=$HOME/bin:$PATH
 fi
 
 # Finally get RVM straight.
