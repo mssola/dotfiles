@@ -161,6 +161,9 @@ bindsym $mod+Shift+t [class="Tor"] focus
 # Scrot
 bindsym Print exec scrot -u
 
+# Toggle keyboard layout US <-> CAT
+bindsym $mod+F1 exec ~/bin/toggle-keyboard-layout.sh
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available). This setup has DP-1 as the monitor on the right,
 # and DVI-I-1 as the monitor on the left. The tray will only be shown to the
