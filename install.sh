@@ -31,7 +31,7 @@ chmod +x $HOME/.rake_completion
 
 # Some random scripts
 cp -r bin $HOME/bin
-rm -r $HOME/bin/test
+rm -rf $HOME/bin/test
 
 # i3 and X stuff. An incomplete list of openSUSE packages that I need in order
 # to have a good i3 environment is: i3 xlockmore dunst i3status nitrogen scrot
@@ -74,13 +74,6 @@ git clone https://github.com/mssola/g
 cd g
 cp g.sh $HOME/.g.sh
 cp gcompletion.sh $HOME/.gcompletion.sh
-
-# Install my own custom scripts.
-cd /tmp
-rm -rf scripts
-git clone https://github.com/mssola/scripts
-cd scripts
-./install.sh
 
 # Download and install the review utility
 cat <<HERE
