@@ -26,7 +26,7 @@ set -e
 # branch. You can change the remote and the branch to be picked like this:
 #
 #  $ git fork branch
-#  $ git fork remote/branch
+#  $ git fork remote branch
 #
 # Finally, if the given remote does not exist, the user will be prompted to
 # provide the URL to the remote, so it can be created.
@@ -36,20 +36,11 @@ set -e
 branch='master'
 upstream='upstream'
 
-# You can modify the defaults by specifying either "branch" or "remote/branch".
-if [ ! -z $1 ]; then
-    ifs=$IFS
-    IFS='/'
-
-    read -ra results <<< "$1"
-    if [ ${#results[@]} -eq 2 ]; then
-        upstream=${results[0]}
-        branch=${results[1]}
-    else
-        branch=${results[0]}
-    fi
-
-    IFS=$ifs
+if [ ! -z "$1" ]; then
+    upstream="$1"
+fi
+if [ ! -z "$2" ]; then
+    branch="$2"
 fi
 
 # Check whether the given upstream remote really exists. If it doesn't it will
