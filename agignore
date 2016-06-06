@@ -12,3 +12,4 @@ tmp
 .svn
 build
 node_modules
+vendor
