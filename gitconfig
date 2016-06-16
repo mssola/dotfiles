@@ -16,7 +16,7 @@
   sslVerify = true
 
 [alias]
-  a = commit -a -s
+  a = commit -a -s -v
   down = pull --rebase --stat
   vader = push --force
 
