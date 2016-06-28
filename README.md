@@ -21,6 +21,9 @@ $ go get -u github.com/nsf/gocode
 $ sudo zypper in spell
 ```
 
+Also, in Emacs the markdown mode requires a markdown-to-HTML converter. There
+are multiple options, but for me `calibre` seems to work just fine.
+
 ## License
 
 Everything except the `bin` directory and any Emacs Lisp file is licensed under
