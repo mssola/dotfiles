@@ -8,11 +8,25 @@ a submodule). Vim plugins will also get installed automatically.
 
 And that's about it. Use this at your own risk ;)
 
+## Runtime dependencies
+
+There are some runtime dependencies that matter to either Vim or Emacs. In
+openSUSE (probably similar in your distribution) they can be solved like this:
+
+```
+$ go get -u golang.org/x/tools/cmd/goimports
+$ go get -u github.com/rogpeppe/godef
+$ go get -u github.com/dougm/goflymake
+$ go get -u github.com/nsf/gocode
+$ sudo zypper in spell
+```
+
 ## License
 
-Everything except the `bin` directory is licensed under the MIT/X11 license,
-since these files are mere configuration files. You can find the full license
-in the `LICENSE` file and below:
+Everything except the `bin` directory and any Emacs Lisp file is licensed under
+the MIT/X11 license, since these files are mere configuration files that I want
+to keep simple in regards to licensing. You can find the full license in the
+`LICENSE` file and below:
 
 ```
 Copyright (c) 2011-2016 Miquel Sabaté Solà
@@ -37,9 +51,9 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-The files under the `bin` directory are licensed under the GPLv3 (or at your
-option any later version). The license itself can be found in the
-`LICENSE.gpl3` file, and the header of it is as follows:
+The files under the `bin` directory and all Emacs Lisp files are licensed under
+the GPLv3 (or at your option any later version). The license itself can be
+found in the `LICENSE.gpl3` file, and the header of it is as follows:
 
 ```
 Copyright (C) 2014-2016 Miquel Sabaté Solà <mikisabate@gmail.com>
