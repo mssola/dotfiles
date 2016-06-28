@@ -316,6 +316,7 @@
 
 ;; Emacs Lisp mode
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+(add-hook 'emacs-lisp-mode-hook 'warnings-mode-hook)
 
 ;; C-common (it includes languages with a similar syntax of C).
 (add-hook 'c-mode-common-hook 'warnings-mode-hook)
@@ -378,5 +379,22 @@
     ((c-indent-line . c-basic-offset)
      (c-indent-region . c-basic-offset)))
   (smart-tabs-insinuate 'c 'c++ 'golang))
+
+;; Markdown mode with preview mode in the browser.
+(use-package markdown-mode
+  :ensure t
+  :config
+
+  ; This is the one that I got from openSUSE.
+  (custom-set-variables
+    '(markdown-command "/usr/bin/markdown-calibre"))
+
+  ; Preview mode does its things through websockets, so it's a requirement.
+  ; After that, we can safely require it.
+  (use-package websocket
+    :ensure t
+    :config
+    (use-package markdown-preview-mode
+      :ensure t)))
 
 ;;; init.el ends here
