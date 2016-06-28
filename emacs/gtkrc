@@ -1,0 +1,5 @@
+style "emacsfont"
+{
+    font_name = "Droid Sans Mono Dotted for Powerline 10"
+}
+widget "*" style "emacsfont"
