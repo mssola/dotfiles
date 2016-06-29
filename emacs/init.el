@@ -269,12 +269,23 @@
       "V" (lambda () (interactive) (split-window-right) (other-window 1))
       "f" 'flycheck-list-errors
       "e" 'eval-last-sexp
-      "b" 'view-buffer))
+      "b" 'view-buffer
+      "o" 'browse-url-at-point))
 
   (use-package evil-surround
     :ensure t
     :config
     (global-evil-surround-mode 1)))
+
+;; Install a set of useful functions from @bbatsov. The bindings are following
+;; Emacs style instead of being more Vim-like on purpose (I don't want to put
+;; too many things into my leader and these shortcuts look sensible to me).
+(use-package crux
+  :ensure t
+  :bind (("C-c d" . crux-delete-file-and-buffer)
+         ("C-c r" . crux-rename-file-and-buffer)
+         ("C-c i" . crux-find-user-init-file)
+         ("C-c o" . crux-open-with)))
 
 ;; I heard you could have Twitter in Emacs, so let's roll with it.
 (use-package twittering-mode
@@ -361,14 +372,14 @@
   :ensure t
   :pin melpa-stable
   :config
-  (mssola-go-mode))
+  (mssola-go-mode)
 
-(add-hook 'go-mode-hook 'warnings-mode-hook)
-(add-hook 'go-mode-hook 'go-eldoc-setup)
-(add-hook 'go-mode-hook
-  (lambda ()
-    (setq indent-tabs-mode t)
-    (flyspell-prog-mode)))
+  (add-hook 'go-mode-hook 'warnings-mode-hook)
+  (add-hook 'go-mode-hook 'go-eldoc-setup)
+  (add-hook 'go-mode-hook
+    (lambda ()
+      (setq indent-tabs-mode t)
+      (flyspell-prog-mode))))
 
 ;; Smart tabs
 (use-package smart-tabs-mode
