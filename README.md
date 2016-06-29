@@ -8,6 +8,23 @@ a submodule). Vim plugins will also get installed automatically.
 
 And that's about it. Use this at your own risk ;)
 
+## Emacs
+
+For the configuration of Emacs I'm trying out using symlinks instead of copying
+files into the right places. For this reason, for now I'm not providing an
+automatical way to install everything (this is left to be done in the near
+future). These are the files:
+
+- `emacs/init.el` and `emacs/gtkrc`: should be symlinked into `~/.emacs.d`.
+- `emacs/emacs.service`: should be symlinked into `~/.config/systemd/user`.
+
+Note that `emacs/emacs.service` should be used with the `--user` flag. For
+example:
+
+    $ systemctl start --user emacs
+    $ systemctl enable --user emacs
+
+
 ## Runtime dependencies
 
 There are some runtime dependencies that matter to either Vim or Emacs. In

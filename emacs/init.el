@@ -129,7 +129,15 @@
 
 (set-frame-font "Droid Sans Mono Dotted for Powerline-10")
 (add-to-list 'default-frame-alist '(font . "Droid Sans Mono Dotted for Powerline-10"))
-(set-face-attribute 'default t :font "Droid Sans Mono Dotted for Powerline-10")
+
+; Emacs in daemon mode does not like `set-face-attribute` because this is only
+; applied if there is a frame in place, which doesn't happen when starting the
+; daemon. Thus, we should call that after the frame has been created (e.g. by
+; emacsclient).
+; See: https://lists.gnu.org/archive/html/help-gnu-emacs/2015-03/msg00016.html
+(add-hook 'after-make-frame-functions-hook
+  (lambda ()
+    (set-face-attribute 'default t :font "Droid Sans Mono Dotted for Powerline-10")))
 
 ;; Disable C-z. It will later on be picked up by Evil's config as the escape
 ;; sequence. This is here to make sure that it will be disabled even if Evil
