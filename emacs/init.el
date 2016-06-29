@@ -415,6 +415,13 @@
     (use-package markdown-preview-mode
       :ensure t)))
 
+; Apply purple function identifiers to all these languages.
+(dolist (lang-hook '(ruby-mode-hook
+                php-mode-hook
+                perl-mode-hook
+                emacs-lisp-mode-hook))
+  (add-hook lang-hook 'soria-purple-identifiers))
+
 ;; YASnippet
 (use-package yasnippet
   :ensure t
