@@ -268,7 +268,8 @@
       "v" 'split-window-right
       "V" (lambda () (interactive) (split-window-right) (other-window 1))
       "f" 'flycheck-list-errors
-      "e" 'eval-last-sexp))
+      "e" 'eval-last-sexp
+      "b" 'view-buffer))
 
   (use-package evil-surround
     :ensure t
@@ -349,8 +350,6 @@
   (evil-leader/set-key
     "." 'godef-jump-other-window)
 
-  ; TODO: yasnippet
-
   ; eldoc support
   (use-package go-eldoc
     :ensure t
@@ -396,5 +395,12 @@
     :config
     (use-package markdown-preview-mode
       :ensure t)))
+
+;; YASnippet
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook #'yas-minor-mode))
 
 ;;; init.el ends here
