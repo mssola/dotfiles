@@ -149,10 +149,15 @@ nnoremap <C-q> @q
 " Pressing ^ in order to move to the first non-blank character is inconvenient.
 nnoremap <leader>, ^
 
-" Do nothing when <C-z> is pressed. Why would I want to stop the current `vim`
-" process ? (especially shitty if you miss useful commands like <C-x> ...).
-nnoremap <C-z> <nop>
-inoremap <C-z> <nop>
+" The default behavior for <C-z> is simply useless: why would I want to stop
+" the current `vim` process ? (especially shitty if you miss useful commands
+" like <C-x> ...).
+"
+" Before I was remapping this to <nop>, but since switching to Emacs, I've
+" started to use <C-z> as escape there in order to not overlap with an
+" extremely used prefix. For consistency's sake, I'm also applying this to Vim.
+nnoremap <C-z> <ESC>
+inoremap <C-z> <ESC>
 
 " Do nothing for the <S-K> command. I never use it and it appears when I
 " misstype <S-J>.
