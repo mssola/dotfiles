@@ -65,16 +65,14 @@
 ;; Enable y/n answers
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; The frame title is "mssola: <path>". If we are not editing a file, then the
+;; The frame title is "<login>: <path>". If we are not editing a file, then the
 ;; name of the buffer is displayed (e.g. "mssola: *scratch*").
 (setq frame-title-format
   '((:eval
-    (if (buffer-file-name)
-      (concat
-        (user-real-login-name)
-        ": "
-        (abbreviate-file-name (buffer-file-name)))
-		  "mssola: %b"))))
+    (concat (user-real-login-name) ": "
+      (if (buffer-file-name)
+        (abbreviate-file-name (buffer-file-name))
+        "%b")))))
 
 ;; Emacs modes typically provide a standard means to change the indentation
 ;; width (e.g. c-basic-offset). Moreover, even though I prefer tabs over space,
@@ -203,8 +201,7 @@
   :config
   (projectile-global-mode +1)
   (setq projectile-mode-line
-    '(:eval (format " %s" (projectile-project-name))))
-)
+    '(:eval (format " %s" (projectile-project-name)))))
 
 (use-package helm
   :ensure t
