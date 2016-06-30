@@ -24,6 +24,10 @@ example:
     $ systemctl start --user emacs
     $ systemctl enable --user emacs
 
+Last but not least, I'm using my customized `soria` color theme. This theme is
+unfortunately not available in any way other than Github. Therefore, you should
+clone it yourself in https://github.com/mssola/soria, and add it into
+the `~/.emacs.d` directory.
 
 ## Runtime dependencies
 
