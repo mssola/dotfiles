@@ -299,6 +299,10 @@
          ("C-c i" . crux-find-user-init-file)
          ("C-c o" . crux-open-with)))
 
+;; We will add this manually to the desired modes.
+(use-package rainbow-delimiters
+  :ensure t)
+
 ;; I heard you could have Twitter in Emacs, so let's roll with it.
 (use-package twittering-mode
   :ensure t
@@ -341,6 +345,7 @@
 ;; Emacs Lisp mode
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 (add-hook 'emacs-lisp-mode-hook 'warnings-mode-hook)
+(add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
 
 ;; C-common (it includes languages with a similar syntax of C).
 (add-hook 'c-mode-common-hook 'warnings-mode-hook)
