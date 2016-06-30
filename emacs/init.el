@@ -209,7 +209,24 @@
 (use-package helm
   :ensure t
   :config
-  (setq projectile-completion-system 'helm))
+  (setq projectile-completion-system 'helm)
+
+  ; Allow the search pattern to be on the header. Taken from this Reddit thread:
+  ; https://www.reddit.com/r/emacs/comments/3asbyn/new_and_very_useful_helm_feature_enter_search/
+  (setq helm-echo-input-in-header-line t)
+
+  (defun helm-hide-minibuffer-maybe ()
+    "Hide the minibuffer if we are in a Helm session"
+
+    (when (with-helm-buffer helm-echo-input-in-header-line)
+      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+        (overlay-put ov 'window (selected-window))
+        (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+                                `(:background ,bg-color :foreground ,bg-color)))
+        (setq-local cursor-type nil))))
+
+  (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+  (setq helm-split-window-in-side-p t))
 
 (use-package helm-projectile
   :ensure t
