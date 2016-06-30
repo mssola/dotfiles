@@ -85,6 +85,10 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 
+;; Maximum 80 columns.
+(setq-default fill-column 80)
+(setq-default auto-fill-function 'do-auto-fill)
+
 ;; Delete the selection with a keypress.
 (delete-selection-mode t)
 
