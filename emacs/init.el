@@ -148,6 +148,10 @@
 ;; cannot be loaded due to some error.
 (global-unset-key (kbd "C-z"))
 
+;; Disable all the Fn keys.
+(dotimes (i 12)
+  (global-unset-key (kbd (format "<f%d>" (+ i 1)))))
+
 ;; Let flyspell be performant.
 (defvar flyspell-issue-message-flag nil)
 
@@ -287,7 +291,13 @@
   (use-package evil-surround
     :ensure t
     :config
-    (global-evil-surround-mode 1)))
+    (global-evil-surround-mode 1))
+
+  (use-package evil-numbers
+    :ensure t
+    :config
+    (define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
+    (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)))
 
 ;; Install a set of useful functions from @bbatsov. The bindings are following
 ;; Emacs style instead of being more Vim-like on purpose (I don't want to put
