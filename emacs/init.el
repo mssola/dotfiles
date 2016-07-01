@@ -223,7 +223,10 @@
         (setq-local cursor-type nil))))
 
   (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
-  (setq helm-split-window-in-side-p t))
+  (setq helm-split-window-in-side-p t)
+
+  (use-package helm-ag
+    :ensure t))
 
 (use-package helm-projectile
   :ensure t
@@ -312,6 +315,12 @@
     :config
     (define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
     (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)))
+
+(use-package magit
+  :ensure t
+  :config
+  (add-hook 'git-commit-mode-hook 'evil-insert-state)
+  (evil-leader/set-key "s" 'magit-status))
 
 ;; Install a set of useful functions from @bbatsov. The bindings are following
 ;; Emacs style instead of being more Vim-like on purpose (I don't want to put
@@ -402,6 +411,9 @@
   (evil-leader/set-key
     "." 'godef-jump-other-window)
 
+  (setq indent-tabs-mode t)
+  (flyspell-prog-mode)
+
   ; eldoc support
   (use-package go-eldoc
     :ensure t
@@ -413,14 +425,10 @@
   :ensure t
   :pin melpa-stable
   :config
-  (mssola-go-mode)
 
   (add-hook 'go-mode-hook 'warnings-mode-hook)
   (add-hook 'go-mode-hook 'go-eldoc-setup)
-  (add-hook 'go-mode-hook
-    (lambda ()
-      (setq indent-tabs-mode t)
-      (flyspell-prog-mode))))
+  (add-hook 'go-mode-hook 'mssola-go-mode))
 
 ;; Smart tabs
 (use-package smart-tabs-mode
