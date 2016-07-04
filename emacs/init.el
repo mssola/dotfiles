@@ -262,6 +262,32 @@
   (define-key evil-normal-state-map (kbd "C-p") 'helm-projectile-find-file)
   (define-key evil-normal-state-map (kbd "M-p") 'helm-projectile-switch-project)
 
+  ; I use the Super key in combination with j & k to move around i3. Let's unset
+  ; M- combos for these two fellows for whenever I misstype them.
+  (global-unset-key (kbd "M-j"))
+  (global-unset-key (kbd "M-k"))
+
+  ; both this function and the subsequent lines about [escape] are taken from
+  ; @aaronbieber configuration.
+  (defun minibuffer-keyboard-quit ()
+    "Abort recursive edit.
+In Delete Selection mode, if the mark is active, just deactivate it;
+then it takes a second \\[keyboard-quit] to abort the minibuffer."
+    (interactive)
+    (if (and delete-selection-mode transient-mark-mode mark-active)
+        (setq deactivate-mark  t)
+      (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+      (abort-recursive-edit)))
+
+  ;; Make escape quit everything, whenever possible.
+  (define-key evil-normal-state-map [escape] 'keyboard-quit)
+  (define-key evil-visual-state-map [escape] 'keyboard-quit)
+  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+
   ; I store macros on the <q> register for convenience, so let's also use the
   ; <C-q> combo to execute the macro.
   ; TODO: not really working
@@ -286,7 +312,8 @@
   (set-quit-char "C-z")
 
   ;; Use insert mode by default on the following modes.
-  (dolist (mode '(twittering-edit-mode))
+  (dolist (mode '(twittering-edit-mode
+                  magit-log-edit-mode))
     (add-to-list 'evil-insert-state-modes mode))
 
   (use-package evil-leader
