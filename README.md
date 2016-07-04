@@ -18,11 +18,13 @@ future). These are the files:
 - `emacs/init.el` and `emacs/gtkrc`: should be symlinked into `~/.emacs.d`.
 - `emacs/emacs.service`: should be symlinked into `~/.config/systemd/user`.
 
-Note that `emacs/emacs.service` should be used with the `--user` flag. For
-example:
-
-    $ systemctl start --user emacs
-    $ systemctl enable --user emacs
+Note that `emacs/emacs.service` should be used with the `--user` flag and it's
+used to get Emacs to work in **daemon mode** using systemd. This does **not**
+work properly for now (e.g. the user's `PATH` is not loaded). For this, in the
+`i3/config` file you'll see that I'm using `-a ""` as an argument of
+`emacsclient`. This instructs `emacsclient` to spawn a new server if there
+isn't one already. This means that the first time around it will take some
+time, but in the next time everything will be alright.
 
 Last but not least, I'm using my customized `soria` color theme. This theme is
 unfortunately not available in any way other than Github. Therefore, you should
