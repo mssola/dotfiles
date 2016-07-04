@@ -153,6 +153,17 @@
 ;; Let flyspell be performant.
 (defvar flyspell-issue-message-flag nil)
 
+;; Allow users to fetch the latest Emacs' NEWS file.
+(defun view-emacs-latest-news ()
+  "Allow users to fetch the latest Emacs' NEWS file."
+  (interactive)
+
+  (url-copy-file
+   "http://git.savannah.gnu.org/cgit/emacs.git/plain/etc/NEWS"
+   "/tmp/emacs-news" t)
+
+  (find-file-read-only "/tmp/emacs-news" t))
+
 ;;; Packages
 
 ;; I'm using use-package to handle my installed packages. I don't know if it's
