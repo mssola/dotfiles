@@ -153,6 +153,8 @@
 ;; Let flyspell be performant.
 (defvar flyspell-issue-message-flag nil)
 
+;; Custom functions
+
 ;; Allow users to fetch the latest Emacs' NEWS file.
 (defun view-emacs-latest-news ()
   "Allow users to fetch the latest Emacs' NEWS file."
@@ -163,6 +165,24 @@
    "/tmp/emacs-news" t)
 
   (find-file-read-only "/tmp/emacs-news" t))
+
+(defun mssola-cleanup-workspace ()
+  "Cleanup the current workspace by killing all buffers and windows.
+The user will end up in the *scratch* buffer."
+
+  (interactive)
+  (when (y-or-n-p "Are you sure that you want to cleanup your workspace? ")
+    (delete-other-windows)
+    (switch-to-buffer "*scratch*")
+
+    ; Code taken from 'crux-kill-other-buffers in the crux package by
+    ; @bbatsov. It's the same but the confirmation has been removed since we are
+    ; already asking for permission before.
+    (seq-each
+     #'kill-buffer
+     (delete (current-buffer) (seq-filter #'buffer-file-name (buffer-list))))))
+
+(global-set-key (kbd "C-c a") 'mssola-cleanup-workspace)
 
 ;;; Packages
 
