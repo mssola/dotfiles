@@ -336,6 +336,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
     (evil-leader/set-key
       "," 'back-to-indentation
       "c" 'delete-window
+      "k" 'kill-buffer-and-window
       "v" 'split-window-right
       "V" (lambda () (interactive) (split-window-right) (other-window 1))
       "f" 'flycheck-list-errors
