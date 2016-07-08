@@ -155,8 +155,7 @@
 
 ;; Custom functions
 
-;; Allow users to fetch the latest Emacs' NEWS file.
-(defun view-emacs-latest-news ()
+(defun mssola-view-emacs-latest-news ()
   "Allow users to fetch the latest Emacs' NEWS file."
   (interactive)
 
@@ -489,6 +488,9 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   (add-hook 'go-mode-hook 'go-eldoc-setup)
   (add-hook 'go-mode-hook 'mssola-go-mode))
 
+;; Ruby mode
+(add-hook 'ruby-mode-hook 'warnings-mode-hook)
+
 ;; Smart tabs
 (use-package smart-tabs-mode
   :ensure t
@@ -514,6 +516,10 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
     :config
     (use-package markdown-preview-mode
       :ensure t)))
+
+; Slim
+(use-package slim-mode
+  :ensure t)
 
 ; Apply purple function identifiers to all these languages.
 (dolist (lang-hook '(ruby-mode-hook
