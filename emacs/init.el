@@ -394,6 +394,12 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 (use-package rainbow-delimiters
   :ensure t)
 
+;; Disable all mouse interactions
+(use-package disable-mouse
+  :ensure t
+  :config
+  (global-disable-mouse-mode))
+
 ;; I heard you could have Twitter in Emacs, so let's roll with it.
 (use-package twittering-mode
   :ensure t
@@ -520,6 +526,21 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 ; Slim
 (use-package slim-mode
   :ensure t)
+
+; YAML
+(use-package yaml-mode
+  :ensure t
+  :config
+
+  (add-hook 'yaml-mode-hook 'warnings-mode-hook))
+
+; SASS/SCSS
+(use-package scss-mode
+  :ensure t
+  :config
+
+  (setq scss-compile-at-save nil)
+  (add-hook 'yaml-mode-hook 'warnings-mode-hook))
 
 ; Apply purple function identifiers to all these languages.
 (dolist (lang-hook '(ruby-mode-hook
