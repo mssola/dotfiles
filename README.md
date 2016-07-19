@@ -47,6 +47,11 @@ $ sudo zypper in spell
 Also, in Emacs the markdown mode requires a markdown-to-HTML converter. There
 are multiple options, but for me `calibre` seems to work just fine.
 
+## Weechat certificates
+
+For connecting to OFTC I'm using my own SSL certificates. OFTC has good
+documentation on how to do this [here](https://www.oftc.net/NickServ/CertFP/).
+
 ## License
 
 Everything except the `bin` directory and any Emacs Lisp file is licensed under
