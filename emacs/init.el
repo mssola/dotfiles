@@ -51,6 +51,7 @@
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
+(set-language-environment 'utf-8)
 
 ;; User name and email.
 (setq user-full-name "Miquel Sabaté Solà"
@@ -555,5 +556,23 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   :config
   (yas-reload-all)
   (add-hook 'prog-mode-hook #'yas-minor-mode))
+
+;; CMake
+(use-package cmake-mode
+  :ensure t
+  :config
+
+  (setq auto-mode-alist
+        (append
+         '(("CMakeLists\\.txt\\'" . cmake-mode))
+         '(("\\.cmake\\'" . cmake-mode))
+         auto-mode-alist))
+
+  (use-package cmake-font-lock
+    :ensure t
+    :config
+
+    (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
+    (add-hook 'yaml-mode-hook 'warnings-mode-hook)))
 
 ;;; init.el ends here
