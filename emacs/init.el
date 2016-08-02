@@ -184,6 +184,11 @@ The user will end up in the *scratch* buffer."
 
 (global-set-key (kbd "C-c a") 'mssola-cleanup-workspace)
 
+;;; My lisp directory
+
+(add-to-list 'load-path "~/.emacs.d/lisp")
+(require 'g)
+
 ;;; Packages
 
 ;; I'm using use-package to handle my installed packages. I don't know if it's
