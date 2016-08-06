@@ -1,0 +1,86 @@
+#!/bin/bash
+# Copyright (C) 2016 Miquel Sabaté Solà <mikisabate@gmail.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+set -e
+
+# Show the help message.
+__vpnsetup_help() {
+    echo -e "vpnsetup [command] [endpoint]\n\nThe vpnsetup commands are:\n"
+    tab=$'\t'
+    column -t -s $'\t' <<HERE
+   start${tab}Start the VPN service.
+   restart${tab}Restart the VPN service. The default if no command was passed.
+   stop${tab}Stop the VPN service.
+HERE
+
+    cat <<EOF
+
+The endpoint is supposed to match a systemd service named 'openvpn@<endpoint>.service'.
+Note that this command will effectively modify your /etc/resolv.conf file, and
+it expects the following files to be available:
+
+  - /etc/resolv.conf.vpn: file containing your DNS records.
+  - /etc/resolv.conf.original: your original /etc/resolv.conf file.
+EOF
+}
+
+# Check for the required files.
+
+if [ ! -f /etc/resolv.conf.vpn ]; then
+    echo -e "You have to create the /etc/resolv.conf.vpn file!\n"
+    __vpnsetup_help
+    exit 1
+fi
+
+if [ ! -f /etc/resolv.conf.original ]; then
+    echo -e "You have to create the /etc/resolv.conf.original file!\n"
+    __vpnsetup_help
+    exit 1
+fi
+
+# Parse the given command, taking "restart" as the default.
+
+cmd="restart"
+if [ "$1" != "" ]; then
+    cmd="$1"
+fi
+
+case "$cmd" in
+    -h | --help)
+        __vpnsetup_help
+        exit 0
+        ;;
+    start | restart)
+        sudo cp /etc/resolv.conf.vpn /etc/resolv.conf
+        ;;
+    stop)
+        sudo cp /etc/resolv.conf.original /etc/resolv.conf
+        ;;
+    *)
+        echo "Unknown command $cmd"
+        __vpnsetup_help
+        exit 1
+        ;;
+esac
+
+# Check the endpoint to use.
+endpoint="SUSE-NUE"
+if [ "$2" != "" ]; then
+    endpoint="$2"
+fi
+
+sudo systemctl $cmd "openvpn@$endpoint.service"
