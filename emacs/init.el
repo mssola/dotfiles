@@ -121,6 +121,7 @@
 ;; Cursor
 (blink-cursor-mode 0)
 (global-hl-line-mode -1)
+(show-paren-mode 1)
 
 ;; Follow symlinks
 (setq vc-follow-symlinks t)
