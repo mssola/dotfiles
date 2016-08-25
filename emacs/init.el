@@ -581,4 +581,10 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
     (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
     (add-hook 'yaml-mode-hook 'warnings-mode-hook)))
 
+(use-package dockerfile-mode
+  :ensure t
+  :config
+
+  (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+
 ;;; init.el ends here

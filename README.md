@@ -8,20 +8,16 @@ a submodule). Vim plugins will also get installed automatically.
 
 And that's about it. Use this at your own risk ;)
 
-## Emacs
+## GNU Emacs
 
 For the configuration of Emacs I'm trying out using symlinks instead of copying
 files into the right places. For this reason, for now I'm not providing an
 automatical way to install everything (this is left to be done in the near
-future). These are the files:
+future). The `emacs/init.el` and `emacs/gtkrc` files should be symlinked into
+`~/.emacs.d`.
 
-- `emacs/init.el` and `emacs/gtkrc`: should be symlinked into `~/.emacs.d`.
-- `emacs/emacs.service`: should be symlinked into `~/.config/systemd/user`.
-
-Note that `emacs/emacs.service` should be used with the `--user` flag and it's
-used to get Emacs to work in **daemon mode** using systemd. This does **not**
-work properly for now (e.g. the user's `PATH` is not loaded). For this, in the
-`i3/config` file you'll see that I'm using `-a ""` as an argument of
+I run GNU Emacs in daemon mode, but I don't use systemd for that. Instead, in
+the `i3/config` file you'll see that I'm using `-a ""` as an argument of
 `emacsclient`. This instructs `emacsclient` to spawn a new server if there
 isn't one already. This means that the first time around it will take some
 time, but in the next time everything will be alright.
