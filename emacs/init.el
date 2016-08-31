@@ -587,4 +587,13 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 
   (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
+(use-package terraform-mode
+  :ensure t
+  :config
+
+  (terraform-format-on-save-mode))
+
+(use-package hcl-mode
+  :ensure t)
+
 ;;; init.el ends here
