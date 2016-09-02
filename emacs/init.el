@@ -434,6 +434,11 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
       (evil-leader/set-key
         "c" 'twittering-edit-cancel-status)))
 
+;; Shows a popup with the available commands for the current chords. Helpful
+;; when you don't remember a specific combination.
+(use-package which-key
+  :ensure t)
+
 ;;; Programming languages.
 
 (defun warnings-mode-hook ()
