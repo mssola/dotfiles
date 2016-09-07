@@ -601,4 +601,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 (use-package hcl-mode
   :ensure t)
 
+(use-package salt-mode
+  :ensure t)
+
 ;;; init.el ends here
