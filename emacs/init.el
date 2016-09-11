@@ -494,7 +494,12 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   (use-package go-eldoc
     :ensure t
     :config
-    (require 'go-eldoc)))
+    (require 'go-eldoc))
+
+  (use-package go-add-tags
+    :ensure t
+    :config
+    (evil-leader/set-key "t" 'go-add-tags)))
 
 ;; Go
 (use-package go-mode
