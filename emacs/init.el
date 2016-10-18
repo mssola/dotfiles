@@ -279,6 +279,16 @@ The user will end up in the *scratch* buffer."
   (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
   (setq helm-split-window-in-side-p t)
 
+  ; Preview files with tab
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+
+  ; Show available options
+  (define-key helm-map (kbd "C-a")  'helm-select-action)
+
+  ; Some vim-like bindings
+  (define-key helm-map (kbd "C-j") 'helm-next-line)
+  (define-key helm-map (kbd "C-k") 'helm-previous-line)
+
   (use-package helm-ag
     :ensure t))
 
@@ -290,7 +300,7 @@ The user will end up in the *scratch* buffer."
 ;; Rising from the deep flames of Hell: my Evil configuration.
 ;; TODO: evil mode also in backtraces
 ;; TODO: evil mode also in documentation
-;; TODO: evil mode also in helm's find-file
+;; TODO: evil mode help
 
 (defun mssola-evil ()
   "Configure evil mode."
@@ -380,6 +390,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
     (setq evil-leader/in-all-states 1)
     (evil-leader/set-key
       "," 'back-to-indentation
+      "a" 'helm-ag-project-root
       "c" 'delete-window
       "k" 'kill-buffer-and-window
       "v" 'split-window-right
