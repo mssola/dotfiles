@@ -349,8 +349,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   (set-quit-char "C-z")
 
   ;; Use insert mode by default on the following modes.
-  (dolist (mode '(twittering-edit-mode
-                  magit-log-edit-mode))
+  (dolist (mode '(magit-log-edit-mode))
     (add-to-list 'evil-insert-state-modes mode))
 
   (use-package evil-leader
@@ -406,33 +405,6 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   :ensure t
   :config
   (global-disable-mouse-mode))
-
-;; I heard you could have Twitter in Emacs, so let's roll with it.
-(use-package twittering-mode
-  :ensure t
-  :commands twit
-  :config
-  (setq twittering-use-master-password t)
-  (setq twittering-use-native-retweet t)
-  (setq twittering-icon-mode t)
-  (setq twittering-use-icon-storage t)
-
-  ; Let's use the <leader> key to perform the actions that I use more often.
-  (add-hook 'twittering-mode-hook
-    (lambda ()
-      (evil-leader/set-key
-        "t" 'twittering-update-status-interactive ; Tweet
-        "q" 'twittering-retweet                   ; Quote
-        "r" 'twittering-native-retweet            ; Retweet
-        "f" 'twittering-favorite)))               ; Fav
-
-  ; Activate flyspell mode when tweeting and added the <leader>c shortcut to
-  ; cancel sending a tweet.
-  (add-hook 'twittering-edit-mode-hook
-    (lambda ()
-      (flyspell-mode 1))
-      (evil-leader/set-key
-        "c" 'twittering-edit-cancel-status)))
 
 ;; Shows a popup with the available commands for the current chords. Helpful
 ;; when you don't remember a specific combination.
