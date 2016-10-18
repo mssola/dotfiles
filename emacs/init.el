@@ -59,6 +59,23 @@
 
 ;; Calendar
 (defvar calendar-week-start-day 1)
+(global-set-key (kbd "C-c c") 'calendar)
+
+(defun mssola-evil-calendar ()
+  "Define the bindings for the calendar in evil mode."
+
+  (evil-set-initial-state 'calendar-mode 'normal)
+  (evil-define-key 'normal calendar-mode-map
+    "j" 'calendar-forward-week
+    "k" 'calendar-backward-week
+    "b" 'calendar-backward-day
+    "h" 'calendar-backward-day
+    "l" 'calendar-forward-day
+    "w" 'calendar-forward-day
+    "\C-j" 'evil-window-down
+    "\C-k" 'evil-window-up
+    "\C-n" 'calendar-scroll-left-three-months
+    "\C-p" 'calendar-scroll-right-three-months))
 
 ;; No welcome screen
 (setq-default inhibit-startup-message t)
@@ -273,7 +290,6 @@ The user will end up in the *scratch* buffer."
 ;; Rising from the deep flames of Hell: my Evil configuration.
 ;; TODO: evil mode also in backtraces
 ;; TODO: evil mode also in documentation
-;; TODO: evil mode also in calendar
 ;; TODO: evil mode also in helm's find-file
 
 (defun mssola-evil ()
@@ -347,6 +363,10 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   (define-key key-translation-map (kbd "C-z") [escape])
   (define-key evil-operator-state-map (kbd "C-z") 'keyboard-quit)
   (set-quit-char "C-z")
+
+  ; Setup the calendar for evil mode.
+  (eval-after-load "calendar"
+    '(progn (mssola-evil-calendar)))
 
   ;; Use insert mode by default on the following modes.
   (dolist (mode '(magit-log-edit-mode))
