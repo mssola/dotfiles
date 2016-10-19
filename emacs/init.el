@@ -351,11 +351,15 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
   (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 
-  ; I store macros on the <q> register for convenience, so let's also use the
-  ; <C-q> combo to execute the macro.
-  ; TODO: not really working
-  (define-key evil-normal-state-map (kbd "C-q")
-    (lambda () (interactive) (evil-execute-macro 1 'q)))
+  ; I store macros on the <q> register for convenience, so I used to use the
+  ; <C-q> combo to execute this macro in Vim. In Emacs though, this combo is
+  ; reserved to a rather useful function, and I'd like to keep it that way. So,
+  ; now the mapping is set to <C-2> (mnemonic: where the @ symbol is). Moreover,
+  ; it's applied as many times as specified by the numeric prefix argument.
+  (define-key evil-normal-state-map (kbd "C-2")
+    (lambda (n)
+      (interactive "p")
+      (evil-execute-macro n "@q")))
 
   ; C-s: switch to normal mode and save the buffer. I know :)
   (define-key evil-normal-state-map (kbd "C-s") 'save-buffer)
