@@ -384,6 +384,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   (evil-set-initial-state 'help-mode 'normal)
   (evil-set-initial-state 'debugger-mode 'normal)
   (evil-set-initial-state 'describe-mode 'normal)
+  (evil-set-initial-state 'Buffer-menu-mode 'normal)
 
   (use-package evil-leader
     :ensure t
