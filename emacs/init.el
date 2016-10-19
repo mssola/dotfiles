@@ -298,9 +298,6 @@ The user will end up in the *scratch* buffer."
   (helm-projectile-on))
 
 ;; Rising from the deep flames of Hell: my Evil configuration.
-;; TODO: evil mode also in backtraces
-;; TODO: evil mode also in documentation
-;; TODO: evil mode help
 
 (defun mssola-evil ()
   "Configure evil mode."
@@ -382,9 +379,11 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   (eval-after-load "calendar"
     '(progn (mssola-evil-calendar)))
 
-  ;; Use insert mode by default on the following modes.
-  (dolist (mode '(magit-log-edit-mode))
-    (add-to-list 'evil-insert-state-modes mode))
+  ;; Use the proper initial evil state for the following modes.
+  (evil-set-initial-state 'magit-log-edit-mode 'insert)
+  (evil-set-initial-state 'help-mode 'normal)
+  (evil-set-initial-state 'debugger-mode 'normal)
+  (evil-set-initial-state 'describe-mode 'normal)
 
   (use-package evil-leader
     :ensure t
