@@ -297,6 +297,16 @@ The user will end up in the *scratch* buffer."
   :config
   (helm-projectile-on))
 
+(defun mssola-find-file ()
+  "Call the proper Helm function for finding files."
+
+  (interactive)
+
+  (condition-case nil
+      (helm-projectile-find-file)
+    (error
+     (helm-find-files nil))))
+
 ;; Rising from the deep flames of Hell: my Evil configuration.
 
 (defun mssola-evil ()
@@ -319,7 +329,7 @@ The user will end up in the *scratch* buffer."
   (fset 'help-command help-map)
 
   ; Helm + Projectile shortcuts.
-  (define-key evil-normal-state-map (kbd "C-p") 'helm-projectile-find-file)
+  (define-key evil-normal-state-map (kbd "C-p") 'mssola-find-file)
   (define-key evil-normal-state-map (kbd "M-p") 'helm-projectile-switch-project)
 
   ; I use the Super key in combination with j & k to move around i3. Let's unset
