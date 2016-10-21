@@ -40,7 +40,7 @@ $ go get -u github.com/nsf/gocode
 $ sudo zypper in spell
 ```
 
-Also, in Emacs the markdown mode requires a markdown-to-HTML converter. There
+Also, in GNU Emacs the markdown mode requires a markdown-to-HTML converter. There
 are multiple options, but for me `calibre` seems to work just fine.
 
 ## Weechat certificates
@@ -50,37 +50,11 @@ documentation on how to do this [here](https://www.oftc.net/NickServ/CertFP/).
 
 ## License
 
-Everything except the `bin` directory and any Emacs Lisp file is licensed under
-the MIT/X11 license, since these files are mere configuration files that I want
-to keep simple in regards to licensing. You can find the full license in the
+Every file is licensed under the GPLv3+ unless stated otherwise. I've tried to
+mention every major influence on my `dotfiles`, but most surely I've forgotten
+to add some people. If you feel like you should be mentioned somewhere in my
+config files, please send me an email. You can find the full license in the
 `LICENSE` file and below:
-
-```
-Copyright (c) 2011-2016 Miquel Sabaté Solà
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-```
-
-The files under the `bin` directory and all Emacs Lisp files are licensed under
-the GPLv3 (or at your option any later version). The license itself can be
-found in the `LICENSE.gpl3` file, and the header of it is as follows:
 
 ```
 Copyright (C) 2014-2016 Miquel Sabaté Solà <mikisabate@gmail.com>
