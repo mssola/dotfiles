@@ -15,10 +15,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Back up the current files and get paths straight.
+set -e
 dir="$( cd "$( dirname "$0" )" && pwd )"
-license=$(realpath "$dir/../license")
+license=$(readlink -f "$dir/../license")
 cp "$dir/main.cpp" "$dir/main.cpp.old"
 cp "$dir/README.md" "$dir/README.md.old"
+set +e
 status=0
 
 # license main.cpp
@@ -46,4 +48,3 @@ else
     echo "OK"
 fi
 exit $status
-

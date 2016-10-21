@@ -128,8 +128,10 @@
 
 ;; Graphical interface tweaks
 (menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+(when (fboundp 'set-scroll-bar-mode)
+  (set-scroll-bar-mode nil))
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
 
 ;; Lines and columns
 (line-number-mode 1)
@@ -204,7 +206,7 @@ The user will end up in the *scratch* buffer."
 
 ;;; My lisp directory
 
-(add-to-list 'load-path "~/.emacs.d/lisp")
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (require 'g)
 
 ;;; Packages
@@ -214,6 +216,7 @@ The user will end up in the *scratch* buffer."
 ;; for Emacs out there. After trying some custom functions to handle
 ;; package-install, I decided on use-package because I feel more well-organized.
 (unless (package-installed-p 'use-package)
+  (package-refresh-contents)
   (package-install 'use-package))
 
 (require 'use-package)

@@ -1,4 +1,4 @@
-# dotfiles
+# dotfiles [![Build Status](https://travis-ci.org/mssola/dotfiles.svg?branch=master)](https://travis-ci.org/mssola/dotfiles)
 
 To automatically install everything, just execute the `install.sh` script.
 Take a look at this script since it might perform some actions that are

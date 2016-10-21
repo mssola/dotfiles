@@ -1,0 +1,30 @@
+# The procedure for testing GNU Emacs was kindly taken from:
+# https://github.com/purcell/emacs.d
+
+language: ruby
+
+before_install:
+  - git clone https://github.com/rejeep/evm.git $HOME/.evm
+  - export PATH=$HOME/.evm/bin:$PATH
+
+  - evm config path /tmp
+  - evm install $EVM_EMACS --use --skip
+
+env:
+  - EVM_EMACS=emacs-24.4-travis
+  - EVM_EMACS=emacs-24.5-travis
+  - EVM_EMACS=emacs-25.1-travis
+  - EVM_EMACS=emacs-git-snapshot-travis
+
+matrix:
+  allow_failures:
+    - env: EVM_EMACS=emacs-git-snapshot-travis
+
+script:
+  # Testing GNU Emacs
+  - git clone https://github.com/mssola/soria.git
+  - cp soria/soria-theme.el emacs/soria-theme.el
+  - lsb_release -a && cd emacs && ./test-startup.sh
+
+  # Testing scripts
+  - cd ../bin/test && ./test.sh
