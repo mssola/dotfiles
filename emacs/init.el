@@ -29,12 +29,21 @@
 ;;  - @dmacvicar:   https://github.com/dmacvicar/dotfiles
 ;;  - @bbatsov:     https://github.com/bbatsov/emacs.d
 ;;  - @aaronbieber: https://github.com/aaronbieber/dotfiles
+;;  - @purcell:     https://github.com/purcell/emacs.d
 
 ;;; Code:
 
 ;; I'm sticking with the major version I'm using, deal with it.
 (unless (>= emacs-major-version 24)
-  (error "Don't be a cheap bastard and upgrade to at least Emacs 24"))
+  (error "Don't be a cheap bastard and upgrade to at least GNU Emacs 24"))
+
+;; Temporarily reduce garbage collection so startup time is lower. Idea taken
+;; from @purcell.
+(defconst mssola-initial-gc-cons-threshold gc-cons-threshold
+  "Initial value of `gc-cons-threshold' at start-up time.")
+(setq gc-cons-threshold (* 1024 1024 1024))
+(add-hook 'after-init-hook
+          (lambda () (setq gc-cons-threshold mssola-initial-gc-cons-threshold)))
 
 ;; Initialize 'package
 (require 'package)
@@ -204,6 +213,15 @@ The user will end up in the *scratch* buffer."
 
 (global-set-key (kbd "C-c a") 'mssola-cleanup-workspace)
 
+(defun emacs-init-time ()
+  "Redefine the `emacs-init-time' function so it is more detailed.  Idea taken
+from @purcell."
+  (interactive)
+
+  (let ((init-time
+         (float-time (time-subtract after-init-time before-init-time))))
+    (message "%.3fs" init-time)))
+
 ;;; My lisp directory
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
@@ -250,6 +268,14 @@ The user will end up in the *scratch* buffer."
   (setq flycheck-check-syntax-automatically '(mode-enabled save))
   (setq flycheck-display-errors-function
     #'flycheck-display-error-messages-unless-error-list))
+
+;; Let's increase fonts with C-+ and C--
+
+(use-package default-text-scale
+  :ensure t
+  :config
+  (global-set-key (kbd "C-+") 'default-text-scale-increase)
+  (global-set-key (kbd "C--") 'default-text-scale-decrease))
 
 ;; Projectile & Helm
 
@@ -629,4 +655,5 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 (use-package salt-mode
   :ensure t)
 
+(provide 'init)
 ;;; init.el ends here
