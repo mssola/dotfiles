@@ -433,7 +433,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
     (setq evil-leader/in-all-states 1)
     (evil-leader/set-key
       "," 'back-to-indentation
-      "a" 'helm-ag-project-root
+      "a" 'helm-ag-project-root ; TODO: non-projects
       "c" 'delete-window
       "k" 'kill-buffer-and-window
       "v" 'split-window-right
@@ -457,8 +457,12 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 (use-package magit
   :ensure t
   :config
+
   (add-hook 'git-commit-mode-hook 'evil-insert-state)
-  (evil-leader/set-key "s" 'magit-status))
+  (evil-leader/set-key "s" 'magit-status)
+
+  (use-package evil-magit
+    :ensure t))
 
 ;; Install a set of useful functions from @bbatsov. The bindings are following
 ;; Emacs style instead of being more Vim-like on purpose (I don't want to put
@@ -607,9 +611,9 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 
 ; Apply purple function identifiers to all these languages.
 (dolist (lang-hook '(ruby-mode-hook
-                php-mode-hook
-                perl-mode-hook
-                emacs-lisp-mode-hook))
+                     php-mode-hook
+                     perl-mode-hook
+                     emacs-lisp-mode-hook))
   (add-hook lang-hook 'soria-purple-identifiers))
 
 ;; YASnippet
