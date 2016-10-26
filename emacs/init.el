@@ -81,6 +81,8 @@
     "h" 'calendar-backward-day
     "l" 'calendar-forward-day
     "w" 'calendar-forward-day
+    "\C-h" 'evil-window-left
+    "\C-l" 'evil-window-right
     "\C-j" 'evil-window-down
     "\C-k" 'evil-window-up
     "\C-n" 'calendar-scroll-left-three-months
@@ -214,10 +216,10 @@ The user will end up in the *scratch* buffer."
 (global-set-key (kbd "C-c a") 'mssola-cleanup-workspace)
 
 (defun emacs-init-time ()
-  "Redefine the `emacs-init-time' function so it is more detailed.  Idea taken
-from @purcell."
-  (interactive)
+  "Redefine the `emacs-init-time' function so it is more detailed.
+Idea taken from @purcell."
 
+  (interactive)
   (let ((init-time
          (float-time (time-subtract after-init-time before-init-time))))
     (message "%.3fs" init-time)))
@@ -419,7 +421,6 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
     '(progn (mssola-evil-calendar)))
 
   ;; Use the proper initial evil state for the following modes.
-  (evil-set-initial-state 'magit-log-edit-mode 'insert)
   (evil-set-initial-state 'help-mode 'normal)
   (evil-set-initial-state 'debugger-mode 'normal)
   (evil-set-initial-state 'describe-mode 'normal)
@@ -458,11 +459,31 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   :ensure t
   :config
 
-  (add-hook 'git-commit-mode-hook 'evil-insert-state)
   (evil-leader/set-key "s" 'magit-status)
 
+  ; Proper initial states.
+  (add-hook 'git-commit-mode-hook 'evil-insert-state)
+  (evil-set-initial-state 'magit-log-edit-mode 'insert)
+
+  ; When showing the status, hide the usually-redundant "branch" section and
+  ; show the rest.
+  (add-hook 'magit-section-set-visibility-hook
+            '(lambda (section)
+               (if (string= (magit-section-type section) "branch")
+                   'hide
+                 'show)))
+
   (use-package evil-magit
-    :ensure t))
+    :ensure t
+    :config
+
+    ; The magit + evil-magit combo messes up some chords, let's fix this.
+    (evil-define-key 'normal magit-mode-map
+      "\C-h" 'evil-window-left
+      "\C-l" 'evil-window-right
+      "\C-j" 'evil-window-down
+      "\C-k" 'evil-window-up
+      "\M-p"  'helm-projectile-switch-project)))
 
 ;; Install a set of useful functions from @bbatsov. The bindings are following
 ;; Emacs style instead of being more Vim-like on purpose (I don't want to put
