@@ -328,6 +328,15 @@ Idea taken from @purcell."
   :config
   (helm-projectile-on))
 
+(defun mssola-helm-ag ()
+  "Call the right ag command for helm-ag."
+
+  (interactive)
+
+  (condition-case nil
+      (helm-ag-project-root)
+    (error (helm-ag))))
+
 (defun mssola-find-file ()
   "Call the proper Helm function for finding files."
 
@@ -434,7 +443,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
     (setq evil-leader/in-all-states 1)
     (evil-leader/set-key
       "," 'back-to-indentation
-      "a" 'helm-ag-project-root ; TODO: non-projects
+      "a" 'mssola-helm-ag
       "c" 'delete-window
       "k" 'kill-buffer-and-window
       "v" 'split-window-right
