@@ -24,23 +24,22 @@
 (defvar calendar-week-start-day 1)
 (global-set-key (kbd "C-c c") 'calendar)
 
-(eval-after-load "evil"
-  '(progn
-     (evil-set-initial-state 'calendar-mode 'normal)
-     (evil-define-key 'normal calendar-mode-map
-       "j" 'calendar-forward-week
-       "k" 'calendar-backward-week
-       "b" 'calendar-backward-day
-       "h" 'calendar-backward-day
-       "l" 'calendar-forward-day
-       "w" 'calendar-forward-day
-       "q" 'calendar-exit
-       "\C-h" 'evil-window-left
-       "\C-l" 'evil-window-right
-       "\C-j" 'evil-window-down
-       "\C-k" 'evil-window-up
-       "\C-n" 'calendar-scroll-left-three-months
-       "\C-p" 'calendar-scroll-right-three-months)))
+(with-eval-after-load "evil"
+  (evil-set-initial-state 'calendar-mode 'normal)
+  (evil-define-key 'normal calendar-mode-map
+    "j" 'calendar-forward-week
+    "k" 'calendar-backward-week
+    "b" 'calendar-backward-day
+    "h" 'calendar-backward-day
+    "l" 'calendar-forward-day
+    "w" 'calendar-forward-day
+    "q" 'calendar-exit
+    "\C-h" 'evil-window-left
+    "\C-l" 'evil-window-right
+    "\C-j" 'evil-window-down
+    "\C-k" 'evil-window-up
+    "\C-n" 'calendar-scroll-left-three-months
+    "\C-p" 'calendar-scroll-right-three-months))
 
 (provide 'init-calendar)
 ;;; init-calendar.el ends here

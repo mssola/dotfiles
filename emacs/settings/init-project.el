@@ -27,13 +27,12 @@
   :ensure t
   :config
 
-  (eval-after-load 'evil
-    '(progn
-       (add-hook 'ag-mode-hook
-                 (lambda ()
-                   (define-key ag-mode-map (kbd "n") 'evil-search-next)
-                   (define-key ag-mode-map (kbd "N") 'evil-search-previous)
-                   (define-key ag-mode-map (kbd "gg") 'evil-goto-first-line)))))
+  (with-eval-after-load 'evil
+    (add-hook 'ag-mode-hook
+              (lambda ()
+                (define-key ag-mode-map (kbd "n") 'evil-search-next)
+                (define-key ag-mode-map (kbd "N") 'evil-search-previous)
+                (define-key ag-mode-map (kbd "gg") 'evil-goto-first-line))))
   (setq ag-reuse-buffers t)
   (setq ag-reuse-window t))
 
@@ -107,13 +106,11 @@
     (error
      (helm-find-files nil))))
 
-(eval-after-load 'evil
-  '(progn
-     (define-key evil-normal-state-map (kbd "C-p") 'mssola-find-file)))
+(with-eval-after-load 'evil
+  (define-key evil-normal-state-map (kbd "C-p") 'mssola-find-file))
 
-(eval-after-load 'evil-leader
-  '(progn
-     (evil-leader/set-key "a" 'mssola-helm-ag)))
+(with-eval-after-load 'evil-leader
+  (evil-leader/set-key "a" 'mssola-helm-ag))
 
 (provide 'init-project)
 ;;; init-project.el ends here

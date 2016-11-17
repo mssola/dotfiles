@@ -69,10 +69,9 @@
   ; Set C-e as the expand command (mnemonic: expand). This command will
   ; supercede the evil binding for "move one line", which I never use anyways.
   (global-set-key (kbd "\C-e") 'er/expand-region)
-  (eval-after-load 'evil
-    '(progn
-       (define-key evil-normal-state-map (kbd "\C-e") 'er/expand-region)
-       (define-key evil-visual-state-map (kbd "\C-e") 'er/expand-region))))
+  (with-eval-after-load 'evil
+    (define-key evil-normal-state-map (kbd "\C-e") 'er/expand-region)
+    (define-key evil-visual-state-map (kbd "\C-e") 'er/expand-region)))
 
 ; Directly taken from: https://github.com/magnars/expand-region.el. This way we
 ; can also expand the region into paragraphs and pages in text mode.

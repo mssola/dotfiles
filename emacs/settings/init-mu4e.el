@@ -249,11 +249,10 @@
     (setq mu4e-alert-email-notification-types '(count)))
 
   ; Evil mode in mu4e
-  (eval-after-load 'evil
-    '(progn
-       (use-package evil-mu4e
-         :ensure t
-         :config))))
+  (with-eval-after-load 'evil
+    (use-package evil-mu4e
+      :ensure t
+      :config)))
 
 (setq mu4e-update-interval 120)
 

@@ -44,10 +44,9 @@
   (fset 'help-command help-map)
 
   ; Helm + Projectile shortcuts.
-  (eval-after-load 'helm-projectile
-    '(progn
-       (define-key evil-normal-state-map (kbd "M-p")
-         'helm-projectile-switch-project)))
+  (with-eval-after-load 'helm-projectile
+    (define-key evil-normal-state-map (kbd "M-p")
+      'helm-projectile-switch-project))
 
   ; I use the Super key in combination with j & k to move around i3. Let's unset
   ; M- combos for these two fellows for whenever I misstype them.

@@ -36,21 +36,20 @@
                    'hide
                  'show)))
 
-  (eval-after-load 'evil-leader
-    '(progn
-       (evil-leader/set-key "s" 'magit-status)
+  (with-eval-after-load 'evil-leader
+    (evil-leader/set-key "s" 'magit-status)
 
-       (use-package evil-magit
-         :ensure t
-         :config
+    (use-package evil-magit
+      :ensure t
+      :config
 
-         ; The magit + evil-magit combo messes up some chords, let's fix this.
-         (evil-define-key 'normal magit-mode-map
-           "\C-h" 'evil-window-left
-           "\C-l" 'evil-window-right
-           "\C-j" 'evil-window-down
-           "\C-k" 'evil-window-up
-           "\M-p"  'helm-projectile-switch-project)))))
+      ; The magit + evil-magit combo messes up some chords, let's fix this.
+      (evil-define-key 'normal magit-mode-map
+        "\C-h" 'evil-window-left
+        "\C-l" 'evil-window-right
+        "\C-j" 'evil-window-down
+        "\C-k" 'evil-window-up
+        "\M-p"  'helm-projectile-switch-project))))
 
 (provide 'init-magit)
 ;;; init-magit.el ends here
