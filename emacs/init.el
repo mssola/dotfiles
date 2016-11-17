@@ -224,6 +224,10 @@ Idea taken from @purcell."
          (float-time (time-subtract after-init-time before-init-time))))
     (message "%.3fs" init-time)))
 
+; Kill Emacs. Sometimes useful when you have a server-client setup and you want
+; to *really* evaluate everything from scratch.
+(global-set-key (kbd "C-c k") 'kill-emacs)
+
 ;;; My lisp directory
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
@@ -457,6 +461,21 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
     :ensure t
     :config
     (global-evil-surround-mode 1))
+
+  (use-package evil-args
+    :ensure t
+    :config
+    ; Configuration taken from the documentation of evil-args.
+
+    ;; Bind evil-args text objects
+    (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+    (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+
+    ;; Bind evil-forward/backward-args
+    (define-key evil-normal-state-map "L" 'evil-forward-arg)
+    (define-key evil-normal-state-map "H" 'evil-backward-arg)
+    (define-key evil-motion-state-map "L" 'evil-forward-arg)
+    (define-key evil-motion-state-map "H" 'evil-backward-arg))
 
   (use-package evil-numbers
     :ensure t
@@ -815,8 +834,6 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 (defun mssola-go-mode ()
   "My configuration for Go mode."
 
-  (require 'go-mode-autoloads)
-
   ; Use goimports instead of go-fmt
   (setq gofmt-command "goimports")
 
@@ -951,6 +968,9 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   :ensure t)
 
 (use-package salt-mode
+  :ensure t)
+
+(use-package php-mode
   :ensure t)
 
 (provide 'init)
