@@ -519,6 +519,31 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 (use-package which-key
   :ensure t)
 
+; Even though this is not entirely needed because Evil already covers most of
+; it, sometimes it's convenient to use it.
+(use-package expand-region
+  :ensure t
+  :config
+
+  ; Set C-e as the expand command (mnemonic: expand). This command will
+  ; supercede the evil binding for "move one line", which I never use anyways.
+  (global-set-key (kbd "\C-e") 'er/expand-region)
+  (with-eval-after-load "evil"
+    '(progn
+       (define-key evil-normal-state-map (kbd "\C-e") 'er/expand-region)
+       (define-key evil-visual-state-map (kbd "\C-e") 'er/expand-region))))
+
+; Directly taken from: https://github.com/magnars/expand-region.el. This way we
+; can also expand the region into paragraphs and pages in text mode.
+(defun er/add-text-mode-expansions ()
+  (make-variable-buffer-local 'er/try-expand-list)
+  (setq er/try-expand-list (append
+                            er/try-expand-list
+                            '(mark-paragraph
+                              mark-page))))
+
+(add-hook 'text-mode-hook 'er/add-text-mode-expansions)
+
 ;; TODO: dired evil
 
 ;; mu4e
