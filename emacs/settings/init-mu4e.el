@@ -20,19 +20,12 @@
 
 ;;; Code:
 
-;; TODO: sending emails is a bit screwed in my current setup...
-
 ;; TODO: refile
 ;;; http://comments.gmane.org/gmane.mail.mu.general/631
 ;;; https://www.djcbsoftware.nl/code/mu/mu4e/Refiling-messages.html
 ;;; https://www.djcbsoftware.nl/code/mu/mu4e/Smart-refiling.html
 ;;; http://www.djcbsoftware.nl/code/mu/mu4e/Retrieval-and-indexing.html
-
-;; TODO: evil commands such as C-h, C-l
-;; TODO: remove whole thread ?
-;; TODO: signature below quote
 ;; TODO: gmail flags
-;; TODO: msmtp
 
 ; I'm using an RPM that I've built on OBS which installs mu4e globally. See:
 ; https://build.opensuse.org/package/show/home:mssola/mu
@@ -252,7 +245,16 @@
   (with-eval-after-load 'evil
     (use-package evil-mu4e
       :ensure t
-      :config)))
+      :config
+
+      ; Idea taken from evil-mu4e.el
+      (defvar mssola-evil-mu4e-mode-map-bindings
+        `((,evil-mu4e-state mu4e-headers-mode-map "\C-u" evil-scroll-up)
+          (,evil-mu4e-state mu4e-main-mode-map    "\C-u" evil-scroll-up)))
+
+      (dolist (binding mssola-evil-mu4e-mode-map-bindings)
+        (evil-define-key
+          (nth 0 binding) (nth 1 binding) (nth 2 binding) (nth 3 binding))))))
 
 (setq mu4e-update-interval 120)
 
