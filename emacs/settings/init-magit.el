@@ -25,8 +25,9 @@
   :config
 
   ; Proper initial states.
-  (add-hook 'git-commit-mode-hook 'evil-insert-state)
-  (evil-set-initial-state 'magit-log-edit-mode 'insert)
+  (with-eval-after-load 'evil
+    (add-hook 'git-commit-mode-hook 'evil-insert-state)
+    (evil-set-initial-state 'magit-log-edit-mode 'insert))
 
   ; When showing the status, hide the usually-redundant "branch" section and
   ; show the rest.

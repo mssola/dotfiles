@@ -41,7 +41,7 @@
 (use-package projectile
   :ensure t
   :config
-  (projectile-global-mode +1)
+  (projectile-mode 1)
   (setq projectile-mode-line
     '(:eval (format " %s" (projectile-project-name)))))
 

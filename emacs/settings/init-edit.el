@@ -73,9 +73,10 @@
     (define-key evil-normal-state-map (kbd "\C-e") 'er/expand-region)
     (define-key evil-visual-state-map (kbd "\C-e") 'er/expand-region)))
 
-; Directly taken from: https://github.com/magnars/expand-region.el. This way we
-; can also expand the region into paragraphs and pages in text mode.
 (defun er/add-text-mode-expansions ()
+  "This way we can also expand the region into paragraphs & pages in text mode.
+Directly taken from: https://github.com/magnars/expand-region.el."
+
   (make-variable-buffer-local 'er/try-expand-list)
   (setq er/try-expand-list (append
                             er/try-expand-list

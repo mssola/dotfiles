@@ -52,12 +52,9 @@
 (setq user-full-name "Miquel Sabaté Solà"
       user-mail-address "mikisabate@gmail.com")
 
-;;; Lisp directories.
-
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-(add-to-list 'load-path (expand-file-name "settings" user-emacs-directory))
-
 ;;; Basic configuration
+
+(add-to-list 'load-path (expand-file-name "settings" user-emacs-directory))
 
 (require 'init-general)
 (require 'init-calendar)
@@ -65,7 +62,7 @@
 
 ;;; Custom Lisp
 
-(require 'g)
+(byte-compile-file (concat user-emacs-directory "lisp/g.el") t)
 
 ;;; Initialize package and use-package.
 
@@ -86,7 +83,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;;; And load the configuration for all the packages being used.
+;; And load the configuration for all the packages being used.
 
 (require 'init-project)
 (require 'init-edit)
@@ -95,8 +92,6 @@
 (require 'init-magit)
 (require 'init-mu4e)
 (require 'init-lang)
-
-;; TODO: dired evil
 
 (provide 'init)
 ;;; init.el ends here

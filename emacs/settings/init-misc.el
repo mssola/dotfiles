@@ -30,5 +30,10 @@
          ("C-c i" . crux-find-user-init-file)
          ("C-c o" . crux-open-with)))
 
+;; Dired
+(with-eval-after-load 'evil
+  (evil-add-hjkl-bindings dired-mode-map 'normal
+    (kbd "w") 'evil-forward-word-begin))
+
 (provide 'init-misc)
 ;;; init-misc.el ends here

@@ -20,22 +20,12 @@
 
 ;;; Code:
 
-;; TODO: refile
-;;; http://comments.gmane.org/gmane.mail.mu.general/631
-;;; https://www.djcbsoftware.nl/code/mu/mu4e/Refiling-messages.html
-;;; https://www.djcbsoftware.nl/code/mu/mu4e/Smart-refiling.html
-;;; http://www.djcbsoftware.nl/code/mu/mu4e/Retrieval-and-indexing.html
-;; TODO: gmail flags
-
 ; I'm using an RPM that I've built on OBS which installs mu4e globally. See:
 ; https://build.opensuse.org/package/show/home:mssola/mu
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 (require 'mu4e)
 
 (when (featurep 'mu4e)
-  ; Define a proper shortcut.
-  (global-set-key (kbd "C-c m") 'mu4e)
-
   ;; Diferent SMTP options that will be used for each context.
 
   (setq message-send-mail-function 'smtpmail-send-it
@@ -67,6 +57,21 @@
   ;; Define the different accounts that I'm using. This is only available since
   ;; mu 0.9.16.
 
+  ; https://www.reddit.com/r/emacs/comments/47t9ec/share_your_mu4econtext_configs/d0fsih6
+  (defun mu4e-message-maildir-matches (msg rx)
+    (when rx
+      (if (listp rx)
+          ;; if rx is a list, try each one for a match
+          (or (mu4e-message-maildir-matches msg (car rx))
+              (mu4e-message-maildir-matches msg (cdr rx)))
+        ;; not a list, check rx
+        (string-match rx (mu4e-message-field msg :maildir)))))
+
+  (defun suse-refile-folder (key)
+    "Returns the refile folder for the given SUSE account in the KEY arg"
+    (concat "/" key "/Archives/"
+            (format-time-string "%Y" (current-time))))
+
   (setq mu4e-contexts
         `(
           ;; GMail
@@ -77,14 +82,14 @@
                           (mssola-gmail-smtp))
             :match-func (lambda (msg)
                           (when msg
-                            (mu4e-message-contact-field-matches
-                             msg :to "mikisabate@gmail.com")))
+                            (mu4e-message-maildir-matches msg "^/gmail")))
             :vars '(
                     (user-mail-address     . "mikisabate@gmail.com")
                     (user-full-name        . "Miquel Sabaté Solà")
                     (mu4e-reply-to-address . "mikisabate@gmail.com")
                     (mu4e-drafts-folder    . "/gmail/Drafts")
                     (mu4e-sent-folder      . "/gmail/Sent")
+                    (mu4e-refile-folder    . "/gmail/All")
                     (mu4e-trash-folder     . "/gmail/Trash")))
 
           ;; suse.com
@@ -95,14 +100,14 @@
                           (mssola-suse-smtp))
             :match-func (lambda (msg)
                           (when msg
-                            (mu4e-message-contact-field-matches
-                             msg :to "msabate@suse.com")))
-            :vars '(
+                            (mu4e-message-maildir-matches msg "^/susecom")))
+            :vars `(
                     (user-mail-address     . "msabate@suse.com")
                     (user-full-name        . "Miquel Sabaté Solà")
                     (mu4e-reply-to-address . "msabate@suse.com")
                     (mu4e-drafts-folder    . "/susecom/Drafts")
                     (mu4e-sent-folder      . "/susecom/Sent")
+                    (mu4e-refile-folder    . ,(suse-refile-folder "susecom"))
                     (mu4e-trash-folder     . "/susecom/Trash")))
 
           ;; suse.de
@@ -113,14 +118,14 @@
                           (mssola-suse-smtp))
             :match-func (lambda (msg)
                           (when msg
-                            (mu4e-message-contact-field-matches
-                             msg :to "msabate@suse.de")))
-            :vars '(
+                            (mu4e-message-maildir-matches msg "^/susede")))
+            :vars `(
                     (user-mail-address     . "msabate@suse.de")
                     (user-full-name        . "Miquel Sabaté Solà")
                     (mu4e-reply-to-address . "msabate@suse.de")
                     (mu4e-drafts-folder    . "/susede/Drafts")
                     (mu4e-sent-folder      . "/susede/Sent")
+                    (mu4e-refile-folder    . ,(suse-refile-folder "susede"))
                     (mu4e-trash-folder     . "/susede/Trash")))))
 
   ; If mu4e cannot figure things out, ask me.
@@ -136,17 +141,21 @@
                                      (mu4e-context-vars context)))))
                       mu4e-contexts)))
 
-  ; Signature.
+  ; Setting my bookmarks
+  (setq mu4e-bookmarks
+        '(("maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox" "Inbox Folders" ?n)
+          ("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
+          ("date:today..now" "Today's messages" ?t)))
+
+  ; Signature. This signature looks alright regardless of whether the client
+  ; supports format=flowed or not.
   (setq mu4e-compose-signature
         (concat
-         "Miquel Sabaté Solà\n"
+         "Miquel Sabaté Solà,\n"
          "PGP: 4096R / 1BA5 3C7A C93D CA2A CFDF DA97 96BE 8C6F D89D 6565\n"))
 
   ; Sign outgoing emails
   (add-hook 'message-send-hook 'mml-secure-message-sign-pgpmime)
-
-  ; Don't save message to Sent Messages, mbsync will take care of that.
-  (setq mu4e-sent-messages-behavior 'delete)
 
   ;; To avoid UID clashes. See:
   ;; http://pragmaticemacs.com/emacs/fixing-duplicate-uid-errors-when-using-mbsync-and-mu4e/
@@ -160,7 +169,7 @@
         message-citation-line-function 'message-insert-formatted-citation-line
         message-kill-buffer-on-exit t
         mu4e-get-mail-command "mbsync -aqV"
-        mu4e-update-interval 120
+        mu4e-update-interval 600
         mu4e-compose-dont-reply-to-self t
         mu4e-headers-skip-duplicates t
         mu4e-headers-include-related t
@@ -212,33 +221,33 @@
   (add-to-list 'mu4e-view-actions
                '("xViewXWidget" . my-mu4e-action-view-with-xwidget) t)
 
-  ; Spell check
+  ; Spell check and format=flowed
   (add-hook 'mu4e-compose-mode-hook
             (lambda ()
               "My settings for message composition."
-              (set-fill-column 99999)
+              (set-fill-column 80)
+              (use-hard-newlines t 'guess)
               (flyspell-mode)))
 
-    ; Restore some of my evil config.
-    ; TODO: doesn't work
-    (dolist (imap '(mu4e-main-mode-map mu4e-headers-mode-map mu4e-view-mode-map))
-      (evil-define-key 'evil-mu4e-state imap
-        "\C-h" 'evil-window-left
-        "\C-l" 'evil-window-right
-        "\C-j" 'evil-window-down
-        "\C-k" 'evil-window-up
-        "\M-p"  'helm-projectile-switch-project))
+  (add-hook 'mu4e-view-mode-hook (lambda () (visual-line-mode 1)))
+
+  ; Enter insert mode automatically when writing a new email.
+  (with-eval-after-load 'evil
+    (evil-set-initial-state 'mu4e-compose-mode 'insert))
 
   ; Desktop notifications
   (use-package mu4e-alert
     :ensure t
     :config
 
+    ; Notify me for unread emails from my inbox.
     (mu4e-alert-set-default-style 'libnotify)
     (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
     (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
     (setq mu4e-alert-interesting-mail-query
-          "flag:unread AND NOT flag:trashed")
+          (concat
+           "(maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox) "
+           "AND flag:unread AND NOT flag:trashed"))
     (setq mu4e-alert-email-notification-types '(count)))
 
   ; Evil mode in mu4e
@@ -250,13 +259,15 @@
       ; Idea taken from evil-mu4e.el
       (defvar mssola-evil-mu4e-mode-map-bindings
         `((,evil-mu4e-state mu4e-headers-mode-map "\C-u" evil-scroll-up)
-          (,evil-mu4e-state mu4e-main-mode-map    "\C-u" evil-scroll-up)))
+          (,evil-mu4e-state mu4e-main-mode-map    "\C-u" evil-scroll-up)
+          (,evil-mu4e-state mu4e-view-mode-map    "h" evil-backward-char)))
 
       (dolist (binding mssola-evil-mu4e-mode-map-bindings)
         (evil-define-key
-          (nth 0 binding) (nth 1 binding) (nth 2 binding) (nth 3 binding))))))
+          (nth 0 binding) (nth 1 binding) (nth 2 binding) (nth 3 binding)))))
 
-(setq mu4e-update-interval 120)
+  ; Define a proper shortcut.
+  (global-set-key (kbd "C-c m") 'mu4e))
 
 (provide 'init-mu4e)
 ;;; init-mu4e.el ends here
