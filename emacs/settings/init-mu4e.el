@@ -32,27 +32,18 @@
         mu4e-maildir (expand-file-name "~/.mail")
         starttls-use-gnutls t)
 
-  (defun mssola-gmail-smtp ()
+  (defun mssola-smtp (server port)
+    "Set SMTP variables depending on the given SERVER and PORT."
+
     (require 'smtpmail)
 
     (setq smtpmail-starttls-credentials
-          '(("smtp.gmail.com" 587 nil nil))
+          '((server port nil nil))
           smtpmail-auth-credentials
           (expand-file-name "~/.authinfo.gpg")
-          smtpmail-default-smtp-server "smtp.gmail.com"
-          smtpmail-smtp-server "smtp.gmail.com"
-          smtpmail-smtp-service 587))
-
-  (defun mssola-suse-smtp ()
-    (require 'smtpmail)
-
-    (setq smtpmail-starttls-credentials
-          '(("smtp.novell.com" 25 nil nil))
-          smtpmail-auth-credentials
-          (expand-file-name "~/.authinfo.gpg")
-          smtpmail-default-smtp-server "smtp.novell.com"
-          smtpmail-smtp-server "smtp.novell.com"
-          smtpmail-smtp-service 25))
+          smtpmail-default-smtp-server server
+          smtpmail-smtp-server server
+          smtpmail-smtp-service port))
 
   ;; Define the different accounts that I'm using. This is only available since
   ;; mu 0.9.16.
@@ -79,13 +70,12 @@
             :name "gmail"
             :enter-func (lambda ()
                           (mu4e-message "Switching to gmail.com")
-                          (mssola-gmail-smtp))
+                          (mssola-smtp "smtp.gmail.com" 587))
             :match-func (lambda (msg)
                           (when msg
                             (mu4e-message-maildir-matches msg "^/gmail")))
             :vars '(
                     (user-mail-address     . "mikisabate@gmail.com")
-                    (user-full-name        . "Miquel Sabaté Solà")
                     (mu4e-reply-to-address . "mikisabate@gmail.com")
                     (mu4e-drafts-folder    . "/gmail/Drafts")
                     (mu4e-sent-folder      . "/gmail/Sent")
@@ -97,13 +87,12 @@
             :name "comsuse"
             :enter-func (lambda ()
                           (mu4e-message "Switching to suse.com")
-                          (mssola-suse-smtp))
+                          (mssola-smtp "smtp.novell.com" 25))
             :match-func (lambda (msg)
                           (when msg
                             (mu4e-message-maildir-matches msg "^/susecom")))
             :vars `(
                     (user-mail-address     . "msabate@suse.com")
-                    (user-full-name        . "Miquel Sabaté Solà")
                     (mu4e-reply-to-address . "msabate@suse.com")
                     (mu4e-drafts-folder    . "/susecom/Drafts")
                     (mu4e-sent-folder      . "/susecom/Sent")
@@ -115,13 +104,12 @@
             :name "desuse"
             :enter-func (lambda ()
                           (mu4e-message "Switching to suse.de")
-                          (mssola-suse-smtp))
+                          (mssola-smtp "imap.suse.de" 587))
             :match-func (lambda (msg)
                           (when msg
                             (mu4e-message-maildir-matches msg "^/susede")))
             :vars `(
                     (user-mail-address     . "msabate@suse.de")
-                    (user-full-name        . "Miquel Sabaté Solà")
                     (mu4e-reply-to-address . "msabate@suse.de")
                     (mu4e-drafts-folder    . "/susede/Drafts")
                     (mu4e-sent-folder      . "/susede/Sent")
@@ -175,15 +163,6 @@
         mu4e-headers-include-related t
         mu4e-headers-auto-update t)
 
-  ;; Setting up shortcuts that can be composed with mu4e commands. For
-  ;; example, in this setup, pressin `ji` will jump to the inbox, and `ma`
-  ;; will move an email to the `All Mail` folder.
-  (setq mu4e-maildir-shortcuts
-        '( ("/INBOX"  . ?i)
-           ("/Sent"   . ?s)
-           ("/Trash"  . ?t)
-           ("/Drafts" . ?d)))
-
   ;; The headers to show in the headers list a pair of a field and its width,
   ;; with `nil' meaning 'unlimited' (better only use that for the last field.
   ;; These are the defaults:
@@ -221,19 +200,32 @@
   (add-to-list 'mu4e-view-actions
                '("xViewXWidget" . my-mu4e-action-view-with-xwidget) t)
 
-  ; Spell check and format=flowed
-  (add-hook 'mu4e-compose-mode-hook
-            (lambda ()
-              "My settings for message composition."
-              (set-fill-column 80)
-              (use-hard-newlines t 'guess)
-              (flyspell-mode)))
+  ;; Addings hooks for composing and viewing messages.
 
+  (defun mssola-compose-mode ()
+    "My settings for message composition."
+
+    ; If we are composing an email from scratch, it's more convenient to be in
+    ; insert mode. Otherwise start with normal mode.
+    (with-eval-after-load 'evil
+      (if mu4e-compose-parent-message
+          (evil-set-initial-state 'mu4e-compose-mode 'normal)
+        (evil-set-initial-state 'mu4e-compose-mode 'insert)))
+
+    ; I want to write my messages inside of 80 characters, but receivers will
+    ; get a format=flow'ed version of it.
+    (set-fill-column 80)
+    (use-hard-newlines t 'guess)
+
+    ; Spellz
+    (flyspell-mode))
+
+  (add-hook 'mu4e-compose-mode-hook 'mssola-compose-mode)
+
+  ; I want to read messages in the format that the sender used.
   (add-hook 'mu4e-view-mode-hook (lambda () (visual-line-mode 1)))
 
-  ; Enter insert mode automatically when writing a new email.
-  (with-eval-after-load 'evil
-    (evil-set-initial-state 'mu4e-compose-mode 'insert))
+  ;; Helper packages.
 
   ; Desktop notifications
   (use-package mu4e-alert

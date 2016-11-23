@@ -31,9 +31,13 @@
 (add-hook 'text-mode-hook (lambda () (flyspell-mode 1)))
 
 ;; Emacs Lisp mode
-(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-(add-hook 'emacs-lisp-mode-hook 'warnings-mode-hook)
-(add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (eldoc-mode 1)
+            (warnings-mode-hook)
+            (rainbow-delimiters-mode 1)
+            ; https://github.com/jhenahan/emacs.d/blob/master/emacs-init.org#emacs-lisp
+            (setq mode-name "ξ")))
 
 ;; C-common (it includes languages with a similar syntax of C).
 (add-hook 'c-mode-common-hook 'warnings-mode-hook)
