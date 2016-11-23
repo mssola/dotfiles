@@ -10,6 +10,8 @@ And that's about it. Use this at your own risk ;)
 
 ## GNU Emacs
 
+**NOTE**: these instructions are outdated, I'll update them whenever I can.
+
 For the configuration of Emacs I'm trying out using symlinks instead of copying
 files into the right places. For this reason, for now I'm not providing an
 automatical way to install everything (this is left to be done in the near
@@ -42,14 +44,6 @@ $ sudo zypper in spell
 
 Also, in GNU Emacs the markdown mode requires a markdown-to-HTML converter. There
 are multiple options, but for me `calibre` seems to work just fine.
-
-## mu
-
-I'm using `mu` and `mbsync` to handle my email. TODO: explain how to setup
-authorization and how to install everything
-
-- **TODO**: separate README for GNU Emacs, mbsync, mu, etc.
-- **TODO**: script to automate setup
 
 ## Weechat certificates
 

@@ -1,0 +1,119 @@
+# My credentials are encrypted with my GPG keys symmetrically. The login is done
+# through SSL and the certificate file is located where openSUSE puts it. This
+# configuration requires mbsync 1.3 (or current git master). I'm doing this
+# because:
+#   1. I need to increase the timeout for imap.novell.com
+#   2. I need the improvements for subdirectories handling
+
+##
+# GMail
+
+IMAPAccount gmail
+Host imap.gmail.com
+User mikisabate@gmail.com
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpassgmail.gpg"
+SSLType IMAPS
+AuthMechs Login
+CertificateFile /etc/ssl/ca-bundle.pem
+
+# Use the account specified above as the remote storage.
+IMAPStore gmail-remote
+Account gmail
+
+# Let's use ~/.mail as the prefix for the local storage.
+MaildirStore gmail-local
+Path ~/.mail/gmail/
+Inbox ~/.mail/gmail/inbox
+SubFolders Verbatim
+
+# We could have one only channel, and filter them through the Patterns
+# directive. I prefer having multiple channels and then group them.
+
+Channel gmail-inbox
+Master :gmail-remote:
+Slave :gmail-local:
+Patterns "INBOX"
+Create Both
+Expunge Both
+Sync All
+SyncState *
+
+Channel gmail-all
+Master :gmail-remote:"[Gmail]/All Mail"
+Slave :gmail-local:"All"
+Create Both
+Expunge Both
+Sync All
+SyncState *
+
+Channel gmail-sent
+Master :gmail-remote:"[Gmail]/Sent Mail"
+Slave :gmail-local:"Sent"
+Create Both
+Expunge Both
+Sync All
+SyncState *
+
+# And finally group everything here.
+
+Group gmail
+Channel gmail-inbox
+Channel gmail-all
+Channel gmail-sent
+
+##
+# suse.de
+
+IMAPAccount susede
+Host imap.suse.de
+User msabate
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpasssusede.gpg"
+SSLType IMAPS
+AuthMechs Login
+CertificateFile /etc/ssl/ca-bundle.pem
+
+IMAPStore susede-remote
+Account susede
+
+MaildirStore susede-local
+Path ~/.mail/susede/
+Inbox ~/.mail/susede/inbox
+SubFolders Verbatim
+
+Channel susede
+Master :susede-remote:
+Slave :susede-local:
+Patterns *
+Create Slave
+Sync All
+Expunge Both
+SyncState *
+
+##
+# suse.com
+
+IMAPAccount susecom
+Host imap.novell.com
+User msabate
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpasssusecom.gpg"
+SSLType STARTTLS
+AuthMechs Login
+CertificateFile /etc/ssl/ca-bundle.pem
+Timeout 60
+
+IMAPStore susecom-remote
+Account susecom
+
+MaildirStore susecom-local
+Path ~/.mail/susecom/
+Inbox ~/.mail/susecom/inbox
+SubFolders Verbatim
+
+Channel susecom
+Master :susecom-remote:
+Slave :susecom-local:
+Patterns * !Calendar
+Create Slave
+Sync All
+Expunge Both
+SyncState *

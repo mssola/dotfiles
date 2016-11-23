@@ -27,6 +27,8 @@ cp tmux.conf $HOME/.tmux.conf
 cp rake_completion $HOME/.rake_completion
 cp rvmrc $HOME/.rvmrc
 cp gnupg/gpg.conf $HOME/.gnupg/gpg.conf
+cp gnupg/gpg-agent.conf $HOME/.gnupg/gpg-agent.conf
+cp mbsyncrc $HOME/.mbsyncrc
 chmod +x $HOME/.rake_completion
 
 # Some random scripts
