@@ -30,8 +30,8 @@
 
 ;;; Code:
 
-;; The path to the gfile.
-(defvar g-file "~/.gfile")
+(defvar g-file "~/.gfile"
+  "The path to the gfile.")
 
 ;; Utils
 
