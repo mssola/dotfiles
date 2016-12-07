@@ -20,6 +20,15 @@
 
 (require 'use-package)
 
+;; undo-tree
+
+(global-undo-tree-mode 1)
+(setq undo-tree-visualizer-diff t)
+(setq undo-tree-visualizer-timestamps t)
+(with-eval-after-load 'evil-leader
+  (evil-leader/set-key
+    "u" 'undo-tree-visualize))
+
 ;; Flycheck
 
 (use-package let-alist
