@@ -28,7 +28,10 @@
     1 font-lock-warning-face prepend))))
 
 ;; Text mode.
-(add-hook 'text-mode-hook (lambda () (flyspell-mode 1)))
+(add-hook 'text-mode-hook
+          (lambda ()
+            (flyspell-mode 1)
+            (wc-mode 1)))
 
 ;; Emacs Lisp mode
 (add-hook 'emacs-lisp-mode-hook
@@ -187,8 +190,8 @@
 (use-package hcl-mode
   :ensure t)
 
-(use-package salt-mode
-  :ensure t)
+;(use-package salt-mode
+  ;:ensure t)
 
 (use-package php-mode
   :ensure t)

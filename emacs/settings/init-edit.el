@@ -60,6 +60,10 @@
 (use-package which-key
   :ensure t)
 
+;; Install wc-mode, which counts the number of words in the current buffer.
+(use-package wc-mode
+  :ensure t)
+
 ; Even though this is not entirely needed because Evil already covers most of
 ; it, sometimes it's convenient to use it.
 (use-package expand-region
