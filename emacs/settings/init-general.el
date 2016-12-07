@@ -126,6 +126,12 @@
 ; to *really* evaluate everything from scratch.
 (global-set-key (kbd "C-c k") 'kill-emacs)
 
+; Save custom-variables somewhere else.
+
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(if (file-exists-p custom-file)
+    (load custom-file))
+
 ;; Default theme
 (load-theme 'soria t)
 
