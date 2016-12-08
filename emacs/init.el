@@ -63,6 +63,7 @@
 ;;; Custom Lisp
 
 (byte-compile-file (concat user-emacs-directory "lisp/g.el") t)
+(global-set-key (kbd "M-g") 'g)
 
 ;;; Initialize package and use-package.
 
