@@ -110,6 +110,9 @@
   (lambda ()
     (set-face-attribute 'default t :font "Droid Sans Mono Dotted for Powerline-10")))
 
+; Use kill-this-buffer instead of kill-buffer
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+
 ;; Disable C-z. It will later on be picked up by Evil's config as the escape
 ;; sequence. This is here to make sure that it will be disabled even if Evil
 ;; cannot be loaded due to some error.

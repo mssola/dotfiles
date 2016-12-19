@@ -182,8 +182,9 @@
 
   ; As of 0.9.18 and GNU Emacs 25, the mu4e-action-with-xwidget can be used to
   ; render an HTML message with Webkit.
-  (add-to-list 'mu4e-view-actions
-               '("webkit" . mu4e-action-view-with-xwidget))
+  (if (>= emacs-major-version 25)
+      (add-to-list 'mu4e-view-actions
+                   '("webkit" . mu4e-action-view-with-xwidget)))
 
   ;; Addings hooks for composing and viewing messages.
 

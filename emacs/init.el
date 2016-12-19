@@ -35,7 +35,9 @@
 
 ;;; Preface
 
-;; I'm sticking with the major version I'm using, deal with it.
+;; I'm using GNU Emacs 25, but everything should be working in GNU Emacs
+;; 24. There are some exceptions to this (e.g. webkit support), but these cases
+;; are individually handled.
 (unless (>= emacs-major-version 24)
   (error "Don't be a cheap bastard and upgrade to at least GNU Emacs 24"))
 

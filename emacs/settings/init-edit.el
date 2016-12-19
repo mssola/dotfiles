@@ -20,6 +20,9 @@
 
 (require 'use-package)
 
+;; Disable overwrite-mode.
+(define-key global-map [(insert)] nil)
+
 ;; undo-tree
 
 (global-undo-tree-mode 1)
