@@ -186,6 +186,11 @@
       (add-to-list 'mu4e-view-actions
                    '("webkit" . mu4e-action-view-with-xwidget)))
 
+  ; Look for mu4e-msg2pdf in the exec path.
+  (let ((exec (locate-file "msg2pdf" exec-path exec-suffixes)))
+    (if exec
+        (setq mu4e-msg2pdf exec)))
+
   ;; Addings hooks for composing and viewing messages.
 
   (defun mssola-compose-mode ()
