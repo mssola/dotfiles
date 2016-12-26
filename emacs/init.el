@@ -94,6 +94,7 @@
 (require 'init-evil)
 (require 'init-magit)
 (require 'init-mu4e)
+(require 'init-org)
 (require 'init-lang)
 
 (provide 'init)
