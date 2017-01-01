@@ -1,6 +1,6 @@
 ;;; init-lang.el --- Settings for all programming languages
 
-;; Copyright (C) 2016 Miquel Sabaté Solà <mikisabate@gmail.com>
+;; Copyright (C) 2016-2017 Miquel Sabaté Solà <mikisabate@gmail.com>
 ;;
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
