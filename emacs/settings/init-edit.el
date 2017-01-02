@@ -76,6 +76,10 @@
 (use-package wc-mode
   :ensure t)
 
+;; Distraction-free writing for GNU Emacs.
+(use-package writeroom-mode
+  :ensure t)
+
 ; Even though this is not entirely needed because Evil already covers most of
 ; it, sometimes it's convenient to use it.
 (use-package expand-region
