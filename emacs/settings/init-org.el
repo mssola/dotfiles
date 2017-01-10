@@ -55,6 +55,9 @@ the entire subtree.  Idea taken from @aaronbieber"
 
 ;; TODO: wc mode in org-mode
 
+;; TODO: shortcut for making an org link, and transforming a link into a proper
+;; org link
+
 (with-eval-after-load 'evil
   ; TODO: doesn't work
   (define-key global-map (kbd "M-h") 'help-command)

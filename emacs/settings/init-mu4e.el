@@ -142,7 +142,7 @@
          "Miquel Sabaté Solà,\n"
          "PGP: 4096R / 1BA5 3C7A C93D CA2A CFDF DA97 96BE 8C6F D89D 6565\n"))
 
-  ; Sign outgoing emails
+  ; Sign outgoing emails always.
   (add-hook 'message-send-hook 'mml-secure-message-sign-pgpmime)
 
   ;; To avoid UID clashes. See:
@@ -208,13 +208,20 @@
     (set-fill-column 80)
     (use-hard-newlines t 'guess)
 
+    ; So it's easy to encrypt/decrypt emails.
+    (epa-mail-mode)
+
     ; Spellz
     (flyspell-mode))
 
   (add-hook 'mu4e-compose-mode-hook 'mssola-compose-mode)
 
-  ; I want to read messages in the format that the sender used.
-  (add-hook 'mu4e-view-mode-hook (lambda () (visual-line-mode 1)))
+  ; I want to read messages in the format that the sender used. I'm also
+  ; enabling epa-mail-mode, so it's easy to decrypt received emails.
+  (add-hook 'mu4e-view-mode-hook
+            (lambda ()
+              (epa-mail-mode)
+              (visual-line-mode 1)))
 
   ;; Helper packages.
 
