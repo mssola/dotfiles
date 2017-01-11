@@ -159,6 +159,7 @@
         mu4e-get-mail-command "mbsync -aqV"
         mu4e-update-interval 600
         mu4e-compose-dont-reply-to-self t
+        mu4e-compose-format-flowed t
         mu4e-headers-skip-duplicates t
         mu4e-headers-include-related t
         mu4e-headers-auto-update t)
@@ -203,9 +204,7 @@
           (evil-set-initial-state 'mu4e-compose-mode 'normal)
         (evil-set-initial-state 'mu4e-compose-mode 'insert)))
 
-    ; I want to write my messages inside of 80 characters, but receivers will
-    ; get a format=flow'ed version of it.
-    (set-fill-column 80)
+    ; Guess hard newlines
     (use-hard-newlines t 'guess)
 
     ; So it's easy to encrypt/decrypt emails.

@@ -68,6 +68,8 @@ the entire subtree.  Idea taken from @aaronbieber"
 ;(global-set-key "\C-ca" 'org-agenda)
 ;(global-set-key "\C-cb" 'org-iswitchb)
 
+(setq org-src-fontify-natively t)
+
 (setq org-todo-keywords
       '((sequence "TODO(t)"  "|"  "DONE(d!)")
         (sequence "IDEA(i)"  "WORKING(w)"  "|"  "USED(u@/!)"  "DISCARDED(x@/!)")))
@@ -91,20 +93,21 @@ the entire subtree.  Idea taken from @aaronbieber"
 
 (setq org-agenda-custom-commands
       '(("p" "Printed agenda"
-         ; Display a "High Priority" list of tasks on top.
-         ((tags "PRIORITY=\"A\""
-                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                 (org-agenda-sorting-strategy '(tag-up priority-down))
-                 (org-agenda-todo-keyword-format "")
-                 (org-agenda-overriding-header "High priority\n--------------\n")))
-
-          ; Daily agenda with a 2-weeks deadline warning. Tasks are
-          ; represented as [ ] items.
-          (agenda ""
+         ; Daily agenda with a 2-weeks deadline warning. Tasks are
+         ; represented as [ ] items.
+         ((agenda ""
                   ((org-agenda-ndays 1)
                    (org-deadline-warning-days 14)
                    (org-agenda-todo-keyword-format "[ ]")
                    (org-agenda-scheduled-leaders '("" ""))))
+
+         ; Display a "High Priority" list of tasks on top.
+          (tags "PRIORITY=\"A\""
+                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                 (org-agenda-sorting-strategy '(tag-up priority-down))
+                 (org-agenda-todo-keyword-format "")
+                 (org-agenda-overriding-header "\nHigh priority\n--------------\n")))
+
 
           ; All tasks except those already listed as high priority or
           ; ideas. Scheduled and deadlines are also ignored here.
@@ -158,6 +161,7 @@ the entire subtree.  Idea taken from @aaronbieber"
 
 ; The prefix for the different kinds of types being used.
 (setq org-agenda-prefix-format '((agenda . "%t%s")
+                                 (tags   . "%c:%s")
                                  (todo   . "%c:%t%s")))
 
 (provide 'init-org)
