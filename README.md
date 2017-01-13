@@ -10,24 +10,7 @@ And that's about it. Use this at your own risk ;)
 
 ## GNU Emacs
 
-**NOTE**: these instructions are outdated, I'll update them whenever I can.
-
-For the configuration of Emacs I'm trying out using symlinks instead of copying
-files into the right places. For this reason, for now I'm not providing an
-automatical way to install everything (this is left to be done in the near
-future). The `emacs/init.el` and `emacs/gtkrc` files should be symlinked into
-`~/.emacs.d`.
-
-I run GNU Emacs in daemon mode, but I don't use systemd for that. Instead, in
-the `i3/config` file you'll see that I'm using `-a ""` as an argument of
-`emacsclient`. This instructs `emacsclient` to spawn a new server if there
-isn't one already. This means that the first time around it will take some
-time, but in the next time everything will be alright.
-
-Last but not least, I'm using my customized `soria` color theme. This theme is
-unfortunately not available in any way other than Github. Therefore, you should
-clone it yourself in https://github.com/mssola/soria, and add it into
-the `~/.emacs.d` directory.
+See [emacs/README.org](emacs/README.org).
 
 ## Runtime dependencies
 

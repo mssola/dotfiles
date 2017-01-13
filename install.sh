@@ -57,6 +57,12 @@ cp -rf vim $HOME/.vim
 cp vimrc $HOME/.vimrc
 vim +PluginInstall +qall
 
+# GNU Emacs
+rm -rf $HOME/.emacs.d
+cp emacs/custom.el $HOME/.emacs.d/custom.el
+cp emacs/init.el $HOME/.emacs.d/init.el
+ln -s emacs/init.org $HOME/.emacs.d/init.org
+
 # Wipe out weechat config and install it again
 rm -rf $HOME/.weechat
 cp -r weechat $HOME/.weechat
