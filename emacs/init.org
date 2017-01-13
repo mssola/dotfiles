@@ -347,7 +347,7 @@ Sometimes I want to debug my initialization time.
 * Lisp packages
 ** Custom packages
 
-Compile the =g.el= script and bind it to <kbd>M-g</kbd>.
+Compile the =g.el= script and bind it to @@html:<kbd>M-g</kbd>@@.
 
 #+BEGIN_SRC elisp
   (byte-compile-file (concat user-emacs-directory "lisp/g.el") t)
@@ -453,7 +453,7 @@ Then, for keeping up with my projects I use the Projectile + Helm combination.
 #+END_SRC
 
 Finally, I've added a couple of bindings in evil mode. First of all, I want
-<kbd>C-p</kbd> to use the proper function for finding files.
+@@html:<kbd>C-p</kbd>@@ to use the proper function for finding files.
 
 #+BEGIN_SRC elisp
   (defun mssola-find-file ()
@@ -471,7 +471,7 @@ Finally, I've added a couple of bindings in evil mode. First of all, I want
 #+END_SRC
 
 Similarly, =helm-ag= has two functions for applying =ag= on the project. I'm
-binding to <kbd>leader-a</kbd> a function that calls to the proper function.
+binding to @@html:<kbd>,a</kbd>@@ a function that calls to the proper function.
 
 #+BEGIN_SRC elisp
   (defun mssola-helm-ag ()
@@ -623,7 +623,7 @@ whenever I use it, I want basic evil movement.
 
 And now instruct dired mode how to attach files when using mu4e. This is taken
 from the [[https://www.djcbsoftware.nl/code/mu/mu4e/Dired.html#Dired][mu4e documentation]], and it's available by typing
-<kbd>C-c</kbd><kbd>RET</kbd><kbd>C-a</kbd>.
+@@html:<kbd>C-c</kbd>@@@@html:<kbd>RET</kbd>@@@@html:<kbd>C-a</kbd>@@.
 
 #+BEGIN_SRC elisp
   (require 'gnus-dired)
@@ -1277,6 +1277,26 @@ The prefix for the different kinds of types being used.
   (setq org-agenda-prefix-format '((agenda . "%t%s")
                                    (tags   . "%c:%s")
                                    (todo   . "%c:%t%s")))
+#+END_SRC
+
+Insert a <kbd></kbd> value in org mode. See this [[http://emacs.stackexchange.com/questions/2206/i-want-to-have-the-kbd-tags-for-my-blog-written-in-org-mode][StackExchange answer]].
+
+#+BEGIN_SRC elisp
+(defun endless/insert-key (key)
+  "Ask for a key then insert its description.
+Will work on both org-mode and any mode that accepts plain html."
+  (interactive "kType key sequence: ")
+  (let* ((is-org-mode (derived-mode-p 'org-mode))
+         (tag (if is-org-mode
+                  "@@html:<kbd>%s</kbd>@@"
+                "<kbd>%s</kbd>")))
+    (if (null (equal key "\r"))
+        (insert
+         (format tag (help-key-description key nil)))
+      (insert (format tag ""))
+      (forward-char (if is-org-mode -8 -6)))))
+
+(define-key org-mode-map "\C-ck" #'endless/insert-key)
 #+END_SRC
 
 ** TODO shortcut for making an org link, and transforming a link into a proper org link
