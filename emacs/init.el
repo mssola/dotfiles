@@ -91,6 +91,7 @@
 (require 'init-project)
 (require 'init-edit)
 (require 'init-misc)
+(require 'init-dired)
 (require 'init-evil)
 (require 'init-magit)
 (require 'init-mu4e)
