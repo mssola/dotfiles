@@ -7,6 +7,13 @@ before_install:
   - git clone https://github.com/rejeep/evm.git $HOME/.evm
   - export PATH=$HOME/.evm/bin:$PATH
 
+  # mu4e
+  - sudo apt-get -qq update
+  - sudo apt-get install -y maildir-utils
+  - wget https://github.com/djcb/mu/releases/download/0.9.18/mu-0.9.18.tar.gz
+  - tar xzvf mu-0.9.18.tar.gz
+  - sudo cp -r mu-0.9.18/mu4e /usr/share/emacs/site-lisp/
+
   - evm config path /tmp
   - evm install $EVM_EMACS --use --skip
 

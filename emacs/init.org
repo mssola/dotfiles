@@ -37,7 +37,7 @@ There is no reason to track the init.el file, and no reason to change this
 file. In order to ensure this, make sure to apply the following command after
 cloning:
 
-#+BEGIN_SRC sh
+#+BEGIN_SRC sh :tangle no
 git update-index --assume-unchanged emacs/init.el
 #+END_SRC
 
