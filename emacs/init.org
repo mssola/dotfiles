@@ -1,7 +1,7 @@
 #+TITLE: mssola's GNU Emacs configuration
 #+AUTHOR: Miquel Sabaté Solà
 #+BABEL: :cache yes
-#+PROPERTY: header-args :tangle init.el
+#+PROPERTY: header-args :tangle ~/.emacs.d/init.el
 
 * Preface
 <<sec:preface>>
@@ -14,38 +14,49 @@ byte-compiled. This means that all changes are to be made on the =init.org=
 file *always*. The initial contents of the =init.el= are:
 
 #+BEGIN_SRC elisp :tangle no
-  ;; We can't tangle without org!
-  (require 'org)
+;; We can't tangle without org!
+(require 'org)
 
-  ;; Open the configuration
-  (find-file (concat user-emacs-directory "init.org"))
+;; Follow symlinks
+(setq vc-follow-symlinks t)
 
-  ;; Tangle it
-  (org-babel-tangle)
+;; Open the configuration
+(find-file (concat user-emacs-directory "init.org"))
 
-  ;; Load it
-  (load-file (concat user-emacs-directory "init.el"))
+;; Tangle it
+(org-babel-tangle)
 
-  ;; Finally byte-compile it
-  (byte-compile-file (concat user-emacs-directory "init.el"))
+;; Load it
+(load-file (concat user-emacs-directory "init.el"))
+
+;; Finally byte-compile it
+(byte-compile-file (concat user-emacs-directory "init.el"))
 #+END_SRC
 
 There is no reason to track the init.el file, and no reason to change this
-file. Moreover, in order to avoid manually tangling and compiling the
-=init.org= file on each change, the following function is provided:
+file. In order to ensure this, make sure to apply the following command after
+cloning:
+
+#+BEGIN_SRC sh
+git update-index --assume-unchanged emacs/init.el
+#+END_SRC
+
+Moreover, in order to avoid manually tangling and compiling the =init.org= file
+on each change, the following function is provided:
 
 #+BEGIN_SRC elisp
 (defun tangle-init ()
   "If the current buffer is 'init.org' the code-blocks are
-  tangled, and the tangled file is compiled."
+  tangled, and the tangled file is compiled. Morever, an init.html is generated."
 
   (when (or (equal (buffer-file-name)
                    (expand-file-name (concat user-emacs-directory "init.org")))
             (string-suffix-p "dotfiles/emacs/init.org" (buffer-file-name)))
 
-    ;; Avoid running hooks when tangling.
+    ;; Avoid running hooks when tangling
     (let ((prog-mode-hook nil))
       (org-babel-tangle)
+      (org-html-export-to-html)
       (byte-compile-file (concat user-emacs-directory "init.el")))))
 
 (add-hook 'after-save-hook 'tangle-init)
