@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>mssola's GNU Emacs configuration</title>
-<!-- 2017-01-14 Sat 16:19 -->
+<!-- 2017-01-15 Sun 00:54 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Miquel Sabaté Solà" />
@@ -849,8 +849,9 @@ recent versions of GNU Emacs.
 
 <pre class="src src-elisp">(with-eval-after-load 'undo-tree
   (global-undo-tree-mode 1)
-  (setq undo-tree-visualizer-diff t)
-  (setq undo-tree-visualizer-timestamps t)
+  (setq undo-tree-visualizer-diff t
+        undo-tree-visualizer-timestamps t
+        undo-tree-visualizer-relative-timestamps t)
   (with-eval-after-load 'evil-leader
     (evil-leader/set-key
       "u" 'undo-tree-visualize)))
@@ -2155,7 +2156,7 @@ too many things into my leader and these shortcuts look sensible to me).
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Miquel Sabaté Solà</p>
-<p class="date">Created: 2017-01-14 Sat 16:19</p>
+<p class="date">Created: 2017-01-15 Sun 00:54</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
