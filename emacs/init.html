@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>mssola's GNU Emacs configuration</title>
-<!-- 2017-01-15 Sun 00:54 -->
+<!-- 2017-01-16 Mon 08:38 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Miquel Sabaté Solà" />
@@ -183,10 +183,6 @@ for the JavaScript code in this tag.
 <div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> Preface</h2>
 <div class="outline-text-2" id="text-1">
-<p>
-<a id="sec:preface" name="sec:preface"></a>
-</p>
-
 <p>
 This is my attempt of getting my configuration organized with literate
 programming and <code>org-babel</code>. I took the workflow I'm following from <a href="https://github.com/larstvei">@larstvei</a>.
@@ -859,7 +855,7 @@ recent versions of GNU Emacs.
 </div>
 
 <p>
-Another important package is <code>flycheck</code>, which is a on-the-fly syntax checking
+Another important package is <code>flycheck</code>, which is an on-the-fly syntax checking
 extension. This works with lots of languages with proper glue code.
 </p>
 
@@ -1048,11 +1044,11 @@ from the <a href="https://www.djcbsoftware.nl/code/mu/mu4e/Dired.html#Dired">mu4
 <h2 id="sec-10"><span class="section-number-2">10</span> Evil</h2>
 <div class="outline-text-2" id="text-10">
 <p>
-Forgive me, <a href="https://stallman.org/saint.html">Father</a>, for I have sinned. As I said in the <i>Preface</i>, I've been
-exposed to modal editing through Vim, and that has changed how I view editing
-for the foreseeable future. Because of this, I use Evil. The following block
-includes some heavy-lifting so Evil and GNU Emacs work without hitting each
-other, and it also includes some Evil extensions.
+Forgive me, <a href="https://stallman.org/saint.html">Father</a>, for I have sinned. I've been exposed to modal editing
+through Vim, and that has changed how I view editing for the foreseeable future.
+Because of this, I use Evil. The following block includes some heavy-lifting so
+Evil and GNU Emacs work without hitting each other, and it also includes some
+Evil extensions.
 </p>
 
 <div class="org-src-container">
@@ -1294,11 +1290,10 @@ the configuration.
         smtpmail-smtp-server server
         smtpmail-smtp-service port))
 
-;; Define the different accounts that I'm using. This is only available since
-;; mu 0.9.16.
-
 ; https://www.reddit.com/r/emacs/comments/47t9ec/share_your_mu4econtext_configs/d0fsih6
 (defun mu4e-message-maildir-matches (msg rx)
+  "Returns true if the maildir of MSG matches the given regexp RX."
+
   (when rx
     (if (listp rx)
         ;; if rx is a list, try each one for a match
@@ -1316,7 +1311,7 @@ the configuration.
 
 <p>
 Now it's time to define the different contexts that I have. Defining contexts
-this way is relatively new (since mu 0.16).
+this way is relatively new (since mu 0.9.16).
 </p>
 
 <div class="org-src-container">
@@ -2156,7 +2151,7 @@ too many things into my leader and these shortcuts look sensible to me).
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Miquel Sabaté Solà</p>
-<p class="date">Created: 2017-01-15 Sun 00:54</p>
+<p class="date">Created: 2017-01-16 Mon 08:38</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
