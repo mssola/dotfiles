@@ -1,5 +1,6 @@
 #+TITLE: mssola's GNU Emacs configuration
 #+AUTHOR: Miquel Sabaté Solà
+#+HTML_HEAD: <link rel="stylesheet" href="http://jo.mssola.com/static/style.css" type="text/css" />
 #+BABEL: :cache yes
 #+PROPERTY: header-args :tangle ~/.emacs.d/init.el
 
@@ -634,7 +635,7 @@ whenever I use it, I want basic evil movement.
 
 And now instruct dired mode how to attach files when using mu4e. This is taken
 from the [[https://www.djcbsoftware.nl/code/mu/mu4e/Dired.html#Dired][mu4e documentation]], and it's available by typing
-@@html:<kbd>C-c</kbd>@@@@html:<kbd>RET</kbd>@@@@html:<kbd>C-a</kbd>@@.
+@@html:<kbd>C-c RET C-a</kbd>@@.
 
 #+BEGIN_SRC elisp
   (require 'gnus-dired)
@@ -1312,6 +1313,8 @@ Will work on both org-mode and any mode that accepts plain html."
 ** TODO shortcut for making an org link, and transforming a link into a proper org link
 ** TODO make it work with evil
 ** TODO Proper keybindings for quick access.
+
+** TODO shortcuts for stuff like: create something urgent for today
 
 * Languages
 
