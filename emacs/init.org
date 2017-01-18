@@ -1578,3 +1578,34 @@ too many things into my leader and these shortcuts look sensible to me).
            ("C-c i" . crux-find-user-init-file)
            ("C-c o" . crux-open-with)))
 #+END_SRC
+* Credits
+
+I've built this file by simply scavenging from other people's emacs.d/dotfiles
+repositories. I have taken lots of pieces from here and there, but most notably:
+
+- [[https://github.com/ereslibre/dotfiles][@ereslibre]]
+- [[https://github.com/dmacvicar/dotfiles][@dmacvicar]]
+- [[https://github.com/bbatsov/emacs.d][@bbatsov]]
+- [[https://github.com/aaronbieber/dotfiles][@aaronbieber]]
+- [[https://github.com/purcell/emacs.d][@purcell]]
+- [[https://github.com/sachac/emacs.d][@sachac]] ([[http://pages.sachachua.com/.emacs.d/Sacha.html][HTML version]])
+- [[https://github.com/larstvei/dot-emacs][@larstvei]]
+
+* License
+
+#+BEGIN_SRC text
+  Copyright (C) 2014-2017 Miquel Sabaté Solà <mikisabate@gmail.com>
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#+END_SRC
