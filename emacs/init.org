@@ -1,6 +1,7 @@
 #+TITLE: mssola's GNU Emacs configuration
 #+AUTHOR: Miquel Sabaté Solà
 #+HTML_HEAD: <link rel="stylesheet" href="http://jo.mssola.com/static/style.css" type="text/css" />
+#+HTML_HEAD: <link rel="stylesheet" href="http://jo.mssola.com/static/org.css" type="text/css" />
 #+BABEL: :cache yes
 #+PROPERTY: header-args :tangle ~/.emacs.d/init.el
 
@@ -1142,6 +1143,8 @@ And finally define a proper shortcut.
 
 * org
 
+** General settings
+
 First of all, let me define some helper functions.
 
 #+BEGIN_SRC elisp
@@ -1178,25 +1181,24 @@ First of all, let me define some helper functions.
 Some general UI settings for org mode.
 
 #+BEGIN_SRC elisp
-  (setq org-src-fontify-natively t
-        org-src-tab-acts-natively t
-        org-confirm-babel-evaluate nil
-        org-edit-src-content-indentation 0)
+(setq org-src-tab-acts-natively t
+      org-confirm-babel-evaluate nil
+      org-edit-src-content-indentation 0)
 
-  (setq org-todo-keywords
-        '((sequence "TODO(t)"  "|"  "DONE(d!)")
-          (sequence "IDEA(i)"  "WORKING(w)"  "|"  "USED(u@/!)"  "DISCARDED(x@/!)")))
+(setq org-todo-keywords
+      '((sequence "TODO(t)"  "|"  "DONE(d!)")
+        (sequence "IDEA(i)"  "WORKING(w)"  "|"  "USED(u@/!)"  "DISCARDED(x@/!)")))
 
-  (setq org-todo-keyword-faces
-        '(("TODO"      . org-todo)
-          ("IDEA"      . font-lock-constant-face)
-          ("WORKING"   . font-lock-constant-face)
-          ("DONE"      . org-done)
-          ("USED"      . org-done)
-          ("DISCARDED" . org-done)))
+(setq org-todo-keyword-faces
+      '(("TODO"      . org-todo)
+        ("IDEA"      . font-lock-constant-face)
+        ("WORKING"   . font-lock-constant-face)
+        ("DONE"      . org-done)
+        ("USED"      . org-done)
+        ("DISCARDED" . org-done)))
 #+END_SRC
 
-Loggins settings.
+Logging settings.
 
 #+BEGIN_SRC elisp
   (setq org-log-done t)
@@ -1209,6 +1211,31 @@ Where org files reside.
 #+BEGIN_SRC elisp
   (setq org-agenda-files '("~/org/"))
 #+END_SRC
+
+** Publishing
+
+In order to publish files into HTML, I would like to have =htmlize= installed.
+This package allows org to export to HTML in a better way (e.g. allowing code
+blocks to be converted into HTML as well, so we can properly colorize it).
+
+#+BEGIN_SRC elisp
+(use-package 'htmlize
+  :ensure t)
+#+END_SRC
+
+And now let's set all the related settings.
+
+#+BEGIN_SRC elisp
+(setq org-src-fontify-natively t
+      org-html-include-timestamps nil
+      org-html-toplevel-hlevel 2
+      org-html-htmlize-output-type 'css
+      org-export-with-section-numbers nil
+      org-export-with-sub-superscripts nil
+      org-export-htmlize-output-type 'css)
+#+END_SRC
+
+** Agenda
 
 Custom commands for =org-agenda=.
 
@@ -1289,6 +1316,8 @@ The prefix for the different kinds of types being used.
                                    (tags   . "%c:%s")
                                    (todo   . "%c:%t%s")))
 #+END_SRC
+
+** Other
 
 Insert a <kbd></kbd> value in org mode. See this [[http://emacs.stackexchange.com/questions/2206/i-want-to-have-the-kbd-tags-for-my-blog-written-in-org-mode][StackExchange answer]].
 
@@ -1588,12 +1617,12 @@ repositories. I have taken lots of pieces from here and there, but most notably:
 - [[https://github.com/bbatsov/emacs.d][@bbatsov]]
 - [[https://github.com/aaronbieber/dotfiles][@aaronbieber]]
 - [[https://github.com/purcell/emacs.d][@purcell]]
-- [[https://github.com/sachac/emacs.d][@sachac]] ([[http://pages.sachachua.com/.emacs.d/Sacha.html][HTML version]])
+- [[https://github.com/sachac/.emacs.d][@sachac]] ([[http://pages.sachachua.com/.emacs.d/Sacha.html][HTML version]])
 - [[https://github.com/larstvei/dot-emacs][@larstvei]]
 
 * License
 
-#+BEGIN_SRC text
+#+BEGIN_SRC text :tangle no
   Copyright (C) 2014-2017 Miquel Sabaté Solà <mikisabate@gmail.com>
 
   This program is free software: you can redistribute it and/or modify

@@ -14,7 +14,7 @@
  '(markdown-command "/usr/bin/markdown-calibre")
  '(package-selected-packages
    (quote
-    (cmake-mode websocket markdown-mode go-mode magit evil-leader evil helm projectile writeroom-mode org-eldoc evil-commentary circe yasnippet yaml-mode which-key web-mode wc-mode use-package terraform-mode smart-tabs-mode slim-mode scss-mode rainbow-delimiters php-mode org-evil olivetti mu4e-alert mmm-jinja2 markdown-preview-mode helm-projectile helm-ag go-eldoc go-add-tags flycheck expand-region evil-surround evil-org evil-numbers evil-mu4e evil-magit evil-args dockerfile-mode disable-mouse default-text-scale crux cmake-font-lock ag))))
+    (htmlize cmake-mode websocket markdown-mode go-mode magit evil-leader evil helm projectile writeroom-mode org-eldoc evil-commentary circe yasnippet yaml-mode which-key web-mode wc-mode use-package terraform-mode smart-tabs-mode slim-mode scss-mode rainbow-delimiters php-mode org-evil olivetti mu4e-alert mmm-jinja2 markdown-preview-mode helm-projectile helm-ag go-eldoc go-add-tags flycheck expand-region evil-surround evil-org evil-numbers evil-mu4e evil-magit evil-args dockerfile-mode disable-mouse default-text-scale crux cmake-font-lock ag))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
