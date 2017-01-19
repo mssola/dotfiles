@@ -1219,7 +1219,7 @@ This package allows org to export to HTML in a better way (e.g. allowing code
 blocks to be converted into HTML as well, so we can properly colorize it).
 
 #+BEGIN_SRC elisp
-(use-package 'htmlize
+(use-package htmlize
   :ensure t)
 #+END_SRC
 
