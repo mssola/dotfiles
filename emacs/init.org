@@ -1,5 +1,6 @@
 #+TITLE: mssola's GNU Emacs configuration
 #+AUTHOR: Miquel Sabaté Solà
+#+EMAIL: mikisabate@gmail.com
 #+HTML_HEAD: <link rel="stylesheet" href="http://jo.mssola.com/static/style.css" type="text/css" />
 #+HTML_HEAD: <link rel="stylesheet" href="http://jo.mssola.com/static/org.css" type="text/css" />
 #+BABEL: :cache yes
@@ -392,6 +393,14 @@ package-install, I decided on use-package because I feel more well-organized.
     (package-install 'use-package))
 #+END_SRC
 
+Some =use-package= calls require =diminish.el= to be available. So, let's
+require it here on the very top.
+
+#+BEGIN_SRC elisp
+(use-package diminish
+  :ensure t)
+#+END_SRC
+
 * Project
 
 First of all, load the silver searcher, which is a convenient and fast searcher.
@@ -510,9 +519,13 @@ recent versions of GNU Emacs.
 #+BEGIN_SRC elisp
 (with-eval-after-load 'undo-tree
   (global-undo-tree-mode 1)
+
   (setq undo-tree-visualizer-diff t
         undo-tree-visualizer-timestamps t
         undo-tree-visualizer-relative-timestamps t)
+
+  (diminish 'undo-tree-mode)
+
   (with-eval-after-load 'evil-leader
     (evil-leader/set-key
       "u" 'undo-tree-visualize)))
@@ -522,20 +535,21 @@ Another important package is =flycheck=, which is an on-the-fly syntax checking
 extension. This works with lots of languages with proper glue code.
 
 #+BEGIN_SRC elisp
-  (use-package let-alist
-    :ensure t)
+(use-package let-alist
+  :ensure t)
 
-  (use-package flycheck
-    :ensure t
-    :config
-    (add-hook 'after-init-hook 'global-flycheck-mode)
+(use-package flycheck
+  :ensure t
+  :diminish
+  :config
+  (add-hook 'after-init-hook 'global-flycheck-mode)
 
-    ;; Only show the errors buffer if it isn't there and if I'm saving the
-    ;; buffer.
-    (setq flycheck-emacs-lisp-load-path 'inherit)
-    (setq flycheck-check-syntax-automatically '(mode-enabled save))
-    (setq flycheck-display-errors-function
-      #'flycheck-display-error-messages-unless-error-list))
+  ;; Only show the errors buffer if it isn't there and if I'm saving the
+  ;; buffer.
+  (setq flycheck-emacs-lisp-load-path 'inherit)
+  (setq flycheck-check-syntax-automatically '(mode-enabled save))
+  (setq flycheck-display-errors-function
+    #'flycheck-display-error-messages-unless-error-list))
 #+END_SRC
 
 A recurring issue in speeches and presentations is that when showing something
@@ -563,10 +577,11 @@ supports it).
 I never use the mouse.
 
 #+BEGIN_SRC elisp
-  (use-package disable-mouse
-    :ensure t
-    :config
-    (global-disable-mouse-mode))
+(use-package disable-mouse
+  :ensure t
+  :diminish
+  :config
+  (global-disable-mouse-mode))
 #+END_SRC
 
 Sometimes you begin typing a prefix, but then you forget the following
@@ -621,6 +636,23 @@ covers most of my uses, it's convenient to have this tool anyways.
                                 mark-page))))
 
   (add-hook 'text-mode-hook 'er/add-text-mode-expansions)
+#+END_SRC
+
+Last but not least, =YASnippet=. This package allows people to define shortcuts
+for writing some common blocks. Moreover, it comes with a set of builtin
+snippets already. Since I don't remember some of these snippets, I've mapped
+@@html:<kbd>, a</kbd>@@ to =yas-describe-tables=, which shows the available
+snippets in another buffer.
+
+#+BEGIN_SRC elisp
+(use-package yasnippet
+  :ensure t
+  :diminish yas-minor-mode
+  :init (yas-global-mode)
+  :config
+  (yas-global-mode 1)
+  (with-eval-after-load 'evil-leader
+    (evil-leader/set-key "h" 'yas-describe-tables)))
 #+END_SRC
 
 * Dired
@@ -1057,7 +1089,7 @@ render an HTML message with Webkit.
                    '("webkit" . mu4e-action-view-with-xwidget)))
 #+END_SRC
 
-Look for mu4e-msg2pdf in the exec path. The reason for this is that that OBS
+Look for =mu4e-msg2pdf= in the exec path. The reason for this is that the OBS
 package installs mu's =toys= into the exec path, but =mu4e= doesn't really count
 on it.
 
@@ -1580,17 +1612,6 @@ criteria really).
                        perl-mode-hook
                        emacs-lisp-mode-hook))
     (add-hook lang-hook 'soria-purple-identifiers))
-#+END_SRC
-
-Last but not least, =YASnippet=. This package allows people to define shortcuts
-for writing some common blocks.
-
-#+BEGIN_SRC elisp
-  (use-package yasnippet
-    :ensure t
-    :config
-    (yas-reload-all)
-    (add-hook 'prog-mode-hook #'yas-minor-mode))
 #+END_SRC
 
 * Misc

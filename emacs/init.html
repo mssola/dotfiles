@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>mssola's GNU Emacs configuration</title>
-<!-- 2017-01-19 Thu 09:51 -->
+<!-- 2017-01-25 Wed 17:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Miquel Sabaté Solà" />
@@ -709,6 +709,18 @@ package-install, I decided on use-package because I feel more well-organized.
   <span class="org-rainbow-delimiters-depth-2">(</span>package-install 'use-package<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
+
+<p>
+Some <code>use-package</code> calls require <code>diminish.el</code> to be available. So, let's
+require it here on the very top.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> diminish
+  <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
 </div>
 </div>
 </div>
@@ -854,9 +866,13 @@ recent versions of GNU Emacs.
 
 <pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">with-eval-after-load</span> 'undo-tree
   <span class="org-rainbow-delimiters-depth-2">(</span>global-undo-tree-mode 1<span class="org-rainbow-delimiters-depth-2">)</span>
+
   <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">setq</span> undo-tree-visualizer-diff t
         undo-tree-visualizer-timestamps t
         undo-tree-visualizer-relative-timestamps t<span class="org-rainbow-delimiters-depth-2">)</span>
+
+  <span class="org-rainbow-delimiters-depth-2">(</span>diminish 'undo-tree-mode<span class="org-rainbow-delimiters-depth-2">)</span>
+
   <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">with-eval-after-load</span> 'evil-leader
     <span class="org-rainbow-delimiters-depth-3">(</span>evil-leader/set-key
       <span class="org-string">"u"</span> 'undo-tree-visualize<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
@@ -875,6 +891,7 @@ extension. This works with lots of languages with proper glue code.
 
 <span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> flycheck
   <span class="org-builtin">:ensure</span> t
+  <span class="org-builtin">:diminish</span>
   <span class="org-builtin">:config</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>add-hook 'after-init-hook 'global-flycheck-mode<span class="org-rainbow-delimiters-depth-2">)</span>
 
@@ -925,6 +942,7 @@ I never use the mouse.
 
 <pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> disable-mouse
   <span class="org-builtin">:ensure</span> t
+  <span class="org-builtin">:diminish</span>
   <span class="org-builtin">:config</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>global-disable-mouse-mode<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
@@ -997,6 +1015,27 @@ covers most of my uses, it's convenient to have this tool anyways.
                               mark-page<span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 
 <span class="org-rainbow-delimiters-depth-1">(</span>add-hook 'text-mode-hook 'er/add-text-mode-expansions<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+Last but not least, <code>YASnippet</code>. This package allows people to define shortcuts
+for writing some common blocks. Moreover, it comes with a set of builtin
+snippets already. Since I don't remember some of these snippets, I've mapped
+<kbd>, a</kbd> to <code>yas-describe-tables</code>, which shows the available
+snippets in another buffer.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> yasnippet
+  <span class="org-builtin">:ensure</span> t
+  <span class="org-builtin">:diminish</span> yas-minor-mode
+  <span class="org-builtin">:init</span> <span class="org-rainbow-delimiters-depth-2">(</span>yas-global-mode<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>yas-global-mode 1<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">with-eval-after-load</span> 'evil-leader
+    <span class="org-rainbow-delimiters-depth-3">(</span>evil-leader/set-key <span class="org-string">"h"</span> 'yas-describe-tables<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 </div>
@@ -1521,7 +1560,7 @@ render an HTML message with Webkit.
 </div>
 
 <p>
-Look for mu4e-msg2pdf in the exec path. The reason for this is that that OBS
+Look for <code>mu4e-msg2pdf</code> in the exec path. The reason for this is that the OBS
 package installs mu's <code>toys</code> into the exec path, but <code>mu4e</code> doesn't really count
 on it.
 </p>
@@ -2169,21 +2208,6 @@ criteria really).
   <span class="org-rainbow-delimiters-depth-2">(</span>add-hook lang-hook 'soria-purple-identifiers<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
-
-<p>
-Last but not least, <code>YASnippet</code>. This package allows people to define shortcuts
-for writing some common blocks.
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> yasnippet
-  <span class="org-builtin">:ensure</span> t
-  <span class="org-builtin">:config</span>
-  <span class="org-rainbow-delimiters-depth-2">(</span>yas-reload-all<span class="org-rainbow-delimiters-depth-2">)</span>
-  <span class="org-rainbow-delimiters-depth-2">(</span>add-hook 'prog-mode-hook #'yas-minor-mode<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
-</pre>
-</div>
 </div>
 </div>
 
@@ -2261,7 +2285,7 @@ along with this program.  If not, see <a href="http://www.gnu.org/licenses/">&lt
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Miquel Sabaté Solà</p>
-<p class="date">Created: 2017-01-19 Thu 09:51</p>
+<p class="date">Created: 2017-01-25 Wed 17:40</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
