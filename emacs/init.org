@@ -609,9 +609,9 @@ that often, but it's cool to have a distraction-free screen from time to time.
     :ensure t)
 #+END_SRC
 
-Finally, we have =expand-region=. This is an extension that is based on a Vim
-one, which expands the region of selection with a single key chord. Even if evil
-covers most of my uses, it's convenient to have this tool anyways.
+The =expand-region= package is an extension that is based on a Vim one, which
+expands the region of selection with a single key chord. Even if evil covers
+most of my uses, it's convenient to have this tool anyways.
 
 #+BEGIN_SRC elisp
   (use-package expand-region
@@ -641,7 +641,7 @@ covers most of my uses, it's convenient to have this tool anyways.
 Last but not least, =YASnippet=. This package allows people to define shortcuts
 for writing some common blocks. Moreover, it comes with a set of builtin
 snippets already. Since I don't remember some of these snippets, I've mapped
-@@html:<kbd>, a</kbd>@@ to =yas-describe-tables=, which shows the available
+@@html:<kbd>, h</kbd>@@ to =yas-describe-tables=, which shows the available
 snippets in another buffer.
 
 #+BEGIN_SRC elisp
