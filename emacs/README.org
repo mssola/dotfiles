@@ -37,6 +37,12 @@ go get -u github.com/dougm/goflymake
 go get -u github.com/nsf/gocode
 #+END_SRC
 
+** Developing
+
+I've added a git =pre-push= hook which syncs the =init.html= and the =org.css=
+files into my personal server. So make sure to add this hook into the
+=.git/hooks= directory.
+
 ** Installing
 
 The installation process of my GNU Emacs configuration should already be handled

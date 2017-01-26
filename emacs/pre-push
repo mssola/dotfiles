@@ -1,0 +1,81 @@
+#!/bin/sh
+# Copyright (C) 2017 Miquel Sabaté Solà <mikisabate@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Most of the code is taken from the default pre-push.sample file.
+
+# From the documentation, if the foreign ref does not yet exist the
+# <remote SHA1> will be 40 0.
+z40=0000000000000000000000000000000000000000
+
+# The path where the files are to be stored on the server.
+__mssola_remote_path=/home/mssola/static
+
+# Safely join paths.
+__mssola_join_path() {
+    local IFS="/"; echo "$*";
+}
+
+# This function does the actual syncing. It takes one argument, which is the
+# file to be synced. Note that this function assumes that the given file is
+# under the "emacs" directory.
+__mssola_sync_cheato() {
+    path=$(realpath .)
+
+    src=$(__mssola_join_path $path "emacs" $1)
+    dst=$(__mssola_join_path "cheato.mssola.com:$__mssola_remote_path" $1)
+
+    echo "Syncing $(__mssola_join_path emacs $1)"
+    rsync $src $dst
+}
+
+# Copy the files that I want to my server.
+__mssola_sync() {
+    __mssola_sync_cheato "init.html"
+    __mssola_sync_cheato "org.css"
+}
+
+# This block iterates through all the given info provided by git. If there is
+# a change on a GNU Emacs file, then it needs to by synced with my server.
+while read local_ref local_sha remote_ref remote_sha
+do
+    echo "LOOP"
+	if [ "$local_sha" = $z40 ]
+	then
+		# Handle delete
+		:
+	else
+		if [ "$remote_sha" = $z40 ]
+		then
+			# New branch, examine all commits
+			range="$local_sha"
+		else
+			# Update to existing branch, examine new commits
+			range="$remote_sha..$local_sha"
+		fi
+
+		# Commits afecting GNU Emacs are prefixed with "emacs: ". It's a
+        # convention that I always follow.
+		commit=`git rev-list -n 1 --grep '^emacs:' "$range"`
+        echo "COMMIT $commit"
+		if [ -n "$commit" ]
+		then
+            __mssola_sync
+			exit 0
+		fi
+	fi
+done
+
+exit 0
