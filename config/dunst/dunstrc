@@ -1,6 +1,9 @@
 [global]
     font = Monospace 8
 
+    # The icon has to be on the left
+    icon_position = left
+
     # allow a small subset of html markup:
     # <b>bold</b>
     # <i>italic</i>

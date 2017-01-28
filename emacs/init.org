@@ -1625,7 +1625,6 @@ too many things into my leader and these shortcuts look sensible to me).
     :ensure t
     :bind (("C-c d" . crux-delete-file-and-buffer)
            ("C-c r" . crux-rename-file-and-buffer)
-           ("C-c i" . crux-find-user-init-file)
            ("C-c o" . crux-open-with)))
 #+END_SRC
 * Credits
