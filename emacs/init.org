@@ -477,18 +477,38 @@ Finally, I've added a couple of bindings in evil mode. First of all, I want
 @@html:<kbd>C-p</kbd>@@ to use the proper function for finding files.
 
 #+BEGIN_SRC elisp
-  (defun mssola-find-file ()
-    "Call the proper Helm function for finding files."
+(defun erc-helm-buffer-list ()
+  "Returns a list with the ERC buffers."
+  (mapcar 'buffer-name (erc-buffer-list)))
 
-    (interactive)
+(setq helm-source-erc-channel-list
+      '((name . "ERC Channels")
+        (candidates . erc-helm-buffer-list)
+        (action . helm-switch-to-buffer)))
 
+(defun erc-helm-switch-buffer ()
+  "Use helm to select an active ERC buffer.  Replaces erc-iswitchb, which
+doesn't work for me."
+
+  (interactive)
+
+  (helm :sources '(helm-source-erc-channel-list)
+        :buffer "*helm-erc-channels*"))
+
+(defun mssola-find-file ()
+  "Call the proper Helm function for finding files."
+
+  (interactive)
+
+  (if (string= major-mode "erc-mode")
+      (erc-helm-switch-buffer)
     (condition-case nil
         (helm-projectile-find-file)
       (error
-       (helm-find-files nil))))
+       (helm-find-files nil)))))
 
-  (with-eval-after-load 'evil
-    (define-key evil-normal-state-map (kbd "C-p") 'mssola-find-file))
+(with-eval-after-load 'evil
+  (define-key evil-normal-state-map (kbd "C-p") 'mssola-find-file))
 #+END_SRC
 
 Similarly, =helm-ag= has two functions for applying =ag= on the project. I'm
