@@ -1377,6 +1377,104 @@ Will work on both org-mode and any mode that accepts plain html."
 
 ** TODO shortcuts for stuff like: create something urgent for today
 
+* IRC
+
+I'm giving ERC a chance. First of all, I'm setting up basic stuff.
+
+#+BEGIN_SRC elisp
+(use-package erc
+  :config
+
+  (erc-track-mode t)
+
+  (setq erc-hide-list '("PART" "QUIT" "JOIN")
+        erc-prompt (lambda () (concat (buffer-name) ">"))
+        erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE")
+        erc-server-coding-system '(utf-8 . utf-8)
+        erc-kill-buffer-on-part t
+        erc-kill-queries-on-quit t
+        erc-kill-server-buffer-on-quit t
+        erc-fill-column 130
+        erc-log-channels t
+        erc-log-write-after-insert t
+        erc-log-insert-log-on-open nil
+        erc-timestamp-format "%s "
+        erc-hide-timestamps t
+        erc-insert-timestamp-function 'erc-insert-timestamp-left
+        erc-insert-away-timestamp-function 'erc-insert-timestamp-left
+        erc-whowas-on-nosuchnick t
+        erc-public-away-p nil
+        erc-echo-notice-always-hook '(erc-echo-notice-in-minibuffer)
+        erc-auto-set-away nil
+        erc-autoaway-message "%i seconds out..."
+        erc-away-nickname "msabate"
+        erc-log-channels-directory "~/.emacs.d/erc/"
+        erc-enable-logging t
+        erc-query-on-unjoined-chan-privmsg t)
+
+  (setq erc-autojoin-channels-alist
+        '(("*.freenode.net" "#gnu" "#emacs")
+          ("*.suse.de" "#suse" "#docker")))
+#+END_SRC
+
+Setup desktop notifications.
+
+#+BEGIN_SRC elisp
+  (require 'notifications)
+
+  (defun erc-global-notify (match-type nick message)
+    "Notify when a message is recieved."
+
+    (when (eq match-type 'current-nick)
+      (notifications-notify
+       :title nick
+       :body message
+       :app-icon (concat
+                  "/usr/share/emacs/"
+                  (format "%s.%s" emacs-major-version emacs-minor-version)
+                  "/etc/images/icons/hicolor/24x24/apps/emacs.png")
+       :urgency 'low)))
+
+  (when (boundp 'dbus-compiled-version)
+    (add-hook 'erc-text-matched-hook 'erc-global-notify))
+#+END_SRC
+
+Add some helper packages and update the loaded ERC modules.
+
+#+BEGIN_SRC elisp
+  (add-hook 'erc-connect-pre-hook
+            (lambda (x) (erc-update-modules)))
+
+  (use-package erc-hl-nicks
+    :ensure t)
+
+  (use-package erc-yt
+    :ensure t
+    :init
+    (with-eval-after-load 'erc
+      (add-to-list 'erc-modules 'youtube)))
+
+  (use-package erc-image
+    :ensure t
+    :init
+    (with-eval-after-load 'erc
+      (add-to-list 'erc-modules 'image)))
+#+END_SRC
+
+And now define a function to connect to both IRC servers.
+
+#+BEGIN_SRC elisp
+  (defun mssola-erc ()
+    "Join pre-speciifed servers and channels."
+
+    (interactive)
+
+    (erc :server "irc.freenode.net" :port 6667 :nick "mssola")
+    (erc-tls :server "irc.suse.de" :port 6697 :nick "mssola"))
+
+  (global-set-key (kbd "C-c i") 'mssola-erc))
+#+END_SRC
+
 * Languages
 
 First of all, define a function that identifies some warning keywords
