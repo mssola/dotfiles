@@ -897,7 +897,7 @@ certainly useful for some common tasks (I guess that I still need some learning)
 I use [[http://www.djcbsoftware.nl/code/mu/][mu]] and [[http://www.djcbsoftware.nl/code/mu/mu4e.html][mu4e]] to manage my email. The configuration for this has been taken
 mainly from the documentation, plus some cool remarks on Reddit. This
 configuration makes quite some assumptions. Read the =emacs/README.org= file as
-provided in my =dotfiles= project to get more details.
+provided in my [[https://github.com/mssola/dotfiles][dotfiles]] project to get more details.
 
 I'm using an RPM that I've built on [[https://build.opensuse.org/package/show/home:mssola/mu][OBS]] which installs mu4e globally.
 
