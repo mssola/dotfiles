@@ -473,8 +473,10 @@ Then, for keeping up with my projects I use the Projectile + Helm combination.
     (helm-projectile-on))
 #+END_SRC
 
-Finally, I've added a couple of bindings in evil mode. First of all, I want
-@@html:<kbd>C-p</kbd>@@ to use the proper function for finding files.
+I use @@html:<kbd>C-p</kbd>@@ as the binding for listing relevant files. This
+binding works either by using =helm-projectile= or the regular =helm-find=
+function. As a final touch, this binding also works for listing channels in ERC
+buffers.
 
 #+BEGIN_SRC elisp
 (defun erc-helm-buffer-list ()
@@ -684,6 +686,17 @@ whenever I use it, I want basic evil movement.
   (with-eval-after-load 'evil
     (evil-add-hjkl-bindings dired-mode-map 'normal
       (kbd "w") 'evil-forward-word-begin))
+#+END_SRC
+
+That being said, I also extend =dired= with some handy tweaks.
+
+#+BEGIN_SRC elisp
+(setq directory-free-space-args "-Pkh"
+      dired-dwim-target t
+      dired-omit-mode nil
+      dired-recursive-copies 'always
+      dired-recursive-deletes 'always
+      delete-old-versions t)
 #+END_SRC
 
 And now instruct dired mode how to attach files when using mu4e. This is taken
