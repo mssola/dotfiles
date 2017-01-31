@@ -7,7 +7,7 @@
    ["#1c1c1c" "#d78787" "#b9dc92" "#ffffaf" "#87afd7" "#875f87" "#dfafdf" "#d0d0d0"])
  '(custom-safe-themes
    (quote
-    ("5869e98ef7446c9e2283e5788c0f6e2790676bdb52e9e1e112bb74e2415733c4" "5a3f33eefbcf2a3098bafd22d7ad44358e66c3e844797e7bf9ef552a08dfeb6f" default)))
+    ("8e6f5b61626315a98a6b38acfe966800777bf6a1841aa2b812b471772cc17114" "5869e98ef7446c9e2283e5788c0f6e2790676bdb52e9e1e112bb74e2415733c4" "5a3f33eefbcf2a3098bafd22d7ad44358e66c3e844797e7bf9ef552a08dfeb6f" default)))
  '(delete-selection-mode nil)
  '(magit-commit-arguments (quote ("--all" "--verbose" "--signoff")))
  '(magit-log-arguments (quote ("--graph" "--color" "--decorate" "-n256")))

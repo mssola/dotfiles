@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>mssola's GNU Emacs configuration</title>
-<!-- 2017-01-29 Sun 23:05 -->
+<!-- 2017-01-30 Mon 10:37 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Miquel Sabaté Solà" />
@@ -803,7 +803,12 @@ Then, for keeping up with my projects I use the Projectile + Helm combination.
 <span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">helm-projectile</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
-  <span class="org-rainbow-delimiters-depth-2">(</span>helm-projectile-on<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>helm-projectile-on<span class="org-rainbow-delimiters-depth-2">)</span>
+
+  <span class="org-comment-delimiter">; </span><span class="org-comment">Define M-p as a way to quickly list all the available projects.</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">with-eval-after-load</span> 'evil
+    <span class="org-rainbow-delimiters-depth-3">(</span>define-key evil-normal-state-map <span class="org-rainbow-delimiters-depth-4">(</span>kbd <span class="org-string">"M-p"</span><span class="org-rainbow-delimiters-depth-4">)</span>
+      'helm-projectile-switch-project<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -1081,7 +1086,7 @@ whenever I use it, I want basic evil movement.
 </div>
 
 <p>
-That being said, I also extend <code>dired</code> with some handy tweaks.
+I also extend <code>dired</code> with some handy tweaks.
 </p>
 
 <div class="org-src-container">
@@ -1132,9 +1137,13 @@ from the <a href="https://www.djcbsoftware.nl/code/mu/mu4e/Dired.html#Dired">mu4
 <p>
 Forgive me, <a href="https://stallman.org/saint.html">Father</a>, for I have sinned. I've been exposed to modal editing
 through Vim, and that has changed how I view editing for the foreseeable future.
-Because of this, I use Evil. The following block includes some heavy-lifting so
+Because of this, I use Evil. The following blocks include some heavy-lifting so
 Evil and GNU Emacs work without hitting each other, and it also includes some
 Evil extensions.
+</p>
+
+<p>
+First of all, let's define a function that will be called whenever Evil is loaded.
 </p>
 
 <div class="org-src-container">
@@ -1157,11 +1166,6 @@ Evil extensions.
   <span class="org-comment-delimiter">; </span><span class="org-comment">something already handled by Evil.</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>define-key global-map <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"M-h"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'help-command<span class="org-rainbow-delimiters-depth-2">)</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>fset 'help-command help-map<span class="org-rainbow-delimiters-depth-2">)</span>
-
-  <span class="org-comment-delimiter">; </span><span class="org-comment">Helm + Projectile shortcuts.</span>
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">with-eval-after-load</span> 'helm-projectile
-    <span class="org-rainbow-delimiters-depth-3">(</span>define-key evil-normal-state-map <span class="org-rainbow-delimiters-depth-4">(</span>kbd <span class="org-string">"M-p"</span><span class="org-rainbow-delimiters-depth-4">)</span>
-      'helm-projectile-switch-project<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
 
   <span class="org-comment-delimiter">; </span><span class="org-comment">I use the Super key in combination with j &amp; k to move around i3. Let's unset</span>
   <span class="org-comment-delimiter">; </span><span class="org-comment">M- combos for these two fellows for whenever I misstype them.</span>
@@ -1203,8 +1207,16 @@ Evil extensions.
   <span class="org-rainbow-delimiters-depth-2">(</span>define-key evil-normal-state-map <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"C-s"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'save-buffer<span class="org-rainbow-delimiters-depth-2">)</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>define-key evil-insert-state-map <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"C-s"</span><span class="org-rainbow-delimiters-depth-3">)</span>
     <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">lambda</span> <span class="org-rainbow-delimiters-depth-4">()</span> <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-keyword">interactive</span><span class="org-rainbow-delimiters-depth-4">)</span> <span class="org-rainbow-delimiters-depth-4">(</span>save-buffer<span class="org-rainbow-delimiters-depth-4">)</span> <span class="org-rainbow-delimiters-depth-4">(</span>evil-force-normal-state<span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
 
-<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil</span>
+<p>
+Now make sure that Evil is installed, and call the relevant configuration functions.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 
@@ -1222,54 +1234,108 @@ Evil extensions.
   <span class="org-rainbow-delimiters-depth-2">(</span>evil-set-initial-state 'debugger-mode 'normal<span class="org-rainbow-delimiters-depth-2">)</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>evil-set-initial-state 'describe-mode 'normal<span class="org-rainbow-delimiters-depth-2">)</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>evil-set-initial-state 'Buffer-menu-mode 'normal<span class="org-rainbow-delimiters-depth-2">)</span>
+</pre>
+</div>
 
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-leader</span>
-    <span class="org-builtin">:ensure</span> t
-    <span class="org-builtin">:config</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span>global-evil-leader-mode<span class="org-rainbow-delimiters-depth-3">)</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span>evil-leader/set-leader <span class="org-string">","</span><span class="org-rainbow-delimiters-depth-3">)</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">setq</span> evil-leader/in-all-states 1<span class="org-rainbow-delimiters-depth-3">)</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span>evil-leader/set-key
-      <span class="org-string">","</span> 'back-to-indentation
-      <span class="org-string">"c"</span> 'delete-window
-      <span class="org-string">"k"</span> 'kill-buffer-and-window
-      <span class="org-string">"v"</span> 'split-window-right
-      <span class="org-string">"V"</span> <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-keyword">lambda</span> <span class="org-rainbow-delimiters-depth-5">()</span> <span class="org-rainbow-delimiters-depth-5">(</span><span class="org-keyword">interactive</span><span class="org-rainbow-delimiters-depth-5">)</span> <span class="org-rainbow-delimiters-depth-5">(</span>split-window-right<span class="org-rainbow-delimiters-depth-5">)</span> <span class="org-rainbow-delimiters-depth-5">(</span>other-window 1<span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
-      <span class="org-string">"f"</span> 'flycheck-list-errors
-      <span class="org-string">"e"</span> 'eval-last-sexp
-      <span class="org-string">"b"</span> 'view-buffer
-      <span class="org-string">"o"</span> 'browse-url-at-point<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+<p>
+If Evil was properly loaded, then make sure that the following Evil-related
+packages are installed and configured as well. I start by defining the
+<code>evil-leader</code> package, which brings the <kbd>leader</kbd> feature from
+Vim into Evil.
+</p>
 
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-surround</span>
-    <span class="org-builtin">:ensure</span> t
-    <span class="org-builtin">:config</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span>global-evil-surround-mode 1<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+<div class="org-src-container">
 
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-commentary</span>
-    <span class="org-builtin">:ensure</span> t
-    <span class="org-builtin">:config</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span>evil-commentary-mode t<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-leader</span>
+  <span class="org-builtin">:ensure</span> t
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>global-evil-leader-mode<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>evil-leader/set-leader <span class="org-string">","</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">setq</span> evil-leader/in-all-states 1<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>evil-leader/set-key
+    <span class="org-string">","</span> 'back-to-indentation
+    <span class="org-string">"c"</span> 'delete-window
+    <span class="org-string">"k"</span> 'kill-buffer-and-window
+    <span class="org-string">"v"</span> 'split-window-right
+    <span class="org-string">"V"</span> <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">lambda</span> <span class="org-rainbow-delimiters-depth-4">()</span> <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-keyword">interactive</span><span class="org-rainbow-delimiters-depth-4">)</span> <span class="org-rainbow-delimiters-depth-4">(</span>split-window-right<span class="org-rainbow-delimiters-depth-4">)</span> <span class="org-rainbow-delimiters-depth-4">(</span>other-window 1<span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-string">"f"</span> 'flycheck-list-errors
+    <span class="org-string">"e"</span> 'eval-last-sexp
+    <span class="org-string">"b"</span> 'view-buffer
+    <span class="org-string">"o"</span> 'browse-url-at-point<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
 
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-args</span>
-    <span class="org-builtin">:ensure</span> t
-    <span class="org-builtin">:config</span>
-    <span class="org-comment-delimiter">; </span><span class="org-comment">Configuration taken from the documentation of evil-args.</span>
+<p>
+Another handy Vim plugin that has made it into Evil is <code>evil-surround</code>, which
+defines a new text object for surrounding characters (e.g. change a string from
+having double quotes with single quotes in a single command).
+</p>
 
-    <span class="org-comment-delimiter">;; </span><span class="org-comment">Bind evil-args text objects</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span>define-key evil-inner-text-objects-map <span class="org-string">"a"</span> 'evil-inner-arg<span class="org-rainbow-delimiters-depth-3">)</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span>define-key evil-outer-text-objects-map <span class="org-string">"a"</span> 'evil-outer-arg<span class="org-rainbow-delimiters-depth-3">)</span>
+<div class="org-src-container">
 
-    <span class="org-comment-delimiter">;; </span><span class="org-comment">Bind evil-forward/backward-args</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span>define-key evil-normal-state-map <span class="org-string">"L"</span> 'evil-forward-arg<span class="org-rainbow-delimiters-depth-3">)</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span>define-key evil-normal-state-map <span class="org-string">"H"</span> 'evil-backward-arg<span class="org-rainbow-delimiters-depth-3">)</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span>define-key evil-motion-state-map <span class="org-string">"L"</span> 'evil-forward-arg<span class="org-rainbow-delimiters-depth-3">)</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span>define-key evil-motion-state-map <span class="org-string">"H"</span> 'evil-backward-arg<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-surround</span>
+  <span class="org-builtin">:ensure</span> t
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>global-evil-surround-mode 1<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
 
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-numbers</span>
-    <span class="org-builtin">:ensure</span> t
-    <span class="org-builtin">:config</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span>define-key evil-normal-state-map <span class="org-rainbow-delimiters-depth-4">(</span>kbd <span class="org-string">"C-a"</span><span class="org-rainbow-delimiters-depth-4">)</span> 'evil-numbers/inc-at-pt<span class="org-rainbow-delimiters-depth-3">)</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span>define-key evil-normal-state-map <span class="org-rainbow-delimiters-depth-4">(</span>kbd <span class="org-string">"C-c -"</span><span class="org-rainbow-delimiters-depth-4">)</span> 'evil-numbers/dec-at-pt<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+<p>
+Next is another Vim plugin that has been ported to Evil: <code>evil-commentary</code>. This
+package defines a new motion for comments, which is bound to
+<kbd>gc</kbd>. So, for example, <kbd>gcc</kbd> will comment
+the current line, regardless of the programming language.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-commentary</span>
+  <span class="org-builtin">:ensure</span> t
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>evil-commentary-mode t<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+Another cool package is <code>evil-args</code> which defines the argument text object. This
+text object can be targeted with the <code>a</code> character, and we can move backward and
+forward through arguments with <kbd>H</kbd> and <kbd>L</kbd>
+respectively.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-args</span>
+  <span class="org-builtin">:ensure</span> t
+  <span class="org-builtin">:config</span>
+  <span class="org-comment-delimiter">; </span><span class="org-comment">Configuration taken from the documentation of evil-args.</span>
+
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Bind evil-args text objects</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>define-key evil-inner-text-objects-map <span class="org-string">"a"</span> 'evil-inner-arg<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>define-key evil-outer-text-objects-map <span class="org-string">"a"</span> 'evil-outer-arg<span class="org-rainbow-delimiters-depth-2">)</span>
+
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Bind evil-forward/backward-args</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>define-key evil-normal-state-map <span class="org-string">"L"</span> 'evil-forward-arg<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>define-key evil-normal-state-map <span class="org-string">"H"</span> 'evil-backward-arg<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>define-key evil-motion-state-map <span class="org-string">"L"</span> 'evil-forward-arg<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>define-key evil-motion-state-map <span class="org-string">"H"</span> 'evil-backward-arg<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+Last but not least, <code>evil-numbers</code> brings a couple of bindings available to Vim
+into Evil: <kbd>C-a</kbd> for increasing a number, and
+<kbd>C-c -</kbd> for decreasing it (modified because
+<kbd>C-z</kbd> is my escape sequence).
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-numbers</span>
+  <span class="org-builtin">:ensure</span> t
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>define-key evil-normal-state-map <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"C-a"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'evil-numbers/inc-at-pt<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>define-key evil-normal-state-map <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"C-c -"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'evil-numbers/dec-at-pt<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span><span class="org-rainbow-delimiters-unmatched">)</span>
 </pre>
 </div>
 </div>
@@ -2007,7 +2073,7 @@ I'm giving ERC a chance. First of all, I'm setting up basic stuff.
 </div>
 
 <p>
-Setup desktop notifications.
+I want to have a desktop notification whenever someone mentions my name.
 </p>
 
 <div class="org-src-container">
@@ -2033,18 +2099,23 @@ Setup desktop notifications.
 </div>
 
 <p>
-Add some helper packages and update the loaded ERC modules.
+Use the <code>erc-hl-nicks</code> package, so highlight support for nicknames is better.
 </p>
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span>add-hook 'erc-connect-pre-hook
-          <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">lambda</span> <span class="org-rainbow-delimiters-depth-3">(</span>x<span class="org-rainbow-delimiters-depth-3">)</span> <span class="org-rainbow-delimiters-depth-3">(</span>erc-update-modules<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
-
-<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">erc-hl-nicks</span>
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">erc-hl-nicks</span>
   <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
 
-<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">erc-yt</span>
+<p>
+Some extra cookies: allow ERC to display images and Youtube thumbnails.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">erc-yt</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:init</span>
   <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">with-eval-after-load</span> 'erc
@@ -2055,6 +2126,17 @@ Add some helper packages and update the loaded ERC modules.
   <span class="org-builtin">:init</span>
   <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">with-eval-after-load</span> 'erc
     <span class="org-rainbow-delimiters-depth-3">(</span>add-to-list 'erc-modules 'image<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+At this point, we can safely update all the loaded ERC modules.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span>add-hook 'erc-connect-pre-hook
+          <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">lambda</span> <span class="org-rainbow-delimiters-depth-3">(</span>x<span class="org-rainbow-delimiters-depth-3">)</span> <span class="org-rainbow-delimiters-depth-3">(</span>erc-update-modules<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -2439,7 +2521,7 @@ along with this program.  If not, see <a href="http://www.gnu.org/licenses/">&lt
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Miquel Sabaté Solà</p>
-<p class="date">Created: 2017-01-29 Sun 23:05</p>
+<p class="date">Created: 2017-01-30 Mon 10:37</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
