@@ -484,22 +484,21 @@ function. As a final touch, this binding also works for listing channels in ERC
 buffers.
 
 #+BEGIN_SRC elisp
-(defun erc-helm-buffer-list ()
+(defun mssola-erc-helm-buffer-list ()
   "Returns a list with the ERC buffers."
   (mapcar 'buffer-name (erc-buffer-list)))
 
-(setq helm-source-erc-channel-list
+(setq mssola-helm-source-erc-channel-list
       '((name . "ERC Channels")
-        (candidates . erc-helm-buffer-list)
-        (action . helm-switch-to-buffer)))
+        (candidates . mssola-erc-helm-buffer-list)
+        (action . switch-to-buffer)))
 
-(defun erc-helm-switch-buffer ()
-  "Use helm to select an active ERC buffer.  Replaces erc-iswitchb, which
-doesn't work for me."
+(defun mssola-erc-helm-switch-buffer ()
+  "Use helm to select an active ERC buffer."
 
   (interactive)
 
-  (helm :sources '(helm-source-erc-channel-list)
+  (helm :sources '(mssola-helm-source-erc-channel-list)
         :buffer "*helm-erc-channels*"))
 
 (defun mssola-find-file ()
@@ -508,7 +507,7 @@ doesn't work for me."
   (interactive)
 
   (if (string= major-mode "erc-mode")
-      (erc-helm-switch-buffer)
+      (mssola-erc-helm-switch-buffer)
     (condition-case nil
         (helm-projectile-find-file)
       (error
@@ -1460,63 +1459,59 @@ I'm giving ERC a chance. First of all, I'm setting up basic stuff.
 
   (erc-track-mode t)
 
-  (setq erc-hide-list '("PART" "QUIT" "JOIN")
+  (setq erc-hide-list '("PART")
         erc-prompt (lambda () (concat (buffer-name) ">"))
         erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE")
         erc-server-coding-system '(utf-8 . utf-8)
         erc-kill-buffer-on-part t
         erc-kill-queries-on-quit t
         erc-kill-server-buffer-on-quit t
-        erc-fill-column 130
+        erc-fill-column 100
+        erc-fill-prefix ""
         erc-log-channels t
         erc-log-write-after-insert t
         erc-log-insert-log-on-open nil
-        erc-timestamp-format "%s "
-        erc-hide-timestamps t
+        erc-log-channels-directory "~/.emacs.d/erc/"
+        erc-timestamp-format "[%H:%M] "
         erc-insert-timestamp-function 'erc-insert-timestamp-left
         erc-insert-away-timestamp-function 'erc-insert-timestamp-left
+        erc-hide-timestamps nil
         erc-whowas-on-nosuchnick t
         erc-public-away-p nil
         erc-echo-notice-always-hook '(erc-echo-notice-in-minibuffer)
         erc-auto-set-away nil
         erc-autoaway-message "%i seconds out..."
         erc-away-nickname "msabate"
-        erc-log-channels-directory "~/.emacs.d/erc/"
         erc-enable-logging t
         erc-query-on-unjoined-chan-privmsg t)
 
   (setq erc-autojoin-channels-alist
-        '(("*.freenode.net" "#gnu" "#emacs")
-          ("*.suse.de" "#suse" "#docker")))
-#+END_SRC
-
-I want to have a desktop notification whenever someone mentions my name.
-
-#+BEGIN_SRC elisp
-  (require 'notifications)
-
-  (defun erc-global-notify (match-type nick message)
-    "Notify when a message is recieved."
-
-    (when (eq match-type 'current-nick)
-      (notifications-notify
-       :title nick
-       :body message
-       :app-icon (concat
-                  "/usr/share/emacs/"
-                  (format "%s.%s" emacs-major-version emacs-minor-version)
-                  "/etc/images/icons/hicolor/24x24/apps/emacs.png")
-       :urgency 'low)))
-
-  (when (boundp 'dbus-compiled-version)
-    (add-hook 'erc-text-matched-hook 'erc-global-notify))
+        '(("irc.freenode.net" "#gnu" "#emacs")
+          ("irc.suse.de" "#suse" "#docker")))
 #+END_SRC
 
 Use the =erc-hl-nicks= package, so highlight support for nicknames is better.
 
 #+BEGIN_SRC elisp
-  (use-package erc-hl-nicks
-    :ensure t)
+(use-package erc-hl-nicks
+  :ensure t
+  :init
+  (with-eval-after-load 'erc
+    (add-to-list 'erc-modules 'hl-nicks)))
+#+END_SRC
+
+I want to have a desktop notification whenever someone mentions my name. For
+this, I'm using the =erc-notifications= package which is built in ERC since
+GNU Emacs 24.3.
+
+#+BEGIN_SRC elisp
+(with-eval-after-load 'erc
+  (setq erc-notifications-icon
+        (concat
+         "/usr/share/emacs/"
+         (format "%s.%s" emacs-major-version emacs-minor-version)
+         "/etc/images/icons/hicolor/24x24/apps/emacs.png"))
+  (add-to-list 'erc-modules 'notifications))
 #+END_SRC
 
 Some extra cookies: allow ERC to display images and Youtube thumbnails.
@@ -1540,6 +1535,14 @@ At this point, we can safely update all the loaded ERC modules.
 #+BEGIN_SRC elisp
   (add-hook 'erc-connect-pre-hook
             (lambda (x) (erc-update-modules)))
+#+END_SRC
+
+According to the [[https://www.emacswiki.org/emacs/ErcFilling][wiki]], =auto-fill-mode= should be disabled if I'm using
+=erc-fill-mode=.
+
+#+BEGIN_SRC elisp
+(add-hook 'erc-mode-hook
+          (lambda () (auto-fill-mode 0)))
 #+END_SRC
 
 And now define a function to connect to both IRC servers.
@@ -1791,6 +1794,30 @@ criteria really).
                        perl-mode-hook
                        emacs-lisp-mode-hook))
     (add-hook lang-hook 'soria-purple-identifiers))
+#+END_SRC
+
+* WoMan
+
+=WoMan= is a package that is included inside of GNU Emacs by default, and that
+takes care of visualizing man pages. Let's properly setup Evil mode for this:
+
+#+BEGIN_SRC elisp
+(with-eval-after-load "evil"
+  (evil-set-initial-state 'woman-mode 'normal)
+  (evil-define-key 'normal woman-mode-map
+    "J" 'Man-next-section
+    "K" 'Man-previous-section
+    "\C-h" 'evil-window-left
+    "\C-l" 'evil-window-right
+    "\C-j" 'evil-window-down
+    "\C-k" 'evil-window-up
+    "\C-u" 'evil-scroll-up))
+#+END_SRC
+
+Finally, I want man pages to fill all the frame:
+
+#+BEGIN_SRC elisp
+(setq woman-fill-frame t)
 #+END_SRC
 
 * Misc
