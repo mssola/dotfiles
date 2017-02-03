@@ -488,7 +488,7 @@ buffers.
   "Returns a list with the ERC buffers."
   (mapcar 'buffer-name (erc-buffer-list)))
 
-(setq mssola-helm-source-erc-channel-list
+(defconst mssola-helm-source-erc-channel-list
       '((name . "ERC Channels")
         (candidates . mssola-erc-helm-buffer-list)
         (action . switch-to-buffer)))
@@ -640,28 +640,27 @@ expands the region of selection with a single key chord. Even if evil covers
 most of my uses, it's convenient to have this tool anyways.
 
 #+BEGIN_SRC elisp
-  (use-package expand-region
-    :ensure t
-    :config
+(use-package expand-region
+  :ensure t
+  :config
 
-    ; Set C-e as the expand command (mnemonic: expand). This command will
-    ; supercede the evil binding for "move one line", which I never use anyways.
-    (global-set-key (kbd "\C-e") 'er/expand-region)
-    (with-eval-after-load 'evil
-      (define-key evil-normal-state-map (kbd "\C-e") 'er/expand-region)
-      (define-key evil-visual-state-map (kbd "\C-e") 'er/expand-region)))
+  ; Set C-e as the expand command (mnemonic: expand). This command will
+  ; supercede the evil binding for "move one line", which I never use anyways.
+  (global-set-key (kbd "\C-e") 'er/expand-region)
+  (with-eval-after-load 'evil
+    (define-key evil-normal-state-map (kbd "\C-e") 'er/expand-region)
+    (define-key evil-visual-state-map (kbd "\C-e") 'er/expand-region)))
 
-  (defun er/add-text-mode-expansions ()
-    "This way we can also expand the region into paragraphs & pages in text mode.
-  Directly taken from: https://github.com/magnars/expand-region.el."
+(defun er/add-text-mode-expansions ()
+  "This way we can also expand the region into paragraphs & pages in text mode.
+Directly taken from: https://github.com/magnars/expand-region.el."
 
-    (make-variable-buffer-local 'er/try-expand-list)
-    (setq er/try-expand-list (append
-                              er/try-expand-list
-                              '(mark-paragraph
-                                mark-page))))
+  (set (make-local-variable 'er/try-expand-list) (append
+                                                  er/try-expand-list
+                                                  '(mark-paragraph
+                                                    mark-page))))
 
-  (add-hook 'text-mode-hook 'er/add-text-mode-expansions)
+(add-hook 'text-mode-hook 'er/add-text-mode-expansions)
 #+END_SRC
 
 Last but not least, =YASnippet=. This package allows people to define shortcuts
@@ -1246,6 +1245,13 @@ And finally define a proper shortcut.
 #+END_SRC
 
 * org
+
+[[http://orgmode.org/][org mode]] is an incredible tool that keeps me organized: TODOs, notes, agenda,
+etc. Moreover, it's built in GNU Emacs:
+
+#+BEGIN_SRC elisp
+(require 'org)
+#+END_SRC
 
 ** General settings
 
