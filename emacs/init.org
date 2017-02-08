@@ -1579,6 +1579,8 @@ And now define a function to connect to both IRC servers.
 
 * Languages
 
+** General
+
 First of all, define a function that identifies some warning keywords
 (e.g. TODO). This function can then be applied to the proper mode.
 
@@ -1601,6 +1603,8 @@ context too. In this case, I want spell check and =wc-mode= activated.
               (wc-mode 1)))
 #+END_SRC
 
+** Lisp
+
 Emacs lisp needs =rainbow-delimiters=, so the amount of parenthesis is less
 confusing. Moreover, I'm also enabling =eldoc-mode= and the aforementioned
 =warnings-mode-hook=.
@@ -1614,6 +1618,8 @@ confusing. Moreover, I'm also enabling =eldoc-mode= and the aforementioned
               ; https://github.com/jhenahan/emacs.d/blob/master/emacs-init.org#emacs-lisp
               (setq mode-name "ξ")))
 #+END_SRC
+
+** C and C++
 
 C and C++ only require the =warnings-mode-hook= function, spell checking for the
 comments and the usage of tabs instead of spaces.
@@ -1632,11 +1638,15 @@ comments and the usage of tabs instead of spaces.
   (lambda () (setq indent-tabs-mode t)))
 #+END_SRC
 
+** Ruby
+
 Include warning keywords in Ruby.
 
 #+BEGIN_SRC elisp
   (add-hook 'ruby-mode-hook 'warnings-mode-hook)
 #+END_SRC
+
+** Go
 
 And now my Go configuration. This includes stuff like the usage of =goimports=,
 =gofmt= on save, among many other useful things.
@@ -1684,6 +1694,8 @@ And now my Go configuration. This includes stuff like the usage of =goimports=,
     (add-hook 'go-mode-hook 'mssola-go-mode))
 #+END_SRC
 
+** Tabs vs spaces
+
 Tabs or spaces? [[https://www.emacswiki.org/emacs/TabsSpacesBoth][Both]]. The =smart-tabs-mode= has the philosophy of: tabs for
 indentation, spaces for alignment. This is only applied in languages where I'm
 usings tabs for indentation (C, C++ and Go).
@@ -1698,7 +1710,7 @@ usings tabs for indentation (C, C++ and Go).
     (smart-tabs-insinuate 'c 'c++ 'golang))
 #+END_SRC
 
-Inferior markup languages.
+** Inferior markup languages.
 
 #+BEGIN_SRC elisp
   ;; Markdown mode with preview mode in the browser.
@@ -1726,7 +1738,9 @@ Inferior markup languages.
     (add-hook 'yaml-mode-hook 'warnings-mode-hook))
 #+END_SRC
 
-Web-related stuff.
+** Web-related stuff.
+
+Slim and SCSS.
 
 #+BEGIN_SRC elisp
   (use-package slim-mode
@@ -1738,7 +1752,12 @@ Web-related stuff.
 
     (setq scss-compile-at-save nil)
     (add-hook 'yaml-mode-hook 'warnings-mode-hook))
+#+END_SRC
 
+Languages specific for backend code like PHP, and =web-mode=, which provides a
+bundle of features which are interesting for web-related stuff.
+
+#+BEGIN_SRC elisp
   (use-package php-mode
     :ensure t)
 
@@ -1756,6 +1775,17 @@ Web-related stuff.
                 (setq web-mode-css-indent-offset 2)
                 (setq web-mode-code-indent-offset 2))))
 #+END_SRC
+
+The =json-reformat= package provides functions for reformatting JSON strings. It
+happens from time to time that I have to read JSON output from responses, and it
+can be frustrating without proper formatting.
+
+#+BEGIN_SRC elisp
+(use-package json-reformat
+  :ensure t)
+#+END_SRC
+
+** Others
 
 CMake for y'all.
 
