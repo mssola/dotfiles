@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>mssola's GNU Emacs configuration</title>
-<!-- 2017-02-08 Wed 17:48 -->
+<!-- 2017-02-10 Fri 10:02 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Miquel Sabaté Solà" />
@@ -425,6 +425,28 @@ I've hacked my own theme called <a href="https://github.com/mssola/soria">soria<
 <pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span>load-theme 'soria t<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
+
+<p>
+When hacking your own theme, sometimes you want to know what face is the one
+that you see on the screen right now. This function from <a href="https://github.com/thblt/DotFiles">@thblt</a> allows me to
+get exactly that:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defun</span> <span class="org-function-name">mssola-face-at-point</span> <span class="org-rainbow-delimiters-depth-2">(</span>pos<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-doc">"Writes a message with the name of the face at the current point.  The POS</span>
+<span class="org-doc">  argument contains the current position of the cursor."</span>
+
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">interactive</span> <span class="org-string">"d"</span><span class="org-rainbow-delimiters-depth-2">)</span>
+
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">let</span> <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-delimiters-depth-4">(</span>face <span class="org-rainbow-delimiters-depth-5">(</span><span class="org-keyword">or</span> <span class="org-rainbow-delimiters-depth-6">(</span>get-char-property <span class="org-rainbow-delimiters-depth-7">(</span>point<span class="org-rainbow-delimiters-depth-7">)</span> 'read-face-name<span class="org-rainbow-delimiters-depth-6">)</span>
+                  <span class="org-rainbow-delimiters-depth-6">(</span>get-char-property <span class="org-rainbow-delimiters-depth-7">(</span>point<span class="org-rainbow-delimiters-depth-7">)</span> 'face<span class="org-rainbow-delimiters-depth-6">)</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">if</span> face <span class="org-rainbow-delimiters-depth-4">(</span>message <span class="org-string">"Face: %s"</span> face<span class="org-rainbow-delimiters-depth-4">)</span> <span class="org-rainbow-delimiters-depth-4">(</span>message <span class="org-string">"No face at %d"</span> pos<span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span>global-set-key <span class="org-rainbow-delimiters-depth-2">(</span>kbd <span class="org-string">"C-c f"</span><span class="org-rainbow-delimiters-depth-2">)</span> 'mssola-face-at-point<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
 </div>
 </div>
 
@@ -790,9 +812,7 @@ Then, for keeping up with my projects I use the Projectile + Helm combination.
 <pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">projectile</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
-  <span class="org-rainbow-delimiters-depth-2">(</span>projectile-mode 1<span class="org-rainbow-delimiters-depth-2">)</span>
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">setq</span> projectile-mode-line
-    '<span class="org-rainbow-delimiters-depth-3">(</span><span class="org-builtin">:eval</span> <span class="org-rainbow-delimiters-depth-4">(</span>format <span class="org-string">" %s"</span> <span class="org-rainbow-delimiters-depth-5">(</span>projectile-project-name<span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>projectile-mode 1<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 
 <span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">helm</span>
   <span class="org-builtin">:ensure</span> t
@@ -1381,34 +1401,67 @@ certainly useful for some common tasks (I guess that I still need some learning)
 <pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">magit</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
+</pre>
+</div>
 
-  <span class="org-comment-delimiter">; </span><span class="org-comment">Proper initial states.</span>
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">with-eval-after-load</span> 'evil
-    <span class="org-rainbow-delimiters-depth-3">(</span>add-hook 'git-commit-mode-hook 'evil-insert-state<span class="org-rainbow-delimiters-depth-3">)</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span>evil-set-initial-state 'magit-log-edit-mode 'insert<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+<p>
+In some cases normal mode is not the right mode (e.g. commit mode). For these
+cases, set the proper default mode.
+</p>
 
-  <span class="org-comment-delimiter">; </span><span class="org-comment">When showing the status, hide the usually-redundant "branch" section and</span>
-  <span class="org-comment-delimiter">; </span><span class="org-comment">show the rest.</span>
-  <span class="org-rainbow-delimiters-depth-2">(</span>add-hook 'magit-section-set-visibility-hook
-            '<span class="org-rainbow-delimiters-depth-3">(</span>lambda <span class="org-rainbow-delimiters-depth-4">(</span>section<span class="org-rainbow-delimiters-depth-4">)</span>
-               <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-keyword">if</span> <span class="org-rainbow-delimiters-depth-5">(</span>string= <span class="org-rainbow-delimiters-depth-6">(</span>magit-section-type section<span class="org-rainbow-delimiters-depth-6">)</span> <span class="org-string">"branch"</span><span class="org-rainbow-delimiters-depth-5">)</span>
-                   'hide
-                 'show<span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+<div class="org-src-container">
 
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">with-eval-after-load</span> 'evil-leader
-    <span class="org-rainbow-delimiters-depth-3">(</span>evil-leader/set-key <span class="org-string">"s"</span> 'magit-status<span class="org-rainbow-delimiters-depth-3">)</span>
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">with-eval-after-load</span> 'evil
+  <span class="org-rainbow-delimiters-depth-2">(</span>add-hook 'git-commit-mode-hook 'evil-insert-state<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>evil-set-initial-state 'magit-log-edit-mode 'insert<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
 
-    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-magit</span>
-      <span class="org-builtin">:ensure</span> t
-      <span class="org-builtin">:config</span>
+<p>
+When showing the status, hide the usually-redundant "branch" section and show
+the rest.
+</p>
 
-      <span class="org-comment-delimiter">; </span><span class="org-comment">The magit + evil-magit combo messes up some chords, let's fix this.</span>
-      <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-keyword">evil-define-key</span> 'normal magit-mode-map
-        <span class="org-string">"\C-h"</span> 'evil-window-left
-        <span class="org-string">"\C-l"</span> 'evil-window-right
-        <span class="org-string">"\C-j"</span> 'evil-window-down
-        <span class="org-string">"\C-k"</span> 'evil-window-up
-        <span class="org-string">"\M-p"</span>  'helm-projectile-switch-project<span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span>add-hook 'magit-section-set-visibility-hook
+          '<span class="org-rainbow-delimiters-depth-2">(</span>lambda <span class="org-rainbow-delimiters-depth-3">(</span>section<span class="org-rainbow-delimiters-depth-3">)</span>
+             <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">if</span> <span class="org-rainbow-delimiters-depth-4">(</span>string= <span class="org-rainbow-delimiters-depth-5">(</span>magit-section-type section<span class="org-rainbow-delimiters-depth-5">)</span> <span class="org-string">"branch"</span><span class="org-rainbow-delimiters-depth-4">)</span>
+                 'hide
+               'show<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+Set a key binding for <code>magit-blame</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span>global-set-key <span class="org-rainbow-delimiters-depth-2">(</span>kbd <span class="org-string">"C-c b"</span><span class="org-rainbow-delimiters-depth-2">)</span> 'magit-blame<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+And repair some key bindings from Evil mode.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">with-eval-after-load</span> 'evil-leader
+  <span class="org-rainbow-delimiters-depth-2">(</span>evil-leader/set-key <span class="org-string">"s"</span> 'magit-status<span class="org-rainbow-delimiters-depth-2">)</span>
+
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-magit</span>
+    <span class="org-builtin">:ensure</span> t
+    <span class="org-builtin">:config</span>
+
+    <span class="org-comment-delimiter">; </span><span class="org-comment">The magit + evil-magit combo messes up some chords, let's fix this.</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">evil-define-key</span> 'normal magit-mode-map
+      <span class="org-string">"\C-h"</span> 'evil-window-left
+      <span class="org-string">"\C-l"</span> 'evil-window-right
+      <span class="org-string">"\C-j"</span> 'evil-window-down
+      <span class="org-string">"\C-k"</span> 'evil-window-up
+      <span class="org-string">"\M-p"</span>  'helm-projectile-switch-project<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span><span class="org-rainbow-delimiters-unmatched">)</span>
 </pre>
 </div>
 </div>
@@ -2605,13 +2658,16 @@ too many things into my leader and these shortcuts look sensible to me).
 
 <pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">crux</span>
   <span class="org-builtin">:ensure</span> t
-  <span class="org-builtin">:bind</span> <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-delimiters-depth-3">(</span><span class="org-string">"C-c d"</span> . crux-delete-file-and-buffer<span class="org-rainbow-delimiters-depth-3">)</span>
-         <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-string">"C-c r"</span> . crux-rename-file-and-buffer<span class="org-rainbow-delimiters-depth-3">)</span>
-         <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-string">"C-c o"</span> . crux-open-with<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+  <span class="org-builtin">:config</span>
+
+  <span class="org-rainbow-delimiters-depth-2">(</span>global-set-key <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"C-c d"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'crux-delete-file-and-buffer<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>global-set-key <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"C-c r"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'crux-rename-file-and-buffer<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>global-set-key <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"C-c o"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'crux-open-with<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 </div>
 </div>
+
 <div id="outline-container-sec-18" class="outline-2">
 <h2 id="sec-18">Credits</h2>
 <div class="outline-text-2" id="text-18">
@@ -2665,7 +2721,7 @@ along with this program.  If not, see <a href="http://www.gnu.org/licenses/">&lt
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Miquel Sabaté Solà</p>
-<p class="date">Created: 2017-02-08 Wed 17:48</p>
+<p class="date">Created: 2017-02-10 Fri 10:02</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

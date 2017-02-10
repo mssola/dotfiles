@@ -200,6 +200,24 @@ I've hacked my own theme called [[https://github.com/mssola/soria][soria]]. This
   (load-theme 'soria t)
 #+END_SRC
 
+When hacking your own theme, sometimes you want to know what face is the one
+that you see on the screen right now. This function from [[https://github.com/thblt/DotFiles][@thblt]] allows me to
+get exactly that:
+
+#+BEGIN_SRC elisp
+(defun mssola-face-at-point (pos)
+  "Writes a message with the name of the face at the current point.  The POS
+  argument contains the current position of the cursor."
+
+  (interactive "d")
+
+  (let ((face (or (get-char-property (point) 'read-face-name)
+                  (get-char-property (point) 'face))))
+    (if face (message "Face: %s" face) (message "No face at %d" pos))))
+
+(global-set-key (kbd "C-c f") 'mssola-face-at-point)
+#+END_SRC
+
 ** General global key bindings
 
 Use kill-this-buffer instead of kill-buffer.
@@ -440,9 +458,7 @@ Then, for keeping up with my projects I use the Projectile + Helm combination.
 (use-package projectile
   :ensure t
   :config
-  (projectile-mode 1)
-  (setq projectile-mode-line
-    '(:eval (format " %s" (projectile-project-name)))))
+  (projectile-mode 1))
 
 (use-package helm
   :ensure t
@@ -922,37 +938,54 @@ A git porcelain for GNU Emacs. Even if I'm still using the git CLI, it's
 certainly useful for some common tasks (I guess that I still need some learning).
 
 #+BEGIN_SRC elisp
-  (use-package magit
-    :ensure t
-    :config
+(use-package magit
+  :ensure t
+  :config
+#+END_SRC
 
-    ; Proper initial states.
-    (with-eval-after-load 'evil
-      (add-hook 'git-commit-mode-hook 'evil-insert-state)
-      (evil-set-initial-state 'magit-log-edit-mode 'insert))
+In some cases normal mode is not the right mode (e.g. commit mode). For these
+cases, set the proper default mode.
 
-    ; When showing the status, hide the usually-redundant "branch" section and
-    ; show the rest.
-    (add-hook 'magit-section-set-visibility-hook
-              '(lambda (section)
-                 (if (string= (magit-section-type section) "branch")
-                     'hide
-                   'show)))
+#+BEGIN_SRC elisp
+  (with-eval-after-load 'evil
+    (add-hook 'git-commit-mode-hook 'evil-insert-state)
+    (evil-set-initial-state 'magit-log-edit-mode 'insert))
+#+END_SRC
 
-    (with-eval-after-load 'evil-leader
-      (evil-leader/set-key "s" 'magit-status)
+When showing the status, hide the usually-redundant "branch" section and show
+the rest.
 
-      (use-package evil-magit
-        :ensure t
-        :config
+#+BEGIN_SRC elisp
+  (add-hook 'magit-section-set-visibility-hook
+            '(lambda (section)
+               (if (string= (magit-section-type section) "branch")
+                   'hide
+                 'show)))
+#+END_SRC
 
-        ; The magit + evil-magit combo messes up some chords, let's fix this.
-        (evil-define-key 'normal magit-mode-map
-          "\C-h" 'evil-window-left
-          "\C-l" 'evil-window-right
-          "\C-j" 'evil-window-down
-          "\C-k" 'evil-window-up
-          "\M-p"  'helm-projectile-switch-project))))
+Set a key binding for =magit-blame=.
+
+#+BEGIN_SRC elisp
+  (global-set-key (kbd "C-c b") 'magit-blame)
+#+END_SRC
+
+And repair some key bindings from Evil mode.
+
+#+BEGIN_SRC elisp
+  (with-eval-after-load 'evil-leader
+    (evil-leader/set-key "s" 'magit-status)
+
+    (use-package evil-magit
+      :ensure t
+      :config
+
+      ; The magit + evil-magit combo messes up some chords, let's fix this.
+      (evil-define-key 'normal magit-mode-map
+        "\C-h" 'evil-window-left
+        "\C-l" 'evil-window-right
+        "\C-j" 'evil-window-down
+        "\C-k" 'evil-window-up
+        "\M-p"  'helm-projectile-switch-project))))
 #+END_SRC
 
 * mu4e
@@ -1875,12 +1908,15 @@ Emacs style instead of being more Vim-like on purpose (I don't want to put
 too many things into my leader and these shortcuts look sensible to me).
 
 #+BEGIN_SRC elisp
-  (use-package crux
-    :ensure t
-    :bind (("C-c d" . crux-delete-file-and-buffer)
-           ("C-c r" . crux-rename-file-and-buffer)
-           ("C-c o" . crux-open-with)))
+(use-package crux
+  :ensure t
+  :config
+
+  (global-set-key (kbd "C-c d") 'crux-delete-file-and-buffer)
+  (global-set-key (kbd "C-c r") 'crux-rename-file-and-buffer)
+  (global-set-key (kbd "C-c o") 'crux-open-with))
 #+END_SRC
+
 * Credits
 
 I've built this file by simply scavenging from other people's emacs.d/dotfiles
