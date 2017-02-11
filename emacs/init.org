@@ -333,7 +333,7 @@ We catalans start our weeks on Monday.
 Global key binding.
 
 #+BEGIN_SRC elisp
-  (global-set-key (kbd "C-c c") 'calendar)
+  (global-set-key (kbd "M-c") 'calendar)
 #+END_SRC
 
 Fix some stuff for evil mode.
@@ -1470,6 +1470,29 @@ The prefix for the different kinds of types being used.
   (setq org-agenda-prefix-format '((agenda . "%t%s")
                                    (tags   . "%c:%s")
                                    (todo   . "%c:%t%s")))
+#+END_SRC
+
+Set up a key binding for org-agenda.
+
+#+BEGIN_SRC elisp
+(global-set-key (kbd "C-c a") 'org-agenda)
+#+END_SRC
+
+** Capture
+
+Set the default notes file and the key binding.
+
+#+BEGIN_SRC elisp
+(setq org-default-notes-file (concat org-directory "/notes.org"))
+(define-key global-map "\C-cc" 'org-capture)
+#+END_SRC
+
+And finally set =org-capture-templates=.
+
+#+BEGIN_SRC elisp
+(setq org-capture-templates
+      `(("t" "todo" entry (file "") "* TODO %?\n%U\n")
+        ("i" "idea" entry (file "") "* %? :IDEA:\n%U\n%a\n")))
 #+END_SRC
 
 ** Other

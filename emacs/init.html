@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>mssola's GNU Emacs configuration</title>
-<!-- 2017-02-10 Fri 10:02 -->
+<!-- 2017-02-10 Fri 17:38 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Miquel Sabaté Solà" />
@@ -174,11 +174,12 @@ for the JavaScript code in this tag.
 <li><a href="#sec-13-1">General settings</a></li>
 <li><a href="#sec-13-2">Publishing</a></li>
 <li><a href="#sec-13-3">Agenda</a></li>
-<li><a href="#sec-13-4">Other</a></li>
-<li><a href="#sec-13-5"><span class="todo TODO">TODO</span> shortcut for making an org link, and transforming a link into a proper org link</a></li>
-<li><a href="#sec-13-6"><span class="todo TODO">TODO</span> make it work with evil</a></li>
-<li><a href="#sec-13-7"><span class="todo TODO">TODO</span> Proper keybindings for quick access.</a></li>
-<li><a href="#sec-13-8"><span class="todo TODO">TODO</span> shortcuts for stuff like: create something urgent for today</a></li>
+<li><a href="#sec-13-4">Capture</a></li>
+<li><a href="#sec-13-5">Other</a></li>
+<li><a href="#sec-13-6"><span class="todo TODO">TODO</span> shortcut for making an org link, and transforming a link into a proper org link</a></li>
+<li><a href="#sec-13-7"><span class="todo TODO">TODO</span> make it work with evil</a></li>
+<li><a href="#sec-13-8"><span class="todo TODO">TODO</span> Proper keybindings for quick access.</a></li>
+<li><a href="#sec-13-9"><span class="todo TODO">TODO</span> shortcuts for stuff like: create something urgent for today</a></li>
 </ul>
 </li>
 <li><a href="#sec-14">IRC</a></li>
@@ -636,7 +637,7 @@ Global key binding.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span>global-set-key <span class="org-rainbow-delimiters-depth-2">(</span>kbd <span class="org-string">"C-c c"</span><span class="org-rainbow-delimiters-depth-2">)</span> 'calendar<span class="org-rainbow-delimiters-depth-1">)</span>
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span>global-set-key <span class="org-rainbow-delimiters-depth-2">(</span>kbd <span class="org-string">"M-c"</span><span class="org-rainbow-delimiters-depth-2">)</span> 'calendar<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -2072,12 +2073,50 @@ The prefix for the different kinds of types being used.
                                  <span class="org-rainbow-delimiters-depth-3">(</span>todo   . <span class="org-string">"%c:%t%s"</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
+
+<p>
+Set up a key binding for org-agenda.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span>global-set-key <span class="org-rainbow-delimiters-depth-2">(</span>kbd <span class="org-string">"C-c a"</span><span class="org-rainbow-delimiters-depth-2">)</span> 'org-agenda<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
 </div>
 </div>
 
 <div id="outline-container-sec-13-4" class="outline-3">
-<h3 id="sec-13-4">Other</h3>
+<h3 id="sec-13-4">Capture</h3>
 <div class="outline-text-3" id="text-13-4">
+<p>
+Set the default notes file and the key binding.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">setq</span> org-default-notes-file <span class="org-rainbow-delimiters-depth-2">(</span>concat org-directory <span class="org-string">"/notes.org"</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span>define-key global-map <span class="org-string">"\C-cc"</span> 'org-capture<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+And finally set <code>org-capture-templates</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">setq</span> org-capture-templates
+      `<span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-delimiters-depth-3">(</span><span class="org-string">"t"</span> <span class="org-string">"todo"</span> entry <span class="org-rainbow-delimiters-depth-4">(</span>file <span class="org-string">""</span><span class="org-rainbow-delimiters-depth-4">)</span> <span class="org-string">"* </span><span class="org-string"><span class="org-warning">TODO</span></span><span class="org-string"> %?\n%U\n"</span><span class="org-rainbow-delimiters-depth-3">)</span>
+        <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-string">"i"</span> <span class="org-string">"idea"</span> entry <span class="org-rainbow-delimiters-depth-4">(</span>file <span class="org-string">""</span><span class="org-rainbow-delimiters-depth-4">)</span> <span class="org-string">"* %? :IDEA:\n%U\n%a\n"</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-13-5" class="outline-3">
+<h3 id="sec-13-5">Other</h3>
+<div class="outline-text-3" id="text-13-5">
 <p>
 Insert a &lt;kbd&gt;&lt;/kbd&gt; value in org mode. See this <a href="http://emacs.stackexchange.com/questions/2206/i-want-to-have-the-kbd-tags-for-my-blog-written-in-org-mode">StackExchange answer</a>.
 </p>
@@ -2104,18 +2143,18 @@ Insert a &lt;kbd&gt;&lt;/kbd&gt; value in org mode. See this <a href="http://ema
 </div>
 </div>
 
-<div id="outline-container-sec-13-5" class="outline-3">
-<h3 id="sec-13-5"><span class="todo TODO">TODO</span> shortcut for making an org link, and transforming a link into a proper org link</h3>
-</div>
 <div id="outline-container-sec-13-6" class="outline-3">
-<h3 id="sec-13-6"><span class="todo TODO">TODO</span> make it work with evil</h3>
+<h3 id="sec-13-6"><span class="todo TODO">TODO</span> shortcut for making an org link, and transforming a link into a proper org link</h3>
 </div>
 <div id="outline-container-sec-13-7" class="outline-3">
-<h3 id="sec-13-7"><span class="todo TODO">TODO</span> Proper keybindings for quick access.</h3>
+<h3 id="sec-13-7"><span class="todo TODO">TODO</span> make it work with evil</h3>
+</div>
+<div id="outline-container-sec-13-8" class="outline-3">
+<h3 id="sec-13-8"><span class="todo TODO">TODO</span> Proper keybindings for quick access.</h3>
 </div>
 
-<div id="outline-container-sec-13-8" class="outline-3">
-<h3 id="sec-13-8"><span class="todo TODO">TODO</span> shortcuts for stuff like: create something urgent for today</h3>
+<div id="outline-container-sec-13-9" class="outline-3">
+<h3 id="sec-13-9"><span class="todo TODO">TODO</span> shortcuts for stuff like: create something urgent for today</h3>
 </div>
 </div>
 
@@ -2721,7 +2760,7 @@ along with this program.  If not, see <a href="http://www.gnu.org/licenses/">&lt
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Miquel Sabaté Solà</p>
-<p class="date">Created: 2017-02-10 Fri 10:02</p>
+<p class="date">Created: 2017-02-10 Fri 17:38</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
