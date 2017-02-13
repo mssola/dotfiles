@@ -633,9 +633,9 @@ I never use the mouse.
 #+BEGIN_SRC elisp
 (use-package disable-mouse
   :ensure t
-  :diminish
   :config
-  (global-disable-mouse-mode))
+  (global-disable-mouse-mode)
+  (setq global-disable-mouse-mode-lighter ""))
 #+END_SRC
 
 Sometimes you begin typing a prefix, but then you forget the following
