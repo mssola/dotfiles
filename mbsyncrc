@@ -84,7 +84,7 @@ Channel susede
 Master :susede-remote:
 Slave :susede-local:
 Patterns *
-Create Slave
+Create Both
 Sync All
 Expunge Both
 SyncState *
@@ -93,13 +93,12 @@ SyncState *
 # suse.com
 
 IMAPAccount susecom
-Host imap.novell.com
+Host gwmail.emea.novell.com
 User msabate
 PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpasssusecom.gpg"
-SSLType STARTTLS
+SSLType IMAPS
 AuthMechs Login
 CertificateFile /etc/ssl/ca-bundle.pem
-Timeout 60
 
 IMAPStore susecom-remote
 Account susecom
@@ -113,7 +112,7 @@ Channel susecom
 Master :susecom-remote:
 Slave :susecom-local:
 Patterns * !Calendar
-Create Slave
+Create Both
 Sync All
 Expunge Both
 SyncState *
