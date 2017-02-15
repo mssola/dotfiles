@@ -1588,22 +1588,6 @@ GNU Emacs 24.3.
   (add-to-list 'erc-modules 'notifications))
 #+END_SRC
 
-Some extra cookies: allow ERC to display images and Youtube thumbnails.
-
-#+BEGIN_SRC elisp
-  (use-package erc-yt
-    :ensure t
-    :init
-    (with-eval-after-load 'erc
-      (add-to-list 'erc-modules 'youtube)))
-
-  (use-package erc-image
-    :ensure t
-    :init
-    (with-eval-after-load 'erc
-      (add-to-list 'erc-modules 'image)))
-#+END_SRC
-
 At this point, we can safely update all the loaded ERC modules.
 
 #+BEGIN_SRC elisp
