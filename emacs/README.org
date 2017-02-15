@@ -1,3 +1,7 @@
+#+TITLE: GNU Emacs configuration
+#+AUTHOR: Miquel Sabaté Solà
+#+EMAIL: mikisabate@gmail.com
+
 * mssola's GNU Emacs configuration
 
 ** About this

@@ -1,4 +1,8 @@
-# dotfiles [![Build Status](https://travis-ci.org/mssola/dotfiles.svg?branch=master)](https://travis-ci.org/mssola/dotfiles)
+#+TITLE: dotfiles
+#+AUTHOR: Miquel Sabaté Solà
+#+EMAIL: mikisabate@gmail.com
+
+* dotfiles [[https://travis-ci.org/mssola/dotfiles][https://travis-ci.org/punchagan/org2blog.svg?branch=master]]
 
 To automatically install everything, just execute the `install.sh` script.
 Take a look at this script since it might perform some actions that are
@@ -8,32 +12,27 @@ a submodule). Vim plugins will also get installed automatically.
 
 And that's about it. Use this at your own risk ;)
 
-## GNU Emacs
+** GNU Emacs
 
 See [emacs/README.org](emacs/README.org).
 
-## Runtime dependencies
+** Runtime dependencies
 
 There are some runtime dependencies that matter to either Vim or Emacs. In
 openSUSE (probably similar in your distribution) they can be solved like this:
 
-```
+#+BEGIN_SRC sh
 $ go get -u golang.org/x/tools/cmd/goimports
 $ go get -u github.com/rogpeppe/godef
 $ go get -u github.com/dougm/goflymake
 $ go get -u github.com/nsf/gocode
 $ sudo zypper in spell
-```
+#+END_SRC
 
 Also, in GNU Emacs the markdown mode requires a markdown-to-HTML converter. There
 are multiple options, but for me `calibre` seems to work just fine.
 
-## Weechat certificates
-
-For connecting to OFTC I'm using my own SSL certificates. OFTC has good
-documentation on how to do this [here](https://www.oftc.net/NickServ/CertFP/).
-
-## License
+** License
 
 Every file is licensed under the GPLv3+ unless stated otherwise. I've tried to
 mention every major influence on my `dotfiles`, but most surely I've forgotten
@@ -41,7 +40,7 @@ to add some people. If you feel like you should be mentioned somewhere in my
 config files, please send me an email. You can find the full license in the
 `LICENSE` file and below:
 
-```
+#+BEGIN_SRC text
 Copyright (C) 2014-2017 Miquel Sabaté Solà <mikisabate@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
@@ -56,4 +55,4 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-```
+#+END_SRC

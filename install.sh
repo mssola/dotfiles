@@ -37,7 +37,7 @@ rm -rf $HOME/bin/test
 
 # i3 and X stuff. An incomplete list of openSUSE packages that I need in order
 # to have a good i3 environment is: i3 xlockmore dunst i3status nitrogen scrot
-# breeze5-cursors konsole gpicview okular dmenu weechat the_silver_searcher.
+# breeze5-cursors konsole gpicview okular dmenu the_silver_searcher.
 mkdir -p $HOME/.config/dunst $HOME/.i3
 cp i3/config $HOME/.i3/config
 cp i3status.conf $HOME/.i3status.conf
@@ -62,10 +62,6 @@ rm -rf $HOME/.emacs.d
 cp emacs/custom.el $HOME/.emacs.d/custom.el
 cp emacs/init.el $HOME/.emacs.d/init.el
 ln -s emacs/init.org $HOME/.emacs.d/init.org
-
-# Wipe out weechat config and install it again
-rm -rf $HOME/.weechat
-cp -r weechat $HOME/.weechat
 
 # Update the style for KTE users (KWrite, Kate, KDevelop & Kile). Note that
 # there are two configs: the global one and the KDE one. The KDE one assumes
