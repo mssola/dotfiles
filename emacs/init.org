@@ -1783,15 +1783,18 @@ usings tabs for indentation (C, C++ and Go).
 Slim and SCSS.
 
 #+BEGIN_SRC elisp
-  (use-package slim-mode
-    :ensure t)
+(use-package slim-mode
+  :ensure t)
 
-  (use-package scss-mode
-    :ensure t
-    :config
+(use-package scss-mode
+  :ensure t
+  :config
 
-    (setq scss-compile-at-save nil)
-    (add-hook 'yaml-mode-hook 'warnings-mode-hook))
+  (setq scss-compile-at-save nil)
+  (add-hook 'yaml-mode-hook 'warnings-mode-hook))
+
+(use-package coffee-mode
+  :ensure t)
 #+END_SRC
 
 Languages specific for backend code like PHP, and =web-mode=, which provides a
