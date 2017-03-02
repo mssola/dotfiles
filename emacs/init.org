@@ -270,11 +270,17 @@ Remove the initial message from the scratch buffer.
 Never kill the scratch buffer, bury it instead.
 
 #+BEGIN_SRC elisp
-  (defadvice kill-buffer (around kill-buffer-around-advice activate)
-    (let ((buffer-to-kill (ad-get-arg 0)))
-      (if (equal buffer-to-kill "*scratch*")
-          (bury-buffer)
-        ad-do-it)))
+(defadvice kill-buffer (around kill-buffer-around-advice activate)
+  (let ((buffer-to-kill (ad-get-arg 0)))
+    (if (equal buffer-to-kill "*scratch*")
+        (bury-buffer)
+      ad-do-it)))
+
+(defadvice kill-this-buffer (around kill-buffer-around-advice activate)
+  (let ((buffer-to-kill (ad-get-arg 0)))
+    (if (equal buffer-to-kill "*scratch*")
+        (bury-buffer)
+      ad-do-it)))
 #+END_SRC
 
 No backups
@@ -1801,22 +1807,39 @@ Languages specific for backend code like PHP, and =web-mode=, which provides a
 bundle of features which are interesting for web-related stuff.
 
 #+BEGIN_SRC elisp
-  (use-package php-mode
-    :ensure t)
+(use-package php-mode
+  :ensure t)
 
-  (use-package web-mode
-    :ensure t
-    :config
+(use-package web-mode
+  :ensure t
+  :config
 
-    (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.jinja\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jinja\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
-    (add-hook 'web-mode-hook
-              (lambda ()
-                (setq web-mode-markup-indent-offset 2)
-                (setq web-mode-css-indent-offset 2)
-                (setq web-mode-code-indent-offset 2))))
+  (add-hook 'web-mode-hook
+            (lambda ()
+              (setq web-mode-markup-indent-offset 2)
+              (setq web-mode-css-indent-offset 2)
+              (setq web-mode-code-indent-offset 2)))
+
+  (add-hook 'js-mode-hook
+            (lambda ()
+              (setq js-indent-level 2)
+              (rainbow-delimiters-mode 1)))
+
+  ; React: treat it as a derived mode. Idea taken from spacemacs.
+  (define-derived-mode react-mode web-mode "react")
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . react-mode))
+  (add-to-list 'auto-mode-alist '("\\.react.js\\'" . react-mode))
+
+  (add-hook 'react-mode-hook
+            (lambda ()
+              (yas-activate-extra-mode 'js-mode)
+              (web-mode-set-content-type "jsx")
+              (setq-local web-mode-enable-auto-quoting nil)
+              (rainbow-delimiters 1))))
 #+END_SRC
 
 The =json-reformat= package provides functions for reformatting JSON strings. It
