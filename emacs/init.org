@@ -1829,6 +1829,11 @@ bundle of features which are interesting for web-related stuff.
               (setq js-indent-level 2)
               (rainbow-delimiters-mode 1)))
 
+  (use-package vue-mode
+    :ensure t
+    :config
+    (setq mmm-submode-decoration-level 0))
+
   ; React: treat it as a derived mode. Idea taken from spacemacs.
   (define-derived-mode react-mode web-mode "react")
   (add-to-list 'auto-mode-alist '("\\.jsx\\'" . react-mode))
