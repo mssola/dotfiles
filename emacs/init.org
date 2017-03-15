@@ -697,11 +697,25 @@ Directly taken from: https://github.com/magnars/expand-region.el."
 (add-hook 'text-mode-hook 'er/add-text-mode-expansions)
 #+END_SRC
 
-Last but not least, =YASnippet=. This package allows people to define shortcuts
-for writing some common blocks. Moreover, it comes with a set of builtin
-snippets already. Since I don't remember some of these snippets, I've mapped
-@@html:<kbd>, h</kbd>@@ to =yas-describe-tables=, which shows the available
-snippets in another buffer.
+Editing files as root is a bit of a pain because usually the root user doesn't
+have the same configuration as the current one, and attempting to do so can be
+messy. So, instead of that, we could advice the =find-file= function so if the
+file is not writable by the current user, then GNU Emacs will ask for editing
+this same file as root:
+
+#+BEGIN_SRC elisp
+(defadvice find-file (after find-file-sudo activate)
+  "Find file as root if necessary."
+  (unless (and buffer-file-name
+               (file-writable-p buffer-file-name))
+    (if (yes-or-no-p "Do you want to edit this file as root?")
+        (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name)))))
+#+END_SRC
+
+=YASnippet= allows people to define shortcuts for writing some common blocks.
+Moreover, it comes with a set of builtin snippets already. Since I don't
+remember some of these snippets, I've mapped @@html:<kbd>, h</kbd>@@ to
+=yas-describe-tables=, which shows the available snippets in another buffer.
 
 #+BEGIN_SRC elisp
 (use-package yasnippet
