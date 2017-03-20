@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>mssola's GNU Emacs configuration</title>
-<!-- 2017-03-15 Wed 15:13 -->
+<!-- 2017-03-20 Mon 12:41 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Miquel Sabaté Solà" />
@@ -164,41 +164,42 @@ for the JavaScript code in this tag.
 </ul>
 </li>
 <li><a href="#sec-7">Project</a></li>
-<li><a href="#sec-8">Dired</a></li>
-<li><a href="#sec-9">Evil</a></li>
-<li><a href="#sec-10">Magit</a></li>
-<li><a href="#sec-11">mu4e</a></li>
-<li><a href="#sec-12">org</a>
+<li><a href="#sec-8">Edit</a></li>
+<li><a href="#sec-9">Dired</a></li>
+<li><a href="#sec-10">Evil</a></li>
+<li><a href="#sec-11">Magit</a></li>
+<li><a href="#sec-12">mu4e</a></li>
+<li><a href="#sec-13">org</a>
 <ul>
-<li><a href="#sec-12-1">General settings</a></li>
-<li><a href="#sec-12-2">Publishing</a></li>
-<li><a href="#sec-12-3">Agenda</a></li>
-<li><a href="#sec-12-4">Capture</a></li>
-<li><a href="#sec-12-5">Other</a></li>
-<li><a href="#sec-12-6"><span class="todo TODO">TODO</span> shortcut for making an org link, and transforming a link into a proper org link</a></li>
-<li><a href="#sec-12-7"><span class="todo TODO">TODO</span> make it work with evil</a></li>
-<li><a href="#sec-12-8"><span class="todo TODO">TODO</span> Proper keybindings for quick access.</a></li>
-<li><a href="#sec-12-9"><span class="todo TODO">TODO</span> shortcuts for stuff like: create something urgent for today</a></li>
+<li><a href="#sec-13-1">General settings</a></li>
+<li><a href="#sec-13-2">Publishing</a></li>
+<li><a href="#sec-13-3">Agenda</a></li>
+<li><a href="#sec-13-4">Capture</a></li>
+<li><a href="#sec-13-5">Other</a></li>
+<li><a href="#sec-13-6"><span class="todo TODO">TODO</span> shortcut for making an org link, and transforming a link into a proper org link</a></li>
+<li><a href="#sec-13-7"><span class="todo TODO">TODO</span> make it work with evil</a></li>
+<li><a href="#sec-13-8"><span class="todo TODO">TODO</span> Proper keybindings for quick access.</a></li>
+<li><a href="#sec-13-9"><span class="todo TODO">TODO</span> shortcuts for stuff like: create something urgent for today</a></li>
 </ul>
 </li>
-<li><a href="#sec-13">IRC</a></li>
-<li><a href="#sec-14">Languages</a>
+<li><a href="#sec-14">IRC</a></li>
+<li><a href="#sec-15">Languages</a>
 <ul>
-<li><a href="#sec-14-1">General</a></li>
-<li><a href="#sec-14-2">Lisp</a></li>
-<li><a href="#sec-14-3">C and C++</a></li>
-<li><a href="#sec-14-4">Ruby</a></li>
-<li><a href="#sec-14-5">Go</a></li>
-<li><a href="#sec-14-6">Tabs vs spaces</a></li>
-<li><a href="#sec-14-7">Inferior markup languages.</a></li>
-<li><a href="#sec-14-8">Web-related stuff.</a></li>
-<li><a href="#sec-14-9">Others</a></li>
+<li><a href="#sec-15-1">General</a></li>
+<li><a href="#sec-15-2">Lisp</a></li>
+<li><a href="#sec-15-3">C and C++</a></li>
+<li><a href="#sec-15-4">Ruby</a></li>
+<li><a href="#sec-15-5">Go</a></li>
+<li><a href="#sec-15-6">Tabs vs spaces</a></li>
+<li><a href="#sec-15-7">Inferior markup languages.</a></li>
+<li><a href="#sec-15-8">Web-related stuff.</a></li>
+<li><a href="#sec-15-9">Others</a></li>
 </ul>
 </li>
-<li><a href="#sec-15">WoMan</a></li>
-<li><a href="#sec-16">Misc</a></li>
-<li><a href="#sec-17">Credits</a></li>
-<li><a href="#sec-18">License</a></li>
+<li><a href="#sec-16">WoMan</a></li>
+<li><a href="#sec-17">Misc</a></li>
+<li><a href="#sec-18">Credits</a></li>
+<li><a href="#sec-19">License</a></li>
 </ul>
 </div>
 </div>
@@ -934,8 +935,215 @@ binding to <kbd>,a</kbd> a function that calls to the proper function.
 </div>
 
 <div id="outline-container-sec-8" class="outline-2">
-<h2 id="sec-8">Dired</h2>
+<h2 id="sec-8">Edit</h2>
 <div class="outline-text-2" id="text-8">
+<p>
+In this section I define some useful packages for editing. First of all, one of
+the coolest packages out there is <code>undo-tree</code>. It allows you to navigate through
+the undo history in a tree (because GNU Emacs is cool and keeps track of undo
+actions in a tree structure instead of in a stack). This package is included in
+recent versions of GNU Emacs.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">with-eval-after-load</span> 'undo-tree
+  <span class="org-rainbow-delimiters-depth-2">(</span>global-undo-tree-mode 1<span class="org-rainbow-delimiters-depth-2">)</span>
+
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">setq</span> undo-tree-visualizer-diff t
+        undo-tree-visualizer-timestamps t
+        undo-tree-visualizer-relative-timestamps t<span class="org-rainbow-delimiters-depth-2">)</span>
+
+  <span class="org-rainbow-delimiters-depth-2">(</span>diminish 'undo-tree-mode<span class="org-rainbow-delimiters-depth-2">)</span>
+
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">with-eval-after-load</span> 'evil-leader
+    <span class="org-rainbow-delimiters-depth-3">(</span>evil-leader/set-key
+      <span class="org-string">"u"</span> 'undo-tree-visualize<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+Another important package is <code>flycheck</code>, which is an on-the-fly syntax checking
+extension. This works with lots of languages with proper glue code.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> let-alist
+  <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> flycheck
+  <span class="org-builtin">:ensure</span> t
+  <span class="org-builtin">:diminish</span>
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>add-hook 'after-init-hook 'global-flycheck-mode<span class="org-rainbow-delimiters-depth-2">)</span>
+
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Only show the errors buffer if it isn't there and if I'm saving the</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">buffer.</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">setq</span> flycheck-emacs-lisp-load-path 'inherit<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">setq</span> flycheck-check-syntax-automatically '<span class="org-rainbow-delimiters-depth-3">(</span>mode-enabled save<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">setq</span> flycheck-display-errors-function
+    #'flycheck-display-error-messages-unless-error-list<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+A recurring issue in speeches and presentations is that when showing something
+with your editor, you have to increase/decrease the fonts. I use the
+<code>default-text-scale</code> package for this.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> default-text-scale
+  <span class="org-builtin">:ensure</span> t
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>global-set-key <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"C-+"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'default-text-scale-increase<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>global-set-key <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"C--"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'default-text-scale-decrease<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+Some languages use some delimiters a lot (e.g. lisp languages and
+parenthesis). For this reason I'm using the <code>rainbow-delimiters</code> package, which
+properly highlights each level in a different way (provided that your theme
+supports it).
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> rainbow-delimiters
+  <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+I never use the mouse.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> disable-mouse
+  <span class="org-builtin">:ensure</span> t
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>global-disable-mouse-mode<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">setq</span> global-disable-mouse-mode-lighter <span class="org-string">""</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+Sometimes you begin typing a prefix, but then you forget the following
+chord. For this reason <code>which-key</code> was created. It will show the available
+commands for the current chord as a list.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> which-key
+  <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+For some modes it is important to count the number of words in the text. For
+this, we have <code>wc-mode</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> wc-mode
+  <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+Next on the list, we have <code>writeroom-mode</code>. I honestly don't use this package
+that often, but it's cool to have a distraction-free screen from time to time.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> writeroom-mode
+  <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+The <code>expand-region</code> package is an extension that is based on a Vim one, which
+expands the region of selection with a single key chord. Even if evil covers
+most of my uses, it's convenient to have this tool anyways.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> expand-region
+  <span class="org-builtin">:ensure</span> t
+  <span class="org-builtin">:config</span>
+
+  <span class="org-comment-delimiter">; </span><span class="org-comment">Set C-e as the expand command (mnemonic: expand). This command will</span>
+  <span class="org-comment-delimiter">; </span><span class="org-comment">supercede the evil binding for "move one line", which I never use anyways.</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>global-set-key <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"\C-e"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'er/expand-region<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">with-eval-after-load</span> 'evil
+    <span class="org-rainbow-delimiters-depth-3">(</span>define-key evil-normal-state-map <span class="org-rainbow-delimiters-depth-4">(</span>kbd <span class="org-string">"\C-e"</span><span class="org-rainbow-delimiters-depth-4">)</span> 'er/expand-region<span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span>define-key evil-visual-state-map <span class="org-rainbow-delimiters-depth-4">(</span>kbd <span class="org-string">"\C-e"</span><span class="org-rainbow-delimiters-depth-4">)</span> 'er/expand-region<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defun</span> <span class="org-function-name">er/add-text-mode-expansions</span> <span class="org-rainbow-delimiters-depth-2">()</span>
+  <span class="org-doc">"This way we can also expand the region into paragraphs &amp; pages in text mode.</span>
+<span class="org-doc">Directly taken from: https://github.com/magnars/expand-region.el."</span>
+
+  <span class="org-rainbow-delimiters-depth-2">(</span>set <span class="org-rainbow-delimiters-depth-3">(</span>make-local-variable 'er/try-expand-list<span class="org-rainbow-delimiters-depth-3">)</span> <span class="org-rainbow-delimiters-depth-3">(</span>append
+                                                  er/try-expand-list
+                                                  '<span class="org-rainbow-delimiters-depth-4">(</span>mark-paragraph
+                                                    mark-page<span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span>add-hook 'text-mode-hook 'er/add-text-mode-expansions<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+Editing files as root is a bit of a pain because usually the root user doesn't
+have the same configuration as the current one, and attempting to do so can be
+messy. So, instead of that, we could advice the <code>find-file</code> function so if the
+file is not writable by the current user, then GNU Emacs will ask for editing
+this same file as root:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defadvice</span> <span class="org-function-name">find-file</span> <span class="org-rainbow-delimiters-depth-2">(</span>after find-file-sudo activate<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-doc">"Find file as root if necessary."</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">if</span> <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">and</span> buffer-file-name
+           <span class="org-rainbow-delimiters-depth-4">(</span>not <span class="org-rainbow-delimiters-depth-5">(</span>file-writable-p buffer-file-name<span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span>
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">if</span> <span class="org-rainbow-delimiters-depth-4">(</span>yes-or-no-p <span class="org-string">"Do you want to edit this file as root?"</span><span class="org-rainbow-delimiters-depth-4">)</span>
+        <span class="org-rainbow-delimiters-depth-4">(</span>find-alternate-file <span class="org-rainbow-delimiters-depth-5">(</span>concat <span class="org-string">"/sudo:root@localhost:"</span> buffer-file-name<span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+<code>YASnippet</code> allows people to define shortcuts for writing some common blocks.
+Moreover, it comes with a set of builtin snippets already. Since I don't
+remember some of these snippets, I've mapped <kbd>, h</kbd> to
+<code>yas-describe-tables</code>, which shows the available snippets in another buffer.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> yasnippet
+  <span class="org-builtin">:ensure</span> t
+  <span class="org-builtin">:diminish</span> yas-minor-mode
+  <span class="org-builtin">:init</span> <span class="org-rainbow-delimiters-depth-2">(</span>yas-global-mode<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>yas-global-mode 1<span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">with-eval-after-load</span> 'evil-leader
+    <span class="org-rainbow-delimiters-depth-3">(</span>evil-leader/set-key <span class="org-string">"h"</span> 'yas-describe-tables<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9">Dired</h2>
+<div class="outline-text-2" id="text-9">
 <p>
 I use dired mode mainly for attaching document into emails. That being said,
 whenever I use it, I want basic evil movement.
@@ -995,9 +1203,9 @@ from the <a href="https://www.djcbsoftware.nl/code/mu/mu4e/Dired.html#Dired">mu4
 </div>
 </div>
 
-<div id="outline-container-sec-9" class="outline-2">
-<h2 id="sec-9">Evil</h2>
-<div class="outline-text-2" id="text-9">
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10">Evil</h2>
+<div class="outline-text-2" id="text-10">
 <p>
 Forgive me, <a href="https://stallman.org/saint.html">Father</a>, for I have sinned. I've been exposed to modal editing
 through Vim, and that has changed how I view editing for the foreseeable future.
@@ -1205,9 +1413,9 @@ into Evil: <kbd>C-a</kbd> for increasing a number, and
 </div>
 </div>
 
-<div id="outline-container-sec-10" class="outline-2">
-<h2 id="sec-10">Magit</h2>
-<div class="outline-text-2" id="text-10">
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11">Magit</h2>
+<div class="outline-text-2" id="text-11">
 <p>
 A git porcelain for GNU Emacs. Even if I'm still using the git CLI, it's
 certainly useful for some common tasks (I guess that I still need some learning).
@@ -1284,9 +1492,9 @@ And repair some key bindings from Evil mode.
 </div>
 </div>
 
-<div id="outline-container-sec-11" class="outline-2">
-<h2 id="sec-11">mu4e</h2>
-<div class="outline-text-2" id="text-11">
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12">mu4e</h2>
+<div class="outline-text-2" id="text-12">
 <p>
 I use <a href="http://www.djcbsoftware.nl/code/mu/">mu</a> and <a href="http://www.djcbsoftware.nl/code/mu/mu4e.html">mu4e</a> to manage my email. The configuration for this has been taken
 mainly from the documentation, plus some cool remarks on Reddit. This
@@ -1662,9 +1870,9 @@ And finally define a proper shortcut.
 </div>
 </div>
 
-<div id="outline-container-sec-12" class="outline-2">
-<h2 id="sec-12">org</h2>
-<div class="outline-text-2" id="text-12">
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13">org</h2>
+<div class="outline-text-2" id="text-13">
 <p>
 <a href="http://orgmode.org/">org mode</a> is an incredible tool that keeps me organized: TODOs, notes, agenda,
 etc. Moreover, it's built in GNU Emacs:
@@ -1677,9 +1885,9 @@ etc. Moreover, it's built in GNU Emacs:
 </div>
 </div>
 
-<div id="outline-container-sec-12-1" class="outline-3">
-<h3 id="sec-12-1">General settings</h3>
-<div class="outline-text-3" id="text-12-1">
+<div id="outline-container-sec-13-1" class="outline-3">
+<h3 id="sec-13-1">General settings</h3>
+<div class="outline-text-3" id="text-13-1">
 <p>
 First of all, let me define some helper functions.
 </p>
@@ -1765,9 +1973,9 @@ Where org files reside.
 </div>
 </div>
 
-<div id="outline-container-sec-12-2" class="outline-3">
-<h3 id="sec-12-2">Publishing</h3>
-<div class="outline-text-3" id="text-12-2">
+<div id="outline-container-sec-13-2" class="outline-3">
+<h3 id="sec-13-2">Publishing</h3>
+<div class="outline-text-3" id="text-13-2">
 <p>
 In order to publish files into HTML, I would like to have <code>htmlize</code> installed.
 This package allows org to export to HTML in a better way (e.g. allowing code
@@ -1799,9 +2007,9 @@ And now let's set all the related settings.
 </div>
 </div>
 
-<div id="outline-container-sec-12-3" class="outline-3">
-<h3 id="sec-12-3">Agenda</h3>
-<div class="outline-text-3" id="text-12-3">
+<div id="outline-container-sec-13-3" class="outline-3">
+<h3 id="sec-13-3">Agenda</h3>
+<div class="outline-text-3" id="text-13-3">
 <p>
 Custom commands for <code>org-agenda</code>.
 </p>
@@ -1902,9 +2110,9 @@ Set up a key binding for org-agenda.
 </div>
 </div>
 
-<div id="outline-container-sec-12-4" class="outline-3">
-<h3 id="sec-12-4">Capture</h3>
-<div class="outline-text-3" id="text-12-4">
+<div id="outline-container-sec-13-4" class="outline-3">
+<h3 id="sec-13-4">Capture</h3>
+<div class="outline-text-3" id="text-13-4">
 <p>
 Set the default notes file and the key binding.
 </p>
@@ -1930,9 +2138,9 @@ And finally set <code>org-capture-templates</code>.
 </div>
 </div>
 
-<div id="outline-container-sec-12-5" class="outline-3">
-<h3 id="sec-12-5">Other</h3>
-<div class="outline-text-3" id="text-12-5">
+<div id="outline-container-sec-13-5" class="outline-3">
+<h3 id="sec-13-5">Other</h3>
+<div class="outline-text-3" id="text-13-5">
 <p>
 Insert a &lt;kbd&gt;&lt;/kbd&gt; value in org mode. See this <a href="http://emacs.stackexchange.com/questions/2206/i-want-to-have-the-kbd-tags-for-my-blog-written-in-org-mode">StackExchange answer</a>.
 </p>
@@ -1959,24 +2167,24 @@ Insert a &lt;kbd&gt;&lt;/kbd&gt; value in org mode. See this <a href="http://ema
 </div>
 </div>
 
-<div id="outline-container-sec-12-6" class="outline-3">
-<h3 id="sec-12-6"><span class="todo TODO">TODO</span> shortcut for making an org link, and transforming a link into a proper org link</h3>
+<div id="outline-container-sec-13-6" class="outline-3">
+<h3 id="sec-13-6"><span class="todo TODO">TODO</span> shortcut for making an org link, and transforming a link into a proper org link</h3>
 </div>
-<div id="outline-container-sec-12-7" class="outline-3">
-<h3 id="sec-12-7"><span class="todo TODO">TODO</span> make it work with evil</h3>
+<div id="outline-container-sec-13-7" class="outline-3">
+<h3 id="sec-13-7"><span class="todo TODO">TODO</span> make it work with evil</h3>
 </div>
-<div id="outline-container-sec-12-8" class="outline-3">
-<h3 id="sec-12-8"><span class="todo TODO">TODO</span> Proper keybindings for quick access.</h3>
-</div>
-
-<div id="outline-container-sec-12-9" class="outline-3">
-<h3 id="sec-12-9"><span class="todo TODO">TODO</span> shortcuts for stuff like: create something urgent for today</h3>
-</div>
+<div id="outline-container-sec-13-8" class="outline-3">
+<h3 id="sec-13-8"><span class="todo TODO">TODO</span> Proper keybindings for quick access.</h3>
 </div>
 
-<div id="outline-container-sec-13" class="outline-2">
-<h2 id="sec-13">IRC</h2>
-<div class="outline-text-2" id="text-13">
+<div id="outline-container-sec-13-9" class="outline-3">
+<h3 id="sec-13-9"><span class="todo TODO">TODO</span> shortcuts for stuff like: create something urgent for today</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-14" class="outline-2">
+<h2 id="sec-14">IRC</h2>
+<div class="outline-text-2" id="text-14">
 <p>
 I'm giving ERC a chance. First of all, I'm setting up basic stuff.
 </p>
@@ -2095,12 +2303,12 @@ And now define a function to connect to both IRC servers.
 </div>
 </div>
 
-<div id="outline-container-sec-14" class="outline-2">
-<h2 id="sec-14">Languages</h2>
-<div class="outline-text-2" id="text-14">
-</div><div id="outline-container-sec-14-1" class="outline-3">
-<h3 id="sec-14-1">General</h3>
-<div class="outline-text-3" id="text-14-1">
+<div id="outline-container-sec-15" class="outline-2">
+<h2 id="sec-15">Languages</h2>
+<div class="outline-text-2" id="text-15">
+</div><div id="outline-container-sec-15-1" class="outline-3">
+<h3 id="sec-15-1">General</h3>
+<div class="outline-text-3" id="text-15-1">
 <p>
 First of all, define a function that identifies some warning keywords
 (e.g. TODO). This function can then be applied to the proper mode.
@@ -2133,9 +2341,9 @@ context too. In this case, I want spell check and <code>wc-mode</code> activated
 </div>
 </div>
 
-<div id="outline-container-sec-14-2" class="outline-3">
-<h3 id="sec-14-2">Lisp</h3>
-<div class="outline-text-3" id="text-14-2">
+<div id="outline-container-sec-15-2" class="outline-3">
+<h3 id="sec-15-2">Lisp</h3>
+<div class="outline-text-3" id="text-15-2">
 <p>
 Emacs lisp needs <code>rainbow-delimiters</code>, so the amount of parenthesis is less
 confusing. Moreover, I'm also enabling <code>eldoc-mode</code> and the aforementioned
@@ -2156,9 +2364,9 @@ confusing. Moreover, I'm also enabling <code>eldoc-mode</code> and the aforement
 </div>
 </div>
 
-<div id="outline-container-sec-14-3" class="outline-3">
-<h3 id="sec-14-3">C and C++</h3>
-<div class="outline-text-3" id="text-14-3">
+<div id="outline-container-sec-15-3" class="outline-3">
+<h3 id="sec-15-3">C and C++</h3>
+<div class="outline-text-3" id="text-15-3">
 <p>
 C and C++ only require the <code>warnings-mode-hook</code> function, spell checking for the
 comments and the usage of tabs instead of spaces.
@@ -2182,9 +2390,9 @@ comments and the usage of tabs instead of spaces.
 </div>
 </div>
 
-<div id="outline-container-sec-14-4" class="outline-3">
-<h3 id="sec-14-4">Ruby</h3>
-<div class="outline-text-3" id="text-14-4">
+<div id="outline-container-sec-15-4" class="outline-3">
+<h3 id="sec-15-4">Ruby</h3>
+<div class="outline-text-3" id="text-15-4">
 <p>
 Include warning keywords in Ruby.
 </p>
@@ -2197,9 +2405,9 @@ Include warning keywords in Ruby.
 </div>
 </div>
 
-<div id="outline-container-sec-14-5" class="outline-3">
-<h3 id="sec-14-5">Go</h3>
-<div class="outline-text-3" id="text-14-5">
+<div id="outline-container-sec-15-5" class="outline-3">
+<h3 id="sec-15-5">Go</h3>
+<div class="outline-text-3" id="text-15-5">
 <p>
 And now my Go configuration. This includes stuff like the usage of <code>goimports</code>,
 <code>gofmt</code> on save, among many other useful things.
@@ -2252,9 +2460,9 @@ And now my Go configuration. This includes stuff like the usage of <code>goimpor
 </div>
 </div>
 
-<div id="outline-container-sec-14-6" class="outline-3">
-<h3 id="sec-14-6">Tabs vs spaces</h3>
-<div class="outline-text-3" id="text-14-6">
+<div id="outline-container-sec-15-6" class="outline-3">
+<h3 id="sec-15-6">Tabs vs spaces</h3>
+<div class="outline-text-3" id="text-15-6">
 <p>
 Tabs or spaces? <a href="https://www.emacswiki.org/emacs/TabsSpacesBoth">Both</a>. The <code>smart-tabs-mode</code> has the philosophy of: tabs for
 indentation, spaces for alignment. This is only applied in languages where I'm
@@ -2275,9 +2483,9 @@ usings tabs for indentation (C, C++ and Go).
 </div>
 </div>
 
-<div id="outline-container-sec-14-7" class="outline-3">
-<h3 id="sec-14-7">Inferior markup languages.</h3>
-<div class="outline-text-3" id="text-14-7">
+<div id="outline-container-sec-15-7" class="outline-3">
+<h3 id="sec-15-7">Inferior markup languages.</h3>
+<div class="outline-text-3" id="text-15-7">
 <div class="org-src-container">
 
 <pre class="src src-elisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">Markdown mode with preview mode in the browser.</span>
@@ -2308,9 +2516,9 @@ usings tabs for indentation (C, C++ and Go).
 </div>
 </div>
 
-<div id="outline-container-sec-14-8" class="outline-3">
-<h3 id="sec-14-8">Web-related stuff.</h3>
-<div class="outline-text-3" id="text-14-8">
+<div id="outline-container-sec-15-8" class="outline-3">
+<h3 id="sec-15-8">Web-related stuff.</h3>
+<div class="outline-text-3" id="text-15-8">
 <p>
 Slim and SCSS.
 </p>
@@ -2395,9 +2603,9 @@ can be frustrating without proper formatting.
 </div>
 </div>
 
-<div id="outline-container-sec-14-9" class="outline-3">
-<h3 id="sec-14-9">Others</h3>
-<div class="outline-text-3" id="text-14-9">
+<div id="outline-container-sec-15-9" class="outline-3">
+<h3 id="sec-15-9">Others</h3>
+<div class="outline-text-3" id="text-15-9">
 <p>
 CMake for y'all.
 </p>
@@ -2470,9 +2678,9 @@ criteria really).
 </div>
 </div>
 
-<div id="outline-container-sec-15" class="outline-2">
-<h2 id="sec-15">WoMan</h2>
-<div class="outline-text-2" id="text-15">
+<div id="outline-container-sec-16" class="outline-2">
+<h2 id="sec-16">WoMan</h2>
+<div class="outline-text-2" id="text-16">
 <p>
 <code>WoMan</code> is a package that is included inside of GNU Emacs by default, and that
 takes care of visualizing man pages. Let's properly setup Evil mode for this:
@@ -2505,9 +2713,9 @@ Finally, I want man pages to fill all the frame:
 </div>
 </div>
 
-<div id="outline-container-sec-16" class="outline-2">
-<h2 id="sec-16">Misc</h2>
-<div class="outline-text-2" id="text-16">
+<div id="outline-container-sec-17" class="outline-2">
+<h2 id="sec-17">Misc</h2>
+<div class="outline-text-2" id="text-17">
 <p>
 Install a set of useful functions from <a href="https://github.com/bbatsov">@bbatsov</a>. The bindings are following
 Emacs style instead of being more Vim-like on purpose (I don't want to put
@@ -2528,9 +2736,9 @@ too many things into my leader and these shortcuts look sensible to me).
 </div>
 </div>
 
-<div id="outline-container-sec-17" class="outline-2">
-<h2 id="sec-17">Credits</h2>
-<div class="outline-text-2" id="text-17">
+<div id="outline-container-sec-18" class="outline-2">
+<h2 id="sec-18">Credits</h2>
+<div class="outline-text-2" id="text-18">
 <p>
 I've built this file by simply scavenging from other people's emacs.d/dotfiles
 repositories. I have taken lots of pieces from here and there, but most notably:
@@ -2555,9 +2763,9 @@ repositories. I have taken lots of pieces from here and there, but most notably:
 </div>
 </div>
 
-<div id="outline-container-sec-18" class="outline-2">
-<h2 id="sec-18">License</h2>
-<div class="outline-text-2" id="text-18">
+<div id="outline-container-sec-19" class="outline-2">
+<h2 id="sec-19">License</h2>
+<div class="outline-text-2" id="text-19">
 <div class="org-src-container">
 
 <pre class="src src-text">Copyright (C) 2014-2017 Miquel Sabat&#233; Sol&#224; <a href="mailto:mikisabate%40gmail.com">&lt;mikisabate@gmail.com&gt;</a>
@@ -2581,7 +2789,7 @@ along with this program.  If not, see <a href="http://www.gnu.org/licenses/">&lt
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Miquel Sabaté Solà</p>
-<p class="date">Created: 2017-03-15 Wed 15:13</p>
+<p class="date">Created: 2017-03-20 Mon 12:41</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.2.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
