@@ -649,8 +649,11 @@ chord. For this reason =which-key= was created. It will show the available
 commands for the current chord as a list.
 
 #+BEGIN_SRC elisp
-  (use-package which-key
-    :ensure t)
+(use-package which-key
+  :ensure t
+  :diminish which-key-mode
+  :config
+  (which-key-mode))
 #+END_SRC
 
 For some modes it is important to count the number of words in the text. For
