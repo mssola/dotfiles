@@ -986,10 +986,11 @@ the rest.
                  'show)))
 #+END_SRC
 
-Set a key binding for =magit-blame=.
+Set a key binding for =magit-blame= and =magit-log-buffer-file=.
 
 #+BEGIN_SRC elisp
   (global-set-key (kbd "C-c b") 'magit-blame)
+  (global-set-key (kbd "C-c l") 'magit-log-buffer-file)
 #+END_SRC
 
 And repair some key bindings from Evil mode.
@@ -1701,6 +1702,27 @@ comments and the usage of tabs instead of spaces.
   (lambda () (setq indent-tabs-mode t)))
 #+END_SRC
 
+CMake for y'all.
+
+#+BEGIN_SRC elisp
+  (use-package cmake-mode
+    :ensure t
+    :config
+
+    (setq auto-mode-alist
+          (append
+           '(("CMakeLists\\.txt\\'" . cmake-mode))
+           '(("\\.cmake\\'" . cmake-mode))
+           auto-mode-alist))
+
+    (use-package cmake-font-lock
+      :ensure t
+      :config
+
+      (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
+      (add-hook 'yaml-mode-hook 'warnings-mode-hook)))
+#+END_SRC
+
 ** Ruby
 
 Include warning keywords in Ruby.
@@ -1755,6 +1777,27 @@ And now my Go configuration. This includes stuff like the usage of =goimports=,
     (add-hook 'go-mode-hook 'warnings-mode-hook)
     (add-hook 'go-mode-hook 'go-eldoc-setup)
     (add-hook 'go-mode-hook 'mssola-go-mode))
+#+END_SRC
+
+** Rust
+
+Install =rust-mode= and add some hooks to make it friendlier.
+
+#+BEGIN_SRC elisp
+(use-package rust-mode
+  :ensure t
+  :config
+
+  (add-hook 'before-save-hook
+            #'(lambda ()
+                (when (eq major-mode 'rust-mode)
+                  (rust-format-buffer))))
+
+  (use-package flycheck-rust
+    :ensure t
+    :config
+
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 #+END_SRC
 
 ** Tabs vs spaces
@@ -1873,31 +1916,9 @@ can be frustrating without proper formatting.
   :ensure t)
 #+END_SRC
 
-** Others
+** Devops
 
-CMake for y'all.
-
-#+BEGIN_SRC elisp
-  (use-package cmake-mode
-    :ensure t
-    :config
-
-    (setq auto-mode-alist
-          (append
-           '(("CMakeLists\\.txt\\'" . cmake-mode))
-           '(("\\.cmake\\'" . cmake-mode))
-           auto-mode-alist))
-
-    (use-package cmake-font-lock
-      :ensure t
-      :config
-
-      (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
-      (add-hook 'yaml-mode-hook 'warnings-mode-hook)))
-#+END_SRC
-
-Some devops stuff, like Docker, terraform, etc. I have salt-mode disabled for
-now because it's buggy, but I still have hope.
+Highlighting for Dockerfiles.
 
 #+BEGIN_SRC elisp
   (use-package dockerfile-mode
@@ -1905,19 +1926,27 @@ now because it's buggy, but I still have hope.
     :config
 
     (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
-
-  (use-package terraform-mode
-    :ensure t
-    :config
-
-    (terraform-format-on-save-mode))
-
-  (use-package hcl-mode
-    :ensure t)
-
-  ;(use-package salt-mode
-    ;:ensure t)
 #+END_SRC
+
+Stuff from Hashicorp like terraform and HCL.
+
+#+BEGIN_SRC elisp
+(use-package terraform-mode
+  :ensure t
+  :config
+
+  (terraform-format-on-save-mode))
+
+(use-package hcl-mode
+  :ensure t)
+#+END_SRC
+
+#+BEGIN_SRC elisp
+(use-package salt-mode
+  :ensure t)
+#+END_SRC
+
+** Others
 
 The [[https;//github.com/mssola/soria][soria]] theme has the =soria-purple-identifiers= hook. This hook instructs
 the theme to use purple for identifiers instead of the default color. This is a
