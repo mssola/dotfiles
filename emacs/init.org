@@ -1550,14 +1550,23 @@ Will work on both org-mode and any mode that accepts plain html."
 
 * IRC
 
-I'm giving ERC a chance. First of all, I'm setting up basic stuff.
+I'm using [[https://www.gnu.org/software/emacs/manual/html_mono/erc.html][ERC]] for IRC.
 
 #+BEGIN_SRC elisp
 (use-package erc
   :config
+#+END_SRC
 
-  (erc-track-mode t)
+First of all, let's add some basic modules.
 
+#+BEGIN_SRC elisp
+  (dolist (mod '(autojoin track truncate))
+    (add-to-list 'erc-modules mod))
+#+END_SRC
+
+Setting up basic stuff.
+
+#+BEGIN_SRC elisp
   (setq erc-hide-list '("PART")
         erc-prompt (lambda () (concat (buffer-name) ">"))
         erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE")
@@ -1567,10 +1576,6 @@ I'm giving ERC a chance. First of all, I'm setting up basic stuff.
         erc-kill-server-buffer-on-quit t
         erc-fill-column 100
         erc-fill-prefix ""
-        erc-log-channels t
-        erc-log-write-after-insert t
-        erc-log-insert-log-on-open nil
-        erc-log-channels-directory "~/.emacs.d/erc/"
         erc-timestamp-format "[%H:%M] "
         erc-insert-timestamp-function 'erc-insert-timestamp-left
         erc-insert-away-timestamp-function 'erc-insert-timestamp-left
@@ -1583,7 +1588,25 @@ I'm giving ERC a chance. First of all, I'm setting up basic stuff.
         erc-away-nickname "msabate"
         erc-enable-logging t
         erc-query-on-unjoined-chan-privmsg t)
+#+END_SRC
 
+Let's log messages whenever I receive/send them. The other option is to only do
+that on =/quit= or =/part=, but it's better to be safe than sorry.
+
+#+BEGIN_SRC elisp
+  (require 'erc-log)
+  (erc-log-enable)
+
+  (setq erc-log-channels-directory "~/.emacs.d/erc"
+        erc-save-buffer-on-part nil
+        erc-save-queries-on-quit nil
+        erc-log-write-after-send t
+        erc-log-write-after-insert t)
+#+END_SRC
+
+Servers and channels to auto-join.
+
+#+BEGIN_SRC elisp
   (setq erc-autojoin-channels-alist
         '(("irc.freenode.net" "#gnu" "#emacs")
           ("irc.suse.de" "#suse" "#docker")))
@@ -1620,12 +1643,16 @@ At this point, we can safely update all the loaded ERC modules.
             (lambda (x) (erc-update-modules)))
 #+END_SRC
 
-According to the [[https://www.emacswiki.org/emacs/ErcFilling][wiki]], =auto-fill-mode= should be disabled if I'm using
-=erc-fill-mode=.
+Start some modules which won't do it by default. Moreover, according to the [[https://www.emacswiki.org/emacs/ErcFilling][wiki]]
+=auto-fill-mode= should be disabled if I'm using =erc-fill-mode=.
 
 #+BEGIN_SRC elisp
-(add-hook 'erc-mode-hook
-          (lambda () (auto-fill-mode 0)))
+  (add-hook 'erc-mode-hook
+            '(lambda ()
+               (erc-track-mode t)
+               (auto-fill-mode -1)
+               (erc-log-mode 1)
+               (erc-autojoin-mode 1)))
 #+END_SRC
 
 And now define a function to connect to both IRC servers.

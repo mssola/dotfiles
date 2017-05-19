@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>mssola's GNU Emacs configuration</title>
-<!-- 2017-04-06 Thu 13:19 -->
+<!-- 2017-05-19 Fri 09:26 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Miquel Sabaté Solà" />
@@ -278,6 +278,7 @@ on each change, the following function is provided:
 </div>
 </div>
 </div>
+
 <div id="outline-container-sec-2" class="outline-2">
 <h2 id="sec-2">Introduction</h2>
 <div class="outline-text-2" id="text-2">
@@ -390,6 +391,41 @@ Use UTF-8 <b>always</b>.
 <span class="org-rainbow-delimiters-depth-1">(</span>set-terminal-coding-system 'utf-8<span class="org-rainbow-delimiters-depth-1">)</span>
 <span class="org-rainbow-delimiters-depth-1">(</span>set-keyboard-coding-system 'utf-8<span class="org-rainbow-delimiters-depth-1">)</span>
 <span class="org-rainbow-delimiters-depth-1">(</span>set-language-environment 'utf-8<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+Some editing tweaks like tabs vs spaces, maximum column width, etc.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">Emacs modes typically provide a standard means to change the indentation</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">width (e.g. c-basic-offset). Moreover, even though I prefer tabs over space,</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">for most coding conventions this is not the case (e.g. ruby). For this</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">reason, I will disable them by default and enabled them back for each</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">specific case (e.g. C). I'm also using the smart-tabs-mode package, see</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">below in the languages section.</span>
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">setq-default</span> indent-tabs-mode nil<span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">setq-default</span> tab-width 4<span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">Maximum 80 columns.</span>
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">setq-default</span> fill-column 80<span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">setq-default</span> auto-fill-function 'do-auto-fill<span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">Do not break lines</span>
+<span class="org-rainbow-delimiters-depth-1">(</span>set-default 'truncate-lines t<span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">Delete the selection with a keypress.</span>
+<span class="org-rainbow-delimiters-depth-1">(</span>delete-selection-mode t<span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">Remove whitespaces at the end of line</span>
+<span class="org-rainbow-delimiters-depth-1">(</span>add-hook 'before-save-hook 'delete-trailing-whitespace<span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">Cursor</span>
+<span class="org-rainbow-delimiters-depth-1">(</span>blink-cursor-mode 0<span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span>global-hl-line-mode -1<span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span>show-paren-mode 1<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 </div>
@@ -778,7 +814,7 @@ require it here on the very top.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> diminish
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">diminish</span>
   <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
@@ -796,7 +832,7 @@ Ayo silver!
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> ag
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">ag</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 
@@ -818,12 +854,12 @@ Then, for keeping up with my projects I use the Projectile + Helm combination.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> projectile
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">projectile</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>projectile-mode 1<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 
-<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> helm
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">helm</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
   <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">setq</span> projectile-completion-system 'helm<span class="org-rainbow-delimiters-depth-2">)</span>
@@ -855,10 +891,10 @@ Then, for keeping up with my projects I use the Projectile + Helm combination.
   <span class="org-rainbow-delimiters-depth-2">(</span>define-key helm-map <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"C-j"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'helm-next-line<span class="org-rainbow-delimiters-depth-2">)</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>define-key helm-map <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"C-k"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'helm-previous-line<span class="org-rainbow-delimiters-depth-2">)</span>
 
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> helm-ag
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">helm-ag</span>
     <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 
-<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> helm-projectile
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">helm-projectile</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>helm-projectile-on<span class="org-rainbow-delimiters-depth-2">)</span>
@@ -971,10 +1007,10 @@ extension. This works with lots of languages with proper glue code.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> let-alist
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">let-alist</span>
   <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
 
-<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> flycheck
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">flycheck</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:diminish</span>
   <span class="org-builtin">:config</span>
@@ -997,7 +1033,7 @@ with your editor, you have to increase/decrease the fonts. I use the
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> default-text-scale
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">default-text-scale</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>global-set-key <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"C-+"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'default-text-scale-increase<span class="org-rainbow-delimiters-depth-2">)</span>
@@ -1014,7 +1050,7 @@ supports it).
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> rainbow-delimiters
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">rainbow-delimiters</span>
   <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
@@ -1025,7 +1061,7 @@ I never use the mouse.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> disable-mouse
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">disable-mouse</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>global-disable-mouse-mode<span class="org-rainbow-delimiters-depth-2">)</span>
@@ -1041,7 +1077,7 @@ commands for the current chord as a list.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> which-key
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">which-key</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:diminish</span> which-key-mode
   <span class="org-builtin">:config</span>
@@ -1056,7 +1092,7 @@ this, we have <code>wc-mode</code>.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> wc-mode
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">wc-mode</span>
   <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
@@ -1068,7 +1104,7 @@ that often, but it's cool to have a distraction-free screen from time to time.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> writeroom-mode
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">writeroom-mode</span>
   <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
@@ -1081,7 +1117,7 @@ most of my uses, it's convenient to have this tool anyways.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> expand-region
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">expand-region</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 
@@ -1133,7 +1169,7 @@ remember some of these snippets, I've mapped <kbd>, h</kbd> to
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> yasnippet
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">yasnippet</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:diminish</span> yas-minor-mode
   <span class="org-builtin">:init</span> <span class="org-rainbow-delimiters-depth-2">(</span>yas-global-mode<span class="org-rainbow-delimiters-depth-2">)</span>
@@ -1293,7 +1329,7 @@ Now make sure that Evil is installed, and call the relevant configuration functi
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> evil
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 
@@ -1323,7 +1359,7 @@ Vim into Evil.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> evil-leader
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-leader</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>global-evil-leader-mode<span class="org-rainbow-delimiters-depth-2">)</span>
@@ -1350,7 +1386,7 @@ having double quotes with single quotes in a single command).
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> evil-surround
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-surround</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>global-evil-surround-mode 1<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
@@ -1366,7 +1402,7 @@ the current line, regardless of the programming language.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> evil-commentary
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-commentary</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>evil-commentary-mode t<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
@@ -1382,7 +1418,7 @@ respectively.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> evil-args
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-args</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
   <span class="org-comment-delimiter">; </span><span class="org-comment">Configuration taken from the documentation of evil-args.</span>
@@ -1408,7 +1444,7 @@ into Evil: <kbd>C-a</kbd> for increasing a number, and
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> evil-numbers
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-numbers</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>define-key evil-normal-state-map <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"C-a"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'evil-numbers/inc-at-pt<span class="org-rainbow-delimiters-depth-2">)</span>
@@ -1428,7 +1464,7 @@ certainly useful for some common tasks (I guess that I still need some learning)
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> magit
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">magit</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 </pre>
@@ -1482,7 +1518,7 @@ And repair some key bindings from Evil mode.
 <pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">with-eval-after-load</span> 'evil-leader
   <span class="org-rainbow-delimiters-depth-2">(</span>evil-leader/set-key <span class="org-string">"s"</span> 'magit-status<span class="org-rainbow-delimiters-depth-2">)</span>
 
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> evil-magit
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-magit</span>
     <span class="org-builtin">:ensure</span> t
     <span class="org-builtin">:config</span>
 
@@ -1830,7 +1866,7 @@ I want desktop notifications when receiving email.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> mu4e-alert
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">mu4e-alert</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 
@@ -1846,7 +1882,7 @@ I want desktop notifications when receiving email.
 
 <span class="org-comment-delimiter">; </span><span class="org-comment">Evil mode in mu4e</span>
 <span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">with-eval-after-load</span> 'evil
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> evil-mu4e
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">evil-mu4e</span>
     <span class="org-builtin">:ensure</span> t
     <span class="org-builtin">:config</span>
 
@@ -1990,7 +2026,7 @@ blocks to be converted into HTML as well, so we can properly colorize it).
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> htmlize
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">htmlize</span>
   <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
@@ -2192,45 +2228,84 @@ Insert a &lt;kbd&gt;&lt;/kbd&gt; value in org mode. See this <a href="http://ema
 <h2 id="sec-14">IRC</h2>
 <div class="outline-text-2" id="text-14">
 <p>
-I'm giving ERC a chance. First of all, I'm setting up basic stuff.
+I'm using <a href="https://www.gnu.org/software/emacs/manual/html_mono/erc.html">ERC</a> for IRC.
 </p>
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> erc
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">erc</span>
   <span class="org-builtin">:config</span>
+</pre>
+</div>
 
-  <span class="org-rainbow-delimiters-depth-2">(</span>erc-track-mode t<span class="org-rainbow-delimiters-depth-2">)</span>
+<p>
+First of all, let's add some basic modules.
+</p>
 
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">setq</span> erc-hide-list '<span class="org-rainbow-delimiters-depth-3">(</span><span class="org-string">"PART"</span><span class="org-rainbow-delimiters-depth-3">)</span>
-        erc-prompt <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">lambda</span> <span class="org-rainbow-delimiters-depth-4">()</span> <span class="org-rainbow-delimiters-depth-4">(</span>concat <span class="org-rainbow-delimiters-depth-5">(</span>buffer-name<span class="org-rainbow-delimiters-depth-5">)</span> <span class="org-string">"&gt;"</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span>
-        erc-track-exclude-types '<span class="org-rainbow-delimiters-depth-3">(</span><span class="org-string">"JOIN"</span> <span class="org-string">"NICK"</span> <span class="org-string">"PART"</span> <span class="org-string">"QUIT"</span> <span class="org-string">"MODE"</span><span class="org-rainbow-delimiters-depth-3">)</span>
-        erc-server-coding-system '<span class="org-rainbow-delimiters-depth-3">(</span>utf-8 . utf-8<span class="org-rainbow-delimiters-depth-3">)</span>
-        erc-kill-buffer-on-part t
-        erc-kill-queries-on-quit t
-        erc-kill-server-buffer-on-quit t
-        erc-fill-column 100
-        erc-fill-prefix <span class="org-string">""</span>
-        erc-log-channels t
-        erc-log-write-after-insert t
-        erc-log-insert-log-on-open nil
-        erc-log-channels-directory <span class="org-string">"~/.emacs.d/erc/"</span>
-        erc-timestamp-format <span class="org-string">"[%H:%M] "</span>
-        erc-insert-timestamp-function 'erc-insert-timestamp-left
-        erc-insert-away-timestamp-function 'erc-insert-timestamp-left
-        erc-hide-timestamps nil
-        erc-whowas-on-nosuchnick t
-        erc-public-away-p nil
-        erc-echo-notice-always-hook '<span class="org-rainbow-delimiters-depth-3">(</span>erc-echo-notice-in-minibuffer<span class="org-rainbow-delimiters-depth-3">)</span>
-        erc-auto-set-away nil
-        erc-autoaway-message <span class="org-string">"%i seconds out..."</span>
-        erc-away-nickname <span class="org-string">"msabate"</span>
-        erc-enable-logging t
-        erc-query-on-unjoined-chan-privmsg t<span class="org-rainbow-delimiters-depth-2">)</span>
+<div class="org-src-container">
 
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">setq</span> erc-autojoin-channels-alist
-        '<span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-delimiters-depth-4">(</span><span class="org-string">"irc.freenode.net"</span> <span class="org-string">"#gnu"</span> <span class="org-string">"#emacs"</span><span class="org-rainbow-delimiters-depth-4">)</span>
-          <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-string">"irc.suse.de"</span> <span class="org-string">"#suse"</span> <span class="org-string">"#docker"</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">dolist</span> <span class="org-rainbow-delimiters-depth-2">(</span>mod '<span class="org-rainbow-delimiters-depth-3">(</span>autojoin track truncate<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>add-to-list 'erc-modules mod<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+Setting up basic stuff.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">setq</span> erc-hide-list '<span class="org-rainbow-delimiters-depth-2">(</span><span class="org-string">"PART"</span><span class="org-rainbow-delimiters-depth-2">)</span>
+      erc-prompt <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">lambda</span> <span class="org-rainbow-delimiters-depth-3">()</span> <span class="org-rainbow-delimiters-depth-3">(</span>concat <span class="org-rainbow-delimiters-depth-4">(</span>buffer-name<span class="org-rainbow-delimiters-depth-4">)</span> <span class="org-string">"&gt;"</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+      erc-track-exclude-types '<span class="org-rainbow-delimiters-depth-2">(</span><span class="org-string">"JOIN"</span> <span class="org-string">"NICK"</span> <span class="org-string">"PART"</span> <span class="org-string">"QUIT"</span> <span class="org-string">"MODE"</span><span class="org-rainbow-delimiters-depth-2">)</span>
+      erc-server-coding-system '<span class="org-rainbow-delimiters-depth-2">(</span>utf-8 . utf-8<span class="org-rainbow-delimiters-depth-2">)</span>
+      erc-kill-buffer-on-part t
+      erc-kill-queries-on-quit t
+      erc-kill-server-buffer-on-quit t
+      erc-fill-column 100
+      erc-fill-prefix <span class="org-string">""</span>
+      erc-timestamp-format <span class="org-string">"[%H:%M] "</span>
+      erc-insert-timestamp-function 'erc-insert-timestamp-left
+      erc-insert-away-timestamp-function 'erc-insert-timestamp-left
+      erc-hide-timestamps nil
+      erc-whowas-on-nosuchnick t
+      erc-public-away-p nil
+      erc-echo-notice-always-hook '<span class="org-rainbow-delimiters-depth-2">(</span>erc-echo-notice-in-minibuffer<span class="org-rainbow-delimiters-depth-2">)</span>
+      erc-auto-set-away nil
+      erc-autoaway-message <span class="org-string">"%i seconds out..."</span>
+      erc-away-nickname <span class="org-string">"msabate"</span>
+      erc-enable-logging t
+      erc-query-on-unjoined-chan-privmsg t<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+Let's log messages whenever I receive/send them. The other option is to only do
+that on <code>/quit</code> or <code>/part</code>, but it's better to be safe than sorry.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">require</span> '<span class="org-constant">erc-log</span><span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span>erc-log-enable<span class="org-rainbow-delimiters-depth-1">)</span>
+
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">setq</span> erc-log-channels-directory <span class="org-string">"~/.emacs.d/erc"</span>
+      erc-save-buffer-on-part nil
+      erc-save-queries-on-quit nil
+      erc-log-write-after-send t
+      erc-log-write-after-insert t<span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
+
+<p>
+Servers and channels to auto-join.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">setq</span> erc-autojoin-channels-alist
+      '<span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-delimiters-depth-3">(</span><span class="org-string">"irc.freenode.net"</span> <span class="org-string">"#gnu"</span> <span class="org-string">"#emacs"</span><span class="org-rainbow-delimiters-depth-3">)</span>
+        <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-string">"irc.suse.de"</span> <span class="org-string">"#suse"</span> <span class="org-string">"#docker"</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -2240,7 +2315,7 @@ Use the <code>erc-hl-nicks</code> package, so highlight support for nicknames is
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> erc-hl-nicks
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">erc-hl-nicks</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:init</span>
   <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">with-eval-after-load</span> 'erc
@@ -2278,14 +2353,18 @@ At this point, we can safely update all the loaded ERC modules.
 </div>
 
 <p>
-According to the <a href="https://www.emacswiki.org/emacs/ErcFilling">wiki</a>, <code>auto-fill-mode</code> should be disabled if I'm using
-<code>erc-fill-mode</code>.
+Start some modules which won't do it by default. Moreover, according to the <a href="https://www.emacswiki.org/emacs/ErcFilling">wiki</a>
+<code>auto-fill-mode</code> should be disabled if I'm using <code>erc-fill-mode</code>.
 </p>
 
 <div class="org-src-container">
 
 <pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span>add-hook 'erc-mode-hook
-          <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">lambda</span> <span class="org-rainbow-delimiters-depth-3">()</span> <span class="org-rainbow-delimiters-depth-3">(</span>auto-fill-mode 0<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+          '<span class="org-rainbow-delimiters-depth-2">(</span>lambda <span class="org-rainbow-delimiters-depth-3">()</span>
+             <span class="org-rainbow-delimiters-depth-3">(</span>erc-track-mode t<span class="org-rainbow-delimiters-depth-3">)</span>
+             <span class="org-rainbow-delimiters-depth-3">(</span>auto-fill-mode -1<span class="org-rainbow-delimiters-depth-3">)</span>
+             <span class="org-rainbow-delimiters-depth-3">(</span>erc-log-mode 1<span class="org-rainbow-delimiters-depth-3">)</span>
+             <span class="org-rainbow-delimiters-depth-3">(</span>erc-autojoin-mode 1<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -2400,7 +2479,7 @@ CMake for y'all.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> cmake-mode
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">cmake-mode</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 
@@ -2410,7 +2489,7 @@ CMake for y'all.
          '<span class="org-rainbow-delimiters-depth-4">(</span><span class="org-rainbow-delimiters-depth-5">(</span><span class="org-string">"\\.cmake\\'"</span> . cmake-mode<span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
          auto-mode-alist<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
 
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> cmake-font-lock
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">cmake-font-lock</span>
     <span class="org-builtin">:ensure</span> t
     <span class="org-builtin">:config</span>
 
@@ -2467,18 +2546,18 @@ And now my Go configuration. This includes stuff like the usage of <code>goimpor
   <span class="org-rainbow-delimiters-depth-2">(</span>flyspell-prog-mode<span class="org-rainbow-delimiters-depth-2">)</span>
 
   <span class="org-comment-delimiter">; </span><span class="org-comment">eldoc support</span>
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> go-eldoc
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">go-eldoc</span>
     <span class="org-builtin">:ensure</span> t
     <span class="org-builtin">:config</span>
     <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">require</span> '<span class="org-constant">go-eldoc</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
 
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> go-add-tags
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">go-add-tags</span>
     <span class="org-builtin">:ensure</span> t
     <span class="org-builtin">:config</span>
     <span class="org-rainbow-delimiters-depth-3">(</span>evil-leader/set-key <span class="org-string">"t"</span> 'go-add-tags<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 
 <span class="org-comment-delimiter">;; </span><span class="org-comment">Go</span>
-<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> go-mode
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">go-mode</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:pin</span> melpa-stable
   <span class="org-builtin">:config</span>
@@ -2500,7 +2579,7 @@ Install <code>rust-mode</code> and add some hooks to make it friendlier.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> rust-mode
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">rust-mode</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 
@@ -2509,7 +2588,7 @@ Install <code>rust-mode</code> and add some hooks to make it friendlier.
                 <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-keyword">when</span> <span class="org-rainbow-delimiters-depth-5">(</span>eq major-mode 'rust-mode<span class="org-rainbow-delimiters-depth-5">)</span>
                   <span class="org-rainbow-delimiters-depth-5">(</span>rust-format-buffer<span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
 
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> flycheck-rust
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">flycheck-rust</span>
     <span class="org-builtin">:ensure</span> t
     <span class="org-builtin">:config</span>
 
@@ -2530,7 +2609,7 @@ usings tabs for indentation (C, C++ and Go).
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> smart-tabs-mode
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">smart-tabs-mode</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
   <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">smart-tabs-add-language-support</span> golang go-mode-hook
@@ -2548,7 +2627,7 @@ usings tabs for indentation (C, C++ and Go).
 <div class="org-src-container">
 
 <pre class="src src-elisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">Markdown mode with preview mode in the browser.</span>
-<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> markdown-mode
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">markdown-mode</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 
@@ -2558,14 +2637,14 @@ usings tabs for indentation (C, C++ and Go).
 
   <span class="org-comment-delimiter">; </span><span class="org-comment">Preview mode does its things through websockets, so it's a requirement.</span>
   <span class="org-comment-delimiter">; </span><span class="org-comment">After that, we can safely require it.</span>
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> websocket
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">websocket</span>
     <span class="org-builtin">:ensure</span> t
     <span class="org-builtin">:config</span>
-    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">use-package</span> markdown-preview-mode
+    <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">use-package</span> <span class="org-constant">markdown-preview-mode</span>
       <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 
 <span class="org-comment-delimiter">; </span><span class="org-comment">YAML</span>
-<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> yaml-mode
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">yaml-mode</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 
@@ -2584,17 +2663,17 @@ Slim and SCSS.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> slim-mode
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">slim-mode</span>
   <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
 
-<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> scss-mode
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">scss-mode</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 
   <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">setq</span> scss-compile-at-save nil<span class="org-rainbow-delimiters-depth-2">)</span>
   <span class="org-rainbow-delimiters-depth-2">(</span>add-hook 'yaml-mode-hook 'warnings-mode-hook<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 
-<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> coffee-mode
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">coffee-mode</span>
   <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
@@ -2606,10 +2685,10 @@ bundle of features which are interesting for web-related stuff.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> php-mode
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">php-mode</span>
   <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
 
-<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> web-mode
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">web-mode</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 
@@ -2628,7 +2707,7 @@ bundle of features which are interesting for web-related stuff.
               <span class="org-rainbow-delimiters-depth-4">(</span><span class="org-keyword">setq</span> js-indent-level 2<span class="org-rainbow-delimiters-depth-4">)</span>
               <span class="org-rainbow-delimiters-depth-4">(</span>rainbow-delimiters-mode 1<span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
 
-  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> vue-mode
+  <span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">use-package</span> <span class="org-constant">vue-mode</span>
     <span class="org-builtin">:ensure</span> t
     <span class="org-builtin">:config</span>
     <span class="org-rainbow-delimiters-depth-3">(</span><span class="org-keyword">setq</span> mmm-submode-decoration-level 0<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
@@ -2655,7 +2734,7 @@ can be frustrating without proper formatting.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> json-reformat
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">json-reformat</span>
   <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
@@ -2671,7 +2750,7 @@ Highlighting for Dockerfiles.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> dockerfile-mode
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">dockerfile-mode</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 
@@ -2685,20 +2764,20 @@ Stuff from Hashicorp like terraform and HCL.
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> terraform-mode
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">terraform-mode</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 
   <span class="org-rainbow-delimiters-depth-2">(</span>terraform-format-on-save-mode<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 
-<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> hcl-mode
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">hcl-mode</span>
   <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> salt-mode
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">salt-mode</span>
   <span class="org-builtin">:ensure</span> t<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
@@ -2774,7 +2853,7 @@ too many things into my leader and these shortcuts look sensible to me).
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> crux
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">crux</span>
   <span class="org-builtin">:ensure</span> t
   <span class="org-builtin">:config</span>
 
@@ -2839,7 +2918,7 @@ along with this program.  If not, see <a href="http://www.gnu.org/licenses/">&lt
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Miquel Sabaté Solà</p>
-<p class="date">Created: 2017-04-06 Thu 13:19</p>
+<p class="date">Created: 2017-05-19 Fri 09:26</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.2.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
