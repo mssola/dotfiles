@@ -732,6 +732,15 @@ remember some of these snippets, I've mapped @@html:<kbd>, h</kbd>@@ to
     (evil-leader/set-key "h" 'yas-describe-tables)))
 #+END_SRC
 
+=bool-flip= is a very simple utility that toggles truthy/falsey values.
+
+#+BEGIN_SRC elisp
+(use-package bool-flip
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c b") 'bool-flip-do-flip))
+#+END_SRC
+
 * Dired
 
 I use dired mode mainly for attaching document into emails. That being said,
@@ -987,10 +996,9 @@ the rest.
                  'show)))
 #+END_SRC
 
-Set a key binding for =magit-blame= and =magit-log-buffer-file=.
+Set a key binding for =magit-log-buffer-file=.
 
 #+BEGIN_SRC elisp
-  (global-set-key (kbd "C-c b") 'magit-blame)
   (global-set-key (kbd "C-c l") 'magit-log-buffer-file)
 #+END_SRC
 

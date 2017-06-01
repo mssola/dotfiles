@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>mssola's GNU Emacs configuration</title>
-<!-- 2017-05-19 Fri 09:26 -->
+<!-- 2017-06-01 Thu 18:00 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Miquel Sabaté Solà" />
@@ -1179,6 +1179,19 @@ remember some of these snippets, I've mapped <kbd>, h</kbd> to
     <span class="org-rainbow-delimiters-depth-3">(</span>evil-leader/set-key <span class="org-string">"h"</span> 'yas-describe-tables<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
+
+<p>
+<code>bool-flip</code> is a very simple utility that toggles truthy/falsey values.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">use-package</span> <span class="org-constant">bool-flip</span>
+  <span class="org-builtin">:ensure</span> t
+  <span class="org-builtin">:config</span>
+  <span class="org-rainbow-delimiters-depth-2">(</span>global-set-key <span class="org-rainbow-delimiters-depth-3">(</span>kbd <span class="org-string">"C-c b"</span><span class="org-rainbow-delimiters-depth-3">)</span> 'bool-flip-do-flip<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
+</pre>
+</div>
 </div>
 </div>
 
@@ -1499,13 +1512,12 @@ the rest.
 </div>
 
 <p>
-Set a key binding for <code>magit-blame</code> and <code>magit-log-buffer-file</code>.
+Set a key binding for <code>magit-log-buffer-file</code>.
 </p>
 
 <div class="org-src-container">
 
-<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span>global-set-key <span class="org-rainbow-delimiters-depth-2">(</span>kbd <span class="org-string">"C-c b"</span><span class="org-rainbow-delimiters-depth-2">)</span> 'magit-blame<span class="org-rainbow-delimiters-depth-1">)</span>
-<span class="org-rainbow-delimiters-depth-1">(</span>global-set-key <span class="org-rainbow-delimiters-depth-2">(</span>kbd <span class="org-string">"C-c l"</span><span class="org-rainbow-delimiters-depth-2">)</span> 'magit-log-buffer-file<span class="org-rainbow-delimiters-depth-1">)</span>
+<pre class="src src-elisp"><span class="org-rainbow-delimiters-depth-1">(</span>global-set-key <span class="org-rainbow-delimiters-depth-2">(</span>kbd <span class="org-string">"C-c l"</span><span class="org-rainbow-delimiters-depth-2">)</span> 'magit-log-buffer-file<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -2918,7 +2930,7 @@ along with this program.  If not, see <a href="http://www.gnu.org/licenses/">&lt
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Miquel Sabaté Solà</p>
-<p class="date">Created: 2017-05-19 Fri 09:26</p>
+<p class="date">Created: 2017-06-01 Thu 18:00</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.2.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
