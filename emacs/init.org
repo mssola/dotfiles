@@ -1667,7 +1667,7 @@ And now define a function to connect to both IRC servers.
 
 #+BEGIN_SRC elisp
   (defun mssola-erc ()
-    "Join pre-speciifed servers and channels."
+    "Join pre-specified servers and channels."
 
     (interactive)
 
