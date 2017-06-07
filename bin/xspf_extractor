@@ -1,0 +1,101 @@
+#!/usr/bin/perl -w
+# Copyright (C) 2017 Miquel Sabaté Solà <mikisabate@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+use strict;
+
+# Check that XML::LibXML is installed, and die if it isn't. This can be
+# installed in openSUSE with the 'perl-XML-LibXML' package.
+my $xml = eval {
+    require XML::LibXML;
+    Term::ReadKey->import();
+    1;
+};
+if (!$xml) {
+    print "Please install the 'XML::LibXML' module!\n";
+    exit 1;
+}
+
+use Getopt::Long;
+use File::Copy;
+use XML::LibXML;
+
+# Prevent any UTF-8 oddities.
+use utf8;
+binmode(STDOUT, ":utf8");
+
+##
+# Helper methods.
+
+sub help {
+    my ($code) = @_;
+
+    print <<EOF;
+Usage: $0 <options> <XSPF file> <directory>
+
+Options:
+  --version|-v  Print the version of this program.
+  --help|-h     Print this message.
+EOF
+
+    exit $code;
+}
+
+sub version {
+    print <<EOF;
+xspf_extractor version 0.1
+Copyright (C) 2017 Miquel Sabaté Solà <mikisabate\@gmail.com>
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+EOF
+
+    exit 0;
+}
+
+##
+# Parse flags and check that everything is alright.
+
+my %opt;
+
+GetOptions(\%opt, "help|h", "version|v");
+
+help(0)   if $opt{"help"};
+version() if $opt{"version"};
+
+my ($file, $dir) = @ARGV;
+if (!defined($file) || !defined($dir)) {
+    print "You must provide the source file and the directory\n";
+    help(1);
+}
+
+if (! -e $file) {
+    print "Source XSPF file '$file' does not exist!\n";
+    exit 1;
+}
+
+if (! -d $dir) {
+    print "Destination directory '$dir' does not exist!\n";
+    exit 1;
+}
+
+##
+# Parse the given XSPF document.
+
+my $dom = XML::LibXML->new->parse_file($file);
+for my $node ($dom->getElementsByTagName('track')) {
+    my $location = $node->getElementsByTagName("location")->get_node(0)->textContent;
+    copy($location, $dir);
+}
