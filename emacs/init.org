@@ -1703,6 +1703,13 @@ context too. In this case, I want spell check and =wc-mode= activated.
               (wc-mode 1)))
 #+END_SRC
 
+** Shell
+
+#+BEGIN_SRC elisp
+(use-package bats-mode
+  :ensure t)
+#+END_SRC
+
 ** Lisp
 
 Emacs lisp needs =rainbow-delimiters=, so the amount of parenthesis is less

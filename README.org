@@ -1,4 +1,4 @@
-#+TITLE: dotfiles [[https://travis-ci.org/mssola/dotfiles][https://travis-ci.org/punchagan/org2blog.svg?branch=master]]
+#+TITLE: dotfiles
 #+AUTHOR: Miquel Sabaté Solà
 #+EMAIL: mikisabate@gmail.com
 
