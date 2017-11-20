@@ -104,14 +104,16 @@ fi
 
 # Some other misc. alias.
 alias iosc="osc -A https://api.suse.de"
-alias ag='ag --nocolor --path-to-agignore ~/.agignore'
+alias ag='ag --nocolor --path-to-ignore ~/.agignore'
 
 # Cargo environment.
 source_maybe $HOME/.cargo/env
 
 # SUSE
-export SALT_DIR="~/Projects/kubic-project/salt"
-export SALT_PATH="~/Projects/kubic-project/salt"
+export SALT_DIR="$HOME/Projects/kubic-project/salt"
+export SALT_PATH="$HOME/Projects/kubic-project/salt"
+
+export NODE_VERSION="6"
 
 # Finally RVM requires it to be the last thing on the PATH for whatever reason.
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
