@@ -51,7 +51,6 @@ __mssola_sync() {
 # a change on a GNU Emacs file, then it needs to by synced with my server.
 while read local_ref local_sha remote_ref remote_sha
 do
-    echo "LOOP"
 	if [ "$local_sha" = $z40 ]
 	then
 		# Handle delete
@@ -69,7 +68,6 @@ do
 		# Commits afecting GNU Emacs are prefixed with "emacs: ". It's a
         # convention that I always follow.
 		commit=`git rev-list -n 1 --grep '^emacs:' "$range"`
-        echo "COMMIT $commit"
 		if [ -n "$commit" ]
 		then
             __mssola_sync
