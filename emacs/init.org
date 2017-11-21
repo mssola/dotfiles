@@ -1423,6 +1423,13 @@ And now let's set all the related settings.
       org-export-htmlize-output-type 'css)
 #+END_SRC
 
+You can also export org documents to man pages. In order to do so, you have to
+perform this first:
+
+#+BEGIN_SRC elisp
+(require 'ox-man)
+#+END_SRC
+
 ** Agenda
 
 Custom commands for =org-agenda=.
