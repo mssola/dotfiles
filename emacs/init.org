@@ -462,55 +462,57 @@ Ayo silver!
 Then, for keeping up with my projects I use the Projectile + Helm combination.
 
 #+BEGIN_SRC elisp
-(use-package projectile
-  :ensure t
-  :config
-  (projectile-mode 1))
+  (use-package projectile
+    :ensure t
+    :config
+    (projectile-mode 1))
 
-(use-package helm
-  :ensure t
-  :config
-  (setq projectile-completion-system 'helm)
+  (use-package helm
+    :ensure t
+    :config
+    (setq projectile-completion-system 'helm)
 
-  ; Allow the search pattern to be on the header. Taken from this Reddit thread:
-  ; https://www.reddit.com/r/emacs/comments/3asbyn/new_and_very_useful_helm_feature_enter_search/
-  (setq helm-echo-input-in-header-line t)
+    ; Allow the search pattern to be on the header. Taken from this Reddit thread:
+    ; https://www.reddit.com/r/emacs/comments/3asbyn/new_and_very_useful_helm_feature_enter_search/
+    (setq helm-echo-input-in-header-line t)
 
-  (defun helm-hide-minibuffer-maybe ()
-    "Hide the minibuffer if we are in a Helm session"
+    (defun helm-hide-minibuffer-maybe ()
+      "Hide the minibuffer if we are in a Helm session"
 
-    (when (with-helm-buffer helm-echo-input-in-header-line)
-      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-        (overlay-put ov 'window (selected-window))
-        (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
-                                `(:background ,bg-color :foreground ,bg-color)))
-        (setq-local cursor-type nil))))
+      (when (with-helm-buffer helm-echo-input-in-header-line)
+        (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+          (overlay-put ov 'window (selected-window))
+          (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+                                  `(:background ,bg-color :foreground ,bg-color)))
+          (setq-local cursor-type nil))))
 
-  (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
-  (setq helm-split-window-in-side-p t)
+    (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+    (setq helm-split-window-inside-p t)
 
-  ; Preview files with tab
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+    ; Preview files with tab
+    (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 
-  ; Show available options
-  (define-key helm-map (kbd "C-a")  'helm-select-action)
+    ; Show available options
+    (define-key helm-map (kbd "C-a")  'helm-select-action)
 
-  ; Some vim-like bindings
-  (define-key helm-map (kbd "C-j") 'helm-next-line)
-  (define-key helm-map (kbd "C-k") 'helm-previous-line)
+    ; Some vim-like bindings
+    (define-key helm-map (kbd "C-j") 'helm-next-line)
+    (define-key helm-map (kbd "C-k") 'helm-previous-line)
 
-  (use-package helm-ag
-    :ensure t))
+    (global-set-key (kbd "M-x") 'helm-M-x)
 
-(use-package helm-projectile
-  :ensure t
-  :config
-  (helm-projectile-on)
+    (use-package helm-ag
+      :ensure t))
 
-  ; Define M-p as a way to quickly list all the available projects.
-  (with-eval-after-load 'evil
-    (define-key evil-normal-state-map (kbd "M-p")
-      'helm-projectile-switch-project)))
+  (use-package helm-projectile
+    :ensure t
+    :config
+    (helm-projectile-on)
+
+    ; Define M-p as a way to quickly list all the available projects.
+    (with-eval-after-load 'evil
+      (define-key evil-normal-state-map (kbd "M-p")
+        'helm-projectile-switch-project)))
 #+END_SRC
 
 I use @@html:<kbd>C-p</kbd>@@ as the binding for listing relevant files. This
