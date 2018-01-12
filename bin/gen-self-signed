@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+if [ -z "$1" ]; then
+  program=$(basename $0)
+  echo "usage: $program <name>"
+  exit 1
+fi
+name=$1
+
+openssl req  -nodes -new -x509  -keyout $name.key -out $name.crt
