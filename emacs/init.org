@@ -587,6 +587,7 @@ recent versions of GNU Emacs.
         undo-tree-visualizer-timestamps t
         undo-tree-visualizer-relative-timestamps t)
 
+  (require 'diminish)
   (diminish 'undo-tree-mode)
 
   (with-eval-after-load 'evil-leader
