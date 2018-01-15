@@ -59,6 +59,7 @@ vim +PluginInstall +qall
 
 # GNU Emacs
 rm -rf $HOME/.emacs.d
+mkdir -p $HOME/.emacs.d
 cp emacs/custom.el $HOME/.emacs.d/custom.el
 cp emacs/init.el $HOME/.emacs.d/init.el
 ln -s emacs/init.org $HOME/.emacs.d/init.org
