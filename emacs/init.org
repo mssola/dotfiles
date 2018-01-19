@@ -1426,6 +1426,25 @@ And now let's set all the related settings.
       org-export-htmlize-output-type 'css)
 #+END_SRC
 
+Sometimes it's useful to export to LaTeX. That is, when you are simply writing a
+quick document that will end up being converted into LaTeX and finally into PDF:
+
+#+BEGIN_SRC elisp
+(require 'ox-latex)
+
+(unless (boundp 'org-latex-classes)
+  (setq org-latex-classes nil))
+
+(add-to-list 'org-latex-classes
+             '("article"
+               "\\documentclass{article}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+#+END_SRC
+
 You can also export org documents to man pages. In order to do so, you have to
 perform this first:
 
@@ -2012,6 +2031,19 @@ criteria really).
                        perl-mode-hook
                        emacs-lisp-mode-hook))
     (add-hook lang-hook 'soria-purple-identifiers))
+#+END_SRC
+
+* LaTeX
+
+Let's use [Auctex](https://www.gnu.org/software/auctex/) for LaTeX files.
+
+#+BEGIN_SRC elisp
+(use-package tex
+  :ensure auctex
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil))
 #+END_SRC
 
 * WoMan
