@@ -18,7 +18,6 @@
 [alias]
   a = commit -a -s -v
   down = pull --rebase --stat
-  vader = push --force
 
 [format]
   signoff = true
@@ -34,20 +33,3 @@
 
 [merge]
   tool = vimdiff
-
-[url "git://github.com/mssola/"]
-  insteadOf = mssola:
-[url "git@github.com:mssola/"]
-  pushInsteadOf = mssola:
-
-[url "git://github.com/"]
-  insteadOf = github:
-[url "git@github.com"]
-  pushInsteadOf = github:
-
-[url "git://anongit.kde.org/"]
-  insteadOf = kde:
-[url "ssh://git@git.kde.org/"]
-  pushInsteadOf = kde:
-[url "git@git.kde.org:"]
-  pushInsteadOf = kde:
