@@ -2033,9 +2033,9 @@ criteria really).
     (add-hook lang-hook 'soria-purple-identifiers))
 #+END_SRC
 
-* LaTeX
+** LaTeX
 
-Let's use [Auctex](https://www.gnu.org/software/auctex/) for LaTeX files.
+Let's use [[https://www.gnu.org/software/auctex/][Auctex]] for LaTeX files.
 
 #+BEGIN_SRC elisp
 (use-package tex
