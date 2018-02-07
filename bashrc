@@ -113,7 +113,7 @@ source_maybe $HOME/.cargo/env
 export SALT_DIR="$HOME/Projects/kubic-project/salt"
 export SALT_PATH="$HOME/Projects/kubic-project/salt"
 
-export NODE_VERSION="6"
+export NODE_VERSION="8"
 
 # Finally RVM requires it to be the last thing on the PATH for whatever reason.
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
