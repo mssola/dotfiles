@@ -1163,10 +1163,11 @@ Fill the =mu4e-user-mail-address-list= variable with the contexts.
 Setting my bookmarks
 
 #+BEGIN_SRC elisp
-  (setq mu4e-bookmarks
-        '(("maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox" "Inbox Folders" ?n)
-          ("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
-          ("date:today..now" "Today's messages" ?t)))
+(setq mu4e-bookmarks
+      '(("maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox" "Inbox Folders" ?n)
+        ("maildir:/gmail/Sent OR maildir:/susecom/Sent OR maildir:/susede/Sent" "Sent Folders" ?s)
+        ("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
+        ("date:today..now" "Today's messages" ?t)))
 #+END_SRC
 
 The following signature looks alright regardless of whether the client supports
