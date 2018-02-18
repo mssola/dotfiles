@@ -1558,6 +1558,29 @@ And finally set =org-capture-templates=.
         ("i" "idea" entry (file "") "* %? :IDEA:\n%U\n%a\n")))
 #+END_SRC
 
+** Publish project
+
+I write blog posts with org-mode. Here's the trick:
+
+#+BEGIN_SRC elisp
+(setq org-publish-project-alist
+      '(("org-mssola"
+         ;; Path to your org files.
+         :base-directory "~/Projects/mssola/jo/org/"
+         :base-extension "org"
+
+         ;; Path to your Jekyll project.
+         :publishing-directory "~/Projects/mssola/jo/_i18n"
+         :recursive t
+         :publishing-function org-html-publish-to-html
+         :headline-levels 4
+         :html-extension "html"
+         :body-only t ;; Only export section between <body> </body>
+         )
+
+        ("mssola" :components ("org-mssola"))))
+#+END_SRC
+
 ** Other
 
 Insert a <kbd></kbd> value in org mode. See this [[http://emacs.stackexchange.com/questions/2206/i-want-to-have-the-kbd-tags-for-my-blog-written-in-org-mode][StackExchange answer]].
