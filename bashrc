@@ -102,9 +102,13 @@ if [ -d $HOME/bin ]; then
     export PATH=$HOME/bin:$PATH
 fi
 
+# Some packages install inside of ~/.local/bin
+export PATH=$HOME/.local/bin:$PATH
+
 # Some other misc. alias.
 alias iosc="osc -A https://api.suse.de"
 alias ag='ag --nocolor --path-to-ignore ~/.agignore'
+alias random_string="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1"
 
 # Cargo environment.
 source_maybe $HOME/.cargo/env
