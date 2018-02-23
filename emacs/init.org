@@ -1827,6 +1827,12 @@ Include warning keywords in Ruby.
   (add-hook 'ruby-mode-hook 'warnings-mode-hook)
 #+END_SRC
 
+Do not automatically include the encoding magic comment:
+
+#+BEGIN_SRC elisp
+(setq ruby-insert-encoding-magic-comment nil)
+#+END_SRC
+
 ** Go
 
 And now my Go configuration. This includes stuff like the usage of =goimports=,
