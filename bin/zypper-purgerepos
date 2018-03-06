@@ -1,0 +1,66 @@
+#!/bin/bash
+# Copyright (C) 2018 Miquel Sabaté Solà <mikisabate@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+set -e
+
+if [ "$EUID" -ne 0 ]; then
+    echo "You must be root in order to run this command."
+    exit 1
+fi
+
+function uri_for() {
+    uri=$(zypper lr $1 | grep -E "(http://|https://)" | awk '{ print $3; }')
+    echo $uri
+}
+
+declare -a ary
+
+repositories=$(zypper lr -d | grep http | awk '{ print $3; }')
+for repo in $repositories; do
+    # Check if it's disabled.
+    if [[ $(zypper lr -E $repo | grep Enabled | grep No) ]]; then
+        uri=$(uri_for "$repo")
+        echo "You should remove repo $repo (disabled) with URI: $uri"
+        ary=("${ary[@]}" "$repo")
+        continue
+    fi
+
+    # Check if there are no packages installed from this repo.
+    num=$(zypper pa -ir $repo | grep $repo | wc -l)
+    if [[ $num -eq 0 ]]; then
+        uri=$(uri_for "$repo")
+        ary=("${ary[@]}" "$repo")
+        echo "You should remove repo $repo with URI: $uri"
+    fi
+done
+
+len=${#ary[@]}
+if [ $len -eq 0 ]; then
+    echo "No repositories to be purged!"
+    exit 0
+fi
+
+echo ""
+read -p "Do you want to purge these repositories? [y/N] " choice
+case "$choice" in
+    y|Y)
+        for repo in ${ary[@]}; do
+            zypper -n rr "$repo"
+        done
+        ;;
+    * )
+        ;;
+esac
