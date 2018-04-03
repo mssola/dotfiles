@@ -122,3 +122,26 @@ export NODE_VERSION="8"
 # Finally RVM requires it to be the last thing on the PATH for whatever reason.
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 export PATH="$PATH:$HOME/.rvm/bin"
+
+##
+# Lastly I had some problems with the GPG agent recently. So I copied a solution
+# from https://github.com/jessfraz/dotfiles
+
+# Use a tty for gpg
+GPG_TTY=$(tty)
+export GPG_TTY
+
+# Start the gpg-agent if not already running
+if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
+  gpg-connect-agent /bye >/dev/null 2>&1
+  gpg-connect-agent updatestartuptty /bye >/dev/null
+fi
+
+# Set SSH to use gpg-agent
+unset SSH_AGENT_PID
+if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+  export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
+fi
+
+# Add alias for ssh to update the tty
+alias ssh="gpg-connect-agent updatestartuptty /bye >/dev/null; ssh"
