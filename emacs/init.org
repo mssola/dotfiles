@@ -1453,6 +1453,19 @@ perform this first:
 (require 'ox-man)
 #+END_SRC
 
+Setup a function to toggle =org-publish-current-file= on save:
+
+#+BEGIN_SRC elisp
+(defun toggle-org-publish-current-file-on-save ()
+  (interactive)
+  (if (memq 'org-publish-current-file after-save-hook)
+      (progn
+        (remove-hook 'after-save-hook 'org-publish-current-file t)
+        (message "Disabled org-publish-current-file for current buffer..."))
+    (add-hook 'after-save-hook 'org-publish-current-file nil t)
+    (message "Enabled org-publish-current-file for current buffer...")))
+#+END_SRC
+
 ** Agenda
 
 Custom commands for =org-agenda=.
