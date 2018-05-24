@@ -2141,6 +2141,20 @@ too many things into my leader and these shortcuts look sensible to me).
   (global-set-key (kbd "C-c o") 'crux-open-with))
 #+END_SRC
 
+** Emojis
+
+Display emojis in buffer!
+
+#+BEGIN_SRC elisp
+(use-package emojify
+  :ensure t
+  :config
+
+  (add-hook 'after-init-hook #'global-emojify-mode)
+  (setq emojify-composed-text-p nil)
+  (setq emojify-emoji-styles '(unicode github)))
+#+END_SRC
+
 * Credits
 
 I've built this file by simply scavenging from other people's emacs.d/dotfiles
