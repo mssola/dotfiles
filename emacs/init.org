@@ -1,8 +1,6 @@
 #+TITLE: mssola's GNU Emacs configuration
 #+AUTHOR: Miquel Sabaté Solà
 #+EMAIL: mikisabate@gmail.com
-#+HTML_HEAD: <link rel="stylesheet" href="http://jo.mssola.com/static/style.css" type="text/css" />
-#+HTML_HEAD: <link rel="stylesheet" href="http://jo.mssola.com/static/org.css" type="text/css" />
 #+BABEL: :cache yes
 #+PROPERTY: header-args :tangle ~/.emacs.d/init.el
 
@@ -58,7 +56,6 @@ on each change, the following function is provided:
     ;; Avoid running hooks when tangling
     (let ((prog-mode-hook nil))
       (org-babel-tangle)
-      (org-html-export-to-html)
       (byte-compile-file (concat user-emacs-directory "init.el")))))
 
 (add-hook 'after-save-hook 'tangle-init)
