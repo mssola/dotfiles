@@ -1195,19 +1195,20 @@ To avoid UID clashes. See [[http://pragmaticemacs.com/emacs/fixing-duplicate-uid
 Miscellaneous settings.
 
 #+BEGIN_SRC elisp
-  (setq mu4e-html2text-command "w3m -T text/html"
-        mu4e-attachment-dir  "~/Downloads"
-        mu4e-headers-date-format "%Y-%m-%d %H:%M"
-        message-citation-line-format "%N @ %Y-%m-%d %H:%M %Z:\n"
-        message-citation-line-function 'message-insert-formatted-citation-line
-        message-kill-buffer-on-exit t
-        mu4e-get-mail-command "mbsync -aqV"
-        mu4e-update-interval 600
-        mu4e-compose-dont-reply-to-self t
-        mu4e-compose-format-flowed t
-        mu4e-headers-skip-duplicates t
-        mu4e-headers-include-related t
-        mu4e-headers-auto-update t)
+(setq mu4e-html2text-command "w3m -T text/html"
+      mu4e-attachment-dir  "~/Downloads"
+      mu4e-headers-date-format "%Y-%m-%d %H:%M"
+      message-citation-line-format "%N @ %Y-%m-%d %H:%M %Z:\n"
+      message-citation-line-function 'message-insert-formatted-citation-line
+      message-kill-buffer-on-exit t
+      mu4e-get-mail-command "mbsync -aqV"
+      mu4e-update-interval 600
+      mu4e-compose-dont-reply-to-self t
+      mu4e-compose-format-flowed t
+      mu4e-view-show-addresses t
+      mu4e-headers-skip-duplicates t
+      mu4e-headers-include-related t
+      mu4e-headers-auto-update t)
 #+END_SRC
 
 The headers to show in the headers list a pair of a field and its width,
@@ -1464,6 +1465,17 @@ Setup a function to toggle =org-publish-current-file= on save:
         (message "Disabled org-publish-current-file for current buffer..."))
     (add-hook 'after-save-hook 'org-publish-current-file nil t)
     (message "Enabled org-publish-current-file for current buffer...")))
+#+END_SRC
+
+Also hide the "Footnotes: " title on footnotes:
+
+#+BEGIN_SRC elisp
+(setq org-html-footnotes-section "<div id=\"footnotes\">
+<!-- Hack: %s -->
+<div id=\"text-footnotes\">
+%s
+</div>
+</div>")
 #+END_SRC
 
 ** Agenda
