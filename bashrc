@@ -145,3 +145,7 @@ fi
 
 # Add alias for ssh to update the tty
 alias ssh="gpg-connect-agent updatestartuptty /bye >/dev/null; ssh"
+
+# Handy alias for the ip command
+alias ip="ip --color"
+alias ipb="ip --color --brief"

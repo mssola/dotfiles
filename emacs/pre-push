@@ -70,7 +70,7 @@ do
 		commit=`git rev-list -n 1 --grep '^emacs:' "$range"`
 		if [ -n "$commit" ]
 		then
-            __mssola_sync
+            #__mssola_sync
 			exit 0
 		fi
 	fi
