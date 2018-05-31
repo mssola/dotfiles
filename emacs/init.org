@@ -134,7 +134,9 @@ Relative line numbers support is builtin since GNU Emacs 26.1:
 
 #+BEGIN_SRC elisp
 (if (>= emacs-major-version 26)
-  (setq display-line-numbers 'relative))
+    (progn
+      (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+      (setq display-line-numbers-type 'relative)))
 #+END_SRC
 
 ** Basic editing configuration
