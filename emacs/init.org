@@ -130,6 +130,13 @@ modes.
         scroll-preserve-screen-position 1)
 #+END_SRC
 
+Relative line numbers support is builtin since GNU Emacs 26.1:
+
+#+BEGIN_SRC elisp
+(if (>= emacs-major-version 26)
+  (setq display-line-numbers 'relative))
+#+END_SRC
+
 ** Basic editing configuration
 
 Use UTF-8 *always*.
