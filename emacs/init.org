@@ -1773,7 +1773,7 @@ First of all, define a function that identifies some warning keywords
     "Hook for enabling the warning face on strings with a warning prefix."
 
     (font-lock-add-keywords nil
-      '(("\\(XXX\\|FIXME\\|TODO\\|HACK\\|NOTE\\)"
+      '(("\\(XXX\\|FIXME\\|TODO\\|HACK\\|NOTE\\|BUG\\)"
       1 font-lock-warning-face prepend))))
 #+END_SRC
 
