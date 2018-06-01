@@ -10,9 +10,9 @@ before_install:
   # mu4e
   - sudo apt-get -qq update
   - sudo apt-get install -y maildir-utils
-  - wget https://github.com/djcb/mu/releases/download/0.9.18/mu-0.9.18.tar.gz
-  - tar xzvf mu-0.9.18.tar.gz
-  - sudo cp -r mu-0.9.18/mu4e /usr/share/emacs/site-lisp/
+  - wget https://github.com/djcb/mu/archive/v1.0.tar.gz
+  - tar xzvf mu-1.0.tar.gz
+  - sudo cp -r mu-1.0/mu4e /usr/share/emacs/site-lisp/
 
   - evm config path /tmp
   - evm install $EVM_EMACS --use --skip
@@ -22,6 +22,7 @@ env:
   - EVM_EMACS=emacs-24.5-travis
   - EVM_EMACS=emacs-25.1-travis
   - EVM_EMACS=emacs-25.2-travis
+  - EVM_EMACS=emacs-26.1-travis
   - EVM_EMACS=emacs-git-snapshot-travis
 
 matrix:
