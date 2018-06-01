@@ -136,7 +136,8 @@ Relative line numbers support is builtin since GNU Emacs 26.1:
 (if (>= emacs-major-version 26)
     (progn
       (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-      (setq display-line-numbers-type 'relative)))
+      (setq display-line-numbers-type 'relative)
+      (global-set-key (kbd "C-c L") 'display-line-numbers-mode)))
 #+END_SRC
 
 ** Basic editing configuration
