@@ -22,8 +22,9 @@ __vpnsetup_help() {
     echo -e "vpnsetup [command] [endpoint]\n\nThe vpnsetup commands are:\n"
     tab=$'\t'
     column -t -s $'\t' <<HERE
-   start${tab}Start the VPN service.
+   log${tab}Show the logs for the VPN service.
    restart${tab}Restart the VPN service. The default if no command was passed.
+   start${tab}Start the VPN service.
    stop${tab}Stop the VPN service.
 HERE
 
@@ -59,9 +60,19 @@ if [ "$1" != "" ]; then
     cmd="$1"
 fi
 
+# Check the endpoint to use.
+endpoint="SUSE-NUE"
+if [ "$2" != "" ]; then
+    endpoint="$2"
+fi
+
 case "$cmd" in
     -h | --help)
         __vpnsetup_help
+        exit 0
+        ;;
+    log | logs)
+        sudo journalctl -u "openvpn@$endpoint.service"
         exit 0
         ;;
     start | restart)
@@ -76,11 +87,5 @@ case "$cmd" in
         exit 1
         ;;
 esac
-
-# Check the endpoint to use.
-endpoint="SUSE-NUE"
-if [ "$2" != "" ]; then
-    endpoint="$2"
-fi
 
 sudo systemctl $cmd "openvpn@$endpoint.service"
