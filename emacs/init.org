@@ -1708,7 +1708,7 @@ Servers and channels to auto-join.
 #+BEGIN_SRC elisp
   (setq erc-autojoin-channels-alist
         '(("irc.freenode.net" "#gnu" "#emacs")
-          ("irc.suse.de" "#suse" "#docker")))
+          ("irc.nue.suse.com" "#suse" "#docker")))
 #+END_SRC
 
 Use the =erc-hl-nicks= package, so highlight support for nicknames is better.
@@ -1763,7 +1763,7 @@ And now define a function to connect to both IRC servers.
     (interactive)
 
     (erc :server "irc.freenode.net" :port 6667 :nick "mssola")
-    (erc-tls :server "irc.suse.de" :port 6697 :nick "mssola"))
+    (erc-tls :server "irc.nue.suse.com" :port 6697 :nick "mssola"))
 
   (global-set-key (kbd "C-c i") 'mssola-erc))
 #+END_SRC
