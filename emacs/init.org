@@ -645,6 +645,12 @@ supports it).
     :ensure t)
 #+END_SRC
 
+Enable =electric-pair-mode=, which automatically closes pairs like brackets:
+
+#+BEGIN_SRC elisp
+(electric-pair-mode 1)
+#+END_SRC
+
 I never use the mouse.
 
 #+BEGIN_SRC elisp
