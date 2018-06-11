@@ -1001,17 +1001,6 @@ cases, set the proper default mode.
     (evil-set-initial-state 'magit-log-edit-mode 'insert))
 #+END_SRC
 
-When showing the status, hide the usually-redundant "branch" section and show
-the rest.
-
-#+BEGIN_SRC elisp
-  (add-hook 'magit-section-set-visibility-hook
-            '(lambda (section)
-               (if (string= (magit-section-type section) "branch")
-                   'hide
-                 'show)))
-#+END_SRC
-
 Set a key binding for =magit-log-buffer-file=.
 
 #+BEGIN_SRC elisp
