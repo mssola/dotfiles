@@ -63,7 +63,7 @@ on each change, the following function is provided:
 
 * Introduction
 
-I'm using GNU Emacs 25, but everything should be working in GNU Emacs 24. There
+I'm using GNU Emacs 26, but everything should be working in GNU Emacs 24. There
 are some exceptions to this (e.g. webkit support), but these cases are
 individually handled.
 
