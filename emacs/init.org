@@ -1240,6 +1240,7 @@ Correct some key bindings that are screwed up by =evil-mode=:
 
 #+BEGIN_SRC elisp
 (evil-define-key 'normal mu4e-view-mode-map
+  "s" 'mu4e-view-save-attachment
   "F" 'mu4e-compose-forward)
 #+END_SRC
 
