@@ -1236,6 +1236,13 @@ Show images
     (imagemagick-register-types))
 #+END_SRC
 
+Correct some key bindings that are screwed up by =evil-mode=:
+
+#+BEGIN_SRC elisp
+(evil-define-key 'normal mu4e-view-mode-map
+  "F" 'mu4e-compose-forward)
+#+END_SRC
+
 As of 0.9.18 and GNU Emacs 25, the =mu4e-action-with-xwidget= can be used to
 render an HTML message with Webkit.
 
