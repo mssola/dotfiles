@@ -1113,7 +1113,7 @@ this way is relatively new (since mu 0.9.16).
             :name "comsuse"
             :enter-func (lambda ()
                           (mu4e-message "Switching to suse.com")
-                          (mssola-smtp "smtp.novell.com" 25))
+                          (mssola-smtp "smtp.novell.com" 26))
             :match-func (lambda (msg)
                           (when msg
                             (mu4e-message-maildir-matches msg "^/susecom")))
