@@ -689,34 +689,6 @@ that often, but it's cool to have a distraction-free screen from time to time.
     :ensure t)
 #+END_SRC
 
-The =expand-region= package is an extension that is based on a Vim one, which
-expands the region of selection with a single key chord. Even if evil covers
-most of my uses, it's convenient to have this tool anyways.
-
-#+BEGIN_SRC elisp
-(use-package expand-region
-  :ensure t
-  :config
-
-  ; Set C-e as the expand command (mnemonic: expand). This command will
-  ; supercede the evil binding for "move one line", which I never use anyways.
-  (global-set-key (kbd "\C-e") 'er/expand-region)
-  (with-eval-after-load 'evil
-    (define-key evil-normal-state-map (kbd "\C-e") 'er/expand-region)
-    (define-key evil-visual-state-map (kbd "\C-e") 'er/expand-region)))
-
-(defun er/add-text-mode-expansions ()
-  "This way we can also expand the region into paragraphs & pages in text mode.
-Directly taken from: https://github.com/magnars/expand-region.el."
-
-  (set (make-local-variable 'er/try-expand-list) (append
-                                                  er/try-expand-list
-                                                  '(mark-paragraph
-                                                    mark-page))))
-
-(add-hook 'text-mode-hook 'er/add-text-mode-expansions)
-#+END_SRC
-
 Editing files as root is a bit of a pain because usually the root user doesn't
 have the same configuration as the current one, and attempting to do so can be
 messy. So, instead of that, we could advice the =find-file= function so if the
@@ -838,6 +810,14 @@ First of all, let's define a function that will be called whenever Evil is loade
   ; M- combos for these two fellows for whenever I misstype them.
   (global-unset-key (kbd "M-j"))
   (global-unset-key (kbd "M-k"))
+
+  ; Go back to Emacs' bindings on beginning/end of line.
+  (eval-after-load "evil-maps"
+    (dolist (map '(evil-motion-state-map
+                   evil-insert-state-map
+                   evil-emacs-state-map))
+      (define-key (eval map) "\C-a" 'beginning-of-line)
+      (define-key (eval map) "\C-e" 'end-of-line)))
 
   ; both this function and the subsequent lines about [escape] are taken from
   ; @aaronbieber configuration.
@@ -969,15 +949,14 @@ respectively.
 #+END_SRC
 
 Last but not least, =evil-numbers= brings a couple of bindings available to Vim
-into Evil: @@html:<kbd>C-a</kbd>@@ for increasing a number, and
-@@html:<kbd>C-c -</kbd>@@ for decreasing it (modified because
-@@html:<kbd>C-z</kbd>@@ is my escape sequence).
+into Evil: @@html:<kbd>C-c +</kbd>@@ for increasing a number, and
+@@html:<kbd>C-c -</kbd>@@ for decreasing it.
 
 #+BEGIN_SRC elisp
   (use-package evil-numbers
     :ensure t
     :config
-    (define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
+    (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
     (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)))
 #+END_SRC
 
