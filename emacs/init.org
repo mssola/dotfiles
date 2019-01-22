@@ -2161,7 +2161,7 @@ repositories. I have taken lots of pieces from here and there, but most notably:
 * License
 
 #+BEGIN_SRC text :tangle no
-  Copyright (C) 2014-2018 Miquel Sabaté Solà <mikisabate@gmail.com>
+  Copyright (C) 2014-2019 Miquel Sabaté Solà <mikisabate@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
