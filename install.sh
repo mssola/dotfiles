@@ -43,6 +43,7 @@ cp i3/config $HOME/.i3/config
 cp i3status.conf $HOME/.i3status.conf
 cp inputrc $HOME/.inputrc
 cp Xresources $HOME/.Xresources
+cp xinitrc $HOME/.xinitrc
 cp -r fonts $HOME/.fonts
 cp config/dunst/dunstrc $HOME/.config/dunst/dunstrc
 
