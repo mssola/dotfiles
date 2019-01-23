@@ -255,6 +255,12 @@ Disable overwrite-mode.
   (define-key global-map [(insert)] nil)
 #+END_SRC
 
+Kill GNU Emacs by hitting =C-x r q= (mnemonic /Really quit/).
+
+#+BEGIN_SRC elisp
+  (global-set-key (kbd "C-x r q") 'kill-emacs)
+#+END_SRC
+
 ** Others
 
 Revert buffers automatically when underlying files are changed externally.
