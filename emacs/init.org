@@ -68,8 +68,8 @@ are some exceptions to this (e.g. webkit support), but these cases are
 individually handled.
 
 #+BEGIN_SRC elisp
-  (unless (>= emacs-major-version 24)
-    (error "Don't be a cheap bastard and upgrade to at least GNU Emacs 24"))
+  (unless (>= emacs-major-version 25)
+    (error "Don't be a cheap bastard and upgrade to at least GNU Emacs 25"))
 #+END_SRC
 
 Temporarily reduce garbage collection so startup time is lower. Idea taken from
