@@ -946,15 +946,6 @@ certainly useful for some common tasks (I guess that I still need some learning)
   :config
 #+END_SRC
 
-In some cases normal mode is not the right mode (e.g. commit mode). For these
-cases, set the proper default mode.
-
-#+BEGIN_SRC elisp
-  (with-eval-after-load 'evil
-    (add-hook 'git-commit-mode-hook 'evil-insert-state)
-    (evil-set-initial-state 'magit-log-edit-mode 'insert))
-#+END_SRC
-
 Set a key binding for =magit-log-buffer-file=.
 
 #+BEGIN_SRC elisp
