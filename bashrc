@@ -33,6 +33,7 @@ source_maybe() {
 export EDITOR=emacsclient-a-nw
 export VISUAL=emacsclient-a-nw
 alias vi=vim
+alias e=$EDITOR
 
 # Shortcut for GNU Emacs.
 em() {
