@@ -29,7 +29,8 @@ source_maybe() {
 ##
 # Editors & terminals.
 
-# Set vim as the default editor.
+# Set GNU Emacs as the default editor. You can find this `emacsclient-a-nw`
+# executable in the `bin` directory of my dotfiles.
 export EDITOR=emacsclient-a-nw
 export VISUAL=emacsclient-a-nw
 alias vi=vim
