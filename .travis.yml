@@ -10,8 +10,8 @@ before_install:
   # mu4e
   - sudo apt-get -qq update
   - sudo apt-get install -y maildir-utils
-  - wget https://github.com/djcb/mu/archive/v1.0.tar.gz
-  - tar xzvf mu-1.0.tar.gz
+  - wget https://github.com/djcb/mu/archive/v1.0.tar.gz -O mu.tar.gz
+  - tar xzvf mu.tar.gz
   - sudo cp -r mu-1.0/mu4e /usr/share/emacs/site-lisp/
 
   - evm config path /tmp
