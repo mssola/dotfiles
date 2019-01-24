@@ -847,7 +847,6 @@ Now make sure that Evil is installed, and call the relevant configuration functi
 (use-package evil
   :ensure t
   :config
-
   (add-hook 'evil-mode-hook 'mssola-evil)
   (evil-mode 1)
 
@@ -855,7 +854,6 @@ Now make sure that Evil is installed, and call the relevant configuration functi
   ;; with one of the most sacred Emacs prefixes, I'm moving to C-z.
   (define-key key-translation-map (kbd "C-z") [escape])
   (define-key evil-operator-state-map (kbd "C-z") 'keyboard-quit)
-  (set-quit-char "C-z")
 
   ;; Use the proper initial evil state for the following modes.
   (evil-set-initial-state 'help-mode 'normal)
