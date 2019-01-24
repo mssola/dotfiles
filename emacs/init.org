@@ -687,14 +687,6 @@ this, we have =wc-mode=.
     :ensure t)
 #+END_SRC
 
-Next on the list, we have =writeroom-mode=. I honestly don't use this package
-that often, but it's cool to have a distraction-free screen from time to time.
-
-#+BEGIN_SRC elisp
-  (use-package writeroom-mode
-    :ensure t)
-#+END_SRC
-
 Editing files as root is a bit of a pain because usually the root user doesn't
 have the same configuration as the current one, and attempting to do so can be
 messy. So, instead of that, we could advice the =find-file= function so if the
