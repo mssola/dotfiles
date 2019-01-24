@@ -4,7 +4,7 @@
   signingkey = 0x96BE8C6FD89D6565
 
 [core]
-  editor = vim
+  editor = emacsclient-a-nw
   excludesfile = ~/.gitignore
   whitespace = trailing-space,space-before-tab
   abbrev = 12

@@ -34,6 +34,7 @@ chmod +x $HOME/.rake_completion
 # Some random scripts
 cp -r bin $HOME/bin
 rm -rf $HOME/bin/test
+chmod +x $HOME/bin/*
 
 # i3 and X stuff. An incomplete list of openSUSE packages that I need in order
 # to have a good i3 environment is: i3 xlockmore dunst i3status nitrogen scrot
