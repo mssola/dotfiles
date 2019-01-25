@@ -1004,7 +1004,7 @@ ways of jumping into Magit):
 #+BEGIN_SRC elisp
 (use-package git-timemachine
   :ensure t
-  :bind (("C-x t m" . git-timemachine)))
+  :bind (("C-x t m" . git-timemachine-toggle)))
 #+END_SRC
 
 * mu4e
