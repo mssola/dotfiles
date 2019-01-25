@@ -90,6 +90,50 @@ User name and email.
       user-mail-address "mikisabate@gmail.com")
 #+END_SRC
 
+* Lisp packages
+** Custom packages
+
+Compile the =g.el= script and bind it to @@html:<kbd>M-g</kbd>@@.
+
+#+BEGIN_SRC elisp
+  (byte-compile-file (concat user-emacs-directory "lisp/g.el") t)
+  (global-set-key (kbd "M-g") 'g)
+#+END_SRC
+
+** use-package
+
+Initialize package.
+
+#+BEGIN_SRC elisp
+  (require 'package)
+
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  (add-to-list 'package-archives
+               '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
+  (package-initialize)
+#+END_SRC
+
+I'm using use-package to handle my installed packages. I don't know if it's
+the best option or what because I haven't tested all the package managers
+for Emacs out there. After trying some custom functions to handle
+package-install, I decided on use-package because I feel more well-organized.
+
+#+BEGIN_SRC elisp
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+#+END_SRC
+
+Some =use-package= calls require =diminish.el= to be available. So, let's
+require it here on the very top.
+
+#+BEGIN_SRC elisp
+(use-package diminish
+  :ensure t)
+#+END_SRC
+
 * General
 
 ** GUI
@@ -138,6 +182,14 @@ Relative line numbers support is builtin since GNU Emacs 26.1:
       (add-hook 'prog-mode-hook 'display-line-numbers-mode)
       (setq display-line-numbers-type 'relative)
       (global-set-key (kbd "C-c L") 'display-line-numbers-mode)))
+#+END_SRC
+
+Highlight the current line:
+
+#+BEGIN_SRC elisp
+(use-package hl-line
+  :config
+  (global-hl-line-mode +1))
 #+END_SRC
 
 ** Basic editing configuration
@@ -342,6 +394,12 @@ Save custom-variables somewhere else.
       (load custom-file))
 #+END_SRC
 
+Disable audio notifications.
+
+#+BEGIN_SRC elisp
+(setq ring-bell-function 'ignore)
+#+END_SRC
+
 * Calendar
 
 We catalans start our weeks on Monday.
@@ -405,50 +463,6 @@ Sometimes I want to debug my initialization time.
     (let ((init-time
            (float-time (time-subtract after-init-time before-init-time))))
       (message "%.3fs" init-time)))
-#+END_SRC
-
-* Lisp packages
-** Custom packages
-
-Compile the =g.el= script and bind it to @@html:<kbd>M-g</kbd>@@.
-
-#+BEGIN_SRC elisp
-  (byte-compile-file (concat user-emacs-directory "lisp/g.el") t)
-  (global-set-key (kbd "M-g") 'g)
-#+END_SRC
-
-** use-package
-
-Initialize package.
-
-#+BEGIN_SRC elisp
-  (require 'package)
-
-  (add-to-list 'package-archives
-               '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  (add-to-list 'package-archives
-               '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-
-  (package-initialize)
-#+END_SRC
-
-I'm using use-package to handle my installed packages. I don't know if it's
-the best option or what because I haven't tested all the package managers
-for Emacs out there. After trying some custom functions to handle
-package-install, I decided on use-package because I feel more well-organized.
-
-#+BEGIN_SRC elisp
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
-#+END_SRC
-
-Some =use-package= calls require =diminish.el= to be available. So, let's
-require it here on the very top.
-
-#+BEGIN_SRC elisp
-(use-package diminish
-  :ensure t)
 #+END_SRC
 
 * Project
@@ -727,6 +741,18 @@ remember some of these snippets, I've mapped @@html:<kbd>, h</kbd>@@ to
   (global-set-key (kbd "C-c b") 'bool-flip-do-flip))
 #+END_SRC
 
+=move-text= is a small package that allows you to move lines with a
+keybinding. This might be feasible with Evil mode, but still this might help
+when you want to move lines and keep the default registry empty:
+
+#+BEGIN_SRC elisp
+(use-package move-text
+  :ensure t
+  :bind
+  (("M-k" . move-text-up)
+   ("M-j" . move-text-down)))
+#+END_SRC
+
 * Dired
 
 I use dired mode mainly for attaching document into emails. That being said,
@@ -969,6 +995,16 @@ And repair some key bindings from Evil mode.
         "\C-j" 'evil-window-down
         "\C-k" 'evil-window-up
         "\M-p"  'helm-projectile-switch-project))))
+#+END_SRC
+
+=git-timemachine= is a package that goes hand-in-hand with Magit, and it
+provides a very easy way to go through the history of a file (while providing
+ways of jumping into Magit):
+
+#+BEGIN_SRC elisp
+(use-package git-timemachine
+  :ensure t
+  :bind (("C-x t m" . git-timemachine)))
 #+END_SRC
 
 * mu4e
