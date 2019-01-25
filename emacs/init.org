@@ -837,7 +837,7 @@ First of all, let's define a function that will be called whenever Evil is loade
     (dolist (map '(evil-motion-state-map
                    evil-insert-state-map
                    evil-emacs-state-map))
-      (define-key (eval map) "\C-a" 'beginning-of-line)
+      (define-key (eval map) "\C-a" 'crux-move-beginning-of-line)
       (define-key (eval map) "\C-e" 'end-of-line)))
 
   ; I store macros on the <q> register for convenience, so I used to use the
@@ -1793,6 +1793,15 @@ confusing. Moreover, I'm also enabling =eldoc-mode= and the aforementioned
               (setq mode-name "ξ")))
 #+END_SRC
 
+Configure =ielm= with the proper ELisp utilities:
+
+#+BEGIN_SRC elisp
+(use-package ielm
+  :config
+  (add-hook 'ielm-mode-hook #'eldoc-mode)
+  (add-hook 'ielm-mode-hook #'rainbow-delimiters-mode))
+#+END_SRC
+
 ** C and C++
 
 C and C++ only require the =warnings-mode-hook= function, spell checking for the
@@ -1835,16 +1844,24 @@ CMake for y'all.
 
 ** Ruby
 
-Include warning keywords in Ruby.
+Include warning keywords in Ruby and do not automatically include the encoding
+magic comment:
 
 #+BEGIN_SRC elisp
-  (add-hook 'ruby-mode-hook 'warnings-mode-hook)
+(use-package ruby-mode
+  :config
+  (setq ruby-insert-encoding-magic-comment nil)
+  (add-hook 'ruby-mode-hook #'subword-mode)
+  (add-hook 'ruby-mode-hook 'warnings-mode-hook))
 #+END_SRC
 
-Do not automatically include the encoding magic comment:
+And give me an IRB instance:
 
 #+BEGIN_SRC elisp
-(setq ruby-insert-encoding-magic-comment nil)
+(use-package inf-ruby
+  :ensure t
+  :config
+  (add-hook 'ruby-mode-hook #'inf-ruby-minor-mode))
 #+END_SRC
 
 ** Go
@@ -2114,6 +2131,12 @@ Finally, I want man pages to fill all the frame:
 (setq woman-fill-frame t)
 #+END_SRC
 
+Start =WoMan= as a subcommand of the help command:
+
+#+BEGIN_SRC elisp
+(define-key 'help-command (kbd "M-m") #'woman)
+#+END_SRC
+
 * Misc
 
 Install a set of useful functions from [[https://github.com/bbatsov][@bbatsov]]. The bindings are following
@@ -2127,6 +2150,9 @@ too many things into my leader and these shortcuts look sensible to me).
 
   (global-set-key (kbd "C-c d") 'crux-delete-file-and-buffer)
   (global-set-key (kbd "C-c r") 'crux-rename-file-and-buffer)
+  (global-set-key (kbd "C-c n") 'crux-cleanup-buffer-or-region)
+  (global-set-key (kbd "C-<backspace>") 'crux-kill-line-backwards)
+  (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
   (global-set-key (kbd "C-c o") 'crux-open-with))
 #+END_SRC
 
