@@ -121,9 +121,11 @@ for Emacs out there. After trying some custom functions to handle
 package-install, I decided on use-package because I feel more well-organized.
 
 #+BEGIN_SRC elisp
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(require 'use-package)
 #+END_SRC
 
 Some =use-package= calls require =diminish.el= to be available. So, let's
