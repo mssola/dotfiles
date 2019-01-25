@@ -832,11 +832,6 @@ First of all, let's define a function that will be called whenever Evil is loade
   (define-key global-map (kbd "M-h") 'help-command)
   (fset 'help-command help-map)
 
-  ; I use the Super key in combination with j & k to move around i3. Let's unset
-  ; M- combos for these two fellows for whenever I misstype them.
-  (global-unset-key (kbd "M-j"))
-  (global-unset-key (kbd "M-k"))
-
   ; Go back to Emacs' bindings on beginning/end of line.
   (eval-after-load "evil-maps"
     (dolist (map '(evil-motion-state-map
