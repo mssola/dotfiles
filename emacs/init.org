@@ -296,6 +296,13 @@ cannot be loaded due to some error.
   (global-unset-key (kbd "C-z"))
 #+END_SRC
 
+Also disable the =C-x i= binding, since I've never used the default behavior,
+and it will be used as a prefix for inferior modes (e.g. /ielm/).
+
+#+BEGIN_SRC elisp
+  (global-unset-key (kbd "C-x i"))
+#+END_SRC
+
 Disable all the Fn keys.
 
 #+BEGIN_SRC elisp
@@ -1799,7 +1806,9 @@ Configure =ielm= with the proper ELisp utilities:
 (use-package ielm
   :config
   (add-hook 'ielm-mode-hook #'eldoc-mode)
-  (add-hook 'ielm-mode-hook #'rainbow-delimiters-mode))
+  (add-hook 'ielm-mode-hook #'rainbow-delimiters-mode)
+  (global-set-key (kbd "C-x i e") 'ielm)
+  (global-set-key (kbd "C-x i l") 'ielm))
 #+END_SRC
 
 ** C and C++
@@ -1861,7 +1870,8 @@ And give me an IRB instance:
 (use-package inf-ruby
   :ensure t
   :config
-  (add-hook 'ruby-mode-hook #'inf-ruby-minor-mode))
+  (add-hook 'ruby-mode-hook #'inf-ruby-minor-mode)
+  (global-set-key (kbd "C-x i r") 'inf-ruby))
 #+END_SRC
 
 ** Go
