@@ -2,7 +2,7 @@
 # Locale.
 
 # Set LC_ALL always to UTF-8.
-export LC_ALL=en_US.UTF-8
+export LC_ALL=ca_ES.UTF-8
 
 ##
 # Basics.
