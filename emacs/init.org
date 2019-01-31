@@ -1020,6 +1020,10 @@ provided in my [[https://github.com/mssola/dotfiles][dotfiles]] project to get m
 I'm using an RPM that I've built on [[https://build.opensuse.org/package/show/home:mssola/mu][OBS]] which installs mu4e globally.
 
 #+BEGIN_SRC elisp
+(unless (file-directory-p "/usr/share/emacs/site-lisp/mu4e")
+  (message "Skipping mu4e because it's not installed."))
+
+(when (file-directory-p "/usr/share/emacs/site-lisp/mu4e")
   (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
   (require 'mu4e)
 
@@ -1319,7 +1323,7 @@ And finally define a proper shortcut.
 #+BEGIN_SRC elisp
   ; The trailing parenthesis closes the "(when (featurep 'mu4e)" statement from
   ; the very beginning.
-  (global-set-key (kbd "C-c m") 'mu4e))
+  (global-set-key (kbd "C-c m") 'mu4e)))
 #+END_SRC
 
 * org
