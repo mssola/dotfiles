@@ -47,9 +47,6 @@ esac
 # Add your own lines here...
 #
 
-# Right Alt key is now a Left Control.
-setxkbmap -option ctrl:ralt_rctrl
-
 # day planer deamon
 # pland &
 
