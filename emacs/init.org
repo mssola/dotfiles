@@ -2065,7 +2065,7 @@ Highlighting for Dockerfiles.
     :ensure t
     :config
 
-    (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+    (add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-mode)))
 #+END_SRC
 
 Stuff from Hashicorp like terraform and HCL.
