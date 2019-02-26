@@ -30,16 +30,13 @@ source_maybe() {
 # Editors & terminals.
 
 # Set GNU Emacs as the default editor. You can find this `emacsclient-a-nw`
-# executable in the `bin` directory of my dotfiles.
+# executable in the `bin` directory of my dotfiles. That being said, in the
+# `bin` directory there is a globally installed script called `e`. This is the
+# script that will be called most of the times from the CLI for reaching out to
+# the default editor.
 export EDITOR=emacsclient-a-nw
 export VISUAL=emacsclient-a-nw
 alias vi=vim
-alias e=$EDITOR
-
-# Shortcut for GNU Emacs.
-em() {
-    emacsclient -c -a "" -t "$1"
-}
 
 # Alias xdg-open to just xo
 alias xo=xdg-open
