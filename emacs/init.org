@@ -890,15 +890,11 @@ Vim into Evil.
     (evil-leader/set-leader ",")
     (setq evil-leader/in-all-states 1)
     (evil-leader/set-key
-      "," 'back-to-indentation
       "c" 'delete-window
       "k" 'kill-buffer-and-window
       "v" 'split-window-right
       "V" (lambda () (interactive) (split-window-right) (other-window 1))
-      "f" 'flycheck-list-errors
-      "e" 'eval-last-sexp
-      "b" 'view-buffer
-      "o" 'browse-url-at-point))
+      "f" 'flycheck-list-errors))
 #+END_SRC
 
 Another handy Vim plugin that has made it into Evil is =evil-surround=, which
@@ -958,7 +954,7 @@ into Evil: @@html:<kbd>C-c +</kbd>@@ for increasing a number, and
     (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)))
 #+END_SRC
 
-* Magit
+* Git
 
 A git porcelain for GNU Emacs. Even if I'm still using the git CLI, it's
 certainly useful for some common tasks (I guess that I still need some learning).
@@ -969,18 +965,17 @@ certainly useful for some common tasks (I guess that I still need some learning)
   :config
 #+END_SRC
 
-Set a key binding for =magit-log-buffer-file=.
+Set some global key bindings for Magit.
 
 #+BEGIN_SRC elisp
-  (global-set-key (kbd "C-c l") 'magit-log-buffer-file)
+(global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-c l") 'magit-log-buffer-file)
 #+END_SRC
 
 And repair some key bindings from Evil mode.
 
 #+BEGIN_SRC elisp
-  (with-eval-after-load 'evil-leader
-    (evil-leader/set-key "s" 'magit-status)
-
+  (with-eval-after-load 'evil
     (use-package evil-magit
       :ensure t
       :config
@@ -990,8 +985,7 @@ And repair some key bindings from Evil mode.
         "\C-h" 'evil-window-left
         "\C-l" 'evil-window-right
         "\C-j" 'evil-window-down
-        "\C-k" 'evil-window-up
-        "\M-p"  'helm-projectile-switch-project))))
+        "\C-k" 'evil-window-up))))
 #+END_SRC
 
 =git-timemachine= is a package that goes hand-in-hand with Magit, and it
@@ -1004,7 +998,7 @@ ways of jumping into Magit):
   :bind (("C-x t m" . git-timemachine-toggle)))
 #+END_SRC
 
-* mu4e
+* Email
 
 I use [[http://www.djcbsoftware.nl/code/mu/][mu]] and [[http://www.djcbsoftware.nl/code/mu/mu4e.html][mu4e]] to manage my email. The configuration for this has been taken
 mainly from the documentation, plus some cool remarks on Reddit. This
@@ -1022,6 +1016,12 @@ I'm using an RPM that I've built on [[https://build.opensuse.org/package/show/ho
   (require 'mu4e)
 
   (when (featurep 'mu4e)
+#+END_SRC
+
+Set =mu4e= as the default user agent. This will be picked up by =compose-mail=.
+
+#+BEGIN_SRC elisp
+(setq mail-user-agent 'mu4e-user-agent)
 #+END_SRC
 
 Diferent SMTP options that will be used for each context.
