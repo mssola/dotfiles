@@ -1654,7 +1654,6 @@ user will be prompted to provide it."
   (unless profile
     (setq profile (completing-read "Give me the profile: "
                                    (mapcar 'car mssola-org-profiles) nil t)))
-  (message "%s" profile)
   (funcall (cdr (assoc profile mssola-org-profiles))))
 
 (defun mssola-org-default ()
