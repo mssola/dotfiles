@@ -1621,6 +1621,58 @@ Will work on both org-mode and any mode that accepts plain html."
 (define-key org-mode-map "\C-ck" #'endless/insert-key)
 #+END_SRC
 
+Define profiles.
+
+#+BEGIN_SRC elisp
+;; Variables
+
+(defvar mssola-org-profiles
+  '(("minimal" . mssola-org-minimal)
+    ("monthly" . mssola-org-monthly))
+  "Defined profiles for organization matters.")
+
+(defvar mssola-org-default-profile "minimal"
+  "The default profile for mssola-org.")
+
+;; Profiles
+
+(defun mssola-org-minimal ()
+  "Load a minimal set of files."
+  (find-file (concat (file-name-as-directory org-directory) "setmana.org")))
+
+(defun mssola-org-monthly ()
+  "Load a set of files useful for monthly planning."
+  (find-file (concat (file-name-as-directory org-directory) "setmana.org"))
+  (split-window-right)
+  (windmove-right)
+  (find-file (concat (file-name-as-directory org-directory) "any.org"))
+  (windmove-left))
+
+;; Functions
+
+(defun mssola-org (&optional profile)
+  "Setup a frame for organizational matters.
+PROFILE is the profile to be picked when given.  If it's not given, then the
+user will be prompted to provide it."
+  (interactive)
+
+  (delete-other-windows)
+  (unless profile
+    (setq profile (completing-read "Give me the profile: "
+                                   (mapcar 'car mssola-org-profiles) nil t)))
+  (message "%s" profile)
+  (funcall (cdr (assoc profile mssola-org-profiles))))
+
+(defun mssola-org-default ()
+  "Setup a frame for organizational matters given a default profile has been set."
+  (interactive)
+
+  (mssola-org mssola-org-default-profile))
+
+(define-key global-map (kbd "C-c C-o") #'mssola-org-default)
+(define-key global-map (kbd "C-c M-o") #'mssola-org)
+#+END_SRC
+
 ** TODO shortcut for making an org link, and transforming a link into a proper org link
 ** TODO make it work with evil
 ** TODO Proper keybindings for quick access.
