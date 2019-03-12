@@ -617,11 +617,7 @@ recent versions of GNU Emacs.
         undo-tree-visualizer-relative-timestamps t)
 
   (require 'diminish)
-  (diminish 'undo-tree-mode)
-
-  (with-eval-after-load 'evil-leader
-    (evil-leader/set-key
-      "u" 'undo-tree-visualize)))
+  (diminish 'undo-tree-mode))
 #+END_SRC
 
 Another important package is =flycheck=, which is an on-the-fly syntax checking
@@ -729,9 +725,7 @@ remember some of these snippets, I've mapped @@html:<kbd>, h</kbd>@@ to
   :diminish yas-minor-mode
   :init (yas-global-mode)
   :config
-  (yas-global-mode 1)
-  (with-eval-after-load 'evil-leader
-    (evil-leader/set-key "h" 'yas-describe-tables)))
+  (yas-global-mode 1))
 #+END_SRC
 
 =bool-flip= is a very simple utility that toggles truthy/falsey values.
@@ -1943,9 +1937,6 @@ And now my Go configuration. This includes stuff like the usage of =goimports=,
       (concat (getenv "GOPATH") "/src/github.com/dougm/goflymake"))
     (require 'go-flycheck)
 
-    (evil-leader/set-key
-      "." 'godef-jump-other-window)
-
     (setq indent-tabs-mode t)
     (flyspell-prog-mode)
 
@@ -1953,12 +1944,7 @@ And now my Go configuration. This includes stuff like the usage of =goimports=,
     (use-package go-eldoc
       :ensure t
       :config
-      (require 'go-eldoc))
-
-    (use-package go-add-tags
-      :ensure t
-      :config
-      (evil-leader/set-key "t" 'go-add-tags)))
+      (require 'go-eldoc)))
 
   ;; Go
   (use-package go-mode
