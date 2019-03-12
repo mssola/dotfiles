@@ -235,17 +235,23 @@ Some editing tweaks like tabs vs spaces, maximum column width, etc.
 I'm using "Droid Sans Mono" simply because I've grown used to it.
 
 #+BEGIN_SRC elisp
-  (set-frame-font "Droid Sans Mono Dotted for Powerline-10")
-  (add-to-list 'default-frame-alist '(font . "Droid Sans Mono Dotted for Powerline-10"))
+(defconst mssola-font
+  (if (string= system-type "darwin")
+      "Droid Sans Mono-12"
+    "Droid Sans Mono Dotted for Powerline-10")
+  "The font to be used.")
 
-  ; Emacs in daemon mode does not like `set-face-attribute` because this is only
-  ; applied if there is a frame in place, which doesn't happen when starting the
-  ; daemon. Thus, we should call that after the frame has been created (e.g. by
-  ; emacsclient).
-  ; See: https://lists.gnu.org/archive/html/help-gnu-emacs/2015-03/msg00016.html
-  (add-hook 'after-make-frame-functions-hook
-    (lambda ()
-      (set-face-attribute 'default t :font "Droid Sans Mono Dotted for Powerline-10")))
+(set-frame-font mssola-font)
+(add-to-list 'default-frame-alist `(font . ,mssola-font))
+
+; Emacs in daemon mode does not like `set-face-attribute` because this is only
+; applied if there is a frame in place, which doesn't happen when starting the
+; daemon. Thus, we should call that after the frame has been created (e.g. by
+; emacsclient).
+; See: https://lists.gnu.org/archive/html/help-gnu-emacs/2015-03/msg00016.html
+(add-hook 'after-make-frame-functions-hook
+          (lambda ()
+            (set-face-attribute 'default t :font mssola-font)))
 #+END_SRC
 
 I've hacked my own theme called [[https://github.com/mssola/soria][soria]]. This theme combines the vim theme
@@ -419,6 +425,7 @@ Global key binding.
 Fix some stuff for evil mode.
 
 #+BEGIN_SRC elisp
+(with-eval-after-load "calendar"
   (with-eval-after-load "evil"
     (evil-set-initial-state 'calendar-mode 'normal)
     (evil-define-key 'normal calendar-mode-map
@@ -434,7 +441,7 @@ Fix some stuff for evil mode.
       "\C-j" 'evil-window-down
       "\C-k" 'evil-window-up
       "\C-n" 'calendar-scroll-left-three-months
-      "\C-p" 'calendar-scroll-right-three-months))
+      "\C-p" 'calendar-scroll-right-three-months)))
 #+END_SRC
 
 * General purpose defuns
