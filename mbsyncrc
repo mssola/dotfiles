@@ -39,7 +39,7 @@ Sync All
 SyncState *
 
 Channel gmail-all
-Master :gmail-remote:"[Gmail]/All Mail"
+Master :gmail-remote:"[Gmail]/Tot el correu"
 Slave :gmail-local:"All"
 Create Both
 Expunge Both
@@ -47,7 +47,7 @@ Sync All
 SyncState *
 
 Channel gmail-sent
-Master :gmail-remote:"[Gmail]/Sent Mail"
+Master :gmail-remote:"[Gmail]/Enviats"
 Slave :gmail-local:"Sent"
 Create Both
 Expunge Both
