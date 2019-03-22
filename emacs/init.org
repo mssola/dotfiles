@@ -96,7 +96,8 @@ User name and email.
 Compile the =g.el= script and bind it to @@html:<kbd>M-g</kbd>@@.
 
 #+BEGIN_SRC elisp
-(unless (file-exists-p (concat user-emacs-directory "lisp/g.elc"))
+(if (file-exists-p (concat user-emacs-directory "lisp/g.elc"))
+    (load-file (concat user-emacs-directory "lisp/g.elc"))
   (byte-compile-file (concat user-emacs-directory "lisp/g.el") t))
 (global-set-key (kbd "M-g") 'g)
 #+END_SRC
