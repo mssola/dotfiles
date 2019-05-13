@@ -1209,6 +1209,20 @@ These are the defaults:
            (:subject       .  nil)))
 #+END_SRC
 
+Add as a header action to toggle gnus mode for the view mode. I'm doing this
+because this is way better to visualize attached .eml emails.
+
+#+BEGIN_SRC elisp
+(defun mssola-toggle-gnus-mode (msg)
+  "Toggle gnus on view mode from now on."
+  (if mu4e-view-use-gnus
+      (setq mu4e-view-use-gnus nil)
+    (setq mu4e-view-use-gnus t)))
+
+(add-to-list 'mu4e-headers-actions
+   '("gnus mode toggle" . mssola-toggle-gnus-mode) t)
+#+END_SRC
+
 Show images
 
 #+BEGIN_SRC elisp
