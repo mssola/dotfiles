@@ -2,7 +2,16 @@
 # Locale.
 
 # Set LC_ALL always to UTF-8.
-export LC_ALL=ca_ES.UTF-8
+if [ "$(locale -a | grep ca_ES.utf8)" != "" ]; then
+    export LC_ALL=ca_ES.utf8
+else
+    if [ "$(locale -a | grep en_US.utf8)" != "" ]; then
+        export LC_ALL=en_US.utf8
+    else
+        echo "[Warning] Could not set up a proper locale." \
+             "There is probably something missing on your host machine..."
+    fi
+fi
 
 ##
 # Basics.
