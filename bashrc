@@ -11,6 +11,7 @@ export LC_ALL=ca_ES.UTF-8
 alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
+alias lisa='ls -lisa --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 
 # Alias related to cd
 alias ..='cd ..'
