@@ -1043,12 +1043,11 @@ the configuration.
 
   (require 'smtpmail)
 
-  (setq smtpmail-starttls-credentials
-        '((server port nil nil))
-        smtpmail-auth-credentials
-        (expand-file-name "~/.authinfo.gpg")
+  (setq smtpmail-starttls-credentials '((server port nil nil))
+        smtpmail-auth-credentials (expand-file-name "~/.authinfo.gpg")
         smtpmail-default-smtp-server server
         smtpmail-smtp-server server
+        message-send-mail-function 'smtpmail-send-it
         smtpmail-smtp-service port))
 
 ; https://www.reddit.com/r/emacs/comments/47t9ec/share_your_mu4econtext_configs/d0fsih6
@@ -1065,66 +1064,116 @@ the configuration.
 
 (defun suse-refile-folder (key)
   "Returns the refile folder for the given SUSE account in the KEY arg"
-  (concat "/" key "/Archives/"
+
+  (if (string= key "susecom")
+      (setq archives-dir "/Arxiu/")
+    (setq archives-dir "/Archives/"))
+  (concat "/" key archives-dir
           (format-time-string "%Y" (current-time))))
+#+END_SRC
+
+Depending on the context, it's better a signature or another:
+
+#+BEGIN_SRC elisp
+(defun mssola-mu4e-signature (key)
+  "Returns a string containing the mail signature for the given KEY."
+
+  (if (string= key "ajuntament")
+      (concat
+       "Miquel Sabaté Solà,\n"
+       "Regidor de Joventut, Participació ciutadana i Transparència\n"
+       "\n"
+       "Ajuntament de Capellades\n"
+       "Carrer de Ramon Godó, 9, 08786 - Capellades\n"
+       "Tel. 93 801 10 01 – mòbil 677 12 72 07\n"
+       "sabatesm@capellades.cat\n")
+    (concat
+     "Miquel Sabaté Solà,\n"
+     "PGP: 4096R / 1BA5 3C7A C93D CA2A CFDF DA97 96BE 8C6F D89D 6565\n")))
 #+END_SRC
 
 Now it's time to define the different contexts that I have. Defining contexts
 this way is relatively new (since mu 0.9.16).
 
 #+BEGIN_SRC elisp
-  (setq mu4e-contexts
-        `(
-          ;; GMail
-          ,(make-mu4e-context
-            :name "gmail"
-            :enter-func (lambda ()
-                          (mu4e-message "Switching to gmail.com")
-                          (mssola-smtp "smtp.gmail.com" 587))
-            :match-func (lambda (msg)
-                          (when msg
-                            (mu4e-message-maildir-matches msg "^/gmail")))
-            :vars '(
-                    (user-mail-address     . "mikisabate@gmail.com")
-                    (mu4e-reply-to-address . "mikisabate@gmail.com")
-                    (mu4e-drafts-folder    . "/gmail/Drafts")
-                    (mu4e-sent-folder      . "/gmail/Sent")
-                    (mu4e-refile-folder    . "/gmail/All")
-                    (mu4e-trash-folder     . "/gmail/Trash")))
+(setq mu4e-contexts
+      `(
+        ;; GMail
+        ,(make-mu4e-context
+          :name "gmail"
+          :enter-func (lambda ()
+                        (mu4e-message "Switching to gmail.com")
+                        (setq mu4e-compose-signature (mssola-mu4e-signature "gmail"))
+                        (setq mu4e-sent-messages-behavior 'delete)
+                        (mssola-smtp "smtp.gmail.com" 587))
+          :match-func (lambda (msg)
+                        (when msg
+                          (mu4e-message-maildir-matches msg "^/gmail")))
+          :vars '(
+                  (user-mail-address     . "mikisabate@gmail.com")
+                  (mu4e-reply-to-address . "mikisabate@gmail.com")
+                  (mu4e-drafts-folder    . "/gmail/Drafts")
+                  (mu4e-sent-folder      . "/gmail/Sent")
+                  (mu4e-refile-folder    . "/gmail/All")
+                  (mu4e-trash-folder     . "/gmail/Trash")))
 
-          ;; suse.com
-          ,(make-mu4e-context
-            :name "comsuse"
-            :enter-func (lambda ()
-                          (mu4e-message "Switching to suse.com")
-                          (mssola-smtp "smtp.novell.com" 26))
-            :match-func (lambda (msg)
-                          (when msg
-                            (mu4e-message-maildir-matches msg "^/susecom")))
-            :vars `(
-                    (user-mail-address     . "msabate@suse.com")
-                    (mu4e-reply-to-address . "msabate@suse.com")
-                    (mu4e-drafts-folder    . "/susecom/Drafts")
-                    (mu4e-sent-folder      . "/susecom/Sent")
-                    (mu4e-refile-folder    . ,(suse-refile-folder "susecom"))
-                    (mu4e-trash-folder     . "/susecom/Trash")))
+        ;; City hall
+        ,(make-mu4e-context
+          :name "ajuntament"
+          :enter-func (lambda ()
+                        (mu4e-message "Switching to mail.diba.cat")
+                        (setq mu4e-compose-signature (mssola-mu4e-signature "ajuntament"))
+                        (setq mu4e-sent-messages-behavior 'sent)
+                        (mssola-smtp "mail.diba.cat" 587)
+                        (setq smtpmail-local-domain "capellades.cat"))
+          :match-func (lambda (msg)
+                        (when msg
+                          (mu4e-message-maildir-matches msg "^/ajuntament")))
+          :vars '(
+                  (user-mail-address     . "sabatesm@capellades.cat")
+                  (mu4e-reply-to-address . "sabatesm@capellades.cat")
+                  (mu4e-drafts-folder    . "/ajuntament/Esborranys")
+                  (mu4e-sent-folder      . "/ajuntament/Elements enviats")
+                  (mu4e-refile-folder    . "/ajuntament/Arxiu")
+                  (mu4e-trash-folder     . "/ajuntament/Elements suprimits")))
 
-          ;; suse.de
-          ,(make-mu4e-context
-            :name "desuse"
-            :enter-func (lambda ()
-                          (mu4e-message "Switching to suse.de")
-                          (mssola-smtp "imap.suse.de" 587))
-            :match-func (lambda (msg)
-                          (when msg
-                            (mu4e-message-maildir-matches msg "^/susede")))
-            :vars `(
-                    (user-mail-address     . "msabate@suse.de")
-                    (mu4e-reply-to-address . "msabate@suse.de")
-                    (mu4e-drafts-folder    . "/susede/Drafts")
-                    (mu4e-sent-folder      . "/susede/Sent")
-                    (mu4e-refile-folder    . ,(suse-refile-folder "susede"))
-                    (mu4e-trash-folder     . "/susede/Trash")))))
+        ;; suse.com
+        ,(make-mu4e-context
+          :name "comsuse"
+          :enter-func (lambda ()
+                        (mu4e-message "Switching to suse.com")
+                        (setq mu4e-compose-signature (mssola-mu4e-signature "comsuse"))
+                        (setq mu4e-sent-messages-behavior 'sent)
+                        (mssola-smtp "smtp.office365.com" 587))
+          :match-func (lambda (msg)
+                        (when msg
+                          (mu4e-message-maildir-matches msg "^/susecom")))
+          :vars `(
+                  (user-mail-address     . "msabate@suse.com")
+                  (mu4e-reply-to-address . "msabate@suse.com")
+                  (mu4e-drafts-folder    . "/susecom/Esborranys")
+                  (mu4e-sent-folder      . "/susecom/Elements enviats")
+                  (mu4e-refile-folder    . ,(suse-refile-folder "susecom"))
+                  (mu4e-trash-folder     . "/susecom/Elements suprimits")))
+
+        ;; suse.de
+        ,(make-mu4e-context
+          :name "desuse"
+          :enter-func (lambda ()
+                        (mu4e-message "Switching to suse.de")
+                        (setq mu4e-compose-signature (mssola-mu4e-signature "desuse"))
+                        (setq mu4e-sent-messages-behavior 'sent)
+                        (mssola-smtp "imap.suse.de" 587))
+          :match-func (lambda (msg)
+                        (when msg
+                          (mu4e-message-maildir-matches msg "^/susede")))
+          :vars `(
+                  (user-mail-address     . "msabate@suse.de")
+                  (mu4e-reply-to-address . "msabate@suse.de")
+                  (mu4e-drafts-folder    . "/susede/Drafts")
+                  (mu4e-sent-folder      . "/susede/Sent")
+                  (mu4e-refile-folder    . ,(suse-refile-folder "susede"))
+                  (mu4e-trash-folder     . "/susede/Trash")))))
 #+END_SRC
 
 If mu4e cannot figure things out, ask me.
@@ -1150,20 +1199,10 @@ Setting my bookmarks
 
 #+BEGIN_SRC elisp
 (setq mu4e-bookmarks
-      '(("maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox" "Inbox Folders" ?n)
-        ("maildir:/gmail/Sent OR maildir:/susecom/Sent OR maildir:/susede/Sent" "Sent Folders" ?s)
+      '(("maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox OR maildir:/ajuntament/inbox" "Inbox Folders" ?n)
+        ("maildir:/gmail/Sent OR maildir:/susecom/Elements enviats OR maildir:/susede/Sent OR maildir:/ajuntament/Elements enviats" "Sent Folders" ?s)
         ("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
         ("date:today..now" "Today's messages" ?t)))
-#+END_SRC
-
-The following signature looks alright regardless of whether the client supports
-format=flowed or not.
-
-#+BEGIN_SRC elisp
-  (setq mu4e-compose-signature
-        (concat
-         "Miquel Sabaté Solà,\n"
-         "PGP: 4096R / 1BA5 3C7A C93D CA2A CFDF DA97 96BE 8C6F D89D 6565\n"))
 #+END_SRC
 
 Sign outgoing emails always.
@@ -1307,7 +1346,7 @@ I want desktop notifications when receiving email.
     (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
     (setq mu4e-alert-interesting-mail-query
           (concat
-           "(maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox) "
+           "(maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox OR maildir:/ajuntament/inbox) "
            "AND flag:unread AND NOT flag:trashed"))
     (setq mu4e-alert-email-notification-types '(count)))
 
@@ -1435,6 +1474,12 @@ And now let's set all the related settings.
       org-export-with-section-numbers nil
       org-export-with-sub-superscripts nil
       org-export-htmlize-output-type 'css)
+#+END_SRC
+
+Make sure to use the proper template when exporting to ODT:
+
+#+BEGIN_SRC elisp
+(setq org-odt-styles-file "~/Documents/Templates/mssola.ott")
 #+END_SRC
 
 Sometimes it's useful to export to LaTeX. That is, when you are simply writing a
