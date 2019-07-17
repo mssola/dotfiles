@@ -14,4 +14,7 @@
 #+LATEX_HEADER: \usepackage{newtxtext,newtxmath}
 #+LATEX_HEADER: \usepackage[catalan]{babel}
 
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \hypersetup{colorlinks=false, pdfborderstyle={/S/U/W 1}, urlbordercolor=gray, pdfborder=0 0 1}
+
 #+SELECT_TAGS: export
