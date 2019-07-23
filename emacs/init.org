@@ -1200,7 +1200,7 @@ Setting my bookmarks
 #+BEGIN_SRC elisp
 (setq mu4e-bookmarks
       '(("maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox OR maildir:/ajuntament/inbox" "Inbox Folders" ?n)
-        ("maildir:/gmail/Sent OR maildir:/susecom/Elements enviats OR maildir:/susede/Sent OR maildir:/ajuntament/Elements enviats" "Sent Folders" ?s)
+        ("maildir:/gmail/Sent OR maildir:/susecom/Elements\\ enviats OR maildir:/susede/Sent OR maildir:/ajuntament/Elements\\ enviats" "Sent Folders" ?s)
         ("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
         ("date:today..now" "Today's messages" ?t)))
 #+END_SRC
