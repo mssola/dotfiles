@@ -107,14 +107,16 @@ Compile the =g.el= script and bind it to @@html:<kbd>M-g</kbd>@@.
 Initialize package.
 
 #+BEGIN_SRC elisp
-  (require 'package)
+(require 'package)
 
-  (add-to-list 'package-archives
-               '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  (add-to-list 'package-archives
-               '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
-  (package-initialize)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
+(package-initialize)
 #+END_SRC
 
 I'm using use-package to handle my installed packages. I don't know if it's
