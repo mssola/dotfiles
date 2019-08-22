@@ -84,3 +84,6 @@ cd g
 cp g.sh "${HOME:?}/.g.sh"
 cp gcompletion.sh "${HOME:?}/.gcompletion.sh"
 popd
+
+echo ""
+echo "Note: you still need to install https://github.com/mssola/soria.git"
