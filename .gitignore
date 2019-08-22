@@ -1,4 +1,1 @@
-emacs/init.html
-org/*.pdf
-org/*.tex
-org/auto
+.vim/bundle/*

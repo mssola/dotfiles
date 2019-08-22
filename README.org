@@ -2,22 +2,21 @@
 #+AUTHOR: Miquel Sabaté Solà
 #+EMAIL: mikisabate@gmail.com
 
-To automatically install everything, just execute the =install.sh= script.
-Take a look at this script since it might perform some actions that are
-not of your satisfaction. Anyways, by default this script takes care of
-initializing and updating submodules (in my case, I keep the vundle repo as
-a submodule). Vim plugins will also get installed automatically.
+Download everything by performing the following command (notice the =--recursive= flag):
 
-And that's about it. Use this at your own risk ;)
+#+BEGIN_SRC bash
+$ git clone --recursive https://github.com/mssola/dotfiles.git
+#+END_SRC
+
+To install everything just run the =install.sh= script. Use this at your own risk ;)
 
 ** GNU Emacs
 
-See [[./emacs/README.org][emacs/README.org]].
+See [[./.emacs.d/README.org][.emacs.d/README.org]]
 
 ** Runtime dependencies
 
-There are some runtime dependencies that matter to either Vim or Emacs. In
-openSUSE (probably similar in your distribution) they can be solved like this:
+There are lots of runtime dependencies that matter to Vim, GNU Emacs, etc. In openSUSE (probably similar in your distribution) they can be solved like this:
 
 #+BEGIN_SRC sh
 $ go get -u golang.org/x/tools/cmd/goimports
@@ -27,16 +26,13 @@ $ go get -u github.com/nsf/gocode
 $ sudo zypper in spell
 #+END_SRC
 
-Also, in GNU Emacs the markdown mode requires a markdown-to-HTML converter. There
-are multiple options, but for me =calibre= seems to work just fine.
+Also, in GNU Emacs the markdown mode requires a markdown-to-HTML converter. There are multiple options, but for me =calibre= seems to work just fine.
+
+This is by no means an exhaustive list. Feel free to report me missing dependencies on this repo.
 
 ** License
 
-Every file is licensed under the GPLv3+ unless stated otherwise. I've tried to
-mention every major influence on my =dotfiles=, but most surely I've forgotten
-to add some people. If you feel like you should be mentioned somewhere in my
-config files, please send me an email. You can find the full license in the
-=LICENSE= file and below:
+Every file is licensed under the GPLv3+ unless stated otherwise. I've tried to mention every major influence on my =dotfiles=, but most surely I've forgotten to add some people. If you feel like you should be mentioned somewhere in my config files, please send me an email. You can find the full license in the =LICENSE= file and below:
 
 #+BEGIN_SRC text
 Copyright (C) 2014-2019 Miquel Sabaté Solà <mikisabate@gmail.com>

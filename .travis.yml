@@ -17,6 +17,9 @@ before_install:
   - evm config path /tmp
   - evm install $EVM_EMACS --use --skip
 
+  # shellcheck
+  - sudo apt-get install -y shellcheck
+
 env:
   - EVM_EMACS=emacs-25.1-travis
   - EVM_EMACS=emacs-25.2-travis
@@ -37,3 +40,9 @@ script:
 
   # Testing scripts
   - cd ../bin/test && ./test.sh
+
+  # Shellcheck
+  # TODO: don't skip stuff like bashrc and many others
+  - cd ../.. && find . -name "*.sh" ! -name "gitcompletion.sh" ! -name "hgcompletion.sh" -exec shellcheck \{\} \+
+
+  # TODO: linters for emacs, perl, ruby

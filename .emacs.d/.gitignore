@@ -1,0 +1,5 @@
+*.html
+lisp/*.elc
+org-templates/*.pdf
+org-templates/*.tex
+org-templates/auto

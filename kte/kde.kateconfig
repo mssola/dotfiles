@@ -1,6 +1,0 @@
-
-// Override the global config so C, C++ and Bison files match the KDE Coding
-// conventions
-kate-mimetype(text/x-c++hdr;text/x-chdr;text/x-c++src;text/x-csrc): indent-width 4; replace-tabs true; tab-indents true; tab-width 4;
-kate-wildcard(*.y;*.yy): indent-width 4; replace-tabs true; tab-indents true; tab-width 4;
-
