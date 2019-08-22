@@ -1534,6 +1534,14 @@ Also hide the "Footnotes: " title on footnotes:
 </div>")
 #+END_SRC
 
+Last but not least, some handy shortcuts:
+
+#+BEGIN_SRC elisp
+(with-eval-after-load "org"
+  (define-key org-mode-map (kbd "<f1>") 'org-latex-export-to-pdf)
+  (define-key org-mode-map (kbd "<f2>") 'org-odt-export-to-odt))
+#+END_SRC
+
 ** Agenda
 
 Custom commands for =org-agenda=.
