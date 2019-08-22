@@ -31,8 +31,8 @@ alias cd..='cd ..'
 
 # Sources the given file if it really exists.
 source_maybe() {
-    if [ -f $1 ]; then
-        source $1
+    if [ -f "$1" ]; then
+        source "$1"
     fi
 }
 
@@ -59,27 +59,18 @@ export LESS="FSRX"
 export PAGER=less
 
 # git thingies.
-source_maybe $HOME/.gitcompletion.sh
+source_maybe "$HOME/.gitcompletion.sh"
 alias gti=git
 
-# hg thingies.
-source_maybe $HOME/.hgcompletion.sh
-__hg_branch() {
-  if [ -d .hg ]; then
-    local b=`cat .hg/branch`
-    echo -e "\033[0;32m@\033[1;32m$b\033[0m"
-  fi
-}
-
 # Setting up PS1.
-PS1='\u:\w$(__hg_branch)$(__git_ps1 "\[\033[0;32m\]@%s\[\033[0m\]\]") $ '
+PS1='\u:\w$(__git_ps1 "\[\033[0;32m\]@%s\[\033[0m\]\]") $ '
 
 ##
 # Programming languages and environments.
 
 # Rake completion
-if [ -f $HOME/.rake_completion ]; then
-    complete -C $HOME/.rake_completion -o default rake
+if [ -f "$HOME/.rake_completion" ]; then
+    complete -C "$HOME/.rake_completion" -o default rake
 fi
 
 # Alias bundle exec
@@ -99,15 +90,15 @@ export PATH=$GOROOT/bin:$PATH:$GOPATH/bin
 # Misc.
 
 # The g utility. See: https://github.com/mssola/g
-source_maybe $HOME/.g.sh
-source_maybe $HOME/.gcompletion.sh
+source_maybe "$HOME/.g.sh"
+source_maybe "$HOME/.gcompletion.sh"
 
 # Complete the `docker` command if possible.
-source_maybe $HOME/.dockercompletion.sh
+source_maybe "$HOME/.dockercompletion.sh"
 
 # Add the `bin` dir to the path if possible. See:
 # https://github.com/mssola/dotfiles.
-if [ -d $HOME/bin ]; then
+if [ -d "$HOME/bin" ]; then
     export PATH=$HOME/bin:$PATH
 fi
 
@@ -120,7 +111,7 @@ alias ag='ag --nocolor --path-to-ignore ~/.agignore'
 alias random_string="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1"
 
 # Cargo environment.
-source_maybe $HOME/.cargo/env
+source_maybe "$HOME/.cargo/env"
 
 # SUSE
 export SALT_DIR="$HOME/Projects/kubic-project/salt"

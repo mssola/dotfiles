@@ -24,7 +24,7 @@ set +e
 status=0
 
 # license main.cpp
-$license $dir/main.cpp
+$license "$dir/main.cpp"
 d=$(diff "$dir/main.cpp" "$dir/main.cpp.expected")
 if [ ! -z "$d" ]; then
     echo "$d"
@@ -32,7 +32,7 @@ if [ ! -z "$d" ]; then
 fi
 
 # license README.md
-$license $dir/README.md
+$license "$dir/README.md"
 d=$(diff "$dir/README.md" "$dir/README.md.expected")
 if [ ! -z "$d" ]; then
     echo "$d"

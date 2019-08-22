@@ -18,7 +18,7 @@
 # to him.
 
 layout=$(setxkbmap -query | awk '/layout/{print $2}')
-if [ $layout == 'us' ]
+if [ "$layout" == 'us' ]
 then
     setxkbmap es
 else

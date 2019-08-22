@@ -1379,6 +1379,8 @@ And finally define a proper shortcut.
 
 * org
 
+** TODO org template for creating "article" and similar stuff
+
 [[http://orgmode.org/][org mode]] is an incredible tool that keeps me organized: TODOs, notes, agenda,
 etc. Moreover, it's built in GNU Emacs:
 
@@ -1655,11 +1657,11 @@ I write blog posts with org-mode. Here's the trick:
 (setq org-publish-project-alist
       '(("org-mssola"
          ;; Path to your org files.
-         :base-directory "~/Projects/mssola/jo/org/"
+         :base-directory "~/src/mssola/jo/org/"
          :base-extension "org"
 
          ;; Path to your Jekyll project.
-         :publishing-directory "~/Projects/mssola/jo/_i18n"
+         :publishing-directory "~/src/mssola/jo/_i18n"
          :recursive t
          :publishing-function org-html-publish-to-html
          :headline-levels 4
