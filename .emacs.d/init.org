@@ -2302,6 +2302,41 @@ too many things into my leader and these shortcuts look sensible to me).
   (global-set-key (kbd "C-c o") 'crux-open-with))
 #+END_SRC
 
+** Screencast
+
+Some utilities when recording my GNU Emacs adventures. First of all, =keycast=
+shows the keys being pressed in the mode line.
+
+#+BEGIN_SRC elisp
+(use-package keycast
+  :ensure t)
+#+END_SRC
+
+Second of all, we have =gif-screencast=, which allows you to record your GNU
+Emacs activity and saves it into a gif (unless you have specified the
+=XDG_VIDEOS_DIR=, it will use =~/Videos/emacs/<name>.gif=):
+
+#+BEGIN_SRC elisp
+(use-package gif-screencast
+  :ensure t
+  :config
+  (with-eval-after-load 'gif-screencast
+    (define-key gif-screencast-mode-map (kbd "<f8>") 'gif-screencast-toggle-pause)
+    (define-key gif-screencast-mode-map (kbd "<f9>") 'gif-screencast-stop))
+
+  (global-set-key (kbd "<f7>") 'mssola-screencast))
+#+END_SRC
+
+And last but not least, I use a wrapper to start a screencast:
+
+#+BEGIN_SRC elisp
+(defun mssola-screencast ()
+  "Start keycast-mode and then start a gif screencast."
+
+  (keycast)
+  (gif-screencast))
+#+END_SRC
+
 ** Emojis
 
 Display emojis in buffer!
