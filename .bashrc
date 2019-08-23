@@ -82,9 +82,9 @@ export CXX=/usr/bin/g++
 
 # Go things
 export GOROOT_BOOTSTRAP=/opt/go
-export GOROOT=$HOME/Projects/go
-export GOPATH=$HOME/Projects/golang
-export PATH=$GOROOT/bin:$PATH:$GOPATH/bin
+export GOROOT=$HOME/src/go.googlesource.com/go
+export GOPATH=$HOME
+export PATH=$GOROOT/bin:$PATH
 
 ##
 # Misc.
@@ -114,9 +114,6 @@ alias random_string="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -
 source_maybe "$HOME/.cargo/env"
 
 # SUSE
-export SALT_DIR="$HOME/Projects/kubic-project/salt"
-export SALT_PATH="$HOME/Projects/kubic-project/salt"
-
 export NODE_VERSION="8"
 
 # Finally RVM requires it to be the last thing on the PATH for whatever reason.
