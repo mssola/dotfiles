@@ -1938,6 +1938,16 @@ Configure =ielm= with the proper ELisp utilities:
   (global-set-key (kbd "C-x i l") 'ielm))
 #+END_SRC
 
+Add =rainbow-delimiters= and =warnings-mode-hook= also for =lisp-mode=:
+
+#+BEGIN_SRC elisp
+(add-hook 'lisp-mode-hook
+          (lambda ()
+            (warnings-mode-hook)
+            (rainbow-delimiters-mode 1)
+            (setq mode-name "λ")))
+#+END_SRC
+
 ** C and C++
 
 C and C++ only require the =warnings-mode-hook= function, spell checking for the
