@@ -1,2 +1,4 @@
 .vim/bundle/*
 bin/*
+.fonts/.uuid
+.fonts/fonts/.uuid

@@ -51,7 +51,7 @@ on each change, the following function is provided:
 
   (when (or (equal (buffer-file-name)
                    (expand-file-name (concat user-emacs-directory "init.org")))
-            (string-suffix-p "dotfiles/emacs/init.org" (buffer-file-name)))
+            (string-suffix-p "dotfiles/.emacs.d/init.org" (buffer-file-name)))
 
     ;; Avoid running hooks when tangling
     (let ((prog-mode-hook nil))

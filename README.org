@@ -8,11 +8,13 @@ Download everything by performing the following command (notice the =--recursive
 $ git clone --recursive https://github.com/mssola/dotfiles.git
 #+END_SRC
 
-To install everything just run the =install.sh= script. Use this at your own risk ;)
+To install everything just run the =install.sh= script (check also the
+[[./.emacs.d/README.org][.emacs.d/README.org]] file to see the external dependencies for GNU Emacs). Use
+this at your own risk ;)
 
 ** GNU Emacs
 
-See [[./.emacs.d/README.org][.emacs.d/README.org]]
+See [[./.emacs.d/README.org][.emacs.d/README.org]].
 
 ** Runtime dependencies
 
