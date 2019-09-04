@@ -68,8 +68,13 @@ are some exceptions to this (e.g. webkit support), but these cases are
 individually handled.
 
 #+BEGIN_SRC elisp
-  (unless (>= emacs-major-version 25)
-    (error "Don't be a cheap bastard and upgrade to at least GNU Emacs 25"))
+(let ((minver "25.1")
+      (recver "26.1"))
+  (when (version< emacs-version minver)
+    (error "Don't be a cheap bastard and upgrade to at least GNU Emacs v%s" minver))
+
+  (when (version< emacs-version recver)
+    (message "Your GNU Emacs is a bit old and some functionality will be disabled.  Consider upgrading to at least v%s" recver)))
 #+END_SRC
 
 Temporarily reduce garbage collection so startup time is lower. Idea taken from
@@ -109,7 +114,8 @@ Initialize package.
 #+BEGIN_SRC elisp
 (require 'package)
 
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+(when (version= "26.2" emacs-version)
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
