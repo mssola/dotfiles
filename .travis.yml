@@ -1,6 +1,7 @@
 # The procedure for testing GNU Emacs was kindly taken from:
 # https://github.com/purcell/emacs.d
 
+dist: trusty
 language: ruby
 
 before_install:
@@ -10,9 +11,11 @@ before_install:
   # mu4e
   - sudo apt-get -qq update
   - sudo apt-get install -y maildir-utils
+  - pushd /tmp
   - wget https://github.com/djcb/mu/releases/download/v1.0/mu-1.0.tar.xz
   - tar xJvf mu-1.0.tar.xz
   - sudo cp -r mu-1.0/mu4e /usr/share/emacs/site-lisp/
+  - popd
 
   - evm config path /tmp
   - evm install $EVM_EMACS --use --skip
@@ -20,12 +23,14 @@ before_install:
   # shellcheck
   - sudo apt-get install -y shellcheck
 
+  # rubocop
+  - gem install rubocop
+
 env:
-  - EVM_EMACS=emacs-25.1-travis
-  - EVM_EMACS=emacs-25.2-travis
   - EVM_EMACS=emacs-25.3-travis
   - EVM_EMACS=emacs-26.1-travis
-  - EVM_EMACS=emacs-26.2-travis
+  # GNU Emacs 26.2 refuses to work on Travis because of the bug on fetching
+  # elpa.gnu.org. It works locally for me.
   - EVM_EMACS=emacs-git-snapshot-travis
 
 matrix:
@@ -35,14 +40,14 @@ matrix:
 script:
   # Testing GNU Emacs
   - git clone https://github.com/mssola/soria.git
-  - cp soria/soria-theme.el emacs/soria-theme.el
-  - lsb_release -a && cd emacs && ./test-startup.sh
+  - cp soria/soria-theme.el .emacs.d/soria-theme.el
+  - lsb_release -a && cd .emacs.d && ./test-emacs.sh
 
   # Testing scripts
   - cd ../bin/test && ./test.sh
 
   # Shellcheck
-  # TODO: don't skip stuff like bashrc and many others
-  - cd ../.. && find . -name "*.sh" ! -name "gitcompletion.sh" ! -name "hgcompletion.sh" -exec shellcheck \{\} \+
+  - cd ../.. && find . -name "*.sh" ! -name ".gitcompletion.sh" ! -name ".hgcompletion.sh" -not -path "./.emacs.d/*" -exec shellcheck \{\} \+
 
-  # TODO: linters for emacs, perl, ruby
+  # Ruby style
+  - rubocop

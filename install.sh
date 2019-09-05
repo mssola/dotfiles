@@ -40,6 +40,8 @@ for i in "${ary[@]:1:${#ary[@]}}"; do
     ignore+=" -or -name $i"
 done
 
+# shellcheck disable=SC2086
+# shellcheck disable=SC2044
 for file in $(find "$(pwd)" -mindepth 1 -maxdepth 1 ! \( $ignore \)); do
     # The -F and -f flags of ln suck. Let's rm all the way.
     rm -rf "${HOME:?}/$(basename $file)"

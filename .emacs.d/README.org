@@ -17,7 +17,7 @@ instructs =emacsclient= to spawn a new server if there isn't one already. This
 means that the first time around it will take some time, but in the next time
 everything will be alright.
 
-=Supported versions=: GNU Emacs 25.x and 26.x.
+=Supported versions=: GNU Emacs 25.3 and 26.x.
 
 * Dependencies
 

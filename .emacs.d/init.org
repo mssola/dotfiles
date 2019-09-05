@@ -68,7 +68,7 @@ are some exceptions to this (e.g. webkit support), but these cases are
 individually handled.
 
 #+BEGIN_SRC elisp
-(let ((minver "25.1")
+(let ((minver "25.3")
       (recver "26.1"))
   (when (version< emacs-version minver)
     (error "Don't be a cheap bastard and upgrade to at least GNU Emacs v%s" minver))
@@ -1294,9 +1294,7 @@ As of 0.9.18 and GNU Emacs 25, the =mu4e-action-with-xwidget= can be used to
 render an HTML message with Webkit.
 
 #+BEGIN_SRC elisp
-  (if (>= emacs-major-version 25)
-      (add-to-list 'mu4e-view-actions
-                   '("webkit" . mu4e-action-view-with-xwidget)))
+(add-to-list 'mu4e-view-actions '("webkit" . mu4e-action-view-with-xwidget))
 #+END_SRC
 
 Look for =mu4e-msg2pdf= in the exec path. The reason for this is that the OBS
@@ -2321,11 +2319,13 @@ too many things into my leader and these shortcuts look sensible to me).
 ** Screencast
 
 Some utilities when recording my GNU Emacs adventures. First of all, =keycast=
-shows the keys being pressed in the mode line.
+shows the keys being pressed in the mode line (it requires GNU Emacs 25.3
+minimum):
 
 #+BEGIN_SRC elisp
 (use-package keycast
-  :ensure t)
+  :ensure t
+  :unless (version< emacs-version "25.3"))
 #+END_SRC
 
 Second of all, we have =gif-screencast=, which allows you to record your GNU
@@ -2334,6 +2334,7 @@ Emacs activity and saves it into a gif (unless you have specified the
 
 #+BEGIN_SRC elisp
 (use-package gif-screencast
+  :unless (version< emacs-version "25.3")
   :ensure t
   :config
   (with-eval-after-load 'gif-screencast
@@ -2349,8 +2350,11 @@ And last but not least, I use a wrapper to start a screencast:
 (defun mssola-screencast ()
   "Start keycast-mode and then start a gif screencast."
 
-  (keycast)
-  (gif-screencast))
+  (if (version< emacs-version "25.3")
+      (message "Requires 25.3 or later.")
+    (progn
+      (keycast)
+      (gif-screencast))))
 #+END_SRC
 
 ** Emojis

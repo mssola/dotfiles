@@ -1,6 +1,14 @@
-;;; g.el --- Adding shortcuts to GNU Emacs
-
+;;; g.el --- Adding shortcuts -*- lexical-binding: t; -*-
+;;
 ;; Copyright (C) 2016-2019 Miquel Sabaté Solà <mikisabate@gmail.com>
+;;
+;; Author: Miquel Sabaté Solà <mikisabate@gmail.com>
+;; Version: 0.1
+;; Package-Requires: ((emacs "25.1"))
+;; Keywords: abbrev, convenience
+;; URL: https://github.com/mssola/dotfiles/.emacs.d/lisp/g.el
+;;
+;; This file is not part of GNU Emacs.
 ;;
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -14,11 +22,7 @@
 ;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-;; Author: Miquel Sabaté Solà <mikisabate@gmail.com>
-;; Version: 0.1
-;; URL: https://github.com/mssola/dotfiles/emacs/site-lisp/g.el
-
+;;
 ;;; Commentary:
 ;;
 ;; This is a GNU Emacs port of my g.sh bash script that can be found here:
@@ -33,15 +37,15 @@
 (defvar g-file "~/.gfile"
   "The path to the gfile.")
 
-;; Utils
+;;; Utils
 
 (defun g-read-file (file)
   "Read the given FILE and return it as a list of lines."
 
   (if (file-exists-p file)
-    (with-temp-buffer
-      (insert-file-contents file)
-      (split-string (buffer-string) "\n" t))
+      (with-temp-buffer
+        (insert-file-contents file)
+        (split-string (buffer-string) "\n" t))
     ""))
 
 (defun g-write (shortcuts)
@@ -61,18 +65,18 @@ The returned object is a hash table."
   (let ((shortcuts (make-hash-table :test 'equal))
         (list (g-read-file g-file)))
 
-    ; The format of the file is a bit special because it was meant to be easily
-    ; parseable by Bash. It consists of pairs of lines, where n is the key, and
-    ; n+1 is the value.
+    ;; The format of the file is a bit special because it was meant to be easily
+    ;; parseable by Bash. It consists of pairs of lines, where n is the key, and
+    ;; n+1 is the value.
     (dotimes (i (/ (length list) 2))
       (let ((n (* i 2)))
         (puthash
          (nth n list)
          (nth (+ n 1) list)
          shortcuts)))
-  shortcuts))
+    shortcuts))
 
-;; Interactive functions
+;;; Interactive functions
 
 (defun g ()
   "Go to the given directory with the supplied alias."

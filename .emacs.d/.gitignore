@@ -1,5 +1,10 @@
 *.html
+*.elc
+*~
+*autoloads.el*
 lisp/*.elc
+lisp/*autoloads.el*
+vendor
 org-templates/*.pdf
 org-templates/*.tex
 org-templates/auto
