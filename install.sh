@@ -88,4 +88,8 @@ cp gcompletion.sh "${HOME:?}/.gcompletion.sh"
 popd
 
 echo ""
-echo "Note: you still need to install https://github.com/mssola/soria.git"
+if [ -e "${HOME:?}/.emacs.d/soria-theme.el" ]; then
+    echo "You are all set. Enjoy!"
+else
+    echo "Note: you still need to install https://github.com/mssola/soria.git"
+fi
