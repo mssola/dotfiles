@@ -34,7 +34,7 @@ fi
 # Main procedure: link as many files as possible.
 
 ary=(.git .gitignore .gitmodules LICENSE *.gitignore *.yml *.org install.sh
-     update.sh .emacs.d .config .gnupg Images)
+     update.sh .emacs.d .config .gnupg Images .i3 .i3status.conf)
 ignore="-name ${ary[0]}"
 for i in "${ary[@]:1:${#ary[@]}}"; do
     ignore+=" -or -name $i"
@@ -71,6 +71,10 @@ done
 rm -f "${HOME:?}/.emacs.d/init.elc"
 cp .emacs.d/init.el "${HOME:?}/.emacs.d/init.el"
 emacs -l "${HOME:?}/.emacs.d/init.el" --eval "(kill-emacs)"
+
+# i3 has a slightly different configuration on my workstation and on the laptop.
+cp -r .i3 "${HOME:?}"
+cp -r .i3status.conf "${HOME:?}"
 
 ##
 # Other stuff
