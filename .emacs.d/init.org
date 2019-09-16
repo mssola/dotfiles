@@ -189,11 +189,10 @@ modes.
 Relative line numbers support is builtin since GNU Emacs 26.1:
 
 #+BEGIN_SRC elisp
-(if (>= emacs-major-version 26)
-    (progn
-      (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-      (setq display-line-numbers-type 'relative)
-      (global-set-key (kbd "C-c L") 'display-line-numbers-mode)))
+(when (>= emacs-major-version 26)
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+  (setq display-line-numbers-type 'relative)
+  (global-set-key (kbd "C-c L") 'display-line-numbers-mode))
 #+END_SRC
 
 ** Basic editing configuration
@@ -237,6 +236,22 @@ Some editing tweaks like tabs vs spaces, maximum column width, etc.
   (blink-cursor-mode 0)
   (global-hl-line-mode -1)
   (show-paren-mode 1)
+#+END_SRC
+
+** Abbreviations
+
+Basic abbreviation settings:
+
+#+BEGIN_SRC elisp
+(setq abbrev-file-name "~/.emacs.d/abbrevs.el"
+      save-abbrevs 'silent)
+#+END_SRC
+
+Automatically enable abbreviation mode for some modes:
+
+#+BEGIN_SRC elisp
+(dolist (hook '(erc-mode-hook org-mode-hook text-mode-hook))
+  (add-hook hook #'abbrev-mode))
 #+END_SRC
 
 ** Font and theme
@@ -787,6 +802,12 @@ I also extend =dired= with some handy tweaks.
       delete-old-versions t)
 #+END_SRC
 
+Enable =dired-x= for cool stuff like =dired-jump=:
+
+#+BEGIN_SRC elisp
+(require 'dired-x)
+#+END_SRC
+
 And now instruct dired mode how to attach files when using mu4e. This is taken
 from the [[https://www.djcbsoftware.nl/code/mu/mu4e/Dired.html#Dired][mu4e documentation]], and it's available by typing
 @@html:<kbd>C-c RET C-a</kbd>@@.
@@ -1015,7 +1036,8 @@ mainly from the documentation, plus some cool remarks on Reddit. This
 configuration makes quite some assumptions. Read the =emacs/README.org= file as
 provided in my [[https://github.com/mssola/dotfiles][dotfiles]] project to get more details.
 
-I'm using an RPM that I've built on [[https://build.opensuse.org/package/show/home:mssola/mu][OBS]] which installs mu4e globally.
+I'm using [[https://build.opensuse.org/package/show/server:mail/maildir-utils][this package from OBS]] to install =mu= and =mu4e=, which installs
+things globally:
 
 #+BEGIN_SRC elisp
 (unless (file-directory-p "/usr/share/emacs/site-lisp/mu4e")

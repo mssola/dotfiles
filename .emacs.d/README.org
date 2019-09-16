@@ -57,8 +57,8 @@ want to do it manually:
 - Copy the =init.el= into the =~/.emacs.d= directory. This is the only file that
   should be copied instead of linked because it will get replaced on the first run
   by =org-babel=.
-- Link the =init.org=, =custom.el= and =gtkrc= files into the =~/.emacs.d=
-  directory.
+- Link the =init.org=, =custom.el=, =abbrevs.el= and =gtkrc= files into the
+  =~/.emacs.d= directory.
 - Create the =~/.emacs.d/lisp= subdirectory and link the =lisp/g.el= file there.
 - Clone the [[https://github.com/mssola/soria][soria]] project and link the =soria-theme.el= file into the
   =~/.emacs.d= directory.
