@@ -1987,6 +1987,17 @@ comments and the usage of tabs instead of spaces.
   (lambda () (setq indent-tabs-mode t)))
 #+END_SRC
 
+The =clang-format+= package supersedes the =clang-format.el= file from the Clasp
+authors and it adds all the nuts and bolts to have =clang-format= work for the
+whole file automatically:
+
+#+BEGIN_SRC elisp
+(use-package clang-format+
+  :ensure t
+  :config
+  (add-hook 'c-mode-common-hook #'clang-format+-mode))
+#+END_SRC
+
 CMake for y'all.
 
 #+BEGIN_SRC elisp
