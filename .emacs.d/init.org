@@ -1562,12 +1562,55 @@ Also hide the "Footnotes: " title on footnotes:
 </div>")
 #+END_SRC
 
-Last but not least, some handy shortcuts:
+Last but not least, some handy shortcuts when exporting (adding my own functions
+to avoid some of the generated clutter):
 
 #+BEGIN_SRC elisp
+(defun mssola-move-file-to-out (dir name ext)
+  "If the given file NAME exists, move it out from DIR.
+Note that EXT must include the period character. "
+
+  (when (file-exists-p (concat dir name ext))
+    (unless (file-directory-p (concat dir "out/"))
+      (make-directory (concat dir "out/")))
+    (delete-file (concat dir "out/" name ext))
+    (rename-file (concat dir name ext) (concat dir "out/" name ext))))
+
+(defun mssola-export-tex-to-pdf ()
+  "Export to current tex file to pdf and then remove all the clutter.
+It will also create a pdf/ directory in which pdf files will be saved."
+
+  (interactive)
+
+  (org-latex-export-to-pdf)
+
+  (let* ((fn (buffer-file-name (window-buffer (minibuffer-selected-window))))
+         (dir (file-name-directory fn))
+         (name (file-name-base fn)))
+
+    (delete-directory (concat dir "auto") t)
+
+    (when (file-exists-p (concat dir name ".tex"))
+      (delete-file (concat dir name ".tex")))
+
+    (mssola-move-file-to-out dir name ".pdf")))
+
+(defun mssola-export-tex-to-odt ()
+  "Similar to `mssola-export-tex-to-pdf' but with odt."
+
+  (interactive)
+
+  (org-odt-export-to-odt)
+
+  (let* ((fn (buffer-file-name (window-buffer (minibuffer-selected-window))))
+         (dir (file-name-directory fn))
+         (name (file-name-base fn)))
+
+    (mssola-move-file-to-out dir name ".odt")))
+
 (with-eval-after-load "org"
-  (define-key org-mode-map (kbd "<f1>") 'org-latex-export-to-pdf)
-  (define-key org-mode-map (kbd "<f2>") 'org-odt-export-to-odt))
+  (define-key org-mode-map (kbd "<f1>") 'mssola-export-tex-to-pdf)
+  (define-key org-mode-map (kbd "<f2>") 'mssola-export-tex-to-odt))
 #+END_SRC
 
 ** Agenda
