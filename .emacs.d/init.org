@@ -210,32 +210,32 @@ Use UTF-8 *always*.
 Some editing tweaks like tabs vs spaces, maximum column width, etc.
 
 #+BEGIN_SRC elisp
-  ;; Emacs modes typically provide a standard means to change the indentation
-  ;; width (e.g. c-basic-offset). Moreover, even though I prefer tabs over space,
-  ;; for most coding conventions this is not the case (e.g. ruby). For this
-  ;; reason, I will disable them by default and enabled them back for each
-  ;; specific case (e.g. C). I'm also using the smart-tabs-mode package, see
-  ;; below in the languages section.
-  (setq-default indent-tabs-mode nil)
-  (setq-default tab-width 4)
+;; Emacs modes typically provide a standard means to change the indentation
+;; width (e.g. c-basic-offset). Moreover, even though I prefer tabs over space,
+;; for most coding conventions this is not the case (e.g. ruby). For this
+;; reason, I will disable them by default and enabled them back for each
+;; specific case (e.g. C). I'm also using the smart-tabs-mode package, see
+;; below in the languages section.
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
 
-  ;; Maximum 80 columns.
-  (setq-default fill-column 80)
-  (setq-default auto-fill-function 'do-auto-fill)
+;; Maximum 80 columns (except in text-mode, which includes org mode)
+(setq-default fill-column 80)
+(setq-default auto-fill-function 'do-auto-fill)
 
-  ;; Do not break lines
-  (set-default 'truncate-lines t)
+;; Do not break lines
+(set-default 'truncate-lines t)
 
-  ;; Delete the selection with a keypress.
-  (delete-selection-mode t)
+;; Delete the selection with a keypress.
+(delete-selection-mode t)
 
-  ;; Remove whitespaces at the end of line
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+;; Remove whitespaces at the end of line
+(add-hook 'before-save-hook #'delete-trailing-whitespace)
 
-  ;; Cursor
-  (blink-cursor-mode 0)
-  (global-hl-line-mode -1)
-  (show-paren-mode 1)
+;; Cursor
+(blink-cursor-mode 0)
+(global-hl-line-mode -1)
+(show-paren-mode 1)
 #+END_SRC
 
 ** Abbreviations
@@ -780,6 +780,63 @@ when you want to move lines and keep the default registry empty:
    ("M-j" . move-text-down)))
 #+END_SRC
 
+Enable word wrap and disable =auto-fill-mode= when in =text-mode=. This includes
+modes such as =org-mode=:
+
+#+BEGIN_SRC elisp
+(setq-default word-wrap t)
+(add-hook 'text-mode-hook (lambda ()
+                            (visual-line-mode 1)
+                            (auto-fill-mode -1)))
+
+(defun mssola-end-of-line (&rest args)
+  "Cycle through visual lines until we reach the real end of line.
+
+This function is meant to be a replacement of the default `end-of-line' function
+and the one from Evil mode.  It moves the cursor to the end of the visual line
+according to ARGS.  If the cursor is already at the end of the visual line, then
+it moves down to the next visual line and then it moves the cursor to the end of
+the visual line.  If the cursor is already at the end of the real line, then it
+does nothing.  Note that this behavior only applies when in `visual-line' mode.
+If this is not the case, then this function is synonimous to `end-of-line'."
+
+  (interactive)
+
+  (let ((orig-point (point))
+        (real-eol nil))
+
+    (end-of-visual-line args)
+
+    (when (and line-move-visual
+               (= orig-point (point)))
+      (save-excursion (progn
+                        (let ((line-move-visual nil))
+                          (end-of-line))
+                        (setq real-eol (= orig-point (point)))))
+      (when (not real-eol)
+        (end-of-visual-line 2)))))
+
+(with-eval-after-load 'evil
+  ;; The advice around `evil-next-line' and `evil-previous-line' has been taken
+  ;; from https://stackoverflow.com/a/32660401
+
+  ;; Make evil-next-line (up arrow and k, consider visual-line-mode).
+  (defun evil-next-line--check-visual-line-mode (orig-fun &rest args)
+    (if line-move-visual
+        (apply 'evil-next-visual-line args)
+      (apply orig-fun args)))
+
+  (advice-add 'evil-next-line :around 'evil-next-line--check-visual-line-mode)
+
+  ;; Make evil-previous-line (down arrow and j, consider visual-line-mode).
+  (defun evil-previous-line--check-visual-line-mode (orig-fun &rest args)
+    (if line-move-visual
+        (apply 'evil-previous-visual-line args)
+      (apply orig-fun args)))
+
+  (advice-add 'evil-previous-line :around 'evil-previous-line--check-visual-line-mode))
+#+END_SRC
+
 * Dired
 
 I use dired mode mainly for attaching document into emails. That being said,
@@ -869,7 +926,7 @@ First of all, let's define a function that will be called whenever Evil is loade
                    evil-insert-state-map
                    evil-emacs-state-map))
       (define-key (eval map) "\C-a" 'crux-move-beginning-of-line)
-      (define-key (eval map) "\C-e" 'end-of-line)))
+      (define-key (eval map) "\C-e" #'mssola-end-of-line)))
 
   ; I store macros on the <q> register for convenience, so I used to use the
   ; <C-q> combo to execute this macro in Vim. In Emacs though, this combo is
