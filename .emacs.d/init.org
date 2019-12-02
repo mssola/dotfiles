@@ -2483,10 +2483,12 @@ And last but not least, I use a wrapper to start a screencast:
 (defun mssola-screencast ()
   "Start keycast-mode and then start a gif screencast."
 
+  (interactive)
+
   (if (version< emacs-version "25.3")
       (message "Requires 25.3 or later.")
     (progn
-      (keycast)
+      (keycast-mode)
       (gif-screencast))))
 #+END_SRC
 
