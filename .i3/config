@@ -242,3 +242,6 @@ exec --no-startup-id xset s off
 
 # Wallpaper
 exec --no-startup-id nitrogen --restore
+
+# Nextcloud
+exec --no-startup-id nextcloud
