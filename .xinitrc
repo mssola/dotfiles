@@ -47,6 +47,11 @@ esac
 # Add your own lines here...
 #
 
+# Automount USB sticks
+if hash udiskie 2>/dev/null; then
+    udiskie -aNT2 &
+fi
+
 # day planer deamon
 # pland &
 
