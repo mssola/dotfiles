@@ -4,5 +4,6 @@
 	("btw" "by the way" nil 0)
     ("diba" "Diputació de Barcelona" nil 0)
     ("cca" "Consell Comarcal de l'Anoia" nil 0)
-    ("FiG", "Ferrer i Guàrdia" nil 0)
+    ("FiG" "Ferrer i Guàrdia" nil 0)
+    ("..." "…" nil 0)
     ))
