@@ -1,6 +1,6 @@
 ;;; init.el --- Init file -*- lexical-binding: t; -*-
 ;;
-;; Copyright (C) 2016-2019 Miquel Sabaté Solà <mikisabate@gmail.com>
+;; Copyright (C) 2016-2020 Miquel Sabaté Solà <mikisabate@gmail.com>
 ;;
 ;; Author: Miquel Sabaté Solà <mikisabate@gmail.com>
 ;; Version: 0.1

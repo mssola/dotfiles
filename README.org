@@ -37,7 +37,7 @@ This is by no means an exhaustive list. Feel free to report me missing dependenc
 Every file is licensed under the GPLv3+ unless stated otherwise. I've tried to mention every major influence on my =dotfiles=, but most surely I've forgotten to add some people. If you feel like you should be mentioned somewhere in my config files, please send me an email. You can find the full license in the =LICENSE= file and below:
 
 #+BEGIN_SRC text
-Copyright (C) 2014-2019 Miquel Sabaté Solà <mikisabate@gmail.com>
+Copyright (C) 2014-2020 Miquel Sabaté Solà <mikisabate@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
