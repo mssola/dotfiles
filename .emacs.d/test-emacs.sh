@@ -26,6 +26,11 @@ for i in . lisp; do
 
     # shellcheck disable=SC2086
     ${EMACS:=emacs} -Q --batch ${LOAD_PATH} -l elisp-lint.el -f elisp-lint-files-batch $files
+
+    # God knows why this is needed, but `package-lint` bails otherwise...
+    mkdir -p vendor/data
+    echo "()" > vendor/data/stdlib-changes
+
     # shellcheck disable=SC2086
     ${EMACS:=emacs} -Q --batch ${LOAD_PATH} -l package-lint.el -f package-lint-batch-and-exit $files
 done

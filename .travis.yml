@@ -1,13 +1,10 @@
-# The procedure for testing GNU Emacs was kindly taken from:
-# https://github.com/purcell/emacs.d
+language: nix
 
-dist: trusty
-language: ruby
+env:
+  - EMACS_CI=emacs-26-3
+  - EMACS_CI=emacs-snapshot
 
-before_install:
-  - git clone https://github.com/rejeep/evm.git $HOME/.evm
-  - export PATH=$HOME/.evm/bin:$PATH
-
+install:
   # mu4e
   - sudo apt-get -qq update
   - sudo apt-get install -y maildir-utils
@@ -17,37 +14,22 @@ before_install:
   - sudo cp -r mu-1.0/mu4e /usr/share/emacs/site-lisp/
   - popd
 
-  - evm config path /tmp
-  - evm install $EVM_EMACS --use --skip
+  # GNU Emacs itself through nix.
+  - bash <(curl https://raw.githubusercontent.com/purcell/nix-emacs-ci/master/travis-install)
 
-  # shellcheck
-  - sudo apt-get install -y shellcheck
-
-  # rubocop
-  - gem install rubocop
-
-env:
-  - EVM_EMACS=emacs-25.3-travis
-  - EVM_EMACS=emacs-26.1-travis
-  # GNU Emacs 26.2 refuses to work on Travis because of the bug on fetching
-  # elpa.gnu.org. It works locally for me.
-  - EVM_EMACS=emacs-git-snapshot-travis
-
-matrix:
-  allow_failures:
-    - env: EVM_EMACS=emacs-git-snapshot-travis
-
-script:
-  # Testing GNU Emacs
+  # Install the soria theme, which has been previously downloaded.
   - git clone https://github.com/mssola/soria.git
   - cp soria/soria-theme.el .emacs.d/soria-theme.el
-  - lsb_release -a && cd .emacs.d && ./test-emacs.sh
 
-  # Testing scripts
-  - cd ../bin/test && ./test.sh
+  # writer-mode
+  - mkdir -p $HOME/src/github.com/mssola/
+  - cd $HOME/src/github.com/mssola/
+  - git clone https://github.com/mssola/writer-mode.git
 
-  # Shellcheck
-  - cd ../.. && find . -name "*.sh" ! -name ".gitcompletion.sh" ! -name ".hgcompletion.sh" -not -path "./.emacs.d/*" -exec shellcheck \{\} \+
+  # Linters: shellcheck (shell) and rubocop (ruby).
+  - sudo apt-get install -y shellcheck ruby
+  - gem install rubocop
 
-  # Ruby style
-  - rubocop
+script:
+  - cd $TRAVIS_BUILD_DIR
+  - make test
