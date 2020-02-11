@@ -1619,57 +1619,6 @@ Also hide the "Footnotes: " title on footnotes:
 </div>")
 #+END_SRC
 
-Last but not least, some handy shortcuts when exporting (adding my own functions
-to avoid some of the generated clutter):
-
-#+BEGIN_SRC elisp
-(defun mssola-move-file-to-out (dir name ext)
-  "If the given file NAME exists, move it out from DIR.
-Note that EXT must include the period character. "
-
-  (when (file-exists-p (concat dir name ext))
-    (unless (file-directory-p (concat dir "out/"))
-      (make-directory (concat dir "out/")))
-    (delete-file (concat dir "out/" name ext))
-    (rename-file (concat dir name ext) (concat dir "out/" name ext))))
-
-(defun mssola-export-tex-to-pdf ()
-  "Export to current tex file to pdf and then remove all the clutter.
-It will also create a pdf/ directory in which pdf files will be saved."
-
-  (interactive)
-
-  (org-latex-export-to-pdf)
-
-  (let* ((fn (buffer-file-name (window-buffer (minibuffer-selected-window))))
-         (dir (file-name-directory fn))
-         (name (file-name-base fn)))
-
-    (delete-directory (concat dir "auto") t)
-
-    (when (file-exists-p (concat dir name ".tex"))
-      (delete-file (concat dir name ".tex")))
-
-    (mssola-move-file-to-out dir name ".pdf")))
-
-(defun mssola-export-tex-to-odt ()
-  "Similar to `mssola-export-tex-to-pdf' but with odt."
-
-  (interactive)
-
-  (org-odt-export-to-odt)
-
-  (let* ((fn (buffer-file-name (window-buffer (minibuffer-selected-window))))
-         (dir (file-name-directory fn))
-         (name (file-name-base fn)))
-
-    (mssola-move-file-to-out dir name ".odt")))
-
-(with-eval-after-load "org"
-  (define-key org-mode-map (kbd "<f1>") 'mssola-export-tex-to-pdf)
-  (define-key org-mode-map (kbd "<f2>") 'mssola-export-tex-to-odt))
-#+END_SRC
-
 ** Agenda
 
 Custom commands for =org-agenda=.
@@ -1876,6 +1825,35 @@ user will be prompted to provide it."
 ** TODO Proper keybindings for quick access.
 
 ** TODO shortcuts for stuff like: create something urgent for today
+
+* writer-mode
+
+There is this handy minor mode I've built which is [[https://github.com/mssola/writer-mode][writer-mode]]. This is under development, so I load it from my own local development path:
+
+#+BEGIN_SRC elisp
+(let ((writer-source (concat (getenv "HOME") "/src/github.com/mssola/writer-mode")))
+  (when (file-directory-p writer-source)
+    ;; Call `make build', which will, in turn, byte-compile all the relevant files.
+    (let ((default-directory writer-source))
+      (shell-command "make build"))
+
+    ;; Then load the byte-compiled files.
+    (let ((list (directory-files writer-source t ".elc$")))
+      (while list
+        (load-file (car list))
+        (setq list (cdr list))))
+
+    ;; Declare that =writer-mode= has been loaded.
+    (setq writer-mode-loaded t)))
+#+END_SRC
+
+After that, I can configure it further. For example, I want <f1> and <f2> to export my current project into PDF and ODT respectively:
+
+#+BEGIN_SRC elisp
+(when writer-mode-loaded
+  (define-key org-mode-map (kbd "<f1>") 'writer-org-export-to-pdf)
+  (define-key org-mode-map (kbd "<f2>") 'writer-org-export-to-odt))
+#+END_SRC
 
 * IRC
 
