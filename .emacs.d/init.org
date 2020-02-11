@@ -1850,7 +1850,7 @@ There is this handy minor mode I've built which is [[https://github.com/mssola/w
 After that, I can configure it further. For example, I want <f1> and <f2> to export my current project into PDF and ODT respectively:
 
 #+BEGIN_SRC elisp
-(when writer-mode-loaded
+(when (boundp 'writer-mode-loaded)
   (define-key org-mode-map (kbd "<f1>") 'writer-org-export-to-pdf)
   (define-key org-mode-map (kbd "<f2>") 'writer-org-export-to-odt))
 #+END_SRC
