@@ -238,22 +238,6 @@ Some editing tweaks like tabs vs spaces, maximum column width, etc.
 (show-paren-mode 1)
 #+END_SRC
 
-** Abbreviations
-
-Basic abbreviation settings:
-
-#+BEGIN_SRC elisp
-(setq abbrev-file-name "~/.emacs.d/abbrevs.el"
-      save-abbrevs 'silent)
-#+END_SRC
-
-Automatically enable abbreviation mode for some modes:
-
-#+BEGIN_SRC elisp
-(dolist (hook '(erc-mode-hook org-mode-hook text-mode-hook))
-  (add-hook hook #'abbrev-mode))
-#+END_SRC
-
 ** Font and theme
 
 I'm using "Droid Sans Mono" simply because I've grown used to it.
@@ -410,12 +394,6 @@ Enable y/n answers
 
 #+BEGIN_SRC elisp
   (fset 'yes-or-no-p 'y-or-n-p)
-#+END_SRC
-
-Let flyspell be performant.
-
-#+BEGIN_SRC elisp
-  (defvar flyspell-issue-message-flag nil)
 #+END_SRC
 
 Save custom-variables somewhere else.
@@ -632,6 +610,7 @@ binding to @@html:<kbd>,a</kbd>@@ a function that calls to the proper function.
 #+END_SRC
 
 * Edit
+** General
 
 In this section I define some useful packages for editing. First of all, one of
 the coolest packages out there is =undo-tree=. It allows you to navigate through
@@ -649,27 +628,6 @@ recent versions of GNU Emacs.
 
   (require 'diminish)
   (diminish 'undo-tree-mode))
-#+END_SRC
-
-Another important package is =flycheck=, which is an on-the-fly syntax checking
-extension. This works with lots of languages with proper glue code.
-
-#+BEGIN_SRC elisp
-(use-package let-alist
-  :ensure t)
-
-(use-package flycheck
-  :ensure t
-  :diminish
-  :config
-  (add-hook 'after-init-hook 'global-flycheck-mode)
-
-  ;; Only show the errors buffer if it isn't there and if I'm saving the
-  ;; buffer.
-  (setq flycheck-emacs-lisp-load-path 'inherit)
-  (setq flycheck-check-syntax-automatically '(mode-enabled save))
-  (setq flycheck-display-errors-function
-    #'flycheck-display-error-messages-unless-error-list))
 #+END_SRC
 
 A recurring issue in speeches and presentations is that when showing something
@@ -700,51 +658,6 @@ Enable =electric-pair-mode=, which automatically closes pairs like brackets:
 (electric-pair-mode 1)
 #+END_SRC
 
-I never use the mouse.
-
-#+BEGIN_SRC elisp
-(use-package disable-mouse
-  :ensure t
-  :config
-  (global-disable-mouse-mode)
-  (setq global-disable-mouse-mode-lighter ""))
-#+END_SRC
-
-Sometimes you begin typing a prefix, but then you forget the following
-chord. For this reason =which-key= was created. It will show the available
-commands for the current chord as a list.
-
-#+BEGIN_SRC elisp
-(use-package which-key
-  :ensure t
-  :diminish which-key-mode
-  :config
-  (which-key-mode))
-#+END_SRC
-
-For some modes it is important to count the number of words in the text. For
-this, we have =wc-mode=.
-
-#+BEGIN_SRC elisp
-  (use-package wc-mode
-    :ensure t)
-#+END_SRC
-
-Editing files as root is a bit of a pain because usually the root user doesn't
-have the same configuration as the current one, and attempting to do so can be
-messy. So, instead of that, we could advice the =find-file= function so if the
-file is not writable by the current user, then GNU Emacs will ask for editing
-this same file as root:
-
-#+BEGIN_SRC elisp
-(defadvice find-file (after find-file-sudo activate)
-  "Find file as root if necessary."
-  (if (and buffer-file-name
-           (not (file-writable-p buffer-file-name)))
-    (if (yes-or-no-p "Do you want to edit this file as root?")
-        (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name)))))
-#+END_SRC
-
 =YASnippet= allows people to define shortcuts for writing some common blocks.
 Moreover, it comes with a set of builtin snippets already. Since I don't
 remember some of these snippets, I've mapped @@html:<kbd>, h</kbd>@@ to
@@ -759,14 +672,6 @@ remember some of these snippets, I've mapped @@html:<kbd>, h</kbd>@@ to
   (yas-global-mode 1))
 #+END_SRC
 
-=bool-flip= is a very simple utility that toggles truthy/falsey values.
-
-#+BEGIN_SRC elisp
-(use-package bool-flip
-  :ensure t
-  :config
-  (global-set-key (kbd "C-c b") 'bool-flip-do-flip))
-#+END_SRC
 
 =move-text= is a small package that allows you to move lines with a
 keybinding. This might be feasible with Evil mode, but still this might help
@@ -835,6 +740,171 @@ If this is not the case, then this function is synonimous to `end-of-line'."
       (apply orig-fun args)))
 
   (advice-add 'evil-previous-line :around 'evil-previous-line--check-visual-line-mode))
+#+END_SRC
+
+** Spell checking
+
+Basic =flycheck= configuration:
+
+#+BEGIN_SRC elisp
+(use-package let-alist
+  :ensure t)
+
+(use-package flycheck
+  :ensure t
+  :diminish
+  :config
+  (add-hook 'after-init-hook 'global-flycheck-mode)
+
+  ;; Only show the errors buffer if it isn't there and if I'm saving the
+  ;; buffer.
+  (setq flycheck-emacs-lisp-load-path 'inherit)
+  (setq flycheck-check-syntax-automatically '(mode-enabled save))
+  (setq flycheck-display-errors-function
+    #'flycheck-display-error-messages-unless-error-list))
+#+END_SRC
+
+Enable spell checking generally for any text-related mode:
+
+#+BEGIN_SRC elisp
+(dolist (hook '(erc-mode-hook org-mode-hook text-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode 1))))
+#+END_SRC
+
+Also check the spelling of comments in programming languages:
+
+#+BEGIN_SRC elisp
+(dolist (mode '(emacs-lisp-mode-hook
+                inferior-lisp-mode-hook
+                python-mode-hook
+                js-mode-hook
+                go-mode-hook
+                ruby-mode-hook
+                rust-mode-hook
+                php-mode-hook
+                c-mode-common-hook))
+  (add-hook mode
+            '(lambda ()
+               (flyspell-prog-mode))))
+#+END_SRC
+
+Let's use =<f8>= for checking words, and =M-<f8>= for moving into the next highlighted word:
+
+#+BEGIN_SRC elisp
+(global-set-key (kbd "<f8>") 'ispell-word)
+
+(defun flyspell-check-next-highlighted-word ()
+  "Custom function to spell check next highlighted word"
+  (interactive)
+  (flyspell-goto-next-error)
+  (ispell-word))
+
+(global-set-key (kbd "M-<f8>") 'flyspell-check-next-highlighted-word)
+#+END_SRC
+
+If possible, use [[https://hunspell.github.io/][hunspell]] instead of aspell. This program is used by LibreOffice, Firefox, etc. so it's pretty reliable and it supports rather complex languages such as Hungarian. The language being picked is the one from =LC_ALL= and similar environment variables. You can change that by setting =ispell-local-dictionary= and similar:
+
+#+BEGIN_SRC elisp
+(cond
+ ((executable-find "hunspell")
+  (setq ispell-program-name "hunspell")
+  (setq ispell-really-hunspell t))
+
+ ((executable-find "aspell")
+  (setq ispell-program-name "aspell")))
+#+END_SRC
+
+Moreover, let's use [[https://github.com/languagetool-org/languagetool][languagetool]] for further checks:
+
+#+BEGIN_SRC elisp
+(use-package langtool
+  :ensure t)
+
+(let ((lt-path "/usr/share/languagetool"))
+  (setq langtool-language-tool-jar (concat lt-path "/languagetool-commandline.jar")
+        langtool-mother-tongue "ca"))
+
+(when (fboundp 'langtool-check)
+  (global-set-key (kbd "<f9>") 'langtool-check-buffer)
+  (global-set-key (kbd "M-<f9>") 'langtool-correct-buffer))
+#+END_SRC
+
+Let flyspell be performant:
+
+#+BEGIN_SRC elisp
+(defvar flyspell-issue-message-flag nil)
+#+END_SRC
+
+** Abbreviations
+
+Basic abbreviation settings:
+
+#+BEGIN_SRC elisp
+(setq abbrev-file-name "~/.emacs.d/abbrevs.el"
+      save-abbrevs 'silent)
+#+END_SRC
+
+Automatically enable abbreviation mode for some modes:
+
+#+BEGIN_SRC elisp
+(dolist (hook '(erc-mode-hook org-mode-hook text-mode-hook))
+  (add-hook hook #'abbrev-mode))
+#+END_SRC
+
+** Misc
+
+I never use the mouse.
+
+#+BEGIN_SRC elisp
+(use-package disable-mouse
+  :ensure t
+  :config
+  (global-disable-mouse-mode)
+  (setq global-disable-mouse-mode-lighter ""))
+#+END_SRC
+
+Sometimes you begin typing a prefix, but then you forget the following
+chord. For this reason =which-key= was created. It will show the available
+commands for the current chord as a list.
+
+#+BEGIN_SRC elisp
+(use-package which-key
+  :ensure t
+  :diminish which-key-mode
+  :config
+  (which-key-mode))
+#+END_SRC
+
+For some modes it is important to count the number of words in the text. For
+this, we have =wc-mode=.
+
+#+BEGIN_SRC elisp
+  (use-package wc-mode
+    :ensure t)
+#+END_SRC
+
+Editing files as root is a bit of a pain because usually the root user doesn't
+have the same configuration as the current one, and attempting to do so can be
+messy. So, instead of that, we could advice the =find-file= function so if the
+file is not writable by the current user, then GNU Emacs will ask for editing
+this same file as root:
+
+#+BEGIN_SRC elisp
+(defadvice find-file (after find-file-sudo activate)
+  "Find file as root if necessary."
+  (if (and buffer-file-name
+           (not (file-writable-p buffer-file-name)))
+    (if (yes-or-no-p "Do you want to edit this file as root?")
+        (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name)))))
+#+END_SRC
+
+=bool-flip= is a very simple utility that toggles truthy/falsey values.
+
+#+BEGIN_SRC elisp
+(use-package bool-flip
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c b") 'bool-flip-do-flip))
 #+END_SRC
 
 * Dired
@@ -1403,10 +1473,7 @@ Adding hooks for composing and viewing messages.
     (use-hard-newlines t 'guess)
 
     ; So it's easy to encrypt/decrypt emails.
-    (epa-mail-mode)
-
-    ; Spellz
-    (flyspell-mode))
+    (epa-mail-mode))
 
   (add-hook 'mu4e-compose-mode-hook 'mssola-compose-mode)
 
@@ -1993,12 +2060,11 @@ First of all, define a function that identifies some warning keywords
 #+END_SRC
 
 Text mode is not a programming language, but it's used quite often in this
-context too. In this case, I want spell check and =wc-mode= activated.
+context too. In this case, I want =wc-mode= activated.
 
 #+BEGIN_SRC elisp
   (add-hook 'text-mode-hook
             (lambda ()
-              (flyspell-mode 1)
               (wc-mode 1)))
 #+END_SRC
 
@@ -2048,13 +2114,11 @@ Add =rainbow-delimiters= and =warnings-mode-hook= also for =lisp-mode=:
 
 ** C and C++
 
-C and C++ only require the =warnings-mode-hook= function, spell checking for the
-comments and the usage of tabs instead of spaces.
+C and C++ only require the =warnings-mode-hook= function and the usage of tabs instead of spaces.
 
 #+BEGIN_SRC elisp
 ; Note that C-common includes languages with a similar syntax of C.
 (add-hook 'c-mode-common-hook 'warnings-mode-hook)
-(add-hook 'c-mode-common-hook (lambda() (flyspell-prog-mode)))
 
 ;; C
 (add-hook 'c-mode-hook
@@ -2141,7 +2205,6 @@ And now my Go configuration. This includes stuff like the usage of =goimports=,
     (require 'go-flycheck)
 
     (setq indent-tabs-mode t)
-    (flyspell-prog-mode)
 
     ; eldoc support
     (use-package go-eldoc
