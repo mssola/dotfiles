@@ -106,6 +106,7 @@
     ("btw" "by the way" nil 0)
     ("cca" "Consell Comarcal de l'Anoia" nil 0)
     ("diba" "Diputació de Barcelona" nil 0)
+    ("CIF" "Comissions Informatives" nil 0)
    ))
 
 (define-abbrev-table 'gnus-article-edit-mode-abbrev-table '())
@@ -309,4 +310,3 @@
 (define-abbrev-table 'xref--xref-buffer-mode-abbrev-table '())
 
 (define-abbrev-table 'yaml-mode-abbrev-table '())
-
