@@ -20,15 +20,15 @@ LOAD_PATH="-L $(readlink -f -- vendor)"
 # shellcheck disable=SC2039
 pushd .
 
+# God knows why this is needed, but `package-lint` bails otherwise...
+mkdir -p vendor/data
+echo "()" > vendor/data/stdlib-changes
+
 for i in . lisp; do
     cd "$i"
     # shellcheck disable=SC2010
     # shellcheck disable=SC2035
     files="$(ls *.el | grep -v 'custom.el' | grep -v 'abbrevs.el' | grep -v 'lisp-autoloads.el' | grep -v '.emacs.d-autoloads.el' | grep -v 'soria-theme.el' | xargs)"
-
-    # God knows why this is needed, but `package-lint` bails otherwise...
-    mkdir -p vendor/data
-    echo "()" > vendor/data/stdlib-changes
 
     # shellcheck disable=SC2086
     ${EMACS:=emacs} -Q --batch ${LOAD_PATH} -l elisp-lint.el -f elisp-lint-files-batch $files
