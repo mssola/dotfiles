@@ -796,6 +796,12 @@ Let's use =<f8>= for checking words, and =M-<f8>= for moving into the next highl
 (defun flyspell-check-next-highlighted-word ()
   "Custom function to spell check next highlighted word"
   (interactive)
+
+  ;; If we are in org mode, unfold everything, since flyspell does not work
+  ;; smoothly with folded stuff.
+  (when (string= major-mode "org-mode")
+    (outline-show-all))
+
   (flyspell-goto-next-error)
   (ispell-word))
 
