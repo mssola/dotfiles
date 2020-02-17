@@ -14,6 +14,7 @@ fi
 mkdir -p vendor
 wget -q -O vendor/elisp-lint.el https://raw.githubusercontent.com/gonewest818/elisp-lint/master/elisp-lint.el
 wget -q -O vendor/package-lint.el https://raw.githubusercontent.com/purcell/package-lint/master/package-lint.el
+wget -q -O vendor/dash.el https://raw.githubusercontent.com/magnars/dash.el/master/dash.el
 LOAD_PATH="-L $(readlink -f -- vendor)"
 
 # shellcheck disable=SC2039
