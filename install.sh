@@ -45,7 +45,7 @@ done
 for file in $(find "$(pwd)" -mindepth 1 -maxdepth 1 ! \( $ignore \)); do
     # The -F and -f flags of ln suck. Let's rm all the way.
     rm -rf "${HOME:?}/$(basename $file)"
-    ln -s "$file" "${HOME:?}/$(basename $file)"
+    ln -s "$(readlink -f $file)" "${HOME:?}/$(basename $file)"
 done
 
 ##
@@ -53,7 +53,7 @@ done
 
 # Link the global.gitignore file
 rm "${HOME:?}/.gitignore"
-ln -s global.gitignore "${HOME:?}/.gitignore"
+ln -s $(readlink -f global.gitignore) "${HOME:?}/.gitignore"
 
 # Copy entries of some of the directories inside of maybe existing ones.
 for i in Images .config .gnupg; do
