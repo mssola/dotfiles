@@ -146,5 +146,3 @@ alias ssh="gpg-connect-agent updatestartuptty /bye >/dev/null; ssh"
 # Handy alias for the ip command
 alias ip="ip --color"
 alias ipb="ip --color --brief"
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
