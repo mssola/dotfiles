@@ -2423,7 +2423,7 @@ Yeah, I've been on the salty road...
 
 ** Others
 
-The [[https;//github.com/mssola/soria][soria]] theme has the =soria-purple-identifiers= hook. This hook instructs
+The [[https;//github.com/mssola/soria][soria]] theme has the =soria-theme-purple-identifiers= hook. This hook instructs
 the theme to use purple for identifiers instead of the default color. This is a
 remnant from my Vim times, and I only apply it to some languages (random
 criteria really).
@@ -2433,7 +2433,7 @@ criteria really).
                        php-mode-hook
                        perl-mode-hook
                        emacs-lisp-mode-hook))
-    (add-hook lang-hook 'soria-purple-identifiers))
+    (add-hook lang-hook 'soria-theme-purple-identifiers))
 #+END_SRC
 
 ** LaTeX
