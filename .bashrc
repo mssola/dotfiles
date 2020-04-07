@@ -114,7 +114,7 @@ alias random_string="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -
 source_maybe "$HOME/.cargo/env"
 
 # SUSE
-export NODE_VERSION="8"
+export NODE_VERSION="10"
 
 # Finally RVM requires it to be the last thing on the PATH for whatever reason.
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
