@@ -263,10 +263,13 @@ I'm using "Droid Sans Mono" simply because I've grown used to it.
 #+END_SRC
 
 I've hacked my own theme called [[https://github.com/mssola/soria][soria]]. This theme combines the vim theme
-[[http://www.vim.org/scripts/script.php?script_id=2140][xoria256]] with the [[http://opensuse.github.io/branding-guidelines/][openSUSE branding guidelines]].
+[[http://www.vim.org/scripts/script.php?script_id=2140][xoria256]] with the [[http://opensuse.github.io/branding-guidelines/][openSUSE branding guidelines]]. Moreover, let's also enable
+=highlight-numbers-mode=, so all numbers (regardless of the format) are properly
+highlighted:
 
 #+BEGIN_SRC elisp
-  (load-theme 'soria t)
+(load-theme 'soria t)
+(add-hook 'prog-mode-hook 'highlight-numbers-mode)
 #+END_SRC
 
 When hacking your own theme, sometimes you want to know what face is the one
