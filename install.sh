@@ -53,7 +53,7 @@ done
 
 # Link the global.gitignore file
 rm "${HOME:?}/.gitignore"
-ln -s $(readlink -f global.gitignore) "${HOME:?}/.gitignore"
+ln -s "$(readlink -f global.gitignore)" "${HOME:?}/.gitignore"
 
 # Copy entries of some of the directories inside of maybe existing ones.
 for i in Images .config .gnupg; do
