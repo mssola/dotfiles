@@ -1093,6 +1093,7 @@ Add Vim-like keybindings to as many modes as possible. Note that this list is no
   (evil-collection-init 'ag)
   (evil-collection-init 'calendar)
   (evil-collection-init 'dired)
+  (evil-collection-init 'help)
   (evil-collection-init 'mu4e))
 #+END_SRC
 
