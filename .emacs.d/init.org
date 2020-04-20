@@ -1035,6 +1035,11 @@ Now make sure that Evil is installed, and call the relevant configuration functi
 #+BEGIN_SRC elisp
 (use-package evil
   :ensure t
+  :init
+  (progn
+    ;; Needed by evil-collection
+    (setq evil-want-integration nil
+          evil-want-keybinding nil))
   :config
   (add-hook 'evil-mode-hook 'mssola-evil)
   (evil-mode 1)
@@ -1504,35 +1509,28 @@ Adding hooks for composing and viewing messages.
 I want desktop notifications when receiving email.
 
 #+BEGIN_SRC elisp
-  (use-package mu4e-alert
+(use-package mu4e-alert
+  :ensure t
+  :config
+
+                                        ; Notify me for unread emails from my inbox.
+  (mu4e-alert-set-default-style 'libnotify)
+  (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+  (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+  (setq mu4e-alert-interesting-mail-query
+        (concat
+         "(maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox OR maildir:/ajuntament/inbox) "
+         "AND flag:unread AND NOT flag:trashed"))
+  (setq mu4e-alert-email-notification-types '(count)))
+
+                                        ; Evil mode in mu4e
+(with-eval-after-load 'evil
+  (use-package evil-collection
     :ensure t
+    :after evil
     :config
 
-    ; Notify me for unread emails from my inbox.
-    (mu4e-alert-set-default-style 'libnotify)
-    (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
-    (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
-    (setq mu4e-alert-interesting-mail-query
-          (concat
-           "(maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox OR maildir:/ajuntament/inbox) "
-           "AND flag:unread AND NOT flag:trashed"))
-    (setq mu4e-alert-email-notification-types '(count)))
-
-  ; Evil mode in mu4e
-  (with-eval-after-load 'evil
-    (use-package evil-mu4e
-      :ensure t
-      :config
-
-      ; Idea taken from evil-mu4e.el
-      (defvar mssola-evil-mu4e-mode-map-bindings
-        `((,evil-mu4e-state mu4e-headers-mode-map "\C-u" evil-scroll-up)
-          (,evil-mu4e-state mu4e-main-mode-map    "\C-u" evil-scroll-up)
-          (,evil-mu4e-state mu4e-view-mode-map    "h" evil-backward-char)))
-
-      (dolist (binding mssola-evil-mu4e-mode-map-bindings)
-        (evil-define-key
-          (nth 0 binding) (nth 1 binding) (nth 2 binding) (nth 3 binding)))))
+    (evil-collection-init 'mu4e)))
 #+END_SRC
 
 And finally define a proper shortcut.
