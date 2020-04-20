@@ -204,8 +204,29 @@ Relative line numbers support is builtin since GNU Emacs 26.1:
 Use the much fancier =doom-modeline= as our modeline:
 
 #+BEGIN_SRC elisp
+(use-package all-the-icons
+  :ensure t
+  :config
+  (require 'cl-lib)
+
+  ;; Check if the fonts have been already been installed. If that is not the
+  ;; case, then install it now. The path detection is taken from
+  ;; all-the-icons.el.
+  (let* ((font-dest (cl-case window-system
+                      (x  (concat (or (getenv "XDG_DATA_HOME")
+                                      (concat (getenv "HOME") "/.local/share"))
+                                  "/fonts/"))
+                      (mac (concat (getenv "HOME") "/Library/Fonts/" ))
+                      (ns (concat (getenv "HOME") "/Library/Fonts/" ))))
+         (ttf-path (concat font-dest "all-the-icons.ttf")))
+
+    (unless (file-exists-p ttf-path)
+      (message "Installing fonts...")
+      (all-the-icons-install-fonts))))
+
 (use-package doom-modeline
   :ensure t
+  :after all-the-icons
   :init
   ;; We are using the default values except for a couple of values, mainly
   ;; around icons.
