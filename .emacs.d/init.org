@@ -124,7 +124,9 @@ Initialize package.
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
-(package-initialize)
+;; This is no longer needed as of GNU Emacs 27.x.
+(when (< emacs-major-version 27)
+  (package-initialize))
 #+END_SRC
 
 I'm using use-package to handle my installed packages. I don't know if it's
