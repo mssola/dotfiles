@@ -434,28 +434,6 @@ Global key binding.
   (global-set-key (kbd "M-c") 'calendar)
 #+END_SRC
 
-Fix some stuff for evil mode.
-
-#+BEGIN_SRC elisp
-(with-eval-after-load "calendar"
-  (with-eval-after-load "evil"
-    (evil-set-initial-state 'calendar-mode 'normal)
-    (evil-define-key 'normal calendar-mode-map
-      "j" 'calendar-forward-week
-      "k" 'calendar-backward-week
-      "b" 'calendar-backward-day
-      "h" 'calendar-backward-day
-      "l" 'calendar-forward-day
-      "w" 'calendar-forward-day
-      "q" 'calendar-exit
-      "\C-h" 'evil-window-left
-      "\C-l" 'evil-window-right
-      "\C-j" 'evil-window-down
-      "\C-k" 'evil-window-up
-      "\C-n" 'calendar-scroll-left-three-months
-      "\C-p" 'calendar-scroll-right-three-months)))
-#+END_SRC
-
 * General purpose defuns
 
 I want to read the latest news. That's why I define a function that downloads
@@ -492,19 +470,11 @@ First of all, load the silver searcher, which is a convenient and fast searcher.
 Ayo silver!
 
 #+BEGIN_SRC elisp
-  (use-package ag
-    :ensure t
-    :config
-
-    ; Avoid some disagreements between ag and evil.
-    (with-eval-after-load 'evil
-      (add-hook 'ag-mode-hook
-                (lambda ()
-                  (define-key ag-mode-map (kbd "n") 'evil-search-next)
-                  (define-key ag-mode-map (kbd "N") 'evil-search-previous)
-                  (define-key ag-mode-map (kbd "gg") 'evil-goto-first-line))))
-    (setq ag-reuse-buffers t)
-    (setq ag-reuse-window t))
+(use-package ag
+  :ensure t
+  :config
+  (setq ag-reuse-buffers t
+        ag-reuse-window t))
 #+END_SRC
 
 Then, for keeping up with my projects I use the Projectile + Helm combination.
@@ -925,16 +895,7 @@ this same file as root:
 
 * Dired
 
-I use dired mode mainly for attaching document into emails. That being said,
-whenever I use it, I want basic evil movement.
-
-#+BEGIN_SRC elisp
-  (with-eval-after-load 'evil
-    (evil-add-hjkl-bindings dired-mode-map 'normal
-      (kbd "w") 'evil-forward-word-begin))
-#+END_SRC
-
-I also extend =dired= with some handy tweaks.
+Let's extend =dired= with some handy tweaks.
 
 #+BEGIN_SRC elisp
 (setq directory-free-space-args "-Pkh"
@@ -1038,7 +999,7 @@ Now make sure that Evil is installed, and call the relevant configuration functi
   :init
   (progn
     ;; Needed by evil-collection
-    (setq evil-want-integration nil
+    (setq evil-want-integration t
           evil-want-keybinding nil))
   :config
   (add-hook 'evil-mode-hook 'mssola-evil)
@@ -1119,6 +1080,20 @@ respectively.
     (define-key evil-normal-state-map "H" 'evil-backward-arg)
     (define-key evil-motion-state-map "L" 'evil-forward-arg)
     (define-key evil-motion-state-map "H" 'evil-backward-arg))
+#+END_SRC
+
+Add Vim-like keybindings to as many modes as possible. Note that this list is not exhaustive, since some of these modes are better off with specific packages (e.g. =evil-magit=), and in some cases my bindings feel more intuitive to me (e.g. =woman=):
+
+#+BEGIN_SRC elisp
+(use-package evil-collection
+  :ensure t
+  :after evil
+  :config
+  ;; Doing this one by one so it's not too bloated.
+  (evil-collection-init 'ag)
+  (evil-collection-init 'calendar)
+  (evil-collection-init 'dired)
+  (evil-collection-init 'mu4e))
 #+END_SRC
 
 Last but not least, =evil-numbers= brings a couple of bindings available to Vim
@@ -1522,15 +1497,6 @@ I want desktop notifications when receiving email.
          "(maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox OR maildir:/ajuntament/inbox) "
          "AND flag:unread AND NOT flag:trashed"))
   (setq mu4e-alert-email-notification-types '(count)))
-
-                                        ; Evil mode in mu4e
-(with-eval-after-load 'evil
-  (use-package evil-collection
-    :ensure t
-    :after evil
-    :config
-
-    (evil-collection-init 'mu4e)))
 #+END_SRC
 
 And finally define a proper shortcut.
