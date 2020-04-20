@@ -945,8 +945,7 @@ this same file as root:
 Let's extend =dired= with some handy tweaks.
 
 #+BEGIN_SRC elisp
-(setq directory-free-space-args "-Pkh"
-      dired-dwim-target t
+(setq dired-dwim-target t
       dired-omit-mode nil
       dired-recursive-copies 'always
       dired-recursive-deletes 'always
@@ -1217,6 +1216,9 @@ things globally:
 (when (file-directory-p "/usr/share/emacs/site-lisp/mu4e")
   (require 'mu4e)
 
+  (when (version< mu4e-mu-version "1.4.0")
+    (warn "You need at least mu 1.4.0 to get things working..."))
+
   (when (featurep 'mu4e)
 #+END_SRC
 
@@ -1230,7 +1232,6 @@ Diferent SMTP options that will be used for each context.
 
 #+BEGIN_SRC elisp
   (setq message-send-mail-function 'smtpmail-send-it
-        mu4e-maildir (expand-file-name "~/.mail")
         starttls-use-gnutls t)
 #+END_SRC
 
@@ -1381,18 +1382,6 @@ If mu4e cannot figure things out, ask me.
 #+BEGIN_SRC elisp
   (setq mu4e-context-policy 'ask)
   (setq mu4e-compose-context-policy 'ask)
-#+END_SRC
-
-Fill the =mu4e-user-mail-address-list= variable with the contexts.
-
-#+BEGIN_SRC elisp
-  (setq mu4e-user-mail-address-list
-        (delq nil
-              (mapcar (lambda (context)
-                        (when (mu4e-context-vars context)
-                          (cdr (assq 'user-mail-address
-                                     (mu4e-context-vars context)))))
-                      mu4e-contexts)))
 #+END_SRC
 
 Setting my bookmarks
