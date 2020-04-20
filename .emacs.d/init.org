@@ -142,14 +142,6 @@ package-install, I decided on use-package because I feel more well-organized.
 (require 'use-package)
 #+END_SRC
 
-Some =use-package= calls require =diminish.el= to be available. So, let's
-require it here on the very top.
-
-#+BEGIN_SRC elisp
-(use-package diminish
-  :ensure t)
-#+END_SRC
-
 * General
 ** GUI
 
@@ -172,21 +164,22 @@ Disable the menu, scroll and tool bars. At the same time, enable line and column
 modes.
 
 #+BEGIN_SRC elisp
-  (menu-bar-mode -1)
-  (when (fboundp 'set-scroll-bar-mode)
-    (set-scroll-bar-mode nil))
-  (when (fboundp 'tool-bar-mode)
-    (tool-bar-mode -1))
-  (when (fboundp 'tooltip-mode)
-    (tooltip-mode 0))
+(menu-bar-mode -1)
+(when (fboundp 'set-scroll-bar-mode)
+  (set-scroll-bar-mode nil))
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
+(when (fboundp 'tooltip-mode)
+  (tooltip-mode 0))
 
-  (line-number-mode 1)
-  (column-number-mode 1)
+(line-number-mode 1)
+(column-number-mode 1)
+(size-indication-mode 1)
 
-  ;; Nice scrolling
-  (setq scroll-margin 0
-        scroll-conservatively 100000
-        scroll-preserve-screen-position 1)
+;; Nice scrolling
+(setq scroll-margin 0
+      scroll-conservatively 100000
+      scroll-preserve-screen-position 1)
 #+END_SRC
 
 Relative line numbers support is builtin since GNU Emacs 26.1:
@@ -196,6 +189,25 @@ Relative line numbers support is builtin since GNU Emacs 26.1:
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
   (setq display-line-numbers-type 'relative)
   (global-set-key (kbd "C-c L") 'display-line-numbers-mode))
+#+END_SRC
+
+Use the much fancier =doom-modeline= as our modeline:
+
+#+BEGIN_SRC elisp
+(use-package doom-modeline
+  :ensure t
+  :init
+  ;; We display project info in the modeline ourselves
+  (setq projectile-dynamic-mode-line nil)
+  ;; Set these early so they don't trigger variable watchers
+  (setq doom-modeline-height 20
+        doom-modeline-mu4e t
+        doom-modeline-persp-name nil
+        doom-modeline-major-mode-icon nil
+        doom-modeline-buffer-file-name-style 'relative-from-project)
+
+  ;; And finally enable it.
+  (doom-modeline-mode 1))
 #+END_SRC
 
 Do no resize the frame when a newly set font is different than the system's default. This is not affecting but it has some performance issues: around 0.3s when starting GNU Emacs in GUI mode, but negligible when in text mode.
@@ -612,10 +624,7 @@ recent versions of GNU Emacs.
 
   (setq undo-tree-visualizer-diff t
         undo-tree-visualizer-timestamps t
-        undo-tree-visualizer-relative-timestamps t)
-
-  (require 'diminish)
-  (diminish 'undo-tree-mode))
+        undo-tree-visualizer-relative-timestamps t))
 #+END_SRC
 
 A recurring issue in speeches and presentations is that when showing something
@@ -654,7 +663,6 @@ remember some of these snippets, I've mapped @@html:<kbd>, h</kbd>@@ to
 #+BEGIN_SRC elisp
 (use-package yasnippet
   :ensure t
-  :diminish yas-minor-mode
   :init (yas-global-mode)
   :config
   (yas-global-mode 1))
@@ -740,7 +748,6 @@ Basic =flycheck= configuration:
 
 (use-package flycheck
   :ensure t
-  :diminish
   :config
   (add-hook 'after-init-hook 'global-flycheck-mode)
 
@@ -864,7 +871,6 @@ commands for the current chord as a list.
 #+BEGIN_SRC elisp
 (use-package which-key
   :ensure t
-  :diminish which-key-mode
   :config
   (which-key-mode))
 #+END_SRC
