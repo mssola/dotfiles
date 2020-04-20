@@ -1172,7 +1172,6 @@ things globally:
   (message "Skipping mu4e because it's not installed."))
 
 (when (file-directory-p "/usr/share/emacs/site-lisp/mu4e")
-  (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
   (require 'mu4e)
 
   (when (featurep 'mu4e)
