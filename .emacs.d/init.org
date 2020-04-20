@@ -45,6 +45,8 @@ Moreover, in order to avoid manually tangling and compiling the =init.org= file
 on each change, the following function is provided:
 
 #+BEGIN_SRC elisp
+;;; init.el -*- lexical-binding: t; -*-
+
 (defun tangle-init ()
   "If the current buffer is 'init.org' the code-blocks are
   tangled, and the tangled file is compiled. Morever, an init.html is generated."
