@@ -147,7 +147,6 @@ require it here on the very top.
 #+END_SRC
 
 * General
-
 ** GUI
 
 I like a minimalistic GUI. Because of this, almost all GUI elements have been
@@ -193,6 +192,12 @@ Relative line numbers support is builtin since GNU Emacs 26.1:
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
   (setq display-line-numbers-type 'relative)
   (global-set-key (kbd "C-c L") 'display-line-numbers-mode))
+#+END_SRC
+
+Do no resize the frame when a newly set font is different than the system's default. This is not affecting but it has some performance issues: around 0.3s when starting GNU Emacs in GUI mode, but negligible when in text mode.
+
+#+BEGIN_SRC elisp
+(setq frame-inhibit-implied-resize t)
 #+END_SRC
 
 ** Basic editing configuration
@@ -249,7 +254,6 @@ I'm using "Droid Sans Mono" simply because I've grown used to it.
     "Droid Sans Mono Dotted for Powerline-10")
   "The font to be used.")
 
-(set-frame-font mssola-font)
 (add-to-list 'default-frame-alist `(font . ,mssola-font))
 
 ; Emacs in daemon mode does not like `set-face-attribute` because this is only
