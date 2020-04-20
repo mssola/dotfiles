@@ -83,11 +83,21 @@ Temporarily reduce garbage collection so startup time is lower. Idea taken from
 [[https://github.com/purcell][@purcell]].
 
 #+BEGIN_SRC elisp
-  (defconst mssola-initial-gc-cons-threshold gc-cons-threshold
-    "Initial value of `gc-cons-threshold' at start-up time.")
-  (setq gc-cons-threshold (* 1024 1024 1024))
-  (add-hook 'after-init-hook
-            (lambda () (setq gc-cons-threshold mssola-initial-gc-cons-threshold)))
+(defconst mssola-initial-gc-cons-threshold gc-cons-threshold
+  "Initial value of `gc-cons-threshold' at start-up time.")
+
+(defconst mssola-initial-gc-cons-percentage gc-cons-percentage
+  "Initial value of `gc-cons-percentage' at start-up time.")
+
+;; Completely disable the GC by having a ginormous threshold.
+(setq gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 0.6)
+
+;; Enable the GC back again to its
+(add-hook 'after-init-hook
+          (lambda ()
+            (setq gc-cons-threshold mssola-initial-gc-cons-threshold
+                  gc-cons-percentage mssola-initial-gc-cons-percentage)))
 #+END_SRC
 
 User name and email.
