@@ -311,7 +311,7 @@ I'm using "Droid Sans Mono" simply because I've grown used to it.
 
 #+BEGIN_SRC elisp
 (defconst mssola-font
-  (if (string= system-type "darwin")
+  (if IS-MAC
       "Droid Sans Mono-12"
     "Droid Sans Mono Dotted for Powerline-10")
   "The font to be used.")
