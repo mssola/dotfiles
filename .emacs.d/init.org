@@ -79,6 +79,19 @@ individually handled.
     (message "Your GNU Emacs is a bit old and some functionality will be disabled.  Consider upgrading to at least v%s" recver)))
 #+END_SRC
 
+Check the operating system:
+
+#+BEGIN_SRC elisp
+(defconst IS-LINUX (eq system-type 'gnu/linux)
+  "Current system is GNU/Linux")
+
+(defconst IS-MAC (eq system-type 'darwin)
+  "Current system is MacOS")
+
+(unless (or IS-LINUX IS-MAC)
+  (error "This configuration has been checked only on GNU/Linux and MacOS"))
+#+END_SRC
+
 Temporarily reduce garbage collection so startup time is lower. Idea taken from
 [[https://github.com/purcell][@purcell]].
 
@@ -207,20 +220,21 @@ Use the much fancier =doom-modeline= as our modeline:
 (use-package all-the-icons
   :ensure t
   :config
-  (require 'cl-lib)
-
   ;; Check if the fonts have been already been installed. If that is not the
-  ;; case, then install it now. The path detection is taken from
+  ;; case, then install it now. The path detection is based from
   ;; all-the-icons.el.
-  (let* ((font-dest (cl-case window-system
-                      (x  (concat (or (getenv "XDG_DATA_HOME")
-                                      (concat (getenv "HOME") "/.local/share"))
-                                  "/fonts/"))
-                      (mac (concat (getenv "HOME") "/Library/Fonts/" ))
-                      (ns (concat (getenv "HOME") "/Library/Fonts/" ))))
+  (let* ((font-dest (if IS-LINUX
+                        (concat (or (getenv "XDG_DATA_HOME")
+                                    (concat (getenv "HOME") "/.local/share"))
+                                "/fonts/")
+                      (if IS-MAC
+                          (concat (getenv "HOME") "/Library/Fonts/")
+                        nil)))
          (ttf-path (concat font-dest "all-the-icons.ttf")))
 
-    (unless (file-exists-p ttf-path)
+    ;; If we were able to detect the OS and we don't have a the file installed,
+    ;; try to do it now.
+    (when (and font-dest (not (file-exists-p ttf-path)))
       (message "Installing fonts...")
       (all-the-icons-install-fonts))))
 
