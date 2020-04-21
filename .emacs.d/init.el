@@ -4,9 +4,9 @@
 ;;
 ;; Author: Miquel Sabaté Solà <mikisabate@gmail.com>
 ;; Version: 0.1
-;; Package-Requires: ((emacs "25.1"))
-;; Keywords: local, maint, mail, tools, vc
-;; URL: https://github.com/mssola/dotfiles/.emacs.d/init.el
+;; Package-Requires: ((emacs "25.3"))
+;; Keywords: convenience, extensions, files, frames, mail, matching, terminals, tools, vc, wp
+;; URL: https://github.com/mssola/dotfiles
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
