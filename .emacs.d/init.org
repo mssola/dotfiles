@@ -1502,7 +1502,7 @@ Add as a header action to toggle gnus mode for the view mode. I'm doing this
 because this is way better to visualize attached .eml emails.
 
 #+BEGIN_SRC elisp
-(defun mssola-toggle-gnus-mode (msg)
+(defun mssola-toggle-gnus-mode (_msg)
   "Toggle gnus on view mode from now on."
   (if mu4e-view-use-gnus
       (setq mu4e-view-use-gnus nil)
@@ -2092,7 +2092,7 @@ At this point, we can safely update all the loaded ERC modules.
 
 #+BEGIN_SRC elisp
   (add-hook 'erc-connect-pre-hook
-            (lambda (x) (erc-update-modules)))
+            (lambda (_x) (erc-update-modules)))
 #+END_SRC
 
 Start some modules which won't do it by default. Moreover, according to the [[https://www.emacswiki.org/emacs/ErcFilling][wiki]]
@@ -2423,33 +2423,20 @@ bundle of features which are interesting for web-related stuff.
   (add-to-list 'auto-mode-alist '("\\.jinja\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
-  (add-hook 'web-mode-hook
-            (lambda ()
-              (setq web-mode-markup-indent-offset 2)
-              (setq web-mode-css-indent-offset 2)
-              (setq web-mode-code-indent-offset 2)))
+  (setq web-mode-markup-indent-offset 2
+        web-mode-css-indent-offset 2
+        web-mode-code-indent-offset 2)
 
-  (add-hook 'js-mode-hook
-            (lambda ()
-              (setq js-indent-level 2)
-              (rainbow-delimiters-mode 1)))
+  (use-package js
+    :ensure t
+    :hook (js-mode . rainbow-delimiters-mode)
+    :custom
+    (js-indent-level 2))
 
   (use-package vue-mode
     :ensure t
     :config
-    (setq mmm-submode-decoration-level 0))
-
-  ; React: treat it as a derived mode. Idea taken from spacemacs.
-  (define-derived-mode react-mode web-mode "react")
-  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . react-mode))
-  (add-to-list 'auto-mode-alist '("\\.react.js\\'" . react-mode))
-
-  (add-hook 'react-mode-hook
-            (lambda ()
-              (yas-activate-extra-mode 'js-mode)
-              (web-mode-set-content-type "jsx")
-              (setq-local web-mode-enable-auto-quoting nil)
-              (rainbow-delimiters 1))))
+    (setq mmm-submode-decoration-level 0)))
 #+END_SRC
 
 The =json-reformat= package provides functions for reformatting JSON strings. It
