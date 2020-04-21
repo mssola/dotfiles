@@ -1301,9 +1301,7 @@ the configuration.
 
   (require 'smtpmail)
 
-  (setq smtpmail-starttls-credentials '((server port nil nil))
-        smtpmail-auth-credentials (expand-file-name "~/.authinfo.gpg")
-        smtpmail-default-smtp-server server
+  (setq smtpmail-default-smtp-server server
         smtpmail-smtp-server server
         message-send-mail-function 'smtpmail-send-it
         smtpmail-smtp-service port))
@@ -1454,7 +1452,13 @@ Setting my bookmarks
 Sign outgoing emails always.
 
 #+BEGIN_SRC elisp
-  (add-hook 'message-send-hook 'mml-secure-message-sign-pgpmime)
+;; For some reason, as of GNU Emacs 27.x, I need to define the default openpgp
+;; signer so it can automatically pick my only key I have for signing.
+(when EMACS-27-OR-LATER
+  (setq mml-secure-openpgp-signers '("0x96BE8C6FD89D6565")
+        mml-secure-openpgp-sign-with-sender t))
+
+(add-hook 'message-send-hook 'mml-secure-message-sign-pgpmime)
 #+END_SRC
 
 To avoid UID clashes. See [[http://pragmaticemacs.com/emacs/fixing-duplicate-uid-errors-when-using-mbsync-and-mu4e/][this]].
