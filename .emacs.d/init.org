@@ -101,11 +101,18 @@ on each change, the following function is provided:
 
 * Introduction
 
-I'm using GNU Emacs 26, but everything should be working in GNU Emacs 24. There
-are some exceptions to this (e.g. webkit support), but these cases are
-individually handled.
+I'm using GNU Emacs 27, but everything should be working since GNU Emacs 24. There are some exceptions to this (e.g. webkit support), but these cases are individually handled.
 
 #+BEGIN_SRC elisp
+(defconst EMACS-25-OR-LATER (>= emacs-major-version 25)
+  "Whether we are using GNU Emacs 25.x")
+
+(defconst EMACS-26-OR-LATER (>= emacs-major-version 26)
+  "Whether we are using GNU Emacs 26.x")
+
+(defconst EMACS-27-OR-LATER (>= emacs-major-version 27)
+  "Whether we are using GNU Emacs 27.x")
+
 (let ((minver "25.3")
       (recver "26.1"))
   (when (version< emacs-version minver)
@@ -184,7 +191,7 @@ Initialize package.
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
 ;; This is no longer needed as of GNU Emacs 27.x.
-(when (< emacs-major-version 27)
+(unless EMACS-27-OR-LATER
   (package-initialize))
 #+END_SRC
 
@@ -1525,7 +1532,8 @@ As of 0.9.18 and GNU Emacs 25, the =mu4e-action-with-xwidget= can be used to
 render an HTML message with Webkit.
 
 #+BEGIN_SRC elisp
-(add-to-list 'mu4e-view-actions '("webkit" . mu4e-action-view-with-xwidget))
+(when EMACS-25-OR-LATER
+  (add-to-list 'mu4e-view-actions '("webkit" . mu4e-action-view-with-xwidget)))
 #+END_SRC
 
 Look for =mu4e-msg2pdf= in the exec path. The reason for this is that the OBS
@@ -2569,11 +2577,11 @@ GNU Emacs activity and saves it into a gif (unless you have specified the
 26.1 or above:
 
 #+BEGIN_SRC elisp
-(unless (version< emacs-version "25.1")
+(if EMACS-25-OR-LATER
   (use-package keycast
     :ensure t))
 
-(unless (version< emacs-version "26.1")
+(if EMACS-26-OR-LATER
   (use-package gif-screencast
     :ensure t
     :config
@@ -2592,11 +2600,11 @@ Last but not least, I use a wrapper to start a screencast:
 
   (interactive)
 
-  (if (version< emacs-version "26.1")
-      (message "Requires 26.1 or later.")
-    (progn
-      (keycast-mode)
-      (gif-screencast))))
+  (if EMACS-26-OR-LATER
+      (progn
+        (keycast-mode)
+        (gif-screencast))
+    (message "Requires 26.1 or later.")))
 #+END_SRC
 
 ** Emojis

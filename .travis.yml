@@ -1,6 +1,7 @@
 language: nix
 
 env:
+  - EMACS_CI=emacs-25-3
   - EMACS_CI=emacs-26-3
   - EMACS_CI=emacs-snapshot
 
