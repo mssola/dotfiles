@@ -172,8 +172,10 @@ Compile the =g.el= script and bind it to @@html:<kbd>M-g</kbd>@@.
 
 #+BEGIN_SRC elisp
 (if (file-exists-p (concat user-emacs-directory "lisp/g.elc"))
-    (load-file (concat user-emacs-directory "lisp/g.elc"))
+    (let ((load-prefer-newer t))
+      (load-file (concat user-emacs-directory "lisp/g.elc")))
   (byte-compile-file (concat user-emacs-directory "lisp/g.el") t))
+
 (global-set-key (kbd "M-g") 'g)
 #+END_SRC
 
@@ -1985,7 +1987,8 @@ There is this handy minor mode I've built which is [[https://github.com/mssola/w
       (shell-command "make build"))
 
     ;; Then load the byte-compiled files.
-    (let ((list (directory-files writer-source t ".elc$")))
+    (let ((list (directory-files writer-source t ".elc$"))
+          (load-prefer-newer t))
       (while list
         (load-file (car list))
         (setq list (cdr list))))
