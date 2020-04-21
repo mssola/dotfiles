@@ -64,7 +64,7 @@ done
 # GNU Emacs: most files can be simply linked, the only exception being
 # init.el. To know why check .emacs.d/README.org.
 mkdir -p "${HOME:?}/.emacs.d"
-for i in lisp org-templates snippets custom.el gtkrc init.org; do
+for i in abbrevs.el early-init.el lisp org-templates snippets custom.el gtkrc init.org; do
     rm -rf "${HOME:?}/.emacs.d/$i"
     ln -s "$(readlink -f .emacs.d/$i)" "${HOME:?}/.emacs.d/$i"
 done
