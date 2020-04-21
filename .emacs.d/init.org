@@ -1,6 +1,8 @@
 #+TITLE: mssola's GNU Emacs configuration
 #+AUTHOR: Miquel Sabaté Solà
 #+EMAIL: mikisabate@gmail.com
+#+HTML_HEAD: <link rel="stylesheet" href="http://jo.mssola.com/static/style.css" type="text/css" />
+#+HTML_HEAD: <link rel="stylesheet" href="http://jo.mssola.com/static/org.css" type="text/css" />
 #+BABEL: :cache yes
 #+PROPERTY: header-args :tangle ~/.emacs.d/init.el
 
@@ -94,7 +96,10 @@ on each change, the following function is provided:
     ;; Avoid running hooks when tangling
     (let ((prog-mode-hook nil))
       (org-babel-tangle)
-      (byte-compile-file (concat user-emacs-directory "init.el")))))
+      (byte-compile-file (concat user-emacs-directory "init.el"))
+      (remove-hook 'emacs-lisp-mode-hook 'soria-theme-purple-identifiers)
+      (org-html-export-to-html)
+      (add-hook 'emacs-lisp-mode-hook 'soria-theme-purple-identifiers))))
 
 (add-hook 'after-save-hook 'tangle-init)
 #+END_SRC
@@ -1693,7 +1698,8 @@ blocks to be converted into HTML as well, so we can properly colorize it).
 
 #+BEGIN_SRC elisp
 (use-package htmlize
-  :ensure t)
+  :ensure t
+  :after org)
 #+END_SRC
 
 And now let's set all the related settings.
@@ -2483,7 +2489,7 @@ Yeah, I've been on the salty road...
 
 ** Others
 
-The [[https;//github.com/mssola/soria][soria]] theme has the =soria-theme-purple-identifiers= hook. This hook instructs
+The [[https://github.com/mssola/soria][soria]] theme has the =soria-theme-purple-identifiers= hook. This hook instructs
 the theme to use purple for identifiers instead of the default color. This is a
 remnant from my Vim times, and I only apply it to some languages (random
 criteria really).
