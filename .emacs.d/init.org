@@ -44,7 +44,7 @@ git update-index --assume-unchanged emacs/init.el
 From now on our code will be tangled, meaning that it will go into the final =init.el= file. For starters, let's have a good header:
 
 #+BEGIN_SRC elisp
-;;; init.el -*- lexical-binding: t; -*-
+;;; init.el --- init file -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2016-2020 Miquel Sabaté Solà <mikisabate@gmail.com>
 ;;
@@ -135,21 +135,23 @@ Check the operating system:
   (error "This configuration has been checked only on GNU/Linux and MacOS"))
 #+END_SRC
 
-Temporarily reduce garbage collection so startup time is lower. Idea taken from
-[[https://github.com/purcell][@purcell]].
+Temporarily reduce garbage collection so startup time is lower. Idea taken from [[https://github.com/purcell][@purcell]] and later refined by looking at [[https://github.com/hlissner/doom-emacs][doom-emacs]]. Note that this is handled in the =early-init.el= file for GNU Emacs 27 and later:
 
 #+BEGIN_SRC elisp
-(defconst mssola-initial-gc-cons-threshold gc-cons-threshold
-  "Initial value of `gc-cons-threshold' at start-up time.")
+(unless EMACS-27-OR-LATER
+  (defconst mssola-initial-gc-cons-threshold gc-cons-threshold
+    "Initial value of `gc-cons-threshold' at start-up time.")
 
-(defconst mssola-initial-gc-cons-percentage gc-cons-percentage
-  "Initial value of `gc-cons-percentage' at start-up time.")
+  (defconst mssola-initial-gc-cons-percentage gc-cons-percentage
+    "Initial value of `gc-cons-percentage' at start-up time.")
 
-;; Completely disable the GC by having a ginormous threshold.
-(setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.6)
+  ;; Completely disable the GC by having a ginormous threshold.
+  (setq gc-cons-threshold most-positive-fixnum
+        gc-cons-percentage 0.6))
 
-;; Enable the GC back again to its
+;; Enable the GC back again to its previous values. This should also be set here
+;; for GNU Emacs 27 and later because the early-init.el purposely does not
+;; fiddle with this hook.
 (add-hook 'after-init-hook
           (lambda ()
             (setq gc-cons-threshold mssola-initial-gc-cons-threshold
@@ -180,18 +182,18 @@ Compile the =g.el= script and bind it to @@html:<kbd>M-g</kbd>@@.
 Initialize package.
 
 #+BEGIN_SRC elisp
-(require 'package)
-
-(when (version= "26.2" emacs-version)
-  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
-
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-
-;; This is no longer needed as of GNU Emacs 27.x.
+;; In GNU Emacs 27 and later this is handled through the early-init.el file.
 (unless EMACS-27-OR-LATER
+  (require 'package)
+
+  (when (version= "26.2" emacs-version)
+    (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  (add-to-list 'package-archives
+               '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
   (package-initialize))
 #+END_SRC
 
