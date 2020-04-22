@@ -9,7 +9,7 @@ configuration. The basic workflow is that on the first run the =init.el= file
 will replace itself with a tangled (=org-babel=) version of itself. Therefore,
 all changes should go into the =init.org= file. Moreover, I've added a function
 that is executed on save which generates and compiles new versions of the
-=init.el= file.
+=init.el= file. This function also generates an HTML version of it, that can be be found [[http://jo.mssola.com/static/init.html][here]].
 
 I run GNU Emacs in daemon mode, but I don't use systemd for that. Instead, in
 I'm using the =-a= argument of =emacsclient= with an empty string. This
