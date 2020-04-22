@@ -34,10 +34,10 @@ __mssola_join_path() {
 __mssola_sync_cheato() {
     path=$(realpath .)
 
-    src=$(__mssola_join_path $path "emacs" $1)
+    src=$(__mssola_join_path $path ".emacs.d" $1)
     dst=$(__mssola_join_path "cheato.mssola.com:$__mssola_remote_path" $1)
 
-    echo "Syncing $(__mssola_join_path emacs $1)"
+    echo "Syncing $(__mssola_join_path .emacs.d $1)"
     rsync $src $dst
 }
 
