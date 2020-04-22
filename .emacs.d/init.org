@@ -1,8 +1,8 @@
 #+TITLE: mssola's GNU Emacs configuration
 #+AUTHOR: Miquel Sabaté Solà
 #+EMAIL: mikisabate@gmail.com
-#+HTML_HEAD: <link rel="stylesheet" href="http://jo.mssola.com/static/style.css" type="text/css" />
-#+HTML_HEAD: <link rel="stylesheet" href="http://jo.mssola.com/static/org.css" type="text/css" />
+#+HTML_HEAD: <link rel="stylesheet" href="http://jo.mssola.com/stylesheets/main.css" type="text/css" />
+#+HTML_HEAD: <link rel="stylesheet" href="http://jo.mssola.com/stylesheets/emacs.css" type="text/css" />
 #+BABEL: :cache yes
 #+PROPERTY: header-args :tangle ~/.emacs.d/init.el
 
@@ -35,9 +35,7 @@ file *always*. The initial contents of the =init.el= are:
 (byte-compile-file (concat user-emacs-directory "init.el"))
 #+END_SRC
 
-There is no reason to track the init.el file, and no reason to change this
-file. In order to ensure this, make sure to apply the following command after
-cloning:
+There is no reason to track the =init.el= file, and no reason to change this file. In order to ensure this, make sure to apply the following command after cloning:
 
 #+BEGIN_SRC sh :tangle no
 git update-index --assume-unchanged emacs/init.el
@@ -103,6 +101,8 @@ on each change, the following function is provided:
 
 (add-hook 'after-save-hook 'tangle-init)
 #+END_SRC
+
+As you can see, this function will tangle and compile the resulting =init.el= file, and it will also produce an HTML version of it. This HTML version will be pushed into my [[https://jo.mssola.com][personal site]] thanks to a git [[https://github.com/mssola/dotfiles/blob/master/.emacs.d/pre-push][pre-push]] hook. The resulting version being hosted [[https://jo.mssola.com/static/init.html][here]].
 
 * Introduction
 
@@ -2631,6 +2631,8 @@ repositories. I have taken lots of pieces from here and there, but most notably:
 - [[https://github.com/purcell/emacs.d][@purcell]]
 - [[https://github.com/sachac/.emacs.d][@sachac]] ([[http://pages.sachachua.com/.emacs.d/Sacha.html][HTML version]])
 - [[https://github.com/larstvei/dot-emacs][@larstvei]]
+- [[https://github.com/hlissner/doom-emacs][doom-emacs]]
+- [[https://gitlab.com/protesilaos/dotfiles][@protesilaos]]
 
 * License
 

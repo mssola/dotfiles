@@ -44,7 +44,6 @@ __mssola_sync_cheato() {
 # Copy the files that I want to my server.
 __mssola_sync() {
     __mssola_sync_cheato "init.html"
-    __mssola_sync_cheato "org.css"
 }
 
 # This block iterates through all the given info provided by git. If there is
@@ -70,7 +69,7 @@ do
 		commit=`git rev-list -n 1 --grep '^emacs:' "$range"`
 		if [ -n "$commit" ]
 		then
-            #__mssola_sync
+            __mssola_sync
 			exit 0
 		fi
 	fi
