@@ -102,11 +102,11 @@ on each change, the following function is provided:
 (add-hook 'after-save-hook 'tangle-init)
 #+END_SRC
 
-As you can see, this function will tangle and compile the resulting =init.el= file, and it will also produce an HTML version of it. This HTML version will be pushed into my [[https://jo.mssola.com][personal site]] thanks to a git [[https://github.com/mssola/dotfiles/blob/master/.emacs.d/pre-push][pre-push]] hook. The resulting version being hosted [[https://jo.mssola.com/static/init.html][here]].
+As you can see, this function will tangle and compile the resulting =init.el= file, and it will also produce an HTML version of it. This HTML version will be pushed into my [[http://jo.mssola.com][personal site]] thanks to a git [[https://github.com/mssola/dotfiles/blob/master/.emacs.d/pre-push][pre-push]] hook. The resulting version being hosted [[http://jo.mssola.com/static/init.html][here]].
 
 * Introduction
 
-I'm using GNU Emacs 27, but everything should be working since GNU Emacs 24. There are some exceptions to this (e.g. webkit support), but these cases are individually handled.
+I'm using GNU Emacs 27, but everything should be working since GNU Emacs 24. There are some exceptions to this (e.g. webkit support), but these cases are individually handled. In the following block we define some handy constants that will be used throughout this configuration in order to support multiple versions of GNU Emacs. Moreover, this block also checks the version being used and errors out if you are using a GNU Emacs that is just too old for this configuration.
 
 #+BEGIN_SRC elisp
 (defconst EMACS-25-OR-LATER (>= emacs-major-version 25)
@@ -127,7 +127,7 @@ I'm using GNU Emacs 27, but everything should be working since GNU Emacs 24. The
     (message "Your GNU Emacs is a bit old and some functionality will be disabled.  Consider upgrading to at least v%s" recver)))
 #+END_SRC
 
-Check the operating system:
+After that, we do the same for the operating system:
 
 #+BEGIN_SRC elisp
 (defconst IS-LINUX (eq system-type 'gnu/linux)
@@ -140,7 +140,9 @@ Check the operating system:
   (error "This configuration has been checked only on GNU/Linux and MacOS"))
 #+END_SRC
 
-Temporarily reduce garbage collection so startup time is lower. Idea taken from [[https://github.com/purcell][@purcell]] and later refined by looking at [[https://github.com/hlissner/doom-emacs][doom-emacs]]. Note that this is handled in the =early-init.el= file for GNU Emacs 27 and later:
+Now, here we have a little hack that has been popularized by the community but that I originally took from [[https://github.com/purcell][@purcell]] and later refined by looking at [[https://github.com/hlissner/doom-emacs][doom-emacs]]: let's temporarily reduce garbage collection so startup time is lower. That is, we disable GC and later we enable it back again after GNU Emacs is done evaluating our =init.el= file. This is done so GC does not interfere with the evaluation of a rather big file (and the evaluation of the /many/ packages being installed), and so we gain a good 0.4s in my workstation.
+
+That being said, all of this is done in the =early-init.el= file for GNU Emacs 27 and later, so we have this gain as soon as possible.
 
 #+BEGIN_SRC elisp
 (unless EMACS-27-OR-LATER
@@ -163,7 +165,7 @@ Temporarily reduce garbage collection so startup time is lower. Idea taken from 
                   gc-cons-percentage mssola-initial-gc-cons-percentage)))
 #+END_SRC
 
-User name and email.
+There are some packages that expect us to have a =user-full-name= and a =user-mail-address= defined. Let's do it now so from now on these packages can get these values right:
 
 #+BEGIN_SRC elisp
 (setq user-full-name "Miquel Sabaté Solà"
@@ -173,7 +175,7 @@ User name and email.
 * Lisp packages
 ** Custom packages
 
-Compile the =g.el= script and bind it to @@html:<kbd>M-g</kbd>@@.
+Some years ago I came up with a shell script named [[https://github.com/mssola/g][g]] that deals with path shortcuts. I use this script a *lot* in the shell, and it occurred to me that it would be quite handy to also have a version of it en Emacs Lisp. I don't use it very often (because I usually navigate by projects), but when I do use it it's pretty darn useful. So, before we start dealing with packaging in general, let's compile it now and bind it to @@html:<kbd>M-g</kbd>@@.
 
 #+BEGIN_SRC elisp
 (if (file-exists-p (concat user-emacs-directory "lisp/g.elc"))
@@ -186,28 +188,28 @@ Compile the =g.el= script and bind it to @@html:<kbd>M-g</kbd>@@.
 
 ** use-package
 
-Initialize package.
+GNU Emacs has a built-in packaging utility, =package=, and we rely on that heavily. Now it's the time to setup the repositories (or «package archives», as they are called in GNU Emacs), and initialize packaging. Before doing that, though, let's take a couple of things into account:
+
+1. Since GNU Emacs 27.x I handle this through the =early-init.el= file.
+2. GNU Emacs 26.2 had a nasty bug when it comes to gnutls that was work-arounded by setting an algorithm priority.
+
+These are the two main weird things you will see from an otherwise pretty standard code block:
 
 #+BEGIN_SRC elisp
-;; In GNU Emacs 27 and later this is handled through the early-init.el file.
 (unless EMACS-27-OR-LATER
   (require 'package)
 
   (when (version= "26.2" emacs-version)
     (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
-  (add-to-list 'package-archives
-               '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  (add-to-list 'package-archives
-               '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 
   (package-initialize))
 #+END_SRC
 
-I'm using use-package to handle my installed packages. I don't know if it's
-the best option or what because I haven't tested all the package managers
-for Emacs out there. After trying some custom functions to handle
-package-install, I decided on use-package because I feel more well-organized.
+After that has been done we could go around calling =(package-install 'package)= like crazy. However, the community has come up with some tooling around it that makes its usage more appealing. There are quite a lot of options, but I'm sticking with [[https://github.com/jwiegley/use-package][use-package]], simply because it's the first one that I looked into and that filled my needs. With this package I will be able to make sure that all my packages are installed properly in a rather clean way.
 
 #+BEGIN_SRC elisp
 (unless (package-installed-p 'use-package)
@@ -220,23 +222,7 @@ package-install, I decided on use-package because I feel more well-organized.
 * General
 ** GUI
 
-I like a minimalistic GUI. Because of this, almost all GUI elements have been
-disabled or tweaked in some custom way.
-
-The frame title is "<login>: <path>". If we are not editing a file, then the
-name of the buffer is displayed (e.g. "mssola: *scratch*").
-
-#+BEGIN_SRC elisp
-  (setq frame-title-format
-    '((:eval
-      (concat (user-real-login-name) ": "
-        (if (buffer-file-name)
-          (abbreviate-file-name (buffer-file-name))
-          "%b")))))
-#+END_SRC
-
-Disable the menu, scroll and tool bars. At the same time, enable line and column
-modes.
+Over the years I've come to appreciate more and more minimalistic GUIs. That is, I don't want too many things distracting me from I care the most: text. As you will see, I disable basically every possible GUI element out there. For starters, let's disable the menu, scroll and tool bars.
 
 #+BEGIN_SRC elisp
 (menu-bar-mode -1)
@@ -246,27 +232,44 @@ modes.
   (tool-bar-mode -1))
 (when (fboundp 'tooltip-mode)
   (tooltip-mode 0))
+#+END_SRC
 
-(line-number-mode 1)
-(column-number-mode 1)
-(size-indication-mode 1)
+We have nuked the scroll bar, but we have to scroll anyways, so let's tune the relevant variables so this experience is as smooth as possible:
 
-;; Nice scrolling
+#+BEGIN_SRC elisp
 (setq scroll-margin 0
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 #+END_SRC
 
-Relative line numbers support is builtin since GNU Emacs 26.1:
+That being said, and as to not lose some relevant information hinted by these elements, let's put some additional info into the modeline. That is, let's enable there line, column and size indications.
 
 #+BEGIN_SRC elisp
-(when (>= emacs-major-version 26)
+(line-number-mode 1)
+(column-number-mode 1)
+(size-indication-mode 1)
+#+END_SRC
+
+At this point we have basically cleared away everything between our eyes and the text, but in some cases (i.e. programming) it's useful to have line numbers inside of the window as well. In particular, I've grown quite fond of relative line numbers, which was supported by Vim a long time ago and landed in GNU Emacs 26.1. Let's enable them now (don't worry, you can always toggle that by pressing @@html:<kbd>C-c L</kbd>@@):
+
+#+BEGIN_SRC elisp
+(when EMACS-26-OR-LATER
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
   (setq display-line-numbers-type 'relative)
   (global-set-key (kbd "C-c L") 'display-line-numbers-mode))
 #+END_SRC
 
-Use the much fancier =doom-modeline= as our modeline:
+Now it's the time to talk about the frame title and the icon title. That is, what should GNU Emacs tell the WM which title to display for the window (notice the difference between the concepts of "window" and "frame" in GNU Emacs and the rest of the world). In my case, I like a format like "<login>: <path>" (e.g. "mssola: ~/src/something-cool/main.c"). If we are not editing a file, then the name of the buffer is displayed (e.g. "mssola: *scratch*").
+
+#+BEGIN_SRC elisp
+(setq frame-title-format
+      (setq icon-title-format '((:eval (concat (user-real-login-name) ": "
+                                               (if (buffer-file-name)
+                                                   (abbreviate-file-name (buffer-file-name))
+                                                 "%b"))))))
+#+END_SRC
+
+The final element of the GUI to talk about is the modeline. I've tried in the past to come up with something fancy from my own, but =doom-modeline= is simply way cooler than anything I've tried to setup. Thus, I'm sticking with it. Furthermore, this modeline has a dependency, =all-the-icons=, that needs to download some fonts in order to work. These fonts will be automatically installed to the proper destination if they do not exist yet (unless we are in non-interactive mode). Other than that, =doom-modeline= is quite hackable, but here I only tweak a couple of options when it comes to the display of some of the icons.
 
 #+BEGIN_SRC elisp
 (use-package all-the-icons
@@ -285,8 +288,8 @@ Use the much fancier =doom-modeline= as our modeline:
          (ttf-path (concat font-dest "all-the-icons.ttf")))
 
     ;; If we were able to detect the OS and we don't have a the file installed,
-    ;; try to do it now.
-    (when (and font-dest (not (file-exists-p ttf-path)))
+    ;; try to do it now (unless we are running in non-interactive mode).
+    (when (and font-dest (not (file-exists-p ttf-path)) (not noninteractive))
       (message "Installing fonts...")
       (all-the-icons-install-fonts))))
 
@@ -308,7 +311,7 @@ Use the much fancier =doom-modeline= as our modeline:
   (doom-modeline-mode 1))
 #+END_SRC
 
-Do no resize the frame when a newly set font is different than the system's default. This is not affecting but it has some performance issues: around 0.3s when starting GNU Emacs in GUI mode, but negligible when in text mode.
+Finally, do not resize the frame when a newly set font is different than the system's default. This does not hit us and it allows some performance gains: around 0.3s when starting GNU Emacs in GUI mode, but negligible when in text mode.
 
 #+BEGIN_SRC elisp
 (setq frame-inhibit-implied-resize t)
@@ -316,7 +319,7 @@ Do no resize the frame when a newly set font is different than the system's defa
 
 ** Basic editing configuration
 
-Use UTF-8 *always*.
+Now that the GUI is all nice and well, let's configure a bit our editting experience (just a bit, because most of the heavy lifting will be done via packages). First of all, and I cannot stress this enough, use UTF-8 *always*:
 
 #+BEGIN_SRC elisp
   (prefer-coding-system 'utf-8)
@@ -326,32 +329,40 @@ Use UTF-8 *always*.
   (set-language-environment 'utf-8)
 #+END_SRC
 
-Some editing tweaks like tabs vs spaces, maximum column width, etc.
+GNU Emacs modes typically provide a standard means to change the indentation width (e.g. c-basic-offset), and that will inevitably conflict with the "tabs vs spaces" question and the myriad of code conventions for each programming language. We will deal with all this [[sec:tabsvsspaces][later]]. For this reason we will disable this right now:
 
 #+BEGIN_SRC elisp
-;; Emacs modes typically provide a standard means to change the indentation
-;; width (e.g. c-basic-offset). Moreover, even though I prefer tabs over space,
-;; for most coding conventions this is not the case (e.g. ruby). For this
-;; reason, I will disable them by default and enabled them back for each
-;; specific case (e.g. C). I'm also using the smart-tabs-mode package, see
-;; below in the languages section.
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
+#+END_SRC
 
+As for word wrapping and filling we will take a conservative default, and later we will discard it for some modes. For example, it makes sense to perform auto-fill in =text-mode= (which includes =org-mode=), but there is no point of doing it in source code.
+
+#+BEGIN_SRC elisp
 ;; Maximum 80 columns (except in text-mode, which includes org mode)
 (setq-default fill-column 80)
 (setq-default auto-fill-function 'do-auto-fill)
 
 ;; Do not break lines
 (set-default 'truncate-lines t)
+#+END_SRC
 
+It's pretty bananas that I have to say it, but if I've pressed a key when selecting text, I want that text to be nuked and replaced with whatever I've typed. This will be overriden anyways with =evil-mode=, but let's do this now just in case =evil-mode= is disabled or something.
+
+#+BEGIN_SRC elisp
 ;; Delete the selection with a keypress.
 (delete-selection-mode t)
+#+END_SRC
 
-;; Remove whitespaces at the end of line
+There are uncivilized barbarians that do not delete trailing whitespaces. This is not my case.
+
+#+BEGIN_SRC elisp
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
+#+END_SRC
 
-;; Cursor
+And finally, let's make the cursor a little more relevant. For starters, the default of the cursor blinking is plain idiotic. Secondly, I don't want special highlighting for the current line. And finally, I'd like matching parenthesis to say something whenever the cursor is on top of one of them.
+
+#+BEGIN_SRC elisp
 (blink-cursor-mode 0)
 (global-hl-line-mode -1)
 (show-paren-mode 1)
@@ -363,32 +374,28 @@ I'm using "Droid Sans Mono" simply because I've grown used to it.
 
 #+BEGIN_SRC elisp
 (defconst mssola-font
-  (if IS-MAC
-      "Droid Sans Mono-12"
-    "Droid Sans Mono Dotted for Powerline-10")
+  (if IS-MAC "Droid Sans Mono-12" "Droid Sans Mono Dotted for Powerline-10")
   "The font to be used.")
 
 (add-to-list 'default-frame-alist `(font . ,mssola-font))
 
-; Emacs in daemon mode does not like `set-face-attribute` because this is only
-; applied if there is a frame in place, which doesn't happen when starting the
-; daemon. Thus, we should call that after the frame has been created (e.g. by
-; emacsclient).
-; See: https://lists.gnu.org/archive/html/help-gnu-emacs/2015-03/msg00016.html
+;; Emacs in daemon mode does not like `set-face-attribute` because this is only
+;; applied if there is a frame in place, which doesn't happen when starting the
+;; daemon. Thus, we should call that after the frame has been created (e.g. by
+;; emacsclient).  See:
+;; https://lists.gnu.org/archive/html/help-gnu-emacs/2015-03/msg00016.html
 (add-hook 'after-make-frame-functions-hook
           (lambda ()
             (set-face-attribute 'default t :font mssola-font)))
 #+END_SRC
 
-I've hacked my own theme called [[https://github.com/mssola/soria][soria]]. This theme combines the vim theme
-[[http://www.vim.org/scripts/script.php?script_id=2140][xoria256]] with the [[http://opensuse.github.io/branding-guidelines/][openSUSE branding guidelines]].
+I've hacked my own theme called [[https://github.com/mssola/soria][soria]]. This theme combines the vim theme [[http://www.vim.org/scripts/script.php?script_id=2140][xoria256]] with the [[http://opensuse.github.io/branding-guidelines/][openSUSE branding guidelines]]. This theme lives directly inside of my =~/.emacs.d= directory because I link it from the local copy I have of its git repository.
 
 #+BEGIN_SRC elisp
 (load-theme 'soria t)
 #+END_SRC
 
-Moreover, let's also enable =highlight-numbers-mode=, so all numbers (regardless
-of the format) are properly highlighted:
+Moreover, let's also enable =highlight-numbers-mode=, so all numbers (regardless of the format) are properly highlighted:
 
 #+BEGIN_SRC elisp
 (use-package highlight-numbers
@@ -397,9 +404,7 @@ of the format) are properly highlighted:
   (add-hook 'prog-mode-hook 'highlight-numbers-mode))
 #+END_SRC
 
-When hacking your own theme, sometimes you want to know what face is the one
-that you see on the screen right now. This function from [[https://github.com/thblt/DotFiles][@thblt]] allows me to
-get exactly that:
+When hacking your own theme, sometimes you want to know what face is the one that you see on the screen right now. This function from [[https://github.com/thblt/DotFiles][@thblt]] allows me to get exactly that and it's bound to @@html:<kbd>C-c f</kbd>@@:
 
 #+BEGIN_SRC elisp
 (defun mssola-face-at-point (pos)
@@ -417,22 +422,19 @@ get exactly that:
 
 ** General global key bindings
 
-Use kill-this-buffer instead of kill-buffer.
+Now, this section is full of general miscellaneous stuff. First of all, use =kill-this-buffer= instead of =kill-buffer=, which is utterly pointless when interacting with GNU Emacs as a user.
 
 #+BEGIN_SRC elisp
   (global-set-key (kbd "C-x k") 'kill-this-buffer)
 #+END_SRC
 
-Disable C-z. It will later on be picked up by Evil's config as the escape
-sequence. This is here to make sure that it will be disabled even if Evil
-cannot be loaded due to some error.
+Disable @@html:<kbd>C-z</kbd>@@, which will be later on be picked up by =evil-mode= configuration as the escape sequence. This is here to make sure that it will be disabled even if =evil-mode= is not on.
 
 #+BEGIN_SRC elisp
   (global-unset-key (kbd "C-z"))
 #+END_SRC
 
-Also disable the =C-x i= binding, since I've never used the default behavior,
-and it will be used as a prefix for inferior modes (e.g. /ielm/).
+Also disable the @@html:<kbd>C-x i</kbd>@@ binding, since I've never used the default behavior, and it will be used as a prefix for inferior modes (e.g. =ielm=).
 
 #+BEGIN_SRC elisp
   (global-unset-key (kbd "C-x i"))
@@ -441,8 +443,7 @@ and it will be used as a prefix for inferior modes (e.g. /ielm/).
 Disable all the Fn keys.
 
 #+BEGIN_SRC elisp
-  (dotimes (i 12)
-    (global-unset-key (kbd (format "<f%d>" (+ i 1)))))
+  (dotimes (i 12) (global-unset-key (kbd (format "<f%d>" (+ i 1)))))
 #+END_SRC
 
 Disable overwrite-mode.
@@ -451,7 +452,7 @@ Disable overwrite-mode.
   (define-key global-map [(insert)] nil)
 #+END_SRC
 
-Kill GNU Emacs by hitting =C-x r q= (mnemonic /Really quit/).
+Kill GNU Emacs by hitting @@html:<kbd>C-x r q</kbd>@@ (mnemonic /Really quit/).
 
 #+BEGIN_SRC elisp
   (global-set-key (kbd "C-x r q") 'kill-emacs)
@@ -477,30 +478,14 @@ Remove the initial message from the scratch buffer.
   (setq initial-scratch-message nil)
 #+END_SRC
 
-Never kill the scratch buffer, bury it instead.
-
-#+BEGIN_SRC elisp
-(defadvice kill-buffer (around kill-buffer-around-advice activate)
-  (let ((buffer-to-kill (ad-get-arg 0)))
-    (if (equal buffer-to-kill "*scratch*")
-        (bury-buffer)
-      ad-do-it)))
-
-(defadvice kill-this-buffer (around kill-buffer-around-advice activate)
-  (let ((buffer-to-kill (ad-get-arg 0)))
-    (if (equal buffer-to-kill "*scratch*")
-        (bury-buffer)
-      ad-do-it)))
-#+END_SRC
-
-No backups
+No backups: they are more of a nuisance that an actual help...
 
 #+BEGIN_SRC elisp
   (setq-default make-backup-files nil)
   (setq-default auto-save-default nil)
 #+END_SRC
 
-But at least save the list of recently open files.
+... but at least save the list of recently opened files (list available by pressing @@html:<kbd>C-x C-r</kbd>@@).
 
 #+BEGIN_SRC elisp
 (require 'recentf)
@@ -508,23 +493,23 @@ But at least save the list of recently open files.
 (recentf-mode 1)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
-; Save the list every 5 minutes
+;; Save the list every 5 minutes
 (run-at-time nil (* 5 60) 'recentf-save-list)
 #+END_SRC
 
-No welcome screen
+No welcome screen:
 
 #+BEGIN_SRC elisp
   (setq-default inhibit-startup-message t)
 #+END_SRC
 
-Enable y/n answers
+Enable y/n answer:
 
 #+BEGIN_SRC elisp
   (fset 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
-Save custom-variables somewhere else.
+Save custom-variables somewhere else:
 
 #+BEGIN_SRC elisp
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -532,7 +517,7 @@ Save custom-variables somewhere else.
       (load custom-file))
 #+END_SRC
 
-Disable audio notifications.
+There is somewhere someone who likes to be interrupted with stupid beep sounds. That sorry soul is not me.
 
 #+BEGIN_SRC elisp
 (setq ring-bell-function 'ignore)
@@ -540,52 +525,42 @@ Disable audio notifications.
 
 * Calendar
 
-We catalans start our weeks on Monday.
+This section used to be more lively because of =evil-mode=, but since I also included =evil-collection= this was largely simplified. Thus, the calendar configuration is only about the week start day and its global key binding @@html:<kbd>M-c</kbd>@@.
 
 #+BEGIN_SRC elisp
-  (defvar calendar-week-start-day 1)
-#+END_SRC
-
-Global key binding.
-
-#+BEGIN_SRC elisp
-  (global-set-key (kbd "M-c") 'calendar)
+(defvar calendar-week-start-day 1)
+(global-set-key (kbd "M-c") 'calendar)
 #+END_SRC
 
 * General purpose defuns
 
-I want to read the latest news. That's why I define a function that downloads
-the =NEWS= file from the git server and then opens it in a buffer.
+In this section I stow general purpose functions. Right now there is only one of such kind, =emacs-init-time=, which is useful when debugging the initialization process:
 
 #+BEGIN_SRC elisp
-  (defun mssola-view-emacs-latest-news ()
-    "Allow users to fetch the latest Emacs' NEWS file."
-    (interactive)
+(defun emacs-init-time ()
+  "Redefine the `emacs-init-time' function so it is more detailed.
+Idea taken from @purcell."
 
-    (url-copy-file
-     "http://git.savannah.gnu.org/cgit/emacs.git/plain/etc/NEWS"
-     "/tmp/emacs-news" t)
+  (interactive)
 
-    (find-file-read-only "/tmp/emacs-news" t))
+  (let ((init-time
+         (float-time (time-subtract after-init-time before-init-time))))
+    (message "%.3fs" init-time)))
 #+END_SRC
 
-Sometimes I want to debug my initialization time.
+* Projects
+
+In my case GNU Emacs works in projects (with some exceptions). Working in projects means that I should be able to access them with a simple key binding regardless on how and from where I've started GNU Emacs. This is accomplished mainly with =projectile=. My configuration for it is not too fancy:
 
 #+BEGIN_SRC elisp
-  (defun emacs-init-time ()
-    "Redefine the `emacs-init-time' function so it is more detailed.
-  Idea taken from @purcell."
-
-    (interactive)
-    (let ((init-time
-           (float-time (time-subtract after-init-time before-init-time))))
-      (message "%.3fs" init-time)))
+(use-package projectile
+  :ensure t
+  :config
+  (setq projectile-dynamic-mode-line nil)
+  (projectile-mode 1))
 #+END_SRC
 
-* Project
-
-First of all, load the silver searcher, which is a convenient and fast searcher.
-Ayo silver!
+Other than that, the silver searcher is quite convenient. Ayo silver!
 
 #+BEGIN_SRC elisp
 (use-package ag
@@ -595,15 +570,15 @@ Ayo silver!
         ag-reuse-window t))
 #+END_SRC
 
-Then, for keeping up with my projects I use the Projectile + Helm combination.
+* Completion
+
+Now, completion is pretty important for lazy bastards like me. It comes in two flavors: =helm= and =company-mode=.
+
+** Helm
+
+Helm is a big beast, and it will help me go through stuff like projects, IRC channels, files, commands, etc.
 
 #+BEGIN_SRC elisp
-(use-package projectile
-  :ensure t
-  :config
-  (setq projectile-dynamic-mode-line nil)
-  (projectile-mode 1))
-
 (use-package helm
   :ensure t
   :config
@@ -636,13 +611,24 @@ Then, for keeping up with my projects I use the Projectile + Helm combination.
   (define-key helm-map (kbd "C-j") 'helm-next-line)
   (define-key helm-map (kbd "C-k") 'helm-previous-line)
 
-  (global-set-key (kbd "M-x") 'helm-M-x)
+  ;; Use Helm for the M-x combo.
+  (global-set-key (kbd "M-x") 'helm-M-x))
+#+END_SRC
 
-  (use-package helm-ag
-    :ensure t))
+The combination of =helm= and the =ag= package is also pretty useful:
 
+#+BEGIN_SRC elisp
+(use-package helm-ag
+  :ensure t
+  :after helm)
+#+END_SRC
+
+Last but not least, the =helm-projectile= is the definitive combo for selecting projects, which will be available with the @@html:<kbd>M-p</kbd>@@ key binding:
+
+#+BEGIN_SRC elisp
 (use-package helm-projectile
   :ensure t
+  :after helm
   :config
   (helm-projectile-on)
 
@@ -652,10 +638,7 @@ Then, for keeping up with my projects I use the Projectile + Helm combination.
       'helm-projectile-switch-project)))
 #+END_SRC
 
-I use @@html:<kbd>C-p</kbd>@@ as the binding for listing relevant files. This
-binding works either by using =helm-projectile= or the regular =helm-find=
-function. As a final touch, this binding also works for listing channels in ERC
-buffers.
+I use @@html:<kbd>C-p</kbd>@@ as the binding for listing relevant files. This binding works either by using =helm-projectile= or the regular =helm-find= function. As a final touch, this binding also works for listing channels in ERC buffers.
 
 #+BEGIN_SRC elisp
 (defun mssola-erc-helm-buffer-list ()
@@ -691,8 +674,7 @@ buffers.
   (define-key evil-normal-state-map (kbd "C-p") 'mssola-find-file))
 #+END_SRC
 
-Similarly, =helm-ag= has two functions for applying =ag= on the project. I'm
-binding to @@html:<kbd>,a</kbd>@@ a function that calls to the proper function.
+Similarly, =helm-ag= has two functions for applying =ag= (depending on whether we are in a known project, or we are out in the open). I'm binding to @@html:<kbd>, a</kbd>@@ a function that calls to the proper function.
 
 #+BEGIN_SRC elisp
   (defun mssola-helm-ag ()
@@ -708,14 +690,12 @@ binding to @@html:<kbd>,a</kbd>@@ a function that calls to the proper function.
     (evil-leader/set-key "a" 'mssola-helm-ag))
 #+END_SRC
 
+** TODO Company
+
 * Edit
 ** General
 
-In this section I define some useful packages for editing. First of all, one of
-the coolest packages out there is =undo-tree=. It allows you to navigate through
-the undo history in a tree (because GNU Emacs is cool and keeps track of undo
-actions in a tree structure instead of in a stack). This package is included in
-recent versions of GNU Emacs.
+In this section I define some useful packages for editing. First of all, one of the coolest packages out there is =undo-tree=. It allows you to navigate through the undo history in a tree (because GNU Emacs is cool and keeps track of undo actions in a tree structure instead of in a stack). This package is included in recent versions of GNU Emacs.
 
 #+BEGIN_SRC elisp
 (with-eval-after-load 'undo-tree
@@ -726,9 +706,7 @@ recent versions of GNU Emacs.
         undo-tree-visualizer-relative-timestamps t))
 #+END_SRC
 
-A recurring issue in speeches and presentations is that when showing something
-with your editor, you have to increase/decrease the fonts. I use the
-=default-text-scale= package for this.
+A recurring issue in speeches and presentations is that when showing something with your editor, you have to increase/decrease the fonts. I use the =default-text-scale= package for this. The bindings are @@html:<kbd>C-+</kbd>@@ and @@html:<kbd>C--</kbd>@@ which perform the expected thing.
 
 #+BEGIN_SRC elisp
   (use-package default-text-scale
@@ -738,10 +716,7 @@ with your editor, you have to increase/decrease the fonts. I use the
     (global-set-key (kbd "C--") 'default-text-scale-decrease))
 #+END_SRC
 
-Some languages use some delimiters a lot (e.g. lisp languages and
-parenthesis). For this reason I'm using the =rainbow-delimiters= package, which
-properly highlights each level in a different way (provided that your theme
-supports it).
+Some languages use some delimiters a lot (e.g. lisp languages and parenthesis). For this reason I'm using the =rainbow-delimiters= package, which properly highlights each level in a different way (provided that your theme supports it).
 
 #+BEGIN_SRC elisp
   (use-package rainbow-delimiters
@@ -754,10 +729,7 @@ Enable =electric-pair-mode=, which automatically closes pairs like brackets:
 (electric-pair-mode 1)
 #+END_SRC
 
-=YASnippet= allows people to define shortcuts for writing some common blocks.
-Moreover, it comes with a set of builtin snippets already. Since I don't
-remember some of these snippets, I've mapped @@html:<kbd>, h</kbd>@@ to
-=yas-describe-tables=, which shows the available snippets in another buffer.
+=YASnippet= allows people to define shortcuts for writing some common blocks. Moreover, it comes with a set of builtin snippets already.
 
 #+BEGIN_SRC elisp
 (use-package yasnippet
@@ -768,9 +740,7 @@ remember some of these snippets, I've mapped @@html:<kbd>, h</kbd>@@ to
 #+END_SRC
 
 
-=move-text= is a small package that allows you to move lines with a
-keybinding. This might be feasible with Evil mode, but still this might help
-when you want to move lines and keep the default registry empty:
+=move-text= is a small package that allows you to move lines with a keybinding. This might be feasible with =evil-mode=, but still this might help when you want to move lines and keep the default registry empty:
 
 #+BEGIN_SRC elisp
 (use-package move-text
@@ -780,8 +750,7 @@ when you want to move lines and keep the default registry empty:
    ("M-j" . move-text-down)))
 #+END_SRC
 
-Enable word wrap and disable =auto-fill-mode= when in =text-mode=. This includes
-modes such as =org-mode=:
+Enable word wrap and disable =auto-fill-mode= when in =text-mode= (which includes modes such as =org-mode=). Even if simple, this involves doing some heavy lifting in =evil-mode= so commands act accordingly. With the elisp-fu shown below everything should run happily as it should.
 
 #+BEGIN_SRC elisp
 (setq-default word-wrap t)
@@ -937,35 +906,18 @@ Let flyspell be performant:
 
 ** Abbreviations
 
-Basic abbreviation settings:
+An interesting GNU Emacs feature is the configurability of abbreviations. I only need abbrevs for some modes, and I'd like everything to run silently:
 
 #+BEGIN_SRC elisp
 (setq abbrev-file-name "~/.emacs.d/abbrevs.el"
       save-abbrevs 'silent)
-#+END_SRC
 
-Automatically enable abbreviation mode for some modes:
-
-#+BEGIN_SRC elisp
-(dolist (hook '(erc-mode-hook org-mode-hook text-mode-hook))
-  (add-hook hook #'abbrev-mode))
+(dolist (hook '(erc-mode-hook org-mode-hook text-mode-hook)) (add-hook hook #'abbrev-mode))
 #+END_SRC
 
 ** Misc
 
-I never use the mouse.
-
-#+BEGIN_SRC elisp
-(use-package disable-mouse
-  :ensure t
-  :config
-  (global-disable-mouse-mode)
-  (setq global-disable-mouse-mode-lighter ""))
-#+END_SRC
-
-Sometimes you begin typing a prefix, but then you forget the following
-chord. For this reason =which-key= was created. It will show the available
-commands for the current chord as a list.
+Sometimes you begin typing a prefix, but then you forget the following chord. For this reason =which-key= was created. It will show the available commands for the current chord as a list (and beautified with =helm=).
 
 #+BEGIN_SRC elisp
 (use-package which-key
@@ -974,19 +926,14 @@ commands for the current chord as a list.
   (which-key-mode))
 #+END_SRC
 
-For some modes it is important to count the number of words in the text. For
-this, we have =wc-mode=.
+For some modes it is important to count the number of words in the text. For this, we have =wc-mode=.
 
 #+BEGIN_SRC elisp
   (use-package wc-mode
     :ensure t)
 #+END_SRC
 
-Editing files as root is a bit of a pain because usually the root user doesn't
-have the same configuration as the current one, and attempting to do so can be
-messy. So, instead of that, we could advice the =find-file= function so if the
-file is not writable by the current user, then GNU Emacs will ask for editing
-this same file as root:
+Editing files as root is a bit of a pain because usually the root user doesn't have the same configuration as the current one, and attempting to do so can be messy. So, instead of that, we could advice the =find-file= function so if the file is not writable by the current user, then GNU Emacs will ask for editing this same file as root:
 
 #+BEGIN_SRC elisp
 (defadvice find-file (after find-file-sudo activate)
@@ -1008,7 +955,7 @@ this same file as root:
 
 * Dired
 
-Let's extend =dired= with some handy tweaks.
+[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Dired.html][Dired]] (Directory Editor) is a pretty interesting mode, since it allows you to treat the file system as something that can be edited as if it was just text. It's pretty powerful but I have to admit that my muscle memory brings me to the terminal every time, so I don't really use it. That being said, whenever I use it I want some tweaks to apply:
 
 #+BEGIN_SRC elisp
 (setq dired-dwim-target t
@@ -1018,15 +965,13 @@ Let's extend =dired= with some handy tweaks.
       delete-old-versions t)
 #+END_SRC
 
-Enable =dired-x= for cool stuff like =dired-jump=:
+Also enable =dired-x= which brings some cool stuff like =dired-jump=:
 
 #+BEGIN_SRC elisp
 (require 'dired-x)
 #+END_SRC
 
-And now instruct dired mode how to attach files when using mu4e. This is taken
-from the [[https://www.djcbsoftware.nl/code/mu/mu4e/Dired.html#Dired][mu4e documentation]], and it's available by typing
-@@html:<kbd>C-c RET C-a</kbd>@@.
+And now instruct dired mode how to attach files when using =mu4e=. This is pretty important because it's the only way I've found in which I can attach documents into =mu4e= buffers. This is taken from the [[https://www.djcbsoftware.nl/code/mu/mu4e/Dired.html#Dired][mu4e documentation]] and it's available by typing @@html:<kbd>C-c RET C-a</kbd>@@.
 
 #+BEGIN_SRC elisp
   (require 'gnus-dired)
@@ -1051,35 +996,43 @@ from the [[https://www.djcbsoftware.nl/code/mu/mu4e/Dired.html#Dired][mu4e docum
 
 * Evil
 
-Forgive me, [[https://stallman.org/saint.html][Father]], for I have sinned. I've been exposed to modal editing
-through Vim, and that has changed how I view editing for the foreseeable future.
-Because of this, I use Evil. The following blocks include some heavy-lifting so
-Evil and GNU Emacs work without hitting each other, and it also includes some
-Evil extensions.
+Forgive me, [[https://stallman.org/saint.html][Father]], for I have sinned. I've been exposed to modal editing through Vim, and that has changed how I view editing for the foreseeable future. Because of this, I use Evil. The following blocks include some heavy-lifting so Evil and GNU Emacs work without hitting each other, and it also includes some Evil extensions.
 
-First of all, let's define a function that will be called whenever Evil is loaded.
+First of all, let's define a function that will be called whenever Evil is loaded. Let's dissect what's going on within this function:
+
+1. GNU Emacs has the special @@html:<kbd>C-u</kbd>@@ binding, which is used for keep count in various commands. This is quite cool, but we are going to count a-la Vim, so there is no point on having this in normal mode. Hence, it's disabled.
+2. We will set @@html:<kbd>C-z</kbd>@@ as an escape key. This is because in Vim there was @@html:<kbd>C-c</kbd>@@ for this as well (which was convenient because you always have the pinky on the @@html:<kbd>Caps Lock</kbd>@@ key anyway, since that is remapped as a @@html:<kbd>Control</kbd>@@ key). That being said, that key binding is super duper important in GNU Emacs, and you really don't want to mess around with it. Now, if you remember correctly, we have disabled this key binding before (because the bound function to it is simply absurd, and more so on =i3= and similar WM), so we can use this binding for this task.
+3. Window navigation is done through the @@html:<kbd>C-j</kbd>@@, @@html:<kbd>C-k</kbd>@@, @@html:<kbd>C-l</kbd>@@ and @@html:<kbd>C-h</kbd>@@. This is to mimic my setup on Vim, but it has a dangerous side-effect: we are overlapping the help prefix. In order to work-around this, we will set @@html:<kbd>M-h</kbd>@@ as the new help prefix. This sounds good and all, but it has some disadvantages that I still have to work through (e.g. =org-mode= relying on this same binding for some of its commands).
+4. @@html:<kbd>C-a</kbd>@@ and @@html:<kbd>C-e</kbd>@@ are blessed as the bindings for moving the cursor to the beginning and to the end of the line respectively. This will be applied everywhere. The simple explanation for this is consistency: we will have the same binding regardless of the mode. Furthermore, these have the advantage of being the default GNU Emacs bindings for this movements, so all the default bindings of GNU Emacs aren't that shitty after all!
+5. @@html:<kbd>C-2</kbd>@@ is the equivalent of executing @@html:<kbd>@ q</kbd>@@. This requires a bit of history. In my Vim times I recorded all my macros on the @@html:<kbd>q</kbd>@@ register out of simplicity: I've never had to store multiple macros for a single operation, and simply pressing that key twice got the job done in a really fast way. That being said, that was also done because then I executed the macro with @@html:<kbd>C-q</kbd>@@, but this is a key binding that I cherrish in GNU Emacs. Thus, I've moved this binding a bit up into @@html:<kbd>C-2</kbd>@@, which has the mnemonic of "where the @ symbol is".
+6. I shamelessly use @@html:<kbd>C-s</kbd>@@ for saving the current buffer regardless of the current mode. In fact, from insert mode it's a way of saving the current buffer and getting back into normal mode. It's just easier and faster this way, no matter what Vim gurus might tell ya!
 
 #+BEGIN_SRC elisp
 (defun mssola-evil ()
   "Configure evil mode."
 
-  ; We can safely remap <C-u> because the counting will be handled a-la Vim.
+  ;; We can safely remap <C-u> because the counting will be handled a-la Vim.
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
 
-  ; Make window navigation easier.
+  ;; C-z is unused and it's close to my beloved C-c. Since I don't want to mess
+  ;; with one of the most sacred Emacs prefixes, I'm moving to C-z.
+  (define-key key-translation-map (kbd "C-z") [escape])
+  (define-key evil-operator-state-map (kbd "C-z") 'keyboard-quit)
+
+  ;; Make window navigation easier.
   (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
   (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
   (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
   (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
 
-  ; The window navigation tweaks effectively wipe out the help prefix, which
-  ; is bad. Fortunately we can workaround this by providing "M-h" as the new
-  ; help prefix. This prefix is only used in emacs mode to mark lines, which is
-  ; something already handled by Evil.
+  ;; The window navigation tweaks effectively wipe out the help prefix, which
+  ;; is bad. Fortunately we can workaround this by providing "M-h" as the new
+  ;; help prefix. This prefix is only used in emacs mode to mark lines, which is
+  ;; something already handled by Evil.
   (define-key global-map (kbd "M-h") 'help-command)
   (fset 'help-command help-map)
 
-  ; Go back to Emacs' bindings on beginning/end of line.
+  ;; Go back to Emacs' bindings on beginning/end of line.
   (eval-after-load "evil-maps"
     (dolist (map '(evil-motion-state-map
                    evil-insert-state-map
@@ -1087,23 +1040,23 @@ First of all, let's define a function that will be called whenever Evil is loade
       (define-key (eval map) "\C-a" 'crux-move-beginning-of-line)
       (define-key (eval map) "\C-e" #'mssola-end-of-line)))
 
-  ; I store macros on the <q> register for convenience, so I used to use the
-  ; <C-q> combo to execute this macro in Vim. In Emacs though, this combo is
-  ; reserved to a rather useful function, and I'd like to keep it that way. So,
-  ; now the mapping is set to <C-2> (mnemonic: where the @ symbol is). Moreover,
-  ; it's applied as many times as specified by the numeric prefix argument.
+  ;; I store macros on the <q> register for convenience, so I used to use the
+  ;; <C-q> combo to execute this macro in Vim. In Emacs though, this combo is
+  ;; reserved to a rather useful function, and I'd like to keep it that way. So,
+  ;; now the mapping is set to <C-2> (mnemonic: where the @ symbol is). Moreover,
+  ;; it's applied as many times as specified by the numeric prefix argument.
   (define-key evil-normal-state-map (kbd "C-2")
     (lambda (n)
       (interactive "p")
       (evil-execute-macro n "@q")))
 
-  ; C-s: switch to normal mode and save the buffer. I know :)
+  ;; C-s: switch to normal mode and save the buffer. I know :)
   (define-key evil-normal-state-map (kbd "C-s") 'save-buffer)
   (define-key evil-insert-state-map (kbd "C-s")
     (lambda () (interactive) (save-buffer) (evil-force-normal-state))))
 #+END_SRC
 
-Now make sure that Evil is installed, and call the relevant configuration functions.
+Now make sure that Evil is installed. The configuration is pretty simple: set some variables required by =evil-collection=, call =mssola-evil= for doing the actual work, and set the initial state for some modes.
 
 #+BEGIN_SRC elisp
 (use-package evil
@@ -1117,11 +1070,6 @@ Now make sure that Evil is installed, and call the relevant configuration functi
   (add-hook 'evil-mode-hook 'mssola-evil)
   (evil-mode 1)
 
-  ;; C-z is unused and it's close to my beloved C-c. Since I don't want to mess
-  ;; with one of the most sacred Emacs prefixes, I'm moving to C-z.
-  (define-key key-translation-map (kbd "C-z") [escape])
-  (define-key evil-operator-state-map (kbd "C-z") 'keyboard-quit)
-
   ;; Use the proper initial evil state for the following modes.
   (evil-set-initial-state 'help-mode 'normal)
   (evil-set-initial-state 'debugger-mode 'normal)
@@ -1129,24 +1077,31 @@ Now make sure that Evil is installed, and call the relevant configuration functi
   (evil-set-initial-state 'Buffer-menu-mode 'normal)
 #+END_SRC
 
-If Evil was properly loaded, then make sure that the following Evil-related
-packages are installed and configured as well. I start by defining the
-=evil-leader= package, which brings the @@html:<kbd>leader</kbd>@@ feature from
-Vim into Evil.
+If Evil was properly loaded, then make sure that the following Evil-related packages are installed and configured as well.
+
+I start by defining the =evil-leader= package, which brings the @@html:<kbd>leader</kbd>@@ feature from Vim into Evil. In Vim I used to abuse this feature a lot, but since moving into GNU Emacs I've tried to stick with Emacs-like bindings more and more (because they turn out to not be so bad after all!). So right now the list of this bindings are as follows:
+
+| Key | Description                                     |
+|-----+-------------------------------------------------|
+| a   | Spin up =helm-ag=. This is defined earlier.     |
+| c   | Delete the current window.                      |
+| k   | Kill the current buffer and the current window. |
+| v   | Split the window right.                         |
+| V   | Split the window right and move to it.          |
 
 #+BEGIN_SRC elisp
-  (use-package evil-leader
-    :ensure t
-    :config
-    (global-evil-leader-mode)
-    (evil-leader/set-leader ",")
-    (setq evil-leader/in-all-states 1)
-    (evil-leader/set-key
-      "c" 'delete-window
-      "k" 'kill-buffer-and-window
-      "v" 'split-window-right
-      "V" (lambda () (interactive) (split-window-right) (other-window 1))
-      "f" 'flycheck-list-errors))
+(use-package evil-leader
+  :ensure t
+  :after evil
+  :config
+  (global-evil-leader-mode)
+  (evil-leader/set-leader ",")
+  (setq evil-leader/in-all-states 1)
+  (evil-leader/set-key
+    "c" 'delete-window
+    "k" 'kill-buffer-and-window
+    "v" 'split-window-right
+    "V" (lambda () (interactive) (split-window-right) (other-window 1))))
 #+END_SRC
 
 Another handy Vim plugin that has made it into Evil is =evil-surround=, which
@@ -1223,31 +1178,24 @@ into Evil: @@html:<kbd>C-c +</kbd>@@ for increasing a number, and
 
 * Git
 
-A git porcelain for GNU Emacs. Even if I'm still using the git CLI, it's
-certainly useful for some common tasks (I guess that I still need some learning).
+[[https://magit.vc/][Magit]] is a git porcelain inside GNU Emacs. I've grown really fond of it, since it makes some git operations dead easier and faster to perform (e.g. rebasing). Moreover, some other commands are way prettier and more useful with Magit (e.g. the =log= command, staging, showing diffs, etc). So right now my situation is that I use Magit most of the time, and bare git when I want to do something fishy or very specific (e.g. =git stash -p=). Some notes on this setup:
+
+1. I set @@html:<kbd>C-x g</kbd>@@ as a binding for =magit-status= and @@html:<kbd>C-c l</kbd>@@ as a binding for =magit-log-buffer-file=. These are the most useful =magit= entries.
+2. I install =evil-magit=, which could've been replaced by =evil-collection= but it really falls short. Thus, I keep this package and insist on my bindings around moving through windows.
 
 #+BEGIN_SRC elisp
 (use-package magit
   :ensure t
   :config
-#+END_SRC
+  (global-set-key (kbd "C-x g") 'magit-status)
+  (global-set-key (kbd "C-c l") 'magit-log-buffer-file)
 
-Set some global key bindings for Magit.
-
-#+BEGIN_SRC elisp
-(global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key (kbd "C-c l") 'magit-log-buffer-file)
-#+END_SRC
-
-And repair some key bindings from Evil mode.
-
-#+BEGIN_SRC elisp
   (with-eval-after-load 'evil
     (use-package evil-magit
       :ensure t
       :config
 
-      ; The magit + evil-magit combo messes up some chords, let's fix this.
+      ;; The magit + evil-magit combo messes up some chords, let's fix this.
       (evil-define-key 'normal magit-mode-map
         "\C-h" 'evil-window-left
         "\C-l" 'evil-window-right
@@ -1255,9 +1203,7 @@ And repair some key bindings from Evil mode.
         "\C-k" 'evil-window-up))))
 #+END_SRC
 
-=git-timemachine= is a package that goes hand-in-hand with Magit, and it
-provides a very easy way to go through the history of a file (while providing
-ways of jumping into Magit):
+=git-timemachine= is a package that goes hand-in-hand with Magit, and it provides a very easy way to go through the history of a file (while providing ways of jumping into Magit). You can enter it with @@html:<kbd>C-x t m</kbd>@@ (hopefully the mnemonic is self-evident).
 
 #+BEGIN_SRC elisp
 (use-package git-timemachine
@@ -1267,13 +1213,11 @@ ways of jumping into Magit):
 
 * Email
 
-I use [[http://www.djcbsoftware.nl/code/mu/][mu]] and [[http://www.djcbsoftware.nl/code/mu/mu4e.html][mu4e]] to manage my email. The configuration for this has been taken
-mainly from the documentation, plus some cool remarks on Reddit. This
-configuration makes quite some assumptions. Read the =emacs/README.org= file as
-provided in my [[https://github.com/mssola/dotfiles][dotfiles]] project to get more details.
+I use [[http://www.djcbsoftware.nl/code/mu/][mu]] and [[http://www.djcbsoftware.nl/code/mu/mu4e.html][mu4e]] to manage my email. =mu= is the indexer itself, and =mu4e= is the interface for GNU Emacs. The configuration for this has been taken mainly from the documentation, plus some cool remarks on Reddit. This configuration makes quite some assumptions. Read the =emacs/README.org= file as provided in my [[https://github.com/mssola/dotfiles][dotfiles]] project to get more details.
 
-I'm using [[https://build.opensuse.org/package/show/server:mail/maildir-utils][this package from OBS]] to install =mu= and =mu4e=, which installs
-things globally:
+I'm using [[https://build.opensuse.org/package/show/server:mail/maildir-utils][this package from OBS]] to install =mu= and =mu4e=, which installs things globally. Moreover, because of this, I expect =mu= to be on its latest and shiniest release always.
+
+=mu= only takes care of the indexing part, but the retrieval of emails is handled via =mbsync= which I take from [[https://build.opensuse.org/package/show/server:mail/isync][obs://server:mail]] and that is configured with [[https://github.com/mssola/dotfiles/blob/master/.mbsyncrc][this file]]. The sending is done through the =smtpmail-send-it= function, which is built in GNU Emacs. This part is not optimal since it blocks the GNU Emacs instance whenever we are sending en email. I plan to look into =msmtp= as soon as possible.
 
 #+BEGIN_SRC elisp
 (unless (file-directory-p "/usr/share/emacs/site-lisp/mu4e")
@@ -1294,15 +1238,17 @@ Set =mu4e= as the default user agent. This will be picked up by =compose-mail=.
 (setq mail-user-agent 'mu4e-user-agent)
 #+END_SRC
 
-Diferent SMTP options that will be used for each context.
+Now we can set some SMTP settings which are independent of each context. That being said, I plan on investigating the usage of tools such as =msmtp=, so maybe these variables will fade away once I move into that kind of setup.
 
 #+BEGIN_SRC elisp
   (setq message-send-mail-function 'smtpmail-send-it
         starttls-use-gnutls t)
 #+END_SRC
 
-After that, I am defining some functions that will be used in various parts of
-the configuration.
+After that, I am defining some functions that will be used in various parts of the configuration. Some observations:
+
+- =mssola-smtp= is expected to be called only by each context. This will set the different variables properly for each context. This is rather ugly, since you could use the =:var= keyword on each context, but on the other hand this might be removed once we move into =msmtp= or something of that sorts.
+- =mu4e-message-maildir-matches= and =suse-refile-folder= are just helper functions for the different contexts.
 
 #+BEGIN_SRC elisp
 (defun mssola-smtp (server port)
@@ -1315,7 +1261,7 @@ the configuration.
         message-send-mail-function 'smtpmail-send-it
         smtpmail-smtp-service port))
 
-; https://www.reddit.com/r/emacs/comments/47t9ec/share_your_mu4econtext_configs/d0fsih6
+;; https://www.reddit.com/r/emacs/comments/47t9ec/share_your_mu4econtext_configs/d0fsih6
 (defun mu4e-message-maildir-matches (msg rx)
   "Returns true if the maildir of MSG matches the given regexp RX."
 
@@ -1357,8 +1303,7 @@ Depending on the context, it's better a signature or another:
      "PGP: 4096R / 1BA5 3C7A C93D CA2A CFDF DA97 96BE 8C6F D89D 6565\n")))
 #+END_SRC
 
-Now it's time to define the different contexts that I have. Defining contexts
-this way is relatively new (since mu 0.9.16).
+Now it's time to define the different contexts that I have. Defining contexts this way is relatively new (since mu 0.9.16). The different contexts are quite self-explanatory (and quite boring to look at).
 
 #+BEGIN_SRC elisp
 (setq mu4e-contexts
@@ -1441,14 +1386,14 @@ this way is relatively new (since mu 0.9.16).
                   (mu4e-trash-folder     . "/susede/Trash")))))
 #+END_SRC
 
-If mu4e cannot figure things out, ask me.
+If mu4e cannot figure things out, ask me:
 
 #+BEGIN_SRC elisp
   (setq mu4e-context-policy 'ask)
   (setq mu4e-compose-context-policy 'ask)
 #+END_SRC
 
-Setting my bookmarks
+You can setup bookmarks, which are a way to perform a search with a single key chord. I define pretty standard ones:
 
 #+BEGIN_SRC elisp
 (setq mu4e-bookmarks
@@ -1458,7 +1403,7 @@ Setting my bookmarks
         ("date:today..now" "Today's messages" ?t)))
 #+END_SRC
 
-Sign outgoing emails always.
+Sign outgoing emails always. This used to be pretty straight forward, but since GNU Emacs 27.x we have to set some variables to make the sender happier.
 
 #+BEGIN_SRC elisp
 ;; For some reason, as of GNU Emacs 27.x, I need to define the default openpgp
@@ -1470,13 +1415,13 @@ Sign outgoing emails always.
 (add-hook 'message-send-hook 'mml-secure-message-sign-pgpmime)
 #+END_SRC
 
-To avoid UID clashes. See [[http://pragmaticemacs.com/emacs/fixing-duplicate-uid-errors-when-using-mbsync-and-mu4e/][this]].
+To avoid UID clashes we have to set this variable. See [[http://pragmaticemacs.com/emacs/fixing-duplicate-uid-errors-when-using-mbsync-and-mu4e/][this]].
 
 #+BEGIN_SRC elisp
   (setq mu4e-change-filenames-when-moving t)
 #+END_SRC
 
-Miscellaneous settings.
+Miscellaneous settings, nothing too interesting (e.g. format flowed, fetcher command, attachment directory, etc).
 
 #+BEGIN_SRC elisp
 (setq mu4e-html2text-command "w3m -T text/html"
@@ -1495,9 +1440,7 @@ Miscellaneous settings.
       mu4e-headers-auto-update t)
 #+END_SRC
 
-The headers to show in the headers list a pair of a field and its width,
-with `nil' meaning 'unlimited' (better only use that for the last field.
-These are the defaults:
+The headers to show in the headers list a pair of a field and its width, with `nil' meaning 'unlimited' (better only use that for the last field). These are the defaults:
 
 #+BEGIN_SRC elisp
   (setq mu4e-headers-fields
@@ -1507,8 +1450,7 @@ These are the defaults:
            (:subject       .  nil)))
 #+END_SRC
 
-Add as a header action to toggle gnus mode for the view mode. I'm doing this
-because this is way better to visualize attached .eml emails.
+Add as a header action to toggle gnus mode for the view mode. I'm doing this because this is way better to visualize attached .eml emails.
 
 #+BEGIN_SRC elisp
 (defun mssola-toggle-gnus-mode (_msg)
@@ -1521,13 +1463,13 @@ because this is way better to visualize attached .eml emails.
    '("gnus mode toggle" . mssola-toggle-gnus-mode) t)
 #+END_SRC
 
-Show images
+Show images:
 
 #+BEGIN_SRC elisp
   (setq mu4e-view-show-images t
         mu4e-view-image-max-width 800)
 
-  ; Use imagemagick, if available
+  ;; Use imagemagick, if available
   (when (fboundp 'imagemagick-register-types)
     (imagemagick-register-types))
 #+END_SRC
@@ -1541,17 +1483,14 @@ Correct some key bindings that are screwed up by =evil-mode=:
   "F" 'mu4e-compose-forward)
 #+END_SRC
 
-As of 0.9.18 and GNU Emacs 25, the =mu4e-action-with-xwidget= can be used to
-render an HTML message with Webkit.
+As of 0.9.18 and GNU Emacs 25, the =mu4e-action-with-xwidget= can be used to render an HTML message with Webkit.
 
 #+BEGIN_SRC elisp
 (when EMACS-25-OR-LATER
   (add-to-list 'mu4e-view-actions '("webkit" . mu4e-action-view-with-xwidget)))
 #+END_SRC
 
-Look for =mu4e-msg2pdf= in the exec path. The reason for this is that the OBS
-package installs mu's =toys= into the exec path, but =mu4e= doesn't really count
-on it.
+Look for =mu4e-msg2pdf= in the exec path. The reason for this is that the OBS package installs mu's =toys= into the exec path, but =mu4e= doesn't really count on it.
 
 #+BEGIN_SRC elisp
   (let ((exec (locate-file "msg2pdf" exec-path exec-suffixes)))
@@ -1559,36 +1498,36 @@ on it.
         (setq mu4e-msg2pdf exec)))
 #+END_SRC
 
-Adding hooks for composing and viewing messages.
+Adding hooks for composing and viewing messages. These include stuff like enabling =visual-line-mode=, enabling =epa-mail-mode= so it's easier to encrypt/decrypt emails, determining which evil state to enter in, etc.
 
 #+BEGIN_SRC elisp
   (defun mssola-compose-mode ()
     "My settings for message composition."
 
-    ; If we are composing an email from scratch, it's more convenient to be in
-    ; insert mode. Otherwise start with normal mode.
+    ;; If we are composing an email from scratch, it's more convenient to be in
+    ;; insert mode. Otherwise start with normal mode.
     (with-eval-after-load 'evil
       (if mu4e-compose-parent-message
           (evil-set-initial-state 'mu4e-compose-mode 'normal)
         (evil-set-initial-state 'mu4e-compose-mode 'insert)))
 
-    ; Guess hard newlines
+    ;; Guess hard newlines
     (use-hard-newlines t 'guess)
 
-    ; So it's easy to encrypt/decrypt emails.
+    ;; So it's easy to encrypt/decrypt emails.
     (epa-mail-mode))
 
   (add-hook 'mu4e-compose-mode-hook 'mssola-compose-mode)
 
-  ; I want to read messages in the format that the sender used. I'm also
-  ; enabling epa-mail-mode, so it's easy to decrypt received emails.
+  ;; I want to read messages in the format that the sender used. I'm also
+  ;; enabling epa-mail-mode, so it's easy to decrypt received emails.
   (add-hook 'mu4e-view-mode-hook
             (lambda ()
               (epa-mail-mode)
               (visual-line-mode 1)))
 #+END_SRC
 
-I want desktop notifications when receiving email.
+=mu4e-alert= is needed by =doom-modeline= in order to inform incoming emails into the modeline. So let's install it now:
 
 #+BEGIN_SRC elisp
 (use-package mu4e-alert
@@ -1602,65 +1541,26 @@ I want desktop notifications when receiving email.
   (setq mu4e-alert-email-notification-types '(count)))
 #+END_SRC
 
-And finally define a proper shortcut.
+And finally we define @@html:<kbd>C-c m</kbd>@@ as the entrypoint to =mu4e=:
 
 #+BEGIN_SRC elisp
-  ; The trailing parenthesis closes the "(when (featurep 'mu4e)" statement from
-  ; the very beginning.
-  (global-set-key (kbd "C-c m") 'mu4e)))
+;; The trailing parenthesis closes the "(when (featurep 'mu4e)" statement from
+;; the very beginning ;-)
+(global-set-key (kbd "C-c m") 'mu4e)))
 #+END_SRC
 
 * org
 
-** TODO org template for creating "article" and similar stuff
-
-[[http://orgmode.org/][org mode]] is an incredible tool that keeps me organized: TODOs, notes, agenda,
-etc. Moreover, it's built in GNU Emacs:
-
-#+BEGIN_SRC elisp
-(require 'org)
-#+END_SRC
+[[https://orgmode.org/][org-mode]] is one of the most well-known "killing features" of GNU Emacs, but I have to admit that I don't use it to its full potential. Instead, I've organized myself in my own dirty way: with org files, but out from the whole agenda/capture workflow. That's why you will see that my current configuration is more about general settings on how to write individual org files, and how to export them.
 
 ** General settings
 
-First of all, let me define some helper functions.
-
-#+BEGIN_SRC elisp
-  (defun mssola-org-skip-if-priority (priority &optional subtree)
-    "Skip an agenda item if it has a priority of PRIORITY.
-  PRIORITY may be one of the characters ?A, ?B, or ?C.
-  Skips the current entry unless SUBTREE is not nil.  This function has been
-  copied from @aaronbieber."
-
-    (let ((end (if subtree (save-excursion (org-end-of-subtree t))
-                 (save-excursion (progn (outline-next-heading) (1- (point))))))
-          (pri-value (* 1000 (- org-lowest-priority priority)))
-          (pri-current (org-get-priority (thing-at-point 'line t))))
-      (if (= pri-value pri-current)
-          end
-        nil)))
-
-  (defun mssola-org-skip-if-not-closed-in-day (time &optional subtree)
-    "Skip entries that were not closed in the given TIME.
-  Skip the current entry unless SUBTREE is not nil, in which case skip
-  the entire subtree.  Idea taken from @aaronbieber"
-
-    (let ((end (if subtree (save-excursion (org-end-of-subtree t))
-                 (save-excursion (progn (outline-next-heading) (1- (point))))))
-          (day-prefix (format-time-string "%Y-%m-%d" time)))
-
-      (if (save-excursion
-            (and (re-search-forward org-closed-time-regexp end t)
-                 (string= (substring (match-string-no-properties 1) 0 10) day-prefix)))
-          nil
-        end)))
-#+END_SRC
-
-Some general UI settings for org mode.
+Let's set some basic org variables. That is, where my org files reside, how tabs should act and no indentation (I don't use those fancy bullets that some people install either, I find them tedious and a waste of blank space). On another note, I have my org directory shared with my [[https://nextcloud.com/][Nextcloud]] instance, so all my org files are available everywhere.
 
 #+BEGIN_SRC elisp
 (setq org-src-tab-acts-natively t
       org-confirm-babel-evaluate nil
+      org-agenda-files '("~/org/")
       org-edit-src-content-indentation 0)
 
 (setq org-todo-keywords
@@ -1676,25 +1576,17 @@ Some general UI settings for org mode.
         ("DISCARDED" . org-done)))
 #+END_SRC
 
-Logging settings.
+I believe I don't use =org-log=, but when I tried it I liked the following settings:
 
 #+BEGIN_SRC elisp
-  (setq org-log-done t)
-  (setq org-log-redeadline (quote time))
-  (setq org-log-reschedule (quote time))
-#+END_SRC
-
-Where org files reside.
-
-#+BEGIN_SRC elisp
-  (setq org-agenda-files '("~/org/"))
+(setq org-log-done t
+      org-log-redeadline (quote time)
+      org-log-reschedule (quote time))
 #+END_SRC
 
 ** Publishing
 
-In order to publish files into HTML, I would like to have =htmlize= installed.
-This package allows org to export to HTML in a better way (e.g. allowing code
-blocks to be converted into HTML as well, so we can properly colorize it).
+Publishing is for me one of the most important features of =org-mode= and I abuse it a *lot*. For instance, my =init.org= file needs to be exported into HTML if I want it [[http://jo.mssola.com/static/init.html][online]]. That is done in combination with =htmlize=, which allows org to export to HTML in a better way (e.g. allowing code blocks to be converted into HTML as well, so we can properly colorize it).
 
 #+BEGIN_SRC elisp
 (use-package htmlize
@@ -1702,7 +1594,7 @@ blocks to be converted into HTML as well, so we can properly colorize it).
   :after org)
 #+END_SRC
 
-And now let's set all the related settings.
+With that already established, we can tweak some relevant variables so HTML is exported properly with all the full potential of =htmlize=:
 
 #+BEGIN_SRC elisp
 (setq org-src-fontify-natively t
@@ -1714,14 +1606,13 @@ And now let's set all the related settings.
       org-export-htmlize-output-type 'css)
 #+END_SRC
 
-Make sure to use the proper template when exporting to ODT:
+Another important format to export to is ODT. In order to do so, I instruct =org-mode= to follow the given template:
 
 #+BEGIN_SRC elisp
 (setq org-odt-styles-file "~/Documents/Templates/mssola.ott")
 #+END_SRC
 
-Sometimes it's useful to export to LaTeX. That is, when you are simply writing a
-quick document that will end up being converted into LaTeX and finally into PDF:
+And finally, another crucial format is PDF, which uses LaTeX underneath. Therefore, it's a good idea to sort out LaTeX in order to get PDFs right:
 
 #+BEGIN_SRC elisp
 (require 'ox-latex)
@@ -1739,14 +1630,13 @@ quick document that will end up being converted into LaTeX and finally into PDF:
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 #+END_SRC
 
-You can also export org documents to man pages. In order to do so, you have to
-perform this first:
+After all that, we can have other esoteric exporters, like the one that exports into man pages which is funny enough:
 
 #+BEGIN_SRC elisp
 (require 'ox-man)
 #+END_SRC
 
-Setup a function to toggle =org-publish-current-file= on save:
+Not using the following function that much, but I've had a couple of instances where I wanted to toggle =org-publish-current-file= on save:
 
 #+BEGIN_SRC elisp
 (defun toggle-org-publish-current-file-on-save ()
@@ -1759,7 +1649,7 @@ Setup a function to toggle =org-publish-current-file= on save:
     (message "Enabled org-publish-current-file for current buffer...")))
 #+END_SRC
 
-Also hide the "Footnotes: " title on footnotes:
+Last but not least, hide the "Footnotes: " title on footnotes:
 
 #+BEGIN_SRC elisp
 (setq org-html-footnotes-section "<div id=\"footnotes\">
@@ -1770,157 +1660,9 @@ Also hide the "Footnotes: " title on footnotes:
 </div>")
 #+END_SRC
 
-** Agenda
+** Profiles
 
-Custom commands for =org-agenda=.
-
-#+BEGIN_SRC elisp
-  (setq org-agenda-custom-commands
-        '(("p" "Printed agenda"
-           ; Daily agenda with a 2-weeks deadline warning. Tasks are
-           ; represented as [ ] items.
-           ((agenda ""
-                    ((org-agenda-ndays 1)
-                     (org-deadline-warning-days 14)
-                     (org-agenda-todo-keyword-format "[ ]")
-                     (org-agenda-scheduled-leaders '("" ""))))
-
-           ; Display a "High Priority" list of tasks on top.
-            (tags "PRIORITY=\"A\""
-                  ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                   (org-agenda-sorting-strategy '(tag-up priority-down))
-                   (org-agenda-todo-keyword-format "")
-                   (org-agenda-overriding-header "\nHigh priority\n--------------\n")))
-
-
-            ; All tasks except those already listed as high priority or
-            ; ideas. Scheduled and deadlines are also ignored here.
-            (alltodo ""
-                     ((org-agenda-skip-function '(or (mssola-org-skip-if-priority ?A)
-                                                     (org-agenda-skip-entry-if 'todo '("IDEA" "WORKING"))
-                                                     (org-agenda-skip-if nil '(scheduled deadline))))
-                      (org-agenda-sorting-strategy '(tag-up priority-down))
-                      (org-agenda-todo-keyword-format "")
-                      (org-agenda-overriding-header "\nAll tasks\n----------\n")))
-
-            ; List of ideas.
-            (todo "IDEA"
-                  ((org-agenda-overriding-header "\nIdeas\n------\n")
-                   (org-agenda-todo-keyword-format ""))))
-
-           ((org-agenda-compact-blocks t)
-            (org-agenda-remove-tags t)))
-
-          ; List of done items. Useful for standups, review meetings, weekly
-          ; reports, etc.
-          ("d" "Done items"
-           ; First show the items done yesterday. Useful for standups.
-           ((todo "DONE"
-                  ((org-agenda-overriding-header "Done yesterday\n---------------\n")
-                   (org-agenda-skip-function
-                    '(mssola-org-skip-if-not-closed-in-day
-                      (time-subtract (current-time) (seconds-to-time 86400))))
-                   (org-agenda-todo-keyword-format "")))
-
-            ; Then show what I've done today.
-            (todo "DONE"
-                  ((org-agenda-overriding-header "\nDone today\n-----------\n")
-                   (org-agenda-skip-function
-                    '(mssola-org-skip-if-not-closed-in-day
-                      (current-time)))
-                   (org-agenda-todo-keyword-format "")))
-
-            ; Finally show what I've been doing in the past 15 days. Useful for
-            ; review meetings and weekly reports.
-            (todo "DONE"
-                  ((org-agenda-start-day "-15d")
-                   (org-agenda-span 15)
-                   (org-agenda-start-on-weekday nil)
-                   (org-agenda-todo-keyword-format "")
-                   (org-agenda-scheduled-leaders '("" ""))
-                   (org-agenda-overriding-header "\nDone during the past 15 days\n-----------------------------\n"))))
-
-           ((org-agenda-compact-blocks t)
-            (org-agenda-remove-tags t)))))
-#+END_SRC
-
-The prefix for the different kinds of types being used.
-
-#+BEGIN_SRC elisp
-  (setq org-agenda-prefix-format '((agenda . "%t%s")
-                                   (tags   . "%c:%s")
-                                   (todo   . "%c:%t%s")))
-#+END_SRC
-
-Set up a key binding for org-agenda.
-
-#+BEGIN_SRC elisp
-(global-set-key (kbd "C-c a") 'org-agenda)
-#+END_SRC
-
-** Capture
-
-Set the default notes file and the key binding.
-
-#+BEGIN_SRC elisp
-(setq org-default-notes-file (concat org-directory "/notes.org"))
-(define-key global-map "\C-cc" 'org-capture)
-#+END_SRC
-
-And finally set =org-capture-templates=.
-
-#+BEGIN_SRC elisp
-(setq org-capture-templates
-      `(("t" "todo" entry (file "") "* TODO %?\n%U\n")
-        ("i" "idea" entry (file "") "* %? :IDEA:\n%U\n%a\n")))
-#+END_SRC
-
-** Publish project
-
-I write blog posts with org-mode. Here's the trick:
-
-#+BEGIN_SRC elisp
-(setq org-publish-project-alist
-      '(("org-mssola"
-         ;; Path to your org files.
-         :base-directory "~/src/mssola/jo/org/"
-         :base-extension "org"
-
-         ;; Path to your Jekyll project.
-         :publishing-directory "~/src/mssola/jo/_i18n"
-         :recursive t
-         :publishing-function org-html-publish-to-html
-         :headline-levels 4
-         :html-extension "html"
-         :body-only t ;; Only export section between <body> </body>
-         )
-
-        ("mssola" :components ("org-mssola"))))
-#+END_SRC
-
-** Other
-
-Insert a <kbd></kbd> value in org mode. See this [[http://emacs.stackexchange.com/questions/2206/i-want-to-have-the-kbd-tags-for-my-blog-written-in-org-mode][StackExchange answer]].
-
-#+BEGIN_SRC elisp
-(defun endless/insert-key (key)
-  "Ask for a key then insert its description.
-Will work on both org-mode and any mode that accepts plain html."
-  (interactive "kType key sequence: ")
-  (let* ((is-org-mode (derived-mode-p 'org-mode))
-         (tag (if is-org-mode
-                  "@@html:<kbd>%s</kbd>@@"
-                "<kbd>%s</kbd>")))
-    (if (null (equal key "\r"))
-        (insert
-         (format tag (help-key-description key nil)))
-      (insert (format tag ""))
-      (forward-char (if is-org-mode -8 -6)))))
-
-(define-key org-mode-map "\C-ck" #'endless/insert-key)
-#+END_SRC
-
-Define profiles.
+I organize myself in what I call "profiles". That is a really bare-bones and hacky way to mock =org-agenda=, but I found it quite useful. As you will see, I have an org file that takes into account the whole week, and another that organizes the year itself. The week file is called a "minimal" profile, and the other is the "monthly" one. Then, you can pick your own profile or choose the default one. The default one is taken with the @@html:<kbd>C-c C-o</kbd>@@ binding, and you can choose with the @@html:<kbd>C-c M-o</kbd>@@ binding. It's nothing too fancy, but I like it.
 
 #+BEGIN_SRC elisp
 ;; Variables
@@ -1971,11 +1713,31 @@ user will be prompted to provide it."
 (define-key global-map (kbd "C-c M-o") #'mssola-org)
 #+END_SRC
 
+** Other
+
+As you will notice, this document is full of <kbd> HTML tags, which if you look into the raw document you will see that it's a tag which is pretty cumbersome to insert. I'm not mad, I have the following function to do the heavy lifting (which has been taken by this [[http://emacs.stackexchange.com/questions/2206/i-want-to-have-the-kbd-tags-for-my-blog-written-in-org-mode][StackExchange answer]]). This is available in =org-mode= with the key binding @@html:<kbd>C-c k</kbd>@@.
+
+#+BEGIN_SRC elisp
+(defun endless/insert-key (key)
+  "Ask for a key then insert its description.
+Will work on both org-mode and any mode that accepts plain html."
+  (interactive "kType key sequence: ")
+  (let* ((is-org-mode (derived-mode-p 'org-mode))
+         (tag (if is-org-mode
+                  "@@html:<kbd>%s</kbd>@@"
+                "<kbd>%s</kbd>")))
+    (if (null (equal key "\r"))
+        (insert
+         (format tag (help-key-description key nil)))
+      (insert (format tag ""))
+      (forward-char (if is-org-mode -8 -6)))))
+
+(define-key org-mode-map "\C-ck" #'endless/insert-key)
+#+END_SRC
+
 ** TODO shortcut for making an org link, and transforming a link into a proper org link
 ** TODO make it work with evil
 ** TODO Proper keybindings for quick access.
-
-** TODO shortcuts for stuff like: create something urgent for today
 
 * writer-mode
 
@@ -1999,7 +1761,7 @@ There is this handy minor mode I've built which is [[https://github.com/mssola/w
     (setq writer-mode-loaded t)))
 #+END_SRC
 
-After that, I can configure it further. For example, I want <f1> and <f2> to export my current project into PDF and ODT respectively:
+After that, I can configure it further. For example, I want @@html:<kbd>f1</kbd>@@ and @@html:<kbd>f2</kbd>@@ to export my current project into PDF and ODT respectively:
 
 #+BEGIN_SRC elisp
 (when (boundp 'writer-mode-loaded)
@@ -2009,21 +1771,21 @@ After that, I can configure it further. For example, I want <f1> and <f2> to exp
 
 * IRC
 
-I'm using [[https://www.gnu.org/software/emacs/manual/html_mono/erc.html][ERC]] for IRC.
+I'm using [[https://www.gnu.org/software/emacs/manual/html_mono/erc.html][ERC]] for IRC, even though it's been quite a lot since we have used IRC at work (now we are using other chat alternatives). Anyhow, it's good to still have it here.
 
 #+BEGIN_SRC elisp
 (use-package erc
   :config
 #+END_SRC
 
-First of all, let's add some basic modules.
+First of all, let's add some basic modules:
 
 #+BEGIN_SRC elisp
   (dolist (mod '(autojoin track truncate))
     (add-to-list 'erc-modules mod))
 #+END_SRC
 
-Setting up basic stuff.
+Now we can set all your typical =erc= variables. There is nothing too interesting here.
 
 #+BEGIN_SRC elisp
   (setq erc-hide-list '("PART")
@@ -2049,8 +1811,7 @@ Setting up basic stuff.
         erc-query-on-unjoined-chan-privmsg t)
 #+END_SRC
 
-Let's log messages whenever I receive/send them. The other option is to only do
-that on =/quit= or =/part=, but it's better to be safe than sorry.
+Let's log messages whenever I receive/send them. The other option is to only do that on =/quit= or =/part=, but it's better to be safe than sorry.
 
 #+BEGIN_SRC elisp
   (require 'erc-log)
@@ -2063,7 +1824,7 @@ that on =/quit= or =/part=, but it's better to be safe than sorry.
         erc-log-write-after-insert t)
 #+END_SRC
 
-Servers and channels to auto-join.
+Servers and channels to auto-join:
 
 #+BEGIN_SRC elisp
   (setq erc-autojoin-channels-alist
@@ -2081,9 +1842,7 @@ Use the =erc-hl-nicks= package, so highlight support for nicknames is better.
     (add-to-list 'erc-modules 'hl-nicks)))
 #+END_SRC
 
-I want to have a desktop notification whenever someone mentions my name. For
-this, I'm using the =erc-notifications= package which is built in ERC since
-GNU Emacs 24.3.
+I want to have a desktop notification whenever someone mentions my name. For this, I'm using the =erc-notifications= package which is built in =erc= since GNU Emacs 24.3.
 
 #+BEGIN_SRC elisp
 (with-eval-after-load 'erc
@@ -2102,8 +1861,7 @@ At this point, we can safely update all the loaded ERC modules.
             (lambda (_x) (erc-update-modules)))
 #+END_SRC
 
-Start some modules which won't do it by default. Moreover, according to the [[https://www.emacswiki.org/emacs/ErcFilling][wiki]]
-=auto-fill-mode= should be disabled if I'm using =erc-fill-mode=.
+Start some modules which won't do it by default. Moreover, according to the [[https://www.emacswiki.org/emacs/ErcFilling][wiki]] =auto-fill-mode= should be disabled if I'm using =erc-fill-mode=.
 
 #+BEGIN_SRC elisp
   (add-hook 'erc-mode-hook
@@ -2114,7 +1872,7 @@ Start some modules which won't do it by default. Moreover, according to the [[ht
                (erc-autojoin-mode 1)))
 #+END_SRC
 
-And now define a function to connect to both IRC servers.
+And now define a function to connect to both IRC servers, which is bound to @@html:<kbd>C-c i</kbd>@@.
 
 #+BEGIN_SRC elisp
   (defun mssola-erc ()
@@ -2129,11 +1887,9 @@ And now define a function to connect to both IRC servers.
 #+END_SRC
 
 * Languages
-
 ** General
 
-First of all, define a function that identifies some warning keywords
-(e.g. TODO). This function can then be applied to the proper mode.
+First of all, define a function that identifies some warning keywords (e.g. TODO). This function can then be applied to the proper mode.
 
 #+BEGIN_SRC elisp
   (defun warnings-mode-hook ()
@@ -2144,16 +1900,30 @@ First of all, define a function that identifies some warning keywords
       1 font-lock-warning-face prepend))))
 #+END_SRC
 
-Text mode is not a programming language, but it's used quite often in this
-context too. In this case, I want =wc-mode= activated.
+Text mode is not a programming language, but it's used quite often in this context too. In this case, I want =wc-mode= activated.
 
 #+BEGIN_SRC elisp
-  (add-hook 'text-mode-hook
-            (lambda ()
-              (wc-mode 1)))
+  (add-hook 'text-mode-hook (lambda () (wc-mode 1)))
+#+END_SRC
+
+** Tabs vs spaces
+<<sec:tabsvsspaces>>
+
+Tabs or spaces? [[https://www.emacswiki.org/emacs/TabsSpacesBoth][Both]]. The =smart-tabs-mode= has the philosophy of: tabs for indentation, spaces for alignment. This is only applied in languages where I'm usings tabs for indentation (C, C++ and Go).
+
+#+BEGIN_SRC elisp
+  (use-package smart-tabs-mode
+    :ensure t
+    :config
+    (smart-tabs-add-language-support golang go-mode-hook
+      ((c-indent-line . c-basic-offset)
+       (c-indent-region . c-basic-offset)))
+    (smart-tabs-insinuate 'c 'c++ 'golang))
 #+END_SRC
 
 ** Shell
+
+GNU Emacs already comes with =shell-mode= out of the box, and it's quite fine. That being said, I'd also like to add =bats-mode=:
 
 #+BEGIN_SRC elisp
 (use-package bats-mode
@@ -2162,9 +1932,7 @@ context too. In this case, I want =wc-mode= activated.
 
 ** Lisp
 
-Emacs lisp needs =rainbow-delimiters=, so the amount of parenthesis is less
-confusing. Moreover, I'm also enabling =eldoc-mode= and the aforementioned
-=warnings-mode-hook=.
+Emacs lisp needs =rainbow-delimiters= so the amount of parenthesis is less confusing. Moreover, I'm also enabling =eldoc-mode= and the aforementioned =warnings-mode-hook=.
 
 #+BEGIN_SRC elisp
   (add-hook 'emacs-lisp-mode-hook
@@ -2176,7 +1944,7 @@ confusing. Moreover, I'm also enabling =eldoc-mode= and the aforementioned
               (setq mode-name "ξ")))
 #+END_SRC
 
-Configure =ielm= with the proper ELisp utilities:
+Configure =ielm= with the proper ELisp utilities. As mentioned earlier, all these inferior modes are prefixed with @@html:<kbd>C-x i</kbd>@@ (mnemonic: "inferior"). =ielm= in particular is bound to @@html:<kbd>C-x i e</kbd>@@ and @@html:<kbd>C-x i l</kbd>@@, which follow the mnemonics "Emacs Lisp" and "Lisp" (I use both interchangeably, that's why I bind =ielm= twice).
 
 #+BEGIN_SRC elisp
 (use-package ielm
@@ -2187,7 +1955,7 @@ Configure =ielm= with the proper ELisp utilities:
   (global-set-key (kbd "C-x i l") 'ielm))
 #+END_SRC
 
-Add =rainbow-delimiters= and =warnings-mode-hook= also for =lisp-mode=:
+Add =rainbow-delimiters= and =warnings-mode-hook= also for =lisp-mode= (that is, for Common Lisp and other variants, not Emacs Lisp):
 
 #+BEGIN_SRC elisp
 (add-hook 'lisp-mode-hook
@@ -2199,10 +1967,10 @@ Add =rainbow-delimiters= and =warnings-mode-hook= also for =lisp-mode=:
 
 ** C and C++
 
-C and C++ only require the =warnings-mode-hook= function and the usage of tabs instead of spaces.
+I have plans of bringing the extremely aptly named [[https://github.com/Sarcasm/irony-mode][irony-mode]] into my setup, but I haven't had the time for it yet. This mode implements a Clang backend through LSP in which you can power up GNU Emacs into being a fully featured C/C++ IDE. But as I said, I haven't looked into it yet, so for now let's just require the =warnings-mode-hook= function and the usage of tabs instead of spaces.
 
 #+BEGIN_SRC elisp
-; Note that C-common includes languages with a similar syntax of C.
+;; Note that C-common includes languages with a similar syntax of C.
 (add-hook 'c-mode-common-hook 'warnings-mode-hook)
 
 ;; C
@@ -2214,9 +1982,7 @@ C and C++ only require the =warnings-mode-hook= function and the usage of tabs i
   (lambda () (setq indent-tabs-mode t)))
 #+END_SRC
 
-The =clang-format+= package supersedes the =clang-format.el= file from the Clasp
-authors and it adds all the nuts and bolts to have =clang-format= work for the
-whole file automatically:
+The =clang-format+= package supersedes the =clang-format.el= file from the Clasp authors and it adds all the nuts and bolts to have =clang-format= work for the whole file automatically:
 
 #+BEGIN_SRC elisp
 (use-package clang-format+
@@ -2248,8 +2014,7 @@ CMake for y'all.
 
 ** Ruby
 
-Include warning keywords in Ruby and do not automatically include the encoding
-magic comment:
+Even if Ruby is one of my favorite languages and I use it very often, I don't do much about it in my configuration. I just include warning keywords and disallow the automatic including of the encoding magic comment:
 
 #+BEGIN_SRC elisp
 (use-package ruby-mode
@@ -2259,7 +2024,7 @@ magic comment:
   (add-hook 'ruby-mode-hook 'warnings-mode-hook))
 #+END_SRC
 
-And give me an IRB instance:
+That being said, give me the inferior mode for it (which following the aforementioned logic for inferior modes, it's bound to @@html:<kbd>C-x i r</kbd>@@):
 
 #+BEGIN_SRC elisp
 (use-package inf-ruby
@@ -2271,8 +2036,7 @@ And give me an IRB instance:
 
 ** Go
 
-And now my Go configuration. This includes stuff like the usage of =goimports=,
-=gofmt= on save, among many other useful things.
+My =golang= setup isn't that complicated either. As always, I include the =warnings-mode= hook. Other than that I've put some glue into the various golang tools available out there. This includes stuff like the usage of =goimports=, =gofmt= on save, among many other useful things.
 
 #+BEGIN_SRC elisp
   (defun mssola-go-mode ()
@@ -2300,7 +2064,6 @@ And now my Go configuration. This includes stuff like the usage of =goimports=,
   ;; Go
   (use-package go-mode
     :ensure t
-    :pin melpa-stable
     :config
 
     (add-hook 'go-mode-hook 'warnings-mode-hook)
@@ -2352,23 +2115,9 @@ Install =rust-mode= and add some hooks to make it friendlier.
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 #+END_SRC
 
-** Tabs vs spaces
+** Other markup languages.
 
-Tabs or spaces? [[https://www.emacswiki.org/emacs/TabsSpacesBoth][Both]]. The =smart-tabs-mode= has the philosophy of: tabs for
-indentation, spaces for alignment. This is only applied in languages where I'm
-usings tabs for indentation (C, C++ and Go).
-
-#+BEGIN_SRC elisp
-  (use-package smart-tabs-mode
-    :ensure t
-    :config
-    (smart-tabs-add-language-support golang go-mode-hook
-      ((c-indent-line . c-basic-offset)
-       (c-indent-region . c-basic-offset)))
-    (smart-tabs-insinuate 'c 'c++ 'golang))
-#+END_SRC
-
-** Inferior markup languages.
+In here I put some markup languages which are not org. That is, markdown and YAML. I don't do anything crazy with YAML, but for Markdown I have =markdown-preview-mode=, which allows me to preview a markdown document into HTML live (in combination with =markdown-calibre=, which is the tool available for openSUSE).
 
 #+BEGIN_SRC elisp
   ;; Markdown mode with preview mode in the browser.
@@ -2376,19 +2125,19 @@ usings tabs for indentation (C, C++ and Go).
     :ensure t
     :config
 
-    ; This is the one that I got from openSUSE.
+    ;; This is the one that I got from openSUSE.
     (custom-set-variables
       '(markdown-command "/usr/bin/markdown-calibre"))
 
-    ; Preview mode does its things through websockets, so it's a requirement.
-    ; After that, we can safely require it.
+    ;; Preview mode does its things through websockets, so it's a requirement.
+    ;; After that, we can safely require it.
     (use-package websocket
       :ensure t
       :config
       (use-package markdown-preview-mode
         :ensure t)))
 
-  ; YAML
+  ;; YAML
   (use-package yaml-mode
     :ensure t
     :config
@@ -2409,14 +2158,13 @@ Slim, SCSS and such shenanigans...
   :config
 
   (setq scss-compile-at-save nil)
-  (add-hook 'yaml-mode-hook 'warnings-mode-hook))
+  (add-hook 'scss-mode-hook 'warnings-mode-hook))
 
 (use-package coffee-mode
   :ensure t)
 #+END_SRC
 
-Languages specific for backend code like PHP, and =web-mode=, which provides a
-bundle of features which are interesting for web-related stuff.
+Languages specific for backend code like PHP, and =web-mode=, which provides a bundle of features which are interesting for web-related stuff.
 
 #+BEGIN_SRC elisp
 (use-package php-mode
@@ -2446,9 +2194,7 @@ bundle of features which are interesting for web-related stuff.
     (setq mmm-submode-decoration-level 0)))
 #+END_SRC
 
-The =json-reformat= package provides functions for reformatting JSON strings. It
-happens from time to time that I have to read JSON output from responses, and it
-can be frustrating without proper formatting.
+The =json-reformat= package provides functions for reformatting JSON strings. It happens from time to time that I have to read JSON output from responses, and it can be frustrating without proper formatting.
 
 #+BEGIN_SRC elisp
 (use-package json-reformat
@@ -2457,19 +2203,15 @@ can be frustrating without proper formatting.
 
 ** Devops
 
-Highlighting for Dockerfiles.
+The new cool kids in the block (oh well, not so new anymore!). Here we have support for Dockerfiles, Hashicorp tooling, and Saltstack.
 
 #+BEGIN_SRC elisp
-  (use-package dockerfile-mode
-    :ensure t
-    :config
+(use-package dockerfile-mode
+  :ensure t
+  :config
 
-    (add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-mode)))
-#+END_SRC
+  (add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-mode)))
 
-Stuff from Hashicorp like terraform and HCL.
-
-#+BEGIN_SRC elisp
 (use-package terraform-mode
   :ensure t
   :config
@@ -2478,21 +2220,14 @@ Stuff from Hashicorp like terraform and HCL.
 
 (use-package hcl-mode
   :ensure t)
-#+END_SRC
 
-Yeah, I've been on the salty road...
-
-#+BEGIN_SRC elisp
 (use-package salt-mode
   :ensure t)
 #+END_SRC
 
 ** Others
 
-The [[https://github.com/mssola/soria][soria]] theme has the =soria-theme-purple-identifiers= hook. This hook instructs
-the theme to use purple for identifiers instead of the default color. This is a
-remnant from my Vim times, and I only apply it to some languages (random
-criteria really).
+The [[https://github.com/mssola/soria][soria]] theme has the =soria-theme-purple-identifiers= hook. This hook instructs the theme to use purple for identifiers instead of the default color. This is a remnant from my Vim times, and I only apply it to some languages (random criteria really).
 
 #+BEGIN_SRC elisp
   (dolist (lang-hook '(ruby-mode-hook
@@ -2504,7 +2239,7 @@ criteria really).
 
 ** LaTeX
 
-Let's use [[https://www.gnu.org/software/auctex/][Auctex]] for LaTeX files.
+Let's use [[https://www.gnu.org/software/auctex/][Auctex]] for LaTeX files. There are people doing crazy stuff with it. I keep it really simple because I don't have to face so many LaTeX files nowadays.
 
 #+BEGIN_SRC elisp
 (use-package tex
@@ -2517,8 +2252,7 @@ Let's use [[https://www.gnu.org/software/auctex/][Auctex]] for LaTeX files.
 
 * WoMan
 
-=WoMan= is a package that is included inside of GNU Emacs by default, and that
-takes care of visualizing man pages. Let's properly setup Evil mode for this:
+=WoMan= is a package that is included inside of GNU Emacs by default, and that takes care of visualizing man pages. Let's properly setup Evil mode for this:
 
 #+BEGIN_SRC elisp
 (with-eval-after-load "evil"
@@ -2539,7 +2273,7 @@ Finally, I want man pages to fill all the frame:
 (setq woman-fill-frame t)
 #+END_SRC
 
-Start =WoMan= as a subcommand of the help command:
+Start =WoMan= as a subcommand of the help command which will reside with the binding @@html:<kbd>M-m</kbd>@@:
 
 #+BEGIN_SRC elisp
 (define-key 'help-command (kbd "M-m") #'woman)
@@ -2547,9 +2281,16 @@ Start =WoMan= as a subcommand of the help command:
 
 * Misc
 
-Install a set of useful functions from [[https://github.com/bbatsov][@bbatsov]]. The bindings are following
-Emacs style instead of being more Vim-like on purpose (I don't want to put
-too many things into my leader and these shortcuts look sensible to me).
+Install a set of useful functions from [[https://github.com/bbatsov][@bbatsov]]. The bindings are following Emacs style instead of being more Vim-like on purpose (I don't want to put too many things into my leader and these shortcuts look sensible to me). For now we have the following bindings:
+
+| Binding                         | Description                                                                                                                    |
+|---------------------------------+--------------------------------------------------------------------------------------------------------------------------------|
+| @@html:<kbd>C-c d</kbd>@@       | Delete the current file and its buffer. Note that this might not work well inside of a git project with staged stuff.          |
+| @@html:<kbd>C-c r</kbd>@@       | Rename the current file and its buffer. In order to take this into effect you will have to change the file and save it though. |
+| @@html:<kbd>C-c n</kbd>@@       | Cleanup the whole buffer or just a selected region.                                                                            |
+| @@html:<kbd>C-backspace</kbd>@@ | Kill a given line backwards. That is, this is the reverse of Vim's @@html:<kbd>D</kbd>@@ in normal mode.                       |
+| @@html:<kbd>C-a</kbd>@@         | The beginning of line has been remapped into crux's one, which takes indentation into account.                                 |
+| @@html:<kbd>C-c o</kbd>@@       | Open the given resource as it would with plain =xdg-open=.                                                                     |
 
 #+BEGIN_SRC elisp
 (use-package crux
@@ -2566,13 +2307,7 @@ too many things into my leader and these shortcuts look sensible to me).
 
 ** Screencast
 
-Some utilities when recording my GNU Emacs adventures. First of all, =keycast=
-shows the keys being pressed in the mode line (it requires GNU Emacs 25.1
-minimum). Moreover, we have =gif-screencast=, which allows you to record your
-GNU Emacs activity and saves it into a gif (unless you have specified the
-=XDG_VIDEOS_DIR=, it will use =~/Videos/emacs/<name>.gif=). Sadly, though,
-=keycast= requires GNU Emacs 25.1 or above, and =gif-keycast= requires GNU Emacs
-26.1 or above:
+Some utilities when recording my GNU Emacs adventures. First of all, =keycast= shows the keys being pressed in the mode line (it requires GNU Emacs 25.1 minimum). Moreover, we have =gif-screencast=, which allows you to record your GNU Emacs activity and saves it into a gif (unless you have specified the =XDG_VIDEOS_DIR=, it will use =~/Videos/emacs/<name>.gif=). =gif-keycast= requires GNU Emacs 26.1 or above:
 
 #+BEGIN_SRC elisp
 (if EMACS-25-OR-LATER
@@ -2590,7 +2325,7 @@ GNU Emacs activity and saves it into a gif (unless you have specified the
     (global-set-key (kbd "<f7>") 'mssola-screencast)))
 #+END_SRC
 
-Last but not least, I use a wrapper to start a screencast:
+Last but not least, I use a wrapper to start a screencast, which is bound to @@html:<kbd>f7</kbd>@@. In order to pause the screencast you can press @@html:<kbd>f8</kbd>@@, and to completely stop it you can use @@html:<kbd>f9</kbd>@@:
 
 #+BEGIN_SRC elisp
 (defun mssola-screencast ()
@@ -2602,7 +2337,7 @@ Last but not least, I use a wrapper to start a screencast:
       (progn
         (keycast-mode)
         (gif-screencast))
-    (message "Requires 26.1 or later.")))
+    (error "Requires 26.1 or later.")))
 #+END_SRC
 
 ** Emojis
