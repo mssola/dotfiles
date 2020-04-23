@@ -422,10 +422,11 @@ When hacking your own theme, sometimes you want to know what face is the one tha
 
 ** General global key bindings
 
-Now, this section is full of general miscellaneous stuff. First of all, use =kill-this-buffer= instead of =kill-buffer=, which is utterly pointless when interacting with GNU Emacs as a user.
+Now, this section is full of general miscellaneous stuff. First of all, use =kill-this-buffer= instead of =kill-buffer=, which is utterly pointless when interacting with GNU Emacs as a user. Moreover, I'm using the similar @@html:<kbd>C-x K</kbd>@@ as a binding for killing the current buffer and window.
 
 #+BEGIN_SRC elisp
-  (global-set-key (kbd "C-x k") 'kill-this-buffer)
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+(global-set-key (kbd "C-x K") 'kill-buffer-and-window)
 #+END_SRC
 
 Disable @@html:<kbd>C-z</kbd>@@, which will be later on be picked up by =evil-mode= configuration as the escape sequence. This is here to make sure that it will be disabled even if =evil-mode= is not on.
@@ -1085,7 +1086,6 @@ I start by defining the =evil-leader= package, which brings the @@html:<kbd>lead
 |-----+-------------------------------------------------|
 | a   | Spin up =helm-ag=. This is defined earlier.     |
 | c   | Delete the current window.                      |
-| k   | Kill the current buffer and the current window. |
 | v   | Split the window right.                         |
 | V   | Split the window right and move to it.          |
 
@@ -1099,7 +1099,6 @@ I start by defining the =evil-leader= package, which brings the @@html:<kbd>lead
   (setq evil-leader/in-all-states 1)
   (evil-leader/set-key
     "c" 'delete-window
-    "k" 'kill-buffer-and-window
     "v" 'split-window-right
     "V" (lambda () (interactive) (split-window-right) (other-window 1))))
 #+END_SRC
