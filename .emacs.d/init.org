@@ -675,20 +675,19 @@ I use @@html:<kbd>C-p</kbd>@@ as the binding for listing relevant files. This bi
   (define-key evil-normal-state-map (kbd "C-p") 'mssola-find-file))
 #+END_SRC
 
-Similarly, =helm-ag= has two functions for applying =ag= (depending on whether we are in a known project, or we are out in the open). I'm binding to @@html:<kbd>, a</kbd>@@ a function that calls to the proper function.
+Similarly, =helm-ag= has two functions for applying =ag= (depending on whether we are in a known project, or we are out in the open). I'm binding to @@html:<kbd>C-c C-s</kbd>@@ a function that calls to the proper function.
 
 #+BEGIN_SRC elisp
-  (defun mssola-helm-ag ()
-    "Call the right ag command for helm-ag."
+(defun mssola-helm-ag ()
+  "Call the right ag command for helm-ag."
 
-    (interactive)
+  (interactive)
 
-    (condition-case nil
-        (helm-ag-project-root)
-      (error (helm-ag))))
+  (condition-case nil
+      (helm-ag-project-root)
+    (error (helm-ag))))
 
-  (with-eval-after-load 'evil-leader
-    (evil-leader/set-key "a" 'mssola-helm-ag))
+(global-set-key (kbd "C-c C-s") 'mssola-helm-ag)
 #+END_SRC
 
 ** TODO Company
@@ -1012,28 +1011,29 @@ Second of all, @@html:<kbd>C-w</kbd>@@ will be the prefix for window management 
 (defvar evil-want-C-w-delete t)
 #+END_SRC
 
-Now that it has been set, let's define a function that will be called whenever Evil is loaded. Let's dissect what's going on within this function:
+Now that it has been set, we can tell =use-package= to install and configure =evil=. Let's take the following under consideration first:
 
-1. We will set @@html:<kbd>C-z</kbd>@@ as an escape key. This is because in Vim there was @@html:<kbd>C-c</kbd>@@ for this as well (which was convenient because you always have the pinky on the @@html:<kbd>Caps Lock</kbd>@@ key anyway, since that is remapped as a @@html:<kbd>Control</kbd>@@ key). That being said, that key binding is super duper important in GNU Emacs, and you really don't want to mess around with it. Now, if you remember correctly, we have disabled this key binding before (because the bound function to it is simply absurd, and more so on =i3= and similar WM), so we can use this binding for this task.
-2. Window navigation is prefixed with @@html:<kbd>C-w</kbd>@@ and then it uses the @@html:<kbd>C-j</kbd>@@, @@html:<kbd>C-k</kbd>@@, @@html:<kbd>C-l</kbd>@@ and @@html:<kbd>C-h</kbd>@@ bindings. These are the defaults in Vim, but I used to override them with alternatives that had some conflicts (e.g. with the help command). All in all, let's stick with Vim's defaults here.
-3. @@html:<kbd>C-a</kbd>@@ and @@html:<kbd>C-e</kbd>@@ are blessed as the bindings for moving the cursor to the beginning and to the end of the line respectively. This will be applied everywhere. The simple explanation for this is consistency: we will have the same binding regardless of the mode. Furthermore, these have the advantage of being the default GNU Emacs bindings for this movements, so all the default bindings of GNU Emacs aren't that shitty after all!
-4. @@html:<kbd>C-2</kbd>@@ is the equivalent of executing @@html:<kbd>@ q</kbd>@@. This requires a bit of history. In my Vim times I recorded all my macros on the @@html:<kbd>q</kbd>@@ register out of simplicity: I've never had to store multiple macros for a single operation, and simply pressing that key twice got the job done in a really fast way. That being said, that was also done because then I executed the macro with @@html:<kbd>C-q</kbd>@@, but this is a key binding that I cherrish in GNU Emacs. Thus, I've moved this binding a bit up into @@html:<kbd>C-2</kbd>@@, which has the mnemonic of "where the @ symbol is".
-5. I shamelessly use @@html:<kbd>C-s</kbd>@@ for saving the current buffer regardless of the current mode. In fact, from insert mode it's a way of saving the current buffer and getting back into normal mode. It's just easier and faster this way, no matter what Vim gurus might tell ya!
+1. Window navigation is prefixed with @@html:<kbd>C-w</kbd>@@ and then it uses the @@html:<kbd>C-j</kbd>@@, @@html:<kbd>C-k</kbd>@@, @@html:<kbd>C-l</kbd>@@ and @@html:<kbd>C-h</kbd>@@ bindings. These are the defaults in Vim, but I used to override them with alternatives that had some conflicts (e.g. with the help command). All in all, let's stick with Vim's defaults here.
+2. @@html:<kbd>C-a</kbd>@@ and @@html:<kbd>C-e</kbd>@@ are blessed as the bindings for moving the cursor to the beginning and to the end of the line respectively. This will be applied everywhere. The simple explanation for this is consistency: we will have the same binding regardless of the mode. Furthermore, these have the advantage of being the default GNU Emacs bindings for this movements, so all the default bindings of GNU Emacs aren't that shitty after all!
+3. @@html:<kbd>C-2</kbd>@@ is the equivalent of executing @@html:<kbd>@ q</kbd>@@. This requires a bit of history. In my Vim times I recorded all my macros on the @@html:<kbd>q</kbd>@@ register out of simplicity: I've never had to store multiple macros for a single operation, and simply pressing that key twice got the job done in a really fast way. That being said, that was also done because then I executed the macro with @@html:<kbd>C-q</kbd>@@, but this is a key binding that I cherrish in GNU Emacs. Thus, I've moved this binding a bit up into @@html:<kbd>C-2</kbd>@@, which has the mnemonic of "where the @ symbol is".
+4. I shamelessly use @@html:<kbd>C-s</kbd>@@ for saving the current buffer regardless of the current mode. In fact, from insert mode it's a way of saving the current buffer and getting back into normal mode. It's just easier and faster this way, no matter what Vim gurus might tell ya!
+
+Thus, my configuration enforces what has been mentioned above, and it also sets the initial states for some modes:
 
 #+BEGIN_SRC elisp
-(defun mssola-evil ()
-  "Configure evil mode."
-
-  ;; C-z is unused and it's close to my beloved C-c. Since I don't want to mess
-  ;; with one of the most sacred Emacs prefixes, I'm moving to C-z.
-  (define-key key-translation-map (kbd "C-z") [escape])
-  (define-key evil-operator-state-map (kbd "C-z") 'keyboard-quit)
-
+(use-package evil
+  :ensure t
+  :init
+  ;; Needed by evil-collection
+  (setq evil-want-integration t
+        evil-want-keybinding nil)
+  :config
   ;; Let's bring back some evil-window mappings into good ol' Vim defaults.
   (define-key evil-window-map (kbd "C-h") #'evil-window-left)
   (define-key evil-window-map (kbd "C-j") #'evil-window-down)
   (define-key evil-window-map (kbd "C-k") #'evil-window-up)
   (define-key evil-window-map (kbd "C-l") #'evil-window-right)
+  (define-key evil-window-map (kbd "C-w") #'other-window)
 
   ;; Go back to Emacs' bindings on beginning/end of line.
   (eval-after-load "evil-maps"
@@ -1056,21 +1056,8 @@ Now that it has been set, let's define a function that will be called whenever E
   ;; C-s: switch to normal mode and save the buffer. I know :)
   (define-key evil-normal-state-map (kbd "C-s") 'save-buffer)
   (define-key evil-insert-state-map (kbd "C-s")
-    (lambda () (interactive) (save-buffer) (evil-force-normal-state))))
-#+END_SRC
+    (lambda () (interactive) (save-buffer) (evil-force-normal-state)))
 
-Now make sure that Evil is installed. The configuration is pretty simple: set some variables required by =evil-collection=, call =mssola-evil= for doing the actual work, and set the initial state for some modes.
-
-#+BEGIN_SRC elisp
-(use-package evil
-  :ensure t
-  :init
-  (progn
-    ;; Needed by evil-collection
-    (setq evil-want-integration t
-          evil-want-keybinding nil))
-  :config
-  (add-hook 'evil-mode-hook 'mssola-evil)
   (evil-mode 1)
 
   ;; Use the proper initial evil state for the following modes.
@@ -1082,32 +1069,26 @@ Now make sure that Evil is installed. The configuration is pretty simple: set so
 
 If Evil was properly loaded, then make sure that the following Evil-related packages are installed and configured as well.
 
-I start by defining the =evil-leader= package, which brings the @@html:<kbd>leader</kbd>@@ feature from Vim into Evil. In Vim I used to abuse this feature a lot, but since moving into GNU Emacs I've tried to stick with Emacs-like bindings more and more (because they turn out to not be so bad after all!). So right now the list of this bindings are as follows:
-
-| Key | Description                                     |
-|-----+-------------------------------------------------|
-| a   | Spin up =helm-ag=. This is defined earlier.     |
-| c   | Delete the current window.                      |
-| v   | Split the window right.                         |
-| V   | Split the window right and move to it.          |
+For example, instead of hacking our own key sequence, let's use =evil-escape= for that. This has the advantage of maintainability: before I had to make sure that my escape sequence was being applied correctly for all modes and the no mode replaced my sequence afterwards. In particular, we will set @@html:<kbd>C-z</kbd>@@ as an escape key. This is because in Vim there was @@html:<kbd>C-c</kbd>@@ for this as well (which was convenient because you always have the pinky on the @@html:<kbd>Caps Lock</kbd>@@ key anyway, since that is remapped as a @@html:<kbd>Control</kbd>@@ key). That being said, that key binding is super duper important in GNU Emacs, and you really don't want to mess around with it. Now, if you remember correctly, we have disabled this key binding before (because the bound function to it is simply absurd, and more so on =i3= and similar WM), so we can use this binding for this task. Moreover, the @@html:<kbd>C-g</kbd>@@ key binding has also been setup as an escape sequence in modes were it makes sense.
 
 #+BEGIN_SRC elisp
-(use-package evil-leader
+(use-package evil-escape
   :ensure t
   :after evil
+  :init
+  (setq evil-escape-excluded-states '(normal visual multiedit emacs motion))
+  (evil-define-key* '(insert replace visual operator) 'global "\C-g" #'evil-escape)
   :config
-  (global-evil-leader-mode)
-  (evil-leader/set-leader ",")
-  (setq evil-leader/in-all-states 1)
-  (evil-leader/set-key
-    "c" 'delete-window
-    "v" 'split-window-right
-    "V" (lambda () (interactive) (split-window-right) (other-window 1))))
+  ;; no `evil-escape' in minibuffer
+  (add-hook 'evil-escape-inhibit-functions #'minibufferp)
+
+  (evil-escape-mode +1)
+
+  (define-key key-translation-map (kbd "C-z") [escape])
+  (define-key evil-operator-state-map (kbd "C-z") 'evil-escape))
 #+END_SRC
 
-Another handy Vim plugin that has made it into Evil is =evil-surround=, which
-defines a new text object for surrounding characters (e.g. change a string from
-having double quotes with single quotes in a single command).
+A handy Vim plugin that has made it into Evil is =evil-surround=, which defines a new text object for surrounding characters (e.g. change a string from having double quotes with single quotes in a single command).
 
 #+BEGIN_SRC elisp
   (use-package evil-surround
@@ -1116,38 +1097,13 @@ having double quotes with single quotes in a single command).
     (global-evil-surround-mode 1))
 #+END_SRC
 
-Next is another Vim plugin that has been ported to Evil: =evil-commentary=. This
-package defines a new motion for comments, which is bound to
-@@html:<kbd>gc</kbd>@@. So, for example, @@html:<kbd>gcc</kbd>@@ will comment
-the current line, regardless of the programming language.
+Next is another Vim plugin that has been ported to Evil: =evil-commentary=. This package defines a new motion for comments, which is bound to @@html:<kbd>gc</kbd>@@. So, for example, @@html:<kbd>gcc</kbd>@@ will comment the current line, regardless of the programming language.
 
 #+BEGIN_SRC elisp
   (use-package evil-commentary
     :ensure t
     :config
     (evil-commentary-mode t))
-#+END_SRC
-
-Another cool package is =evil-args= which defines the argument text object. This
-text object can be targeted with the =a= character, and we can move backward and
-forward through arguments with @@html:<kbd>H</kbd>@@ and @@html:<kbd>L</kbd>@@
-respectively.
-
-#+BEGIN_SRC elisp
-  (use-package evil-args
-    :ensure t
-    :config
-    ; Configuration taken from the documentation of evil-args.
-
-    ;; Bind evil-args text objects
-    (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
-    (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
-
-    ;; Bind evil-forward/backward-args
-    (define-key evil-normal-state-map "L" 'evil-forward-arg)
-    (define-key evil-normal-state-map "H" 'evil-backward-arg)
-    (define-key evil-motion-state-map "L" 'evil-forward-arg)
-    (define-key evil-motion-state-map "H" 'evil-backward-arg))
 #+END_SRC
 
 Add Vim-like keybindings to as many modes as possible. Note that this list is not exhaustive, since some of these modes are better off with specific packages (e.g. =evil-magit=), and in some cases my bindings feel more intuitive to me (e.g. =woman=):
@@ -2183,12 +2139,6 @@ Languages specific for backend code like PHP, and =web-mode=, which provides a b
         web-mode-css-indent-offset 2
         web-mode-code-indent-offset 2)
 
-  (use-package js
-    :ensure t
-    :hook (js-mode . rainbow-delimiters-mode)
-    :custom
-    (js-indent-level 2))
-
   (use-package vue-mode
     :ensure t
     :config
@@ -2282,7 +2232,7 @@ Start =WoMan= as a subcommand of the help command which will reside with the bin
 
 * Misc
 
-Install a set of useful functions from [[https://github.com/bbatsov][@bbatsov]]. The bindings are following Emacs style instead of being more Vim-like on purpose (I don't want to put too many things into my leader and these shortcuts look sensible to me). For now we have the following bindings:
+Install a set of useful functions from [[https://github.com/bbatsov][@bbatsov]]. The bindings are following Emacs style instead of being more Vim-like on purpose. For now we have the following bindings:
 
 | Binding                         | Description                                                                                                                    |
 |---------------------------------+--------------------------------------------------------------------------------------------------------------------------------|
