@@ -999,39 +999,41 @@ And now instruct dired mode how to attach files when using =mu4e=. This is prett
 
 Forgive me, [[https://stallman.org/saint.html][Father]], for I have sinned. I've been exposed to modal editing through Vim, and that has changed how I view editing for the foreseeable future. Because of this, I use Evil. The following blocks include some heavy-lifting so Evil and GNU Emacs work without hitting each other, and it also includes some Evil extensions.
 
-First of all, let's define a function that will be called whenever Evil is loaded. Let's dissect what's going on within this function:
+First of all, let's define some variables that should be applied before we enter into =evil= itself. For example, we are going to fet rid of GNU Emacs' @@html:<kbd>C-u</kbd>@@ binding because we are going to count a-la Vim. This means that @@html:<kbd>C-u</kbd>@@ can return to its Vim behavior: scroll up in normal mode, and delete to the indentation level in insert mode.
 
-1. GNU Emacs has the special @@html:<kbd>C-u</kbd>@@ binding, which is used for keep count in various commands. This is quite cool, but we are going to count a-la Vim, so there is no point on having this in normal mode. Hence, it's disabled.
-2. We will set @@html:<kbd>C-z</kbd>@@ as an escape key. This is because in Vim there was @@html:<kbd>C-c</kbd>@@ for this as well (which was convenient because you always have the pinky on the @@html:<kbd>Caps Lock</kbd>@@ key anyway, since that is remapped as a @@html:<kbd>Control</kbd>@@ key). That being said, that key binding is super duper important in GNU Emacs, and you really don't want to mess around with it. Now, if you remember correctly, we have disabled this key binding before (because the bound function to it is simply absurd, and more so on =i3= and similar WM), so we can use this binding for this task.
-3. Window navigation is done through the @@html:<kbd>C-j</kbd>@@, @@html:<kbd>C-k</kbd>@@, @@html:<kbd>C-l</kbd>@@ and @@html:<kbd>C-h</kbd>@@. This is to mimic my setup on Vim, but it has a dangerous side-effect: we are overlapping the help prefix. In order to work-around this, we will set @@html:<kbd>M-h</kbd>@@ as the new help prefix. This sounds good and all, but it has some disadvantages that I still have to work through (e.g. =org-mode= relying on this same binding for some of its commands).
-4. @@html:<kbd>C-a</kbd>@@ and @@html:<kbd>C-e</kbd>@@ are blessed as the bindings for moving the cursor to the beginning and to the end of the line respectively. This will be applied everywhere. The simple explanation for this is consistency: we will have the same binding regardless of the mode. Furthermore, these have the advantage of being the default GNU Emacs bindings for this movements, so all the default bindings of GNU Emacs aren't that shitty after all!
-5. @@html:<kbd>C-2</kbd>@@ is the equivalent of executing @@html:<kbd>@ q</kbd>@@. This requires a bit of history. In my Vim times I recorded all my macros on the @@html:<kbd>q</kbd>@@ register out of simplicity: I've never had to store multiple macros for a single operation, and simply pressing that key twice got the job done in a really fast way. That being said, that was also done because then I executed the macro with @@html:<kbd>C-q</kbd>@@, but this is a key binding that I cherrish in GNU Emacs. Thus, I've moved this binding a bit up into @@html:<kbd>C-2</kbd>@@, which has the mnemonic of "where the @ symbol is".
-6. I shamelessly use @@html:<kbd>C-s</kbd>@@ for saving the current buffer regardless of the current mode. In fact, from insert mode it's a way of saving the current buffer and getting back into normal mode. It's just easier and faster this way, no matter what Vim gurus might tell ya!
+#+BEGIN_SRC elisp
+(defvar evil-want-C-u-scroll t)
+(defvar evil-want-C-u-delete t)
+#+END_SRC
+
+Second of all, @@html:<kbd>C-w</kbd>@@ will be the prefix for window management in normal mode, but for insert mode in Vim it meant killing a word. Let's keep that:
+
+#+BEGIN_SRC elisp
+(defvar evil-want-C-w-delete t)
+#+END_SRC
+
+Now that it has been set, let's define a function that will be called whenever Evil is loaded. Let's dissect what's going on within this function:
+
+1. We will set @@html:<kbd>C-z</kbd>@@ as an escape key. This is because in Vim there was @@html:<kbd>C-c</kbd>@@ for this as well (which was convenient because you always have the pinky on the @@html:<kbd>Caps Lock</kbd>@@ key anyway, since that is remapped as a @@html:<kbd>Control</kbd>@@ key). That being said, that key binding is super duper important in GNU Emacs, and you really don't want to mess around with it. Now, if you remember correctly, we have disabled this key binding before (because the bound function to it is simply absurd, and more so on =i3= and similar WM), so we can use this binding for this task.
+2. Window navigation is prefixed with @@html:<kbd>C-w</kbd>@@ and then it uses the @@html:<kbd>C-j</kbd>@@, @@html:<kbd>C-k</kbd>@@, @@html:<kbd>C-l</kbd>@@ and @@html:<kbd>C-h</kbd>@@ bindings. These are the defaults in Vim, but I used to override them with alternatives that had some conflicts (e.g. with the help command). All in all, let's stick with Vim's defaults here.
+3. @@html:<kbd>C-a</kbd>@@ and @@html:<kbd>C-e</kbd>@@ are blessed as the bindings for moving the cursor to the beginning and to the end of the line respectively. This will be applied everywhere. The simple explanation for this is consistency: we will have the same binding regardless of the mode. Furthermore, these have the advantage of being the default GNU Emacs bindings for this movements, so all the default bindings of GNU Emacs aren't that shitty after all!
+4. @@html:<kbd>C-2</kbd>@@ is the equivalent of executing @@html:<kbd>@ q</kbd>@@. This requires a bit of history. In my Vim times I recorded all my macros on the @@html:<kbd>q</kbd>@@ register out of simplicity: I've never had to store multiple macros for a single operation, and simply pressing that key twice got the job done in a really fast way. That being said, that was also done because then I executed the macro with @@html:<kbd>C-q</kbd>@@, but this is a key binding that I cherrish in GNU Emacs. Thus, I've moved this binding a bit up into @@html:<kbd>C-2</kbd>@@, which has the mnemonic of "where the @ symbol is".
+5. I shamelessly use @@html:<kbd>C-s</kbd>@@ for saving the current buffer regardless of the current mode. In fact, from insert mode it's a way of saving the current buffer and getting back into normal mode. It's just easier and faster this way, no matter what Vim gurus might tell ya!
 
 #+BEGIN_SRC elisp
 (defun mssola-evil ()
   "Configure evil mode."
-
-  ;; We can safely remap <C-u> because the counting will be handled a-la Vim.
-  (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
 
   ;; C-z is unused and it's close to my beloved C-c. Since I don't want to mess
   ;; with one of the most sacred Emacs prefixes, I'm moving to C-z.
   (define-key key-translation-map (kbd "C-z") [escape])
   (define-key evil-operator-state-map (kbd "C-z") 'keyboard-quit)
 
-  ;; Make window navigation easier.
-  (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
-  (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
-  (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
-  (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
-
-  ;; The window navigation tweaks effectively wipe out the help prefix, which
-  ;; is bad. Fortunately we can workaround this by providing "M-h" as the new
-  ;; help prefix. This prefix is only used in emacs mode to mark lines, which is
-  ;; something already handled by Evil.
-  (define-key global-map (kbd "M-h") 'help-command)
-  (fset 'help-command help-map)
+  ;; Let's bring back some evil-window mappings into good ol' Vim defaults.
+  (define-key evil-window-map (kbd "C-h") #'evil-window-left)
+  (define-key evil-window-map (kbd "C-j") #'evil-window-down)
+  (define-key evil-window-map (kbd "C-k") #'evil-window-up)
+  (define-key evil-window-map (kbd "C-l") #'evil-window-right)
 
   ;; Go back to Emacs' bindings on beginning/end of line.
   (eval-after-load "evil-maps"
