@@ -1135,7 +1135,7 @@ into Evil: @@html:<kbd>C-c +</kbd>@@ for increasing a number, and
 
 * Git
 
-[[https://magit.vc/][Magit]] is a git porcelain inside GNU Emacs. I've grown really fond of it, since it makes some git operations dead easier and faster to perform (e.g. rebasing). Moreover, some other commands are way prettier and more useful with Magit (e.g. the =log= command, staging, showing diffs, etc). So right now my situation is that I use Magit most of the time, and bare git when I want to do something fishy or very specific (e.g. =git stash -p=). Some notes on this setup:
+[[https://magit.vc/][Magit]] is a git porcelain inside GNU Emacs. I've grown really fond of it, since it makes some git operations dead easier and faster to perform (e.g. rebasing). Moreover, some other commands are way prettier and more useful with Magit (e.g. the =log= command, staging, showing diffs, etc). So right now my situation is that I use Magit most of the time, and bare git when I want to do something fishy. Some notes on this setup:
 
 1. I set @@html:<kbd>C-x g</kbd>@@ as a binding for =magit-status= and @@html:<kbd>C-c l</kbd>@@ as a binding for =magit-log-buffer-file=. These are the most useful =magit= entries.
 2. I install =evil-magit=, which could've been replaced by =evil-collection= but it really falls short. Thus, I keep this package and insist on my bindings around moving through windows.
