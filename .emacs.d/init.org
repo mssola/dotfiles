@@ -1745,27 +1745,28 @@ First of all, let's add some basic modules:
 Now we can set all your typical =erc= variables. There is nothing too interesting here.
 
 #+BEGIN_SRC elisp
-  (setq erc-hide-list '("PART")
-        erc-prompt (lambda () (concat (buffer-name) ">"))
-        erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE")
-        erc-server-coding-system '(utf-8 . utf-8)
-        erc-kill-buffer-on-part t
-        erc-kill-queries-on-quit t
-        erc-kill-server-buffer-on-quit t
-        erc-fill-column 100
-        erc-fill-prefix ""
-        erc-timestamp-format "[%H:%M] "
-        erc-insert-timestamp-function 'erc-insert-timestamp-left
-        erc-insert-away-timestamp-function 'erc-insert-timestamp-left
-        erc-hide-timestamps nil
-        erc-whowas-on-nosuchnick t
-        erc-public-away-p nil
-        erc-echo-notice-always-hook '(erc-echo-notice-in-minibuffer)
-        erc-auto-set-away nil
-        erc-autoaway-message "%i seconds out..."
-        erc-away-nickname "msabate"
-        erc-enable-logging t
-        erc-query-on-unjoined-chan-privmsg t)
+(setq erc-hide-list '("PART")
+      erc-prompt (lambda () (concat (buffer-name) ">"))
+      erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE")
+      erc-server-coding-system '(utf-8 . utf-8)
+      erc-kill-buffer-on-part t
+      erc-kill-queries-on-quit t
+      erc-kill-server-buffer-on-quit t
+      erc-fill-column 100
+      erc-fill-prefix ""
+      erc-timestamp-format "[%H:%M] "
+      erc-insert-timestamp-function 'erc-insert-timestamp-left
+      erc-insert-away-timestamp-function 'erc-insert-timestamp-left
+      erc-hide-timestamps nil
+      erc-whowas-on-nosuchnick t
+      erc-public-away-p nil
+      erc-echo-notice-always-hook '(erc-echo-notice-in-minibuffer)
+      erc-auto-set-away nil
+      erc-autoaway-message "%i seconds out..."
+      erc-away-nickname "msabate"
+      erc-enable-logging t
+      erc-query-on-unjoined-chan-privmsg t
+      erc-prompt-for-password nil)
 #+END_SRC
 
 Let's log messages whenever I receive/send them. The other option is to only do that on =/quit= or =/part=, but it's better to be safe than sorry.
