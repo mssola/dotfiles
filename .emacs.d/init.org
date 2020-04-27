@@ -429,6 +429,13 @@ Now, this section is full of general miscellaneous stuff. First of all, use =kil
 (global-set-key (kbd "C-x K") 'kill-buffer-and-window)
 #+END_SRC
 
+Window navigation and management is done through =evil-mode=, which basically sets up everything as in the Vim world. That being said, there are a couple of functions that fall out of =evil='s scope which I previously setup with =evil-leader=: creating a window on the right, and creating a window on the right and directly moving to it. This can be done with GNU Emacs' default bindings, but they are not really intuitive, and Vim's default behavior is also not satisfactory. The solution adopted is to trash =vc-mode= and remove its @@html:<kbd>C-x v</kbd>@@ binding, since I never use this mode (which is pointless with =magit= enabled), and it follows the same key chord as I used in my =evil-leader= times. Thus, we have @@html:<kbd>C-x v</kbd>@@ for creating a window on the right, and @@html:<kbd>C-x V</kbd>@@ for creating a window on the right and moving to it.
+
+#+BEGIN_SRC elisp
+(global-set-key (kbd "C-x v") 'split-window-right)
+(global-set-key (kbd "C-x V") (lambda () (interactive) (split-window-right) (other-window 1)))
+#+END_SRC
+
 Disable @@html:<kbd>C-z</kbd>@@, which will be later on be picked up by =evil-mode= configuration as the escape sequence. This is here to make sure that it will be disabled even if =evil-mode= is not on.
 
 #+BEGIN_SRC elisp
@@ -561,7 +568,7 @@ In my case GNU Emacs works in projects (with some exceptions). Working in projec
   (projectile-mode 1))
 #+END_SRC
 
-Other than that, the silver searcher is quite convenient. Ayo silver!
+Other than that, the silver searcher is quite convenient as well. Ayo silver!
 
 #+BEGIN_SRC elisp
 (use-package ag
@@ -573,7 +580,7 @@ Other than that, the silver searcher is quite convenient. Ayo silver!
 
 * Completion
 
-Now, completion is pretty important for lazy bastards like me. It comes in two flavors: =helm= and =company-mode=.
+Now, completion is pretty important for lazy bastards like me. It comes in two flavors: =helm= and =company=.
 
 ** Helm
 
@@ -998,7 +1005,7 @@ And now instruct dired mode how to attach files when using =mu4e=. This is prett
 
 Forgive me, [[https://stallman.org/saint.html][Father]], for I have sinned. I've been exposed to modal editing through Vim, and that has changed how I view editing for the foreseeable future. Because of this, I use Evil. The following blocks include some heavy-lifting so Evil and GNU Emacs work without hitting each other, and it also includes some Evil extensions.
 
-First of all, let's define some variables that should be applied before we enter into =evil= itself. For example, we are going to fet rid of GNU Emacs' @@html:<kbd>C-u</kbd>@@ binding because we are going to count a-la Vim. This means that @@html:<kbd>C-u</kbd>@@ can return to its Vim behavior: scroll up in normal mode, and delete to the indentation level in insert mode.
+First of all, let's define some variables that should be applied before we enter into =evil= itself. For example, we are going to get rid of GNU Emacs' @@html:<kbd>C-u</kbd>@@ binding because we are going to count a-la Vim. This means that @@html:<kbd>C-u</kbd>@@ can return to its Vim behavior: scroll up in normal mode, and delete to the indentation level in insert mode.
 
 #+BEGIN_SRC elisp
 (defvar evil-want-C-u-scroll t)
@@ -1013,7 +1020,7 @@ Second of all, @@html:<kbd>C-w</kbd>@@ will be the prefix for window management 
 
 Now that it has been set, we can tell =use-package= to install and configure =evil=. Let's take the following under consideration first:
 
-1. Window navigation is prefixed with @@html:<kbd>C-w</kbd>@@ and then it uses the @@html:<kbd>C-j</kbd>@@, @@html:<kbd>C-k</kbd>@@, @@html:<kbd>C-l</kbd>@@ and @@html:<kbd>C-h</kbd>@@ bindings. These are the defaults in Vim, but I used to override them with alternatives that had some conflicts (e.g. with the help command). All in all, let's stick with Vim's defaults here.
+1. Window navigation is prefixed with @@html:<kbd>C-w</kbd>@@ and then it uses the @@html:<kbd>C-j</kbd>@@, @@html:<kbd>C-k</kbd>@@, @@html:<kbd>C-l</kbd>@@ and @@html:<kbd>C-h</kbd>@@ bindings for moving around, and @@html:<kbd>C-w</kbd>@@ as a way of moving into other windows more generally. These are the defaults in Vim, but I used to override them with alternatives that had some conflicts (e.g. with the help command). All in all, let's stick with Vim's defaults here.
 2. @@html:<kbd>C-a</kbd>@@ and @@html:<kbd>C-e</kbd>@@ are blessed as the bindings for moving the cursor to the beginning and to the end of the line respectively. This will be applied everywhere. The simple explanation for this is consistency: we will have the same binding regardless of the mode. Furthermore, these have the advantage of being the default GNU Emacs bindings for this movements, so all the default bindings of GNU Emacs aren't that shitty after all!
 3. @@html:<kbd>C-2</kbd>@@ is the equivalent of executing @@html:<kbd>@ q</kbd>@@. This requires a bit of history. In my Vim times I recorded all my macros on the @@html:<kbd>q</kbd>@@ register out of simplicity: I've never had to store multiple macros for a single operation, and simply pressing that key twice got the job done in a really fast way. That being said, that was also done because then I executed the macro with @@html:<kbd>C-q</kbd>@@, but this is a key binding that I cherrish in GNU Emacs. Thus, I've moved this binding a bit up into @@html:<kbd>C-2</kbd>@@, which has the mnemonic of "where the @ symbol is".
 4. I shamelessly use @@html:<kbd>C-s</kbd>@@ for saving the current buffer regardless of the current mode. In fact, from insert mode it's a way of saving the current buffer and getting back into normal mode. It's just easier and faster this way, no matter what Vim gurus might tell ya!
@@ -1069,7 +1076,7 @@ Thus, my configuration enforces what has been mentioned above, and it also sets 
 
 If Evil was properly loaded, then make sure that the following Evil-related packages are installed and configured as well.
 
-For example, instead of hacking our own key sequence, let's use =evil-escape= for that. This has the advantage of maintainability: before I had to make sure that my escape sequence was being applied correctly for all modes and the no mode replaced my sequence afterwards. In particular, we will set @@html:<kbd>C-z</kbd>@@ as an escape key. This is because in Vim there was @@html:<kbd>C-c</kbd>@@ for this as well (which was convenient because you always have the pinky on the @@html:<kbd>Caps Lock</kbd>@@ key anyway, since that is remapped as a @@html:<kbd>Control</kbd>@@ key). That being said, that key binding is super duper important in GNU Emacs, and you really don't want to mess around with it. Now, if you remember correctly, we have disabled this key binding before (because the bound function to it is simply absurd, and more so on =i3= and similar WM), so we can use this binding for this task. Moreover, the @@html:<kbd>C-g</kbd>@@ key binding has also been setup as an escape sequence in modes were it makes sense.
+For example, instead of hacking our own escape sequence, let's use =evil-escape= for that. This has the advantage of maintainability: before I had to make sure that my escape sequence was being applied correctly for all modes and that no mode replaced my sequence afterwards. In particular, we will set @@html:<kbd>C-z</kbd>@@ as an escape key. This is because in Vim there was @@html:<kbd>C-c</kbd>@@ for this as well (which was convenient because you always have the pinky on the @@html:<kbd>Caps Lock</kbd>@@ key anyway, since that is remapped as a @@html:<kbd>Control</kbd>@@ key). That being said, that key binding is super duper important in GNU Emacs, and you really don't want to mess around with it. Now, if you remember correctly, we have disabled this key binding before (because the bound function to it is simply absurd, and more so on =i3= and similar WM), so we can use this binding for this task. Moreover, the @@html:<kbd>C-g</kbd>@@ key binding has also been setup as an escape sequence in modes were it makes sense.
 
 #+BEGIN_SRC elisp
 (use-package evil-escape
@@ -1121,9 +1128,7 @@ Add Vim-like keybindings to as many modes as possible. Note that this list is no
   (evil-collection-init 'mu4e))
 #+END_SRC
 
-Last but not least, =evil-numbers= brings a couple of bindings available to Vim
-into Evil: @@html:<kbd>C-c +</kbd>@@ for increasing a number, and
-@@html:<kbd>C-c -</kbd>@@ for decreasing it.
+Last but not least, =evil-numbers= brings a couple of bindings available on Vim into Evil: @@html:<kbd>C-c +</kbd>@@ for increasing a number, and @@html:<kbd>C-c -</kbd>@@ for decreasing it.
 
 #+BEGIN_SRC elisp
   (use-package evil-numbers
@@ -1149,15 +1154,8 @@ into Evil: @@html:<kbd>C-c +</kbd>@@ for increasing a number, and
 
   (with-eval-after-load 'evil
     (use-package evil-magit
-      :ensure t
-      :config
+      :ensure t)))
 
-      ;; The magit + evil-magit combo messes up some chords, let's fix this.
-      (evil-define-key 'normal magit-mode-map
-        "\C-h" 'evil-window-left
-        "\C-l" 'evil-window-right
-        "\C-j" 'evil-window-down
-        "\C-k" 'evil-window-up))))
 #+END_SRC
 
 =git-timemachine= is a package that goes hand-in-hand with Magit, and it provides a very easy way to go through the history of a file (while providing ways of jumping into Magit). You can enter it with @@html:<kbd>C-x t m</kbd>@@ (hopefully the mnemonic is self-evident).
@@ -2204,31 +2202,11 @@ Let's use [[https://www.gnu.org/software/auctex/][Auctex]] for LaTeX files. Ther
 
 * WoMan
 
-=WoMan= is a package that is included inside of GNU Emacs by default, and that takes care of visualizing man pages. Let's properly setup Evil mode for this:
-
-#+BEGIN_SRC elisp
-(with-eval-after-load "evil"
-  (evil-set-initial-state 'woman-mode 'normal)
-  (evil-define-key 'normal woman-mode-map
-    "J" 'Man-next-section
-    "K" 'Man-previous-section
-    "\C-h" 'evil-window-left
-    "\C-l" 'evil-window-right
-    "\C-j" 'evil-window-down
-    "\C-k" 'evil-window-up
-    "\C-u" 'evil-scroll-up))
-#+END_SRC
-
-Finally, I want man pages to fill all the frame:
+=WoMan= is a package that is included inside of GNU Emacs by default and that takes care of visualizing man pages. I don't do much here, I just tell =WoMan= to fill all the frame, and setup @@html:<kbd>C-h C-m</kbd>@@ as the key binding for it:
 
 #+BEGIN_SRC elisp
 (setq woman-fill-frame t)
-#+END_SRC
-
-Start =WoMan= as a subcommand of the help command which will reside with the binding @@html:<kbd>M-m</kbd>@@:
-
-#+BEGIN_SRC elisp
-(define-key 'help-command (kbd "M-m") #'woman)
+(define-key 'help-command (kbd "C-m") #'woman)
 #+END_SRC
 
 * Misc
@@ -2308,8 +2286,7 @@ Display emojis in buffer!
 
 * Credits
 
-I've built this file by simply scavenging from other people's emacs.d/dotfiles
-repositories. I have taken lots of pieces from here and there, but most notably:
+I've built this file by simply scavenging from other people's emacs.d/dotfiles repositories. I have taken lots of pieces from here and there, but most notably:
 
 - [[https://github.com/ereslibre/dotfiles][@ereslibre]]
 - [[https://github.com/dmacvicar/dotfiles][@dmacvicar]]

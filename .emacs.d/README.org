@@ -65,16 +65,17 @@ want to do it manually:
 
 * Credits
 
-I've built this file by simply scavenging from other people's emacs.d/dotfiles
-repositories. I have taken lots of pieces from here and there, but most notably:
+I've built this file by simply scavenging from other people's emacs.d/dotfiles repositories. I have taken lots of pieces from here and there, but most notably:
 
 - [[https://github.com/ereslibre/dotfiles][@ereslibre]]
 - [[https://github.com/dmacvicar/dotfiles][@dmacvicar]]
 - [[https://github.com/bbatsov/emacs.d][@bbatsov]]
 - [[https://github.com/aaronbieber/dotfiles][@aaronbieber]]
 - [[https://github.com/purcell/emacs.d][@purcell]]
-- [[https://github.com/sachac/emacs.d][@sachac]] ([[http://pages.sachachua.com/.emacs.d/Sacha.html][HTML version]])
+- [[https://github.com/sachac/.emacs.d][@sachac]] ([[http://pages.sachachua.com/.emacs.d/Sacha.html][HTML version]])
 - [[https://github.com/larstvei/dot-emacs][@larstvei]]
+- [[https://github.com/hlissner/doom-emacs][doom-emacs]]
+- [[https://gitlab.com/protesilaos/dotfiles][@protesilaos]]
 
 * License
 
