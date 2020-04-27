@@ -199,9 +199,16 @@ These are the two main weird things you will see from an otherwise pretty standa
   (when (version= "26.2" emacs-version)
     (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+  (setq package-archives
+        '(("gnu" . "https://elpa.gnu.org/packages/")
+          ("MELPA Stable" . "https://stable.melpa.org/packages/")
+          ("MELPA"        . "https://melpa.org/packages/")
+          ("org" .  "https://orgmode.org/elpa/"))
+        package-archive-priorities
+        '(("MELPA Stable" . 15)
+          ("org"          . 10)
+          ("gnu"          . 5)
+          ("MELPA"        . 0)))
 
   (package-initialize))
 #+END_SRC

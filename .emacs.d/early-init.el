@@ -50,11 +50,15 @@
 ;; Package initialization.
 (require 'package)
 
-(setq package-archives '())
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
-(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
-
+(setq package-archives
+  '(("gnu" . "https://elpa.gnu.org/packages/")
+    ("MELPA Stable" . "https://stable.melpa.org/packages/")
+    ("MELPA"        . "https://melpa.org/packages/")
+    ("org" .  "https://orgmode.org/elpa/"))
+  package-archive-priorities
+  '(("MELPA Stable" . 15)
+    ("org"          . 10)
+    ("gnu"          . 5)
+    ("MELPA"        . 0)))
 
 ;;; early-init.el ends here
