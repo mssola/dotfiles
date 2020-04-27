@@ -8,12 +8,7 @@
 
 * Preface
 
-This is my attempt of getting my configuration organized with literate
-programming and =org-babel=. I took the workflow I'm following from [[https://github.com/larstvei][@larstvei]].
-The idea is that the =init.el= file will replace itself on the first execution
-with the tangled version of this file. This first version will also be
-byte-compiled. This means that all changes are to be made on the =init.org=
-file *always*. The initial contents of the =init.el= are:
+This is my attempt of getting my configuration organized with literate programming and =org-babel=. I took the workflow I'm following from [[https://github.com/larstvei][@larstvei]]. The idea is that the =init.el= file will replace itself on the first execution with the tangled version of this file. This first version will also be byte-compiled. This means that all changes are to be made on the =init.org= file *always*. The initial contents of the =init.el= are:
 
 #+BEGIN_SRC elisp :tangle no
 ;; We can't tangle without org!
@@ -103,6 +98,8 @@ on each change, the following function is provided:
 #+END_SRC
 
 As you can see, this function will tangle and compile the resulting =init.el= file, and it will also produce an HTML version of it. This HTML version will be pushed into my [[http://jo.mssola.com][personal site]] thanks to a git [[https://github.com/mssola/dotfiles/blob/master/.emacs.d/pre-push][pre-push]] hook. The resulting version being hosted [[http://jo.mssola.com/static/init.html][here]].
+
+Other than that, I run GNU Emacs in server mode, but I don't use systemd for that. Instead, I'm using the =-a= argument of =emacsclient= with an empty string. This instructs =emacsclient= to spawn a new server if there isn't one already. This means that the first time around it will take some time, but in the next time everything will be alright. All this is handled outside of this configuration, by adding some handy scripts like =e= and =emacsclient-a-nw= that can be found inside of the =bin= directory from my dotfiles, and that they are later picked up by various config files such as =.bashrc=, =.gitconfig=, =i3= and such.
 
 * Introduction
 
@@ -2283,6 +2280,18 @@ Display emojis in buffer!
   (setq emojify-composed-text-p nil)
   (setq emojify-emoji-styles '(unicode github)))
 #+END_SRC
+
+* Installation
+
+The installation process of my GNU Emacs configuration should already be handled by the =install.sh= script that can be found in the root of this project. If you want to do it manually:
+
+- Create the =~/.emacs.d= directory if it has not been created yet.
+- Copy the =init.el= into the =~/.emacs.d= directory. This is the only file that should be copied instead of linked because it will get replaced on the first run by =org-babel=.
+- Link the =init.org=, =custom.el=, =abbrevs.el= and =gtkrc= files into the =~/.emacs.d= directory.
+- Create the =~/.emacs.d/lisp= subdirectory and link the =lisp/g.el= file there.
+- Clone the [[https://github.com/mssola/soria][soria]] project and link the =soria-theme.el= file into the =~/.emacs.d= directory.
+
+Other than that, in the =dependencies.sh= script you will be able to find the **runtime dependencies** that should be installed in order to get everything working. Note that this script assumes that you are running openSUSE, so don't run it blindly. All the software installed by this script has already been explained during this configuration.
 
 * Credits
 
