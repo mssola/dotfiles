@@ -1,0 +1,103 @@
+#!/usr/bin/perl -w
+# Copyright (C) 2020 Miquel Sabaté Solà <mikisabate@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# This file will call `find` for the given directory (or $HOME if no argument
+# was given), and it will print to stdout broken symlinks.
+#
+# That being said, there are a bunch of applications that may have some symlinks
+# broken (hopefully expected?). For those cases you can add a file called
+# `.find-broken-symlinks-ignore.txt` in your $HOME directory, which contains
+# multiple lines of patterns to be ignored. These patterns can be Perl regexpes,
+# this script will swallow everything without even checking (so don't be stupid).
+#
+# The exit code will be 1 if there are broken symlinks, and 0 if everything is
+# good.
+
+use File::Spec::Functions 'catfile';
+use IO::Select;
+use strict;
+
+##
+# The path can be given, otherwise we will pick $HOME as the default.
+
+my $path = $ENV{'HOME'};
+if ($#ARGV >= 1) {
+    $path = $ARGV[0];
+} elsif ($#ARGV > 1) {
+    warn "Ignoring so many arguments, just picking the first...";
+    $path = $ARGV[0];
+}
+
+##
+# Open up the `find-broken-symlinks-ignore.txt` hidden file and fetch the list
+# of patterns to be ignored.
+
+my $file = catfile($ENV{'HOME'}, '.find-broken-symlinks-ignore.txt');
+my @ignored = ();
+
+open my $in, '<', $file or die "Can't open file $file";
+while (<$in>) {
+    my $line = $_;
+    chomp($line);
+    push @ignored, $line;
+}
+close($in);
+
+##
+# Let's execute the command. We will show the output live, that's why we are
+# using IO::Select instead of backticks. Idea taken from:
+# https://stackoverflow.com/a/1243337.
+
+my $output = 0;
+my $detected = 0;
+
+my $s = IO::Select->new();
+open my $fh, '-|', "find -L $path -type l -ls 2>/dev/null";
+$s->add($fh);
+
+while (my @readers = $s->can_read()) {
+    for my $fh (@readers) {
+        $detected = 0;
+
+        if (eof $fh) {
+            $s->remove($fh);
+            next;
+        }
+
+        my $l = <$fh>;
+
+        for my $i (@ignored) {
+            my $clean = $l;
+            chomp($clean);
+            if ($clean =~ /\Q$i\E/) {
+                $detected = 1;
+                next;
+            }
+        }
+        if (!$detected) {
+            $output = 1;
+            print $l;
+        }
+    }
+}
+
+close($fh);
+
+##
+# Exit status depending on whether there was any output or not (if there was any
+# output it means that some links are broken, so we should skip them).
+
+exit($output);
