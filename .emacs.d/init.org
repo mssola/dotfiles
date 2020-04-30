@@ -2077,32 +2077,44 @@ Install =rust-mode= and add some hooks to make it friendlier.
 
 ** Other markup languages.
 
-In here I put some markup languages which are not org. That is, markdown and YAML. I don't do anything crazy with YAML, but for Markdown I have =markdown-preview-mode=, which allows me to preview a markdown document into HTML live (in combination with =markdown-calibre=, which is the tool available for openSUSE).
+In here I put some markup languages which are not org. I don't do anything crazy with YAML, I just install its support and add it the =warnings-mode= hook:
 
 #+BEGIN_SRC elisp
-  ;; Markdown mode with preview mode in the browser.
-  (use-package markdown-mode
+(use-package yaml-mode
+  :ensure t
+  :config
+
+  (add-hook 'yaml-mode-hook 'warnings-mode-hook))
+#+END_SRC
+
+Same goes for =adoc= support:
+
+#+BEGIN_SRC elisp
+(use-package adoc-mode
+  :ensure t
+  :config
+
+  (add-hook 'yaml-mode-hook 'warnings-mode-hook))
+#+END_SRC
+
+Now, for Markdown I have =markdown-preview-mode=, which allows me to preview a markdown document into HTML live (in combination with =markdown-calibre=, which is the tool available for openSUSE).
+
+#+BEGIN_SRC elisp
+(use-package markdown-mode
+  :ensure t
+  :config
+
+  ;; This is the one that I got from openSUSE.
+  (custom-set-variables
+   '(markdown-command "/usr/bin/markdown-calibre"))
+
+  ;; Preview mode does its things through websockets, so it's a requirement.
+  ;; After that, we can safely require it.
+  (use-package websocket
     :ensure t
     :config
-
-    ;; This is the one that I got from openSUSE.
-    (custom-set-variables
-      '(markdown-command "/usr/bin/markdown-calibre"))
-
-    ;; Preview mode does its things through websockets, so it's a requirement.
-    ;; After that, we can safely require it.
-    (use-package websocket
-      :ensure t
-      :config
-      (use-package markdown-preview-mode
-        :ensure t)))
-
-  ;; YAML
-  (use-package yaml-mode
-    :ensure t
-    :config
-
-    (add-hook 'yaml-mode-hook 'warnings-mode-hook))
+    (use-package markdown-preview-mode
+      :ensure t)))
 #+END_SRC
 
 ** Web-related stuff.
