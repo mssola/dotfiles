@@ -1,21 +1,21 @@
 *.~
 *.swp
-*.lvimrc
 
-.sass-cache
+# CMake
+build/
+compile_commands.json
 
 # Ruby thingies
 .rbx/
 .rake_tasks
 .byebug_history
+.sass-cache
 
 # KDE
-build/
 .kdev4/
 *.kdev4
 .kdev_include_paths
 .directory
 *.kate-swp
-LLEGEIXME.txt
 *.kilepr
 .kateconfig
