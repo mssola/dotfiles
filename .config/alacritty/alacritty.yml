@@ -29,12 +29,12 @@ colors:
 
   search:
     matches:
-      background: '0xd7af87'
-      foreground: '0x1c1c1c'
+      background: '0x875f87'
+      foreground: '0xd0d0d0'
 
     bar:
-      background: '0xd7af87'
-      foreground: '0x1c1c1c'
+      background: '0x4e4e4e'
+      foreground: '0xd0d0d0'
 
 ##
 # Using Droid Sans Mono out of tradition at this point, with a bit of an offset
@@ -53,3 +53,11 @@ font:
 
   offset:
     y: 2
+
+##
+# Adapt some bindings to the ones I have from GNU Emacs.
+key_bindings:
+  - { key: Z, mods: Control, action: ToggleViMode }
+  - { key: G, mods: Control, action: ToggleViMode }
+  - { key: A, mods: Control, mode: Vi, action: FirstOccupied }
+  - { key: E, mods: Control, mode: Vi, action: Last }
