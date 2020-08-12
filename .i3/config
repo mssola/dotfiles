@@ -26,7 +26,7 @@ client.urgent             #2f343a   #900000   #ffffff   #900000
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec konsole
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
