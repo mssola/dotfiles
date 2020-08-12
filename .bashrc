@@ -147,6 +147,5 @@ alias ssh="gpg-connect-agent updatestartuptty /bye >/dev/null; ssh"
 alias ip="ip --color"
 alias ipb="ip --color --brief"
 
-# Alacritty stuff.
+# Needed by Alacritty
 export XDG_CONFIG_HOME="$HOME/.config"
-source "$HOME/.bash_completion/alacritty"
