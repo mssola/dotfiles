@@ -1,34 +1,40 @@
 # Configuration for Alacritty, the GPU enhanced terminal emulator.
 # Check the default file in: https://github.com/alacritty/alacritty/blob/master/alacritty.yml
 
-# Colors (Solarized Dark)
+# Colors based on `soria` (https://github.com/mssola/soria).
 colors:
-  # Default colors
   primary:
-    background: '0x002b36'
-    foreground: '0x839496'
+    background: '0x1c1c1c'
+    foreground: '0xd0d0d0'
 
-  # Normal colors
   normal:
-    black:   '0x073642'
-    red:     '0xdc322f'
-    green:   '0x859900'
-    yellow:  '0xb58900'
-    blue:    '0x268bd2'
-    magenta: '0xd33682'
-    cyan:    '0x2aa198'
-    white:   '0xeee8d5'
+    black:   '0x000000'
+    red:     '0xd78787'
+    green:   '0xb9dc92'
+    yellow:  '0xffffaf'
+    blue:    '0x87afd7'
+    magenta: '0xdfafdf'
+    cyan:    '0x87afd7'
+    white:   '0xd0d0d0'
 
-  # Bright colors
   bright:
-    black:   '0x002b36'
-    red:     '0xcb4b16'
-    green:   '0x586e75'
-    yellow:  '0x657b83'
-    blue:    '0x839496'
-    magenta: '0x6c71c4'
-    cyan:    '0x93a1a1'
-    white:   '0xfdf6e3'
+    black:   '0x000000'
+    red:     '0xd78787'
+    green:   '0xb9dc92'
+    yellow:  '0xffffaf'
+    blue:    '0x87afd7'
+    magenta: '0xdfafdf'
+    cyan:    '0x87afd7'
+    white:   '0xd0d0d0'
+
+  search:
+    matches:
+      background: '0xd7af87'
+      foreground: '0x1c1c1c'
+
+    bar:
+      background: '0xd7af87'
+      foreground: '0x1c1c1c'
 
 ##
 # Using Droid Sans Mono out of tradition at this point, with a bit of an offset
