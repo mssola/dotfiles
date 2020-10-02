@@ -817,6 +817,12 @@ If this is not the case, then this function is synonimous to `end-of-line'."
   (advice-add 'evil-previous-line :around 'evil-previous-line--check-visual-line-mode))
 #+END_SRC
 
+For whatever reason now I need this to type accents:
+
+#+BEGIN_SRC elisp
+(require 'iso-transl)
+#+END_SRC
+
 ** Spell checking
 
 Basic =flycheck= configuration:
