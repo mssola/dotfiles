@@ -2094,6 +2094,15 @@ Install =rust-mode= and add some hooks to make it friendlier.
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 #+END_SRC
 
+** JVM-based
+
+Install =groovy-mode=, which I mainly use for [[https://www.jenkins.io/doc/pipeline/steps/workflow-cps/][Jenkins pipelines]].
+
+#+BEGIN_SRC elisp
+(use-package groovy-mode
+  :ensure t)
+#+END_SRC
+
 ** Other markup languages.
 
 In here I put some markup languages which are not org. I don't do anything crazy with YAML, I just install its support and add it the =warnings-mode= hook:
