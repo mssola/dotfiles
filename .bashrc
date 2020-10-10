@@ -48,9 +48,6 @@ export EDITOR=emacsclient-a-nw
 export VISUAL=emacsclient-a-nw
 alias vi=vim
 
-# Alias xdg-open to just xo
-alias xo=xdg-open
-
 # We want a full-fledged 256-color terminal.
 TERM=xterm-256color
 

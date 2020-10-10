@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Copyright (C) 2020 Miquel Sabaté Solà <mikisabate@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+set -e
+
+# Before creating this script I used to have a shell alias called `xo` for
+# `xdg-open`. This worked well and all, but it failed to open multiple files or
+# shell expressions in general (as `xdg-open` does). I used to workaround this
+# with piping and shit, but I'm really tired of it. Thus, I've created this
+# script which basically does what `xdg-open` was supposed to do (and
+# failed). Thus, the usage:
+#
+#   $ xo [files/shell expression/whatever]
+#
+# This script will error out if no arguments were given. Other than that, you
+# are more than welcome to shoot yourself at the foot.
+
+if [ $# -eq 0 ]; then
+  echo "Give me at least one argument!"
+  exit 1
+fi
+
+for f in "$@"; do
+  xdg-open "$f" &> /dev/null
+done
