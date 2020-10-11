@@ -2269,8 +2269,9 @@ Install a set of useful functions from [[https://github.com/bbatsov][@bbatsov]].
 #+BEGIN_SRC elisp
 (use-package crux
   :ensure t
+  :custom
+  (crux-move-visually t "Move lines visually")
   :config
-
   (global-set-key (kbd "C-c d") 'crux-delete-file-and-buffer)
   (global-set-key (kbd "C-c r") 'crux-rename-file-and-buffer)
   (global-set-key (kbd "C-c n") 'crux-cleanup-buffer-or-region)
