@@ -243,7 +243,5 @@ exec --no-startup-id xset s off
 # Wallpaper
 exec --no-startup-id nitrogen --restore
 
-exec --no-startup-id blueman-applet
-
 # Nextcloud
 exec --no-startup-id nextcloud
