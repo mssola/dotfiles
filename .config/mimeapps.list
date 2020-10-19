@@ -17,6 +17,8 @@ application/x-gzpdf=firefox.desktop
 image/jpeg=kolourpaint.desktop
 image/jpg=kolourpaint.desktop
 image/png=kolourpaint.desktop
+x-scheme-handler/msteams=teams.desktop
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice.desktop
 
 [Added Associations]
 x-scheme-handler/http=firefox.desktop;
@@ -39,3 +41,5 @@ image/jpg=kolourpaint.desktop
 image/png=kolourpaint.desktop
 application/octet-stream=startcenter.desktop;
 application/vnd.oasis.opendocument.text=writer.desktop;
+application/x-rpm=yast2-packager.desktop;org.kde.ark.desktop;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice.desktop
