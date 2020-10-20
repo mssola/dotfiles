@@ -61,6 +61,4 @@
         ("gnu"          . 5)
         ("MELPA"        . 0)))
 
-(provide 'early-init)
-
 ;;; early-init.el ends here
