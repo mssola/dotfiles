@@ -26,7 +26,7 @@
 ;;; Commentary:
 ;;
 ;; early-init.el support was added in GNU Emacs 27.x, and it will be loaded before init.el and
-;; before many other elements which are relevant for GNU Emacs. Thus, we should be very cautious as
+;; before many other elements which are relevant for GNU Emacs.  Thus, we should be very cautious as
 ;; to what we put in here.
 
 ;;; Code:
@@ -51,14 +51,16 @@
 (require 'package)
 
 (setq package-archives
-  '(("gnu" . "https://elpa.gnu.org/packages/")
-    ("MELPA Stable" . "https://stable.melpa.org/packages/")
-    ("MELPA"        . "https://melpa.org/packages/")
-    ("org" .  "https://orgmode.org/elpa/"))
-  package-archive-priorities
-  '(("MELPA Stable" . 15)
-    ("org"          . 10)
-    ("gnu"          . 5)
-    ("MELPA"        . 0)))
+      '(("gnu" . "https://elpa.gnu.org/packages/")
+        ("MELPA Stable" . "https://stable.melpa.org/packages/")
+        ("MELPA"        . "https://melpa.org/packages/")
+        ("org" .  "https://orgmode.org/elpa/"))
+      package-archive-priorities
+      '(("MELPA Stable" . 15)
+        ("org"          . 10)
+        ("gnu"          . 5)
+        ("MELPA"        . 0)))
+
+(provide 'early-init)
 
 ;;; early-init.el ends here
