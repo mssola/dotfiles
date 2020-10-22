@@ -14,6 +14,22 @@ else
 fi
 
 ##
+# Utility functions.
+
+# Sources the given file if it really exists.
+source_maybe() {
+    if [ -f "$1" ]; then
+        source "$1"
+    fi
+}
+
+##
+# XDG: sourcing the variables on $HOME/.config/user-dirs.dirs might ease up the
+# configuration of other tools.
+
+source_maybe "$HOME/.config/user-dirs.dirs"
+
+##
 # Basics.
 
 # Beautifying ls command.
@@ -25,16 +41,6 @@ alias lisa='ls -lisa --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --
 # Alias related to cd
 alias ..='cd ..'
 alias cd..='cd ..'
-
-##
-# Utility functions.
-
-# Sources the given file if it really exists.
-source_maybe() {
-    if [ -f "$1" ]; then
-        source "$1"
-    fi
-}
 
 ##
 # Editors & terminals.

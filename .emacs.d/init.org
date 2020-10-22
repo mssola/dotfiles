@@ -926,7 +926,7 @@ Let flyspell be performant:
 An interesting GNU Emacs feature is the configurability of abbreviations. I only need abbrevs for some modes, and I'd like everything to run silently:
 
 #+BEGIN_SRC elisp
-(setq abbrev-file-name "~/.emacs.d/abbrevs.el"
+(setq abbrev-file-name (concat user-emacs-directory "abbrevs.el")
       save-abbrevs 'silent)
 
 (dolist (hook '(erc-mode-hook org-mode-hook text-mode-hook)) (add-hook hook #'abbrev-mode))
@@ -1403,7 +1403,7 @@ Miscellaneous settings, nothing too interesting (e.g. format flowed, fetcher com
 
 #+BEGIN_SRC elisp
 (setq mu4e-html2text-command "w3m -T text/html"
-      mu4e-attachment-dir  "~/Downloads"
+      mu4e-attachment-dir  (or (getenv "XDG_DOWNLOAD_DIRECTORY") (getenv "HOME"))
       mu4e-headers-date-format "%Y-%m-%d %H:%M"
       message-citation-line-format "%N @ %Y-%m-%d %H:%M %Z:\n"
       message-citation-line-function 'message-insert-formatted-citation-line
@@ -1587,7 +1587,9 @@ With that already established, we can tweak some relevant variables so HTML is e
 Another important format to export to is ODT. In order to do so, I instruct =org-mode= to follow the given template:
 
 #+BEGIN_SRC elisp
-(setq org-odt-styles-file "~/Documents/Templates/mssola.ott")
+(setq org-odt-styles-file
+      (concat (or (getenv "XDG_DOCUMENTS_DIRECTORY") (getenv "HOME"))
+              "/Templates/mssola.ott"))
 #+END_SRC
 
 And finally, another crucial format is PDF, which uses LaTeX underneath. Therefore, it's a good idea to sort out LaTeX in order to get PDFs right:
@@ -1796,7 +1798,7 @@ Let's log messages whenever I receive/send them. The other option is to only do 
   (require 'erc-log)
   (erc-log-enable)
 
-  (setq erc-log-channels-directory "~/.emacs.d/erc"
+  (setq erc-log-channels-directory (concat user-emacs-directory "erc")
         erc-save-buffer-on-part nil
         erc-save-queries-on-quit nil
         erc-log-write-after-send t
