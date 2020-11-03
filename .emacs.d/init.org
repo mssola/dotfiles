@@ -1403,7 +1403,7 @@ Miscellaneous settings, nothing too interesting (e.g. format flowed, fetcher com
 
 #+BEGIN_SRC elisp
 (setq mu4e-html2text-command "w3m -T text/html"
-      mu4e-attachment-dir  (or (getenv "XDG_DOWNLOAD_DIRECTORY") (getenv "HOME"))
+      mu4e-attachment-dir  (or (getenv "XDG_DOWNLOAD_DIR") (getenv "HOME"))
       mu4e-headers-date-format "%Y-%m-%d %H:%M"
       message-citation-line-format "%N @ %Y-%m-%d %H:%M %Z:\n"
       message-citation-line-function 'message-insert-formatted-citation-line
