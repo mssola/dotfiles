@@ -171,7 +171,7 @@ bindsym $mod+Shift+m exec emacs
 bar {
   output DP-1
   position top
-  status_command i3status
+  status_command ~/bin/i3status.sh
   workspace_buttons yes
   tray_output DP-1
 
@@ -189,7 +189,7 @@ bar {
 bar {
   output DVI-I-1
   position top
-  status_command i3status
+  status_command ~/bin/i3status.sh
   workspace_buttons yes
   tray_output DP-1
 

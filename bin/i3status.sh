@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2016-2020 Miquel Sabaté Solà <mikisabate@gmail.com>
+# Copyright (C) 2020 Miquel Sabaté Solà <mikisabate@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,18 +14,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Idea taken from: https://github.com/ereslibre/dotfiles. All the credit goes
-# to him.
+# This script was written by someone else and I am not sure who is the original
+# author (it exists multiple versions of it). I have not done any modifications
+# to it.
+#
+# This script simple prepends an indicator with the language keymap.
 
-layout=$(setxkbmap -query | awk '/layout/{print $2}')
-if [ "$layout" == 'us' ]
-then
-    setxkbmap es
-else
-    if [ "$layout" == 'es' ]; then
-        setxkbmap mi
-    else
-        setxkbmap us
-    fi
-fi
-killall -SIGUSR1 i3status
+i3status --config ~/.i3status.conf | while :
+do
+    read line
+    LG=$(setxkbmap -query | awk '/layout/{print $2}')
+    echo "LG: $LG | $line" || exit 1
+done
