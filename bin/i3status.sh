@@ -24,5 +24,9 @@ i3status --config ~/.i3status.conf | while :
 do
     read line
     LG=$(setxkbmap -query | awk '/layout/{print $2}')
+
+    if [ "$LG" = "es" ]; then
+        LG="ca"
+    fi
     echo "LG: $LG | $line" || exit 1
 done

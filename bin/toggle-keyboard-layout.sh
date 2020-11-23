@@ -18,14 +18,10 @@
 # to him.
 
 layout=$(setxkbmap -query | awk '/layout/{print $2}')
-if [ "$layout" == 'us' ]
+if [ "$layout" == 'mi' ]
 then
     setxkbmap es
 else
-    if [ "$layout" == 'es' ]; then
-        setxkbmap mi
-    else
-        setxkbmap us
-    fi
+    setxkbmap mi
 fi
 killall -SIGUSR1 i3status
