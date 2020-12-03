@@ -59,8 +59,8 @@ bindsym $mod+v split v
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
 
-# Cool lock. Thanks franky!
-bindsym $mod+l exec xlock -mode eyes
+# Execute my own lock and setup xautolock for it.
+bindsym $mod+l exec ~/bin/lock.sh
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -149,10 +149,6 @@ bindsym $mod+Shift+z move container to workspace back_and_forth; workspace back_
 # mouse and click to get focus if I'm using it.
 focus_follows_mouse no
 
-# Bindings for specific applications.
-bindsym $mod+Shift+f [class="Firefox"] focus
-bindsym $mod+Shift+t [class="Tor"] focus
-
 # Scrot
 bindsym Print exec scrot -u
 
@@ -235,6 +231,9 @@ exec --no-startup-id xset b off
 # Disable screensaver and power saving feature: they may crash on Tumbleweed.
 exec --no-startup-id xset -dpms
 exec --no-startup-id xset s off
+
+# Enforce mi layout on startup
+exec --no-startup-id setxkbmap mi
 
 # Network manager
 # NOTE: uncomment this if you are in a laptop
