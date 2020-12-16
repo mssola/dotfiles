@@ -59,8 +59,9 @@ bindsym $mod+v split v
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
 
-# Execute my own lock and setup xautolock for it.
-bindsym $mod+l exec ~/bin/lock.sh
+# Cool lock. Thanks franky!
+bindsym $mod+l exec xlock -mode eyes
+# bindsym $mod+l exec ~/bin/lock.sh
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking

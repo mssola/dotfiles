@@ -57,7 +57,5 @@ font:
 ##
 # Adapt some bindings to the ones I have from GNU Emacs.
 key_bindings:
-  - { key: Z, mods: Control, action: ToggleViMode }
-  - { key: G, mods: Control, action: ToggleViMode }
   - { key: A, mods: Control, mode: Vi, action: FirstOccupied }
   - { key: E, mods: Control, mode: Vi, action: Last }
