@@ -847,25 +847,10 @@ Basic =flycheck= configuration:
 Enable spell checking generally for any text-related mode:
 
 #+BEGIN_SRC elisp
-(dolist (hook '(erc-mode-hook org-mode-hook text-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode 1))))
-#+END_SRC
-
-Also check the spelling of comments in programming languages:
-
-#+BEGIN_SRC elisp
-(dolist (mode '(emacs-lisp-mode-hook
-                inferior-lisp-mode-hook
-                python-mode-hook
-                js-mode-hook
-                go-mode-hook
-                ruby-mode-hook
-                rust-mode-hook
-                php-mode-hook
-                c-mode-common-hook))
-  (add-hook mode
-            '(lambda ()
-               (flyspell-prog-mode))))
+(use-package wucuo
+  :ensure t
+  :hook ((prog-mode . wucuo-start)
+         (text-mode . wucuo-start)))
 #+END_SRC
 
 Let's use =<f8>= for checking words, and =M-<f8>= for moving into the next highlighted word:
