@@ -57,6 +57,10 @@ alias vi=vim
 # We want a full-fledged 256-color terminal.
 TERM=xterm-256color
 
+# Setup the prompt command for terminals that don't touch it by themselves
+# (e.g. alacritty).
+PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
+
 # Set the LESS and the PAGER environment variables.
 export LESS="FSRX"
 export PAGER=less
