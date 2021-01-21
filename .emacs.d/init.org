@@ -857,20 +857,7 @@ Let's use =<f8>= for checking words, and =M-<f8>= for moving into the next highl
 
 #+BEGIN_SRC elisp
 (global-set-key (kbd "<f8>") 'ispell-word)
-
-(defun flyspell-check-next-highlighted-word ()
-  "Custom function to spell check next highlighted word"
-  (interactive)
-
-  ;; If we are in org mode, unfold everything, since flyspell does not work
-  ;; smoothly with folded stuff.
-  (when (string= major-mode "org-mode")
-    (outline-show-all))
-
-  (flyspell-goto-next-error)
-  (ispell-word))
-
-(global-set-key (kbd "M-<f8>") 'flyspell-check-next-highlighted-word)
+(global-set-key (kbd "M-<f8>") 'flyspell-buffer)
 #+END_SRC
 
 If possible, use [[https://hunspell.github.io/][hunspell]] instead of aspell. This program is used by LibreOffice, Firefox, etc. so it's pretty reliable and it supports rather complex languages such as Hungarian. The language being picked is the one from =LC_ALL= and similar environment variables. You can change that by setting =ispell-local-dictionary= and similar:
