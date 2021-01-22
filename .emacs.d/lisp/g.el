@@ -1,6 +1,6 @@
 ;;; g.el --- Adding shortcuts -*- lexical-binding: t; -*-
 ;;
-;; Copyright (C) 2016-2020 Miquel Sabaté Solà <mikisabate@gmail.com>
+;; Copyright (C) 2016-2021 Miquel Sabaté Solà <mikisabate@gmail.com>
 ;;
 ;; Author: Miquel Sabaté Solà <mikisabate@gmail.com>
 ;; Version: 0.1

@@ -1,6 +1,6 @@
 ;;; early-init.el --- early initialization -*- lexical-binding: t; -*-
 ;;
-;; Copyright (C) 2020 Miquel Sabaté Solà <mikisabate@gmail.com>
+;; Copyright (C) 2020-2021 Miquel Sabaté Solà <mikisabate@gmail.com>
 ;;
 ;; Author: Miquel Sabaté Solà <mikisabate@gmail.com>
 ;; Version: 0.1
