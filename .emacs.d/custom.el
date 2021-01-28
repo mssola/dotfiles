@@ -12,8 +12,12 @@
  '(magit-commit-arguments '("--all" "--verbose" "--signoff"))
  '(magit-log-arguments '("--graph" "--color" "--decorate" "-n256"))
  '(markdown-command "/usr/bin/markdown-calibre")
+ '(package-archives
+   '(("gnu" . "https://elpa.gnu.org/packages/")
+     ("MELPA" . "https://melpa.org/packages/")
+     ("org" . "https://orgmode.org/elpa/")))
  '(package-selected-packages
-   '(wucuo treemacs-projectile treemacs-all-the-icons treemacs-magit treemacs-evil treemacs groovy-mode adoc-mode gitignore-mode gitconfig-mode gitattributes-mode evil-escape all-the-icons js-mode let-alist doom-modeline evil-collection highlight-numbers langtool clang-format+ keycast gif-screencast py-autopep8 elpy inf-ruby move-text git-timemachine debbugs async-await request emojify auctex diminish bats-mode bool-flip salt-mode flycheck-rust rust-playground rust-mode vue-mode coffee-mode json-reformat erc-hl-nicks emoji-cheat-sheet-plus helm-circe htmlize cmake-mode websocket markdown-mode go-mode magit evil-leader evil helm projectile org-eldoc evil-commentary yasnippet yaml-mode which-key web-mode wc-mode use-package terraform-mode smart-tabs-mode slim-mode scss-mode rainbow-delimiters php-mode org-evil olivetti mu4e-alert mmm-jinja2 markdown-preview-mode helm-projectile helm-ag go-eldoc go-add-tags flycheck evil-surround evil-org evil-numbers evil-magit evil-args dockerfile-mode disable-mouse default-text-scale crux cmake-font-lock ag)))
+   '(company-box company org-ref bibtex-completion helm-bibtexkey org-plus-contrib org-BibTeX wucuo treemacs-projectile treemacs-all-the-icons treemacs-magit treemacs-evil treemacs groovy-mode adoc-mode gitignore-mode gitconfig-mode gitattributes-mode evil-escape all-the-icons js-mode let-alist doom-modeline evil-collection highlight-numbers langtool clang-format+ keycast gif-screencast py-autopep8 elpy inf-ruby move-text git-timemachine debbugs async-await request emojify auctex diminish bats-mode bool-flip salt-mode flycheck-rust rust-playground rust-mode vue-mode coffee-mode json-reformat erc-hl-nicks emoji-cheat-sheet-plus helm-circe htmlize cmake-mode websocket markdown-mode go-mode magit evil-leader evil helm projectile org-eldoc evil-commentary yasnippet yaml-mode which-key web-mode wc-mode use-package terraform-mode smart-tabs-mode slim-mode scss-mode rainbow-delimiters php-mode org-evil olivetti mu4e-alert mmm-jinja2 markdown-preview-mode helm-projectile helm-ag go-eldoc go-add-tags flycheck evil-surround evil-org evil-numbers evil-magit evil-args dockerfile-mode disable-mouse default-text-scale crux cmake-font-lock ag)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

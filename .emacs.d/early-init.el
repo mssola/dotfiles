@@ -52,12 +52,10 @@
 
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
-        ("MELPA Stable" . "https://stable.melpa.org/packages/")
         ("MELPA"        . "https://melpa.org/packages/")
         ("org" .  "https://orgmode.org/elpa/"))
       package-archive-priorities
-      '(("MELPA Stable" . 15)
-        ("org"          . 10)
+      '(("org"          . 10)
         ("gnu"          . 5)
         ("MELPA"        . 0)))
 
