@@ -596,17 +596,16 @@ I don't use file trees, but sometimes they are useful when exploring big project
 
 #+BEGIN_SRC elisp
 (use-package treemacs
+  :ensure t
   :defer t
   :init
-  (setq treemacs-follow-after-init t)
+  (setq treemacs-follow-after-init t
+        treemacs-sorting 'alphabetic-case-insensitive-asc)
   :config
-  (progn
-    (treemacs-follow-mode t)
-    (treemacs-tag-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-git-mode 'deferred)))
+  (treemacs-follow-mode -1))
 
 (use-package treemacs-evil
+  :ensure t
   :after treemacs evil)
 
 (use-package treemacs-projectile
