@@ -1333,6 +1333,25 @@ Now it's time to define the different contexts that I have. Defining contexts th
                   (mu4e-refile-folder    . "/ajuntament/Arxiu")
                   (mu4e-trash-folder     . "/ajuntament/Elements suprimits")))
 
+        ;; CGT SUSE
+        ,(make-mu4e-context
+          :name "sindicat"
+          :enter-func (lambda ()
+                        (mu4e-message "Switching to cgtsuse.org")
+                        (setq mu4e-compose-signature (mssola-mu4e-signature "cgtsuse"))
+                        (setq mu4e-sent-messages-behavior 'delete)
+                        (mssola-smtp "cgtsuse.org" 465))
+          :match-func (lambda (msg)
+                        (when msg
+                          (mu4e-message-maildir-matches msg "^/cgtsuse")))
+          :vars '(
+                  (user-mail-address     . "msabate@cgtsuse.org")
+                  (mu4e-reply-to-address . "msabate@cgtsuse.org")
+                  (mu4e-drafts-folder    . "/cgtsuse/inbox/Drafts")
+                  (mu4e-sent-folder      . "/cgtsuse/inbox/Sent")
+                  (mu4e-refile-folder    . "/cgtsuse/inbox/Archive")
+                  (mu4e-trash-folder     . "/cgtsuse/inbox/Trash")))
+
         ;; suse.com
         ,(make-mu4e-context
           :name "comsuse"
@@ -1383,8 +1402,8 @@ You can setup bookmarks, which are a way to perform a search with a single key c
 
 #+BEGIN_SRC elisp
 (setq mu4e-bookmarks
-      '(("maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox OR maildir:/ajuntament/inbox" "Inbox Folders" ?n)
-        ("maildir:/gmail/Sent OR maildir:/susecom/Elements\\ enviats OR maildir:/susede/Sent OR maildir:/ajuntament/Elements\\ enviats" "Sent Folders" ?s)
+      '(("maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox OR maildir:/ajuntament/inbox OR maildir:/cgtsuse/inbox" "Inbox Folders" ?n)
+        ("maildir:/gmail/Sent OR maildir:/susecom/Elements\\ enviats OR maildir:/susede/Sent OR maildir:/ajuntament/Elements\\ enviats OR maildir:/cgtsuse/inbox/Sent" "Sent Folders" ?s)
         ("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
         ("date:today..now" "Today's messages" ?t)))
 #+END_SRC

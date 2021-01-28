@@ -146,3 +146,32 @@ Create Both
 Sync All
 Expunge Both
 SyncState *
+
+##
+# cgtsuse.org
+
+IMAPAccount cgtsuse
+Host cgtsuse.org
+User msabate@cgtsuse.org
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpasssusede.gpg"
+SSLType IMAPS
+AuthMechs Login
+CertificateFile /etc/ssl/ca-bundle.pem
+Timeout 0
+
+IMAPStore cgtsuse-remote
+Account cgtsuse
+
+MaildirStore cgtsuse-local
+Path ~/.mail/cgtsuse/
+Inbox ~/.mail/cgtsuse/inbox
+SubFolders Verbatim
+
+Channel cgtsuse
+Master :cgtsuse-remote:
+Slave :cgtsuse-local:
+Patterns * !Calendar
+Create Both
+Sync All
+Expunge Both
+SyncState *
