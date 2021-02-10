@@ -1128,7 +1128,7 @@ Next is another Vim plugin that has been ported to Evil: =evil-commentary=. This
     (evil-commentary-mode t))
 #+END_SRC
 
-Add Vim-like keybindings to as many modes as possible. Note that this list is not exhaustive, since some of these modes are better off with specific packages (e.g. =evil-magit=), and in some cases my bindings feel more intuitive to me (e.g. =woman=):
+Add Vim-like keybindings to as many modes as possible. Note that this list is not exhaustive, since some of these modes are better off with specific packages, and in some cases my bindings feel more intuitive to me (e.g. =woman=):
 
 #+BEGIN_SRC elisp
 (use-package evil-collection
@@ -1140,6 +1140,7 @@ Add Vim-like keybindings to as many modes as possible. Note that this list is no
   (evil-collection-init 'calendar)
   (evil-collection-init 'dired)
   (evil-collection-init 'help)
+  (evil-collection-init 'magit)
   (evil-collection-init 'mu4e))
 #+END_SRC
 
@@ -1155,22 +1156,14 @@ Last but not least, =evil-numbers= brings a couple of bindings available on Vim 
 
 * Git
 
-[[https://magit.vc/][Magit]] is a git porcelain inside GNU Emacs. I've grown really fond of it, since it makes some git operations dead easier and faster to perform (e.g. rebasing). Moreover, some other commands are way prettier and more useful with Magit (e.g. the =log= command, staging, showing diffs, etc). So right now my situation is that I use Magit most of the time, and bare git when I want to do something fishy. Some notes on this setup:
-
-1. I set @@html:<kbd>C-x g</kbd>@@ as a binding for =magit-status= and @@html:<kbd>C-c l</kbd>@@ as a binding for =magit-log-buffer-file=. These are the most useful =magit= entries.
-2. I install =evil-magit=, which could've been replaced by =evil-collection= but it really falls short. Thus, I keep this package.
+[[https://magit.vc/][Magit]] is a git porcelain inside GNU Emacs. I've grown really fond of it, since it makes some git operations dead easier and faster to perform (e.g. rebasing). Moreover, some other commands are way prettier and more useful with Magit (e.g. the =log= command, staging, showing diffs, etc). So right now my situation is that I use Magit most of the time, and bare git when I want to do something fishy.
 
 #+BEGIN_SRC elisp
 (use-package magit
   :ensure t
   :config
   (global-set-key (kbd "C-x g") 'magit-status)
-  (global-set-key (kbd "C-c l") 'magit-log-buffer-file)
-
-  (with-eval-after-load 'evil
-    (use-package evil-magit
-      :ensure t)))
-
+  (global-set-key (kbd "C-c l") 'magit-log-buffer-file))
 #+END_SRC
 
 =git-timemachine= is a package that goes hand-in-hand with Magit, and it provides a very easy way to go through the history of a file (while providing ways of jumping into Magit). You can enter it with @@html:<kbd>C-x t m</kbd>@@ (hopefully the mnemonic is self-evident).
