@@ -19,11 +19,17 @@ require 'irb/completion'
 require 'irb/ext/save-history'
 require 'rubygems'
 require 'pp'
-require 'wirble'
 
 # Colorize!
-Wirble.init
-Wirble.colorize
+# rubocop:disable Lint/SuppressedException
+begin
+  require 'wirble'
+
+  Wirble.init
+  Wirble.colorize
+rescue LoadError
+end
+# rubocop:enable Lint/SuppressedException
 
 # Simple prompt
 IRB.conf[:PROMPT_MODE] = :SIMPLE
