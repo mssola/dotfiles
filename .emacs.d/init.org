@@ -446,6 +446,25 @@ Window navigation and management is done through =evil-mode=, which basically se
 (global-set-key (kbd "C-x V") (lambda () (interactive) (split-window-right) (other-window 1)))
 #+END_SRC
 
+Other than that, for just splitting the current window I follow a pretty dumb algorithm:
+
+#+BEGIN_SRC elisp
+(defun mssola-just-split ()
+  "Just split the current window sensibly.
+My workflow for having multiple windows is actually pretty stupid: just split so
+the new buffer has as much space as possible.  That is, if we have more width
+than height for the current window, just split vertically, and vice versa."
+
+  (interactive)
+
+  (if (< (window-pixel-width)
+         (window-pixel-height))
+      (split-window-vertically)
+    (split-window-horizontally)))
+
+(global-set-key (kbd "C-x j") 'mssola-just-split)
+#+END_SRC
+
 Disable @@html:<kbd>C-z</kbd>@@, which will be later on be picked up by =evil-mode= configuration as the escape sequence. This is here to make sure that it will be disabled even if =evil-mode= is not on.
 
 #+BEGIN_SRC elisp
