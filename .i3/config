@@ -224,7 +224,7 @@ exec --no-startup-id dunst
 
 # Proper configuration of multi monitor
 # NOTE: remove this if you are using a laptop.
-exec --no-startup-id xrandr --output DP-1 --right-of DVI-I-1
+exec --no-startup-id xrandr --output DP-1 --left-of DVI-I-1
 
 # Disable system bell
 exec --no-startup-id xset b off
