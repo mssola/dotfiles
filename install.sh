@@ -56,7 +56,7 @@ rm "${HOME:?}/.gitignore"
 ln -s "$(readlink -f .global.gitignore)" "${HOME:?}/.gitignore"
 
 # Copy entries of some of the directories inside of maybe existing ones.
-for i in Images .config .gnupg; do
+for i in .config .gnupg; do
     mkdir -p "${HOME:?}/$i"
     cp -r "$i"/* "${HOME:?}/$i/"
 done

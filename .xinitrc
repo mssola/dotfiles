@@ -29,6 +29,10 @@ fi
 #
 . /etc/X11/xinit/xinitrc.common
 
+# Set up the keyboard mapping now. This will be later ensured by the WM, but
+# just in case...
+setxkbmap -option ctrl:nocaps
+
 #
 # Special for twm
 #
