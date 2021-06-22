@@ -170,7 +170,7 @@ bar {
   position top
   status_command ~/bin/i3status.sh
   workspace_buttons yes
-  tray_output DP-1
+  tray_output DVI-I-1
 
   colors {
     separator #666666
@@ -188,7 +188,7 @@ bar {
   position top
   status_command ~/bin/i3status.sh
   workspace_buttons yes
-  tray_output DP-1
+  tray_output DVI-I-1
 
   colors {
     separator #666666
