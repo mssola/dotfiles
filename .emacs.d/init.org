@@ -1182,7 +1182,8 @@ Last but not least, =evil-numbers= brings a couple of bindings available on Vim 
   :ensure t
   :config
   (global-set-key (kbd "C-x g") 'magit-status)
-  (global-set-key (kbd "C-c l") 'magit-log-buffer-file))
+  (global-set-key (kbd "C-c l") 'magit-log-buffer-file)
+  (setq transient-default-level 5))
 #+END_SRC
 
 =git-timemachine= is a package that goes hand-in-hand with Magit, and it provides a very easy way to go through the history of a file (while providing ways of jumping into Magit). You can enter it with @@html:<kbd>C-x t m</kbd>@@ (hopefully the mnemonic is self-evident).
