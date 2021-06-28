@@ -1,0 +1,49 @@
+# Set default values for all following accounts.
+defaults
+auth    on
+tls     on
+logfile ~/.msmtp.log
+
+# gmail.com
+account      gmail
+host         smtp.gmail.com
+port         587
+from         mikisabate@gmail.com
+user         mikisabate
+passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpassgmail.gpg"
+
+# suse.com
+account      susecom
+host         smtp.office365.com
+port         587
+auth         xoauth2
+from         msabate@suse.com
+user         msabate@suse.com
+passwordeval ~/bin/mutt_oauth2.py ~/.mail/susecom/sessionfile
+
+# suse.de
+account      susede
+host         imap.suse.de
+port         587
+from         msabate@suse.de
+user         msabate@suse.de
+passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpasssusede.gpg"
+
+# cgtsuse.org
+account      cgtsuse
+host         cgtsuse.org
+port         587
+from         msabate@cgtsuse.org
+user         msabate@cgtsuse.org
+passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpasssusede.gpg"
+
+# capellades.cat
+account      ajuntament
+host         mail.diba.cat
+port         587
+from         sabatesm@capellades.cat
+user         dibasp\sabatesm
+passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpasssusede.gpg"
+
+# Set a default account
+account default : gmail

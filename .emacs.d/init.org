@@ -1233,29 +1233,20 @@ Set =mu4e= as the default user agent. This will be picked up by =compose-mail=.
 (setq mail-user-agent 'mu4e-user-agent)
 #+END_SRC
 
-Now we can set some SMTP settings which are independent of each context. That being said, I plan on investigating the usage of tools such as =msmtp=, so maybe these variables will fade away once I move into that kind of setup.
+SMTP is handled solely from within =msmtp=. This has drastically improved this configuration and my user experience. Thus, we have to tell GNU Emacs to use =msmtp= whenever we want to send mail:
 
 #+BEGIN_SRC elisp
-  (setq message-send-mail-function 'smtpmail-send-it
-        starttls-use-gnutls t)
+(setq sendmail-program "/usr/bin/msmtp"
+      send-mail-function 'smtpmail-send-it
+      starttls-use-gnutls t
+      message-sendmail-f-is-evil t
+      message-sendmail-extra-arguments '("--read-envelope-from")
+      message-send-mail-function 'message-send-mail-with-sendmail)
 #+END_SRC
 
-After that, I am defining some functions that will be used in various parts of the configuration. Some observations:
-
-- =mssola-smtp= is expected to be called only by each context. This will set the different variables properly for each context. This is rather ugly, since you could use the =:var= keyword on each context, but on the other hand this might be removed once we move into =msmtp= or something of that sorts.
-- =mu4e-message-maildir-matches= and =suse-refile-folder= are just helper functions for the different contexts.
+After that, I am defining =mu4e-message-maildir-matches= and =suse-refile-folder=, which are just helper functions for the different contexts.
 
 #+BEGIN_SRC elisp
-(defun mssola-smtp (server port)
-  "Set SMTP variables depending on the given SERVER and PORT."
-
-  (require 'smtpmail)
-
-  (setq smtpmail-default-smtp-server server
-        smtpmail-smtp-server server
-        message-send-mail-function 'smtpmail-send-it
-        smtpmail-smtp-service port))
-
 ;; https://www.reddit.com/r/emacs/comments/47t9ec/share_your_mu4econtext_configs/d0fsih6
 (defun mu4e-message-maildir-matches (msg rx)
   "Returns true if the maildir of MSG matches the given regexp RX."
@@ -1309,8 +1300,7 @@ Now it's time to define the different contexts that I have. Defining contexts th
           :enter-func (lambda ()
                         (mu4e-message "Switching to gmail.com")
                         (setq mu4e-compose-signature (mssola-mu4e-signature "gmail"))
-                        (setq mu4e-sent-messages-behavior 'delete)
-                        (mssola-smtp "smtp.gmail.com" 587))
+                        (setq mu4e-sent-messages-behavior 'delete))
           :match-func (lambda (msg)
                         (when msg
                           (mu4e-message-maildir-matches msg "^/gmail")))
@@ -1328,9 +1318,7 @@ Now it's time to define the different contexts that I have. Defining contexts th
           :enter-func (lambda ()
                         (mu4e-message "Switching to mail.diba.cat")
                         (setq mu4e-compose-signature (mssola-mu4e-signature "ajuntament"))
-                        (setq mu4e-sent-messages-behavior 'sent)
-                        (mssola-smtp "mail.diba.cat" 587)
-                        (setq smtpmail-local-domain "capellades.cat"))
+                        (setq mu4e-sent-messages-behavior 'sent))
           :match-func (lambda (msg)
                         (when msg
                           (mu4e-message-maildir-matches msg "^/ajuntament")))
@@ -1348,8 +1336,7 @@ Now it's time to define the different contexts that I have. Defining contexts th
           :enter-func (lambda ()
                         (mu4e-message "Switching to cgtsuse.org")
                         (setq mu4e-compose-signature (mssola-mu4e-signature "cgtsuse"))
-                        (setq mu4e-sent-messages-behavior 'delete)
-                        (mssola-smtp "cgtsuse.org" 465))
+                        (setq mu4e-sent-messages-behavior 'delete))
           :match-func (lambda (msg)
                         (when msg
                           (mu4e-message-maildir-matches msg "^/cgtsuse")))
@@ -1367,8 +1354,7 @@ Now it's time to define the different contexts that I have. Defining contexts th
           :enter-func (lambda ()
                         (mu4e-message "Switching to suse.com")
                         (setq mu4e-compose-signature (mssola-mu4e-signature "comsuse"))
-                        (setq mu4e-sent-messages-behavior 'sent)
-                        (mssola-smtp "smtp.office365.com" 587))
+                        (setq mu4e-sent-messages-behavior 'sent))
           :match-func (lambda (msg)
                         (when msg
                           (mu4e-message-maildir-matches msg "^/susecom")))
@@ -1386,8 +1372,7 @@ Now it's time to define the different contexts that I have. Defining contexts th
           :enter-func (lambda ()
                         (mu4e-message "Switching to suse.de")
                         (setq mu4e-compose-signature (mssola-mu4e-signature "desuse"))
-                        (setq mu4e-sent-messages-behavior 'sent)
-                        (mssola-smtp "imap.suse.de" 587))
+                        (setq mu4e-sent-messages-behavior 'sent))
           :match-func (lambda (msg)
                         (when msg
                           (mu4e-message-maildir-matches msg "^/susede")))
