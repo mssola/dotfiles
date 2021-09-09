@@ -88,10 +88,7 @@ export CC=/usr/bin/gcc
 export CXX=/usr/bin/g++
 
 # Go things
-export GOROOT_BOOTSTRAP=/opt/go
-export GOROOT=$HOME/src/go.googlesource.com/go
 export GOPATH=$HOME
-export PATH=$GOROOT/bin:$PATH
 
 ##
 # Misc.

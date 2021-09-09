@@ -155,6 +155,7 @@ bindsym Print exec scrot -u
 
 # Toggle keyboard layout US <-> CAT
 bindsym $mod+F1 exec ~/bin/toggle-keyboard-layout.sh
+bindsym $mod+XF86AudioMute exec ~/bin/toggle-keyboard-layout.sh
 
 # Emacs. By default we go with daemon mode, but if something is wrong, it's
 # cool to have a safe way to start Emacs.
@@ -235,6 +236,10 @@ exec --no-startup-id xset s off
 
 # Enforce mi layout on startup
 exec --no-startup-id setxkbmap mi
+
+# Battery indicator
+# NOTE: uncomment this if you are in a laptop
+# exec --no-startup-id cbatticon -i symbolic -n
 
 # Network manager
 # NOTE: uncomment this if you are in a laptop
