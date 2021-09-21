@@ -66,8 +66,8 @@ Channel gmail-sent
 
 IMAPAccount susede
 Host imap.suse.de
-User msabate
-PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpasssusede.gpg"
+User msabate@imapsusede
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.imapsusede.gpg"
 SSLType IMAPS
 AuthMechs Login
 CertificateFile /etc/ssl/ca-bundle.pem
