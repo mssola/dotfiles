@@ -1215,6 +1215,12 @@ I'm using [[https://build.opensuse.org/package/show/server:mail/maildir-utils][t
 
 =mu= only takes care of the indexing part, but the retrieval of emails is handled via =mbsync= which I take from [[https://build.opensuse.org/package/show/server:mail/isync][obs://server:mail]] and that is configured with [[https://github.com/mssola/dotfiles/blob/master/.mbsyncrc][this file]]. The sending is done through the =smtpmail-send-it= function, which is built in GNU Emacs. This part is not optimal since it blocks the GNU Emacs instance whenever we are sending en email. I plan to look into =msmtp= as soon as possible.
 
+Before loading it: =mu= 1.6 introduced =gnus= as the new message viewer, which is quite a drastic change. I'm still adjusting to it, but for now let's keep the good old viewer:
+
+#+BEGIN_SRC elisp
+(setq mu4e-view-use-old t)
+#+END_SRC
+
 #+BEGIN_SRC elisp
 (unless (file-directory-p "/usr/share/emacs/site-lisp/mu4e")
   (message "Skipping mu4e because it's not installed."))
@@ -1222,8 +1228,8 @@ I'm using [[https://build.opensuse.org/package/show/server:mail/maildir-utils][t
 (when (file-directory-p "/usr/share/emacs/site-lisp/mu4e")
   (require 'mu4e)
 
-  (when (version< mu4e-mu-version "1.4.0")
-    (warn "You need at least mu 1.4.0 to get things working..."))
+  (when (version< mu4e-mu-version "1.6.0")
+    (warn "You need at least mu 1.6.0 to get things working..."))
 
   (when (featurep 'mu4e)
 #+END_SRC
@@ -1313,6 +1319,24 @@ Now it's time to define the different contexts that I have. Defining contexts th
                   (mu4e-refile-folder    . "/gmail/All")
                   (mu4e-trash-folder     . "/gmail/Trash")))
 
+        ;; uoc.edu
+        ,(make-mu4e-context
+          :name "uoc"
+          :enter-func (lambda ()
+                        (mu4e-message "Switching to uoc.edu")
+                        (setq mu4e-compose-signature (mssola-mu4e-signature "gmail"))
+                        (setq mu4e-sent-messages-behavior 'delete))
+          :match-func (lambda (msg)
+                        (when msg
+                          (mu4e-message-maildir-matches msg "^/uoc")))
+          :vars '(
+                  (user-mail-address     . "mssola@uoc.edu")
+                  (mu4e-reply-to-address . "mssola@uoc.edu")
+                  (mu4e-drafts-folder    . "/uoc/Drafts")
+                  (mu4e-sent-folder      . "/uoc/Sent")
+                  (mu4e-refile-folder    . "/uoc/All")
+                  (mu4e-trash-folder     . "/uoc/Trash")))
+
         ;; City hall
         ,(make-mu4e-context
           :name "ajuntament"
@@ -1397,8 +1421,8 @@ You can setup bookmarks, which are a way to perform a search with a single key c
 
 #+BEGIN_SRC elisp
 (setq mu4e-bookmarks
-      '(("maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox OR maildir:/ajuntament/inbox OR maildir:/cgtsuse/inbox" "Inbox Folders" ?n)
-        ("maildir:/gmail/Sent OR maildir:/susecom/Elements\\ enviats OR maildir:/susede/Sent OR maildir:/ajuntament/Elements\\ enviats OR maildir:/cgtsuse/inbox/Sent" "Sent Folders" ?s)
+      '(("maildir:/gmail/inbox OR maildir:/susecom/inbox OR maildir:/susede/inbox OR maildir:/ajuntament/inbox OR maildir:/cgtsuse/inbox OR maildir:/uoc/inbox" "Inbox Folders" ?n)
+        ("maildir:/gmail/Sent OR maildir:/susecom/Elements\\ enviats OR maildir:/susede/Sent OR maildir:/ajuntament/Elements\\ enviats OR maildir:/cgtsuse/inbox/Sent OR maildir:/uoc/Sent" "Sent Folders" ?s)
         ("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
         ("date:today..now" "Today's messages" ?t)))
 #+END_SRC
@@ -1448,19 +1472,6 @@ The headers to show in the headers list a pair of a field and its width, with `n
            (:mailing-list  .  15)
            (:from-or-to    .  20)
            (:subject       .  nil)))
-#+END_SRC
-
-Add as a header action to toggle gnus mode for the view mode. I'm doing this because this is way better to visualize attached .eml emails.
-
-#+BEGIN_SRC elisp
-(defun mssola-toggle-gnus-mode (_msg)
-  "Toggle gnus on view mode from now on."
-  (if mu4e-view-use-gnus
-      (setq mu4e-view-use-gnus nil)
-    (setq mu4e-view-use-gnus t)))
-
-(add-to-list 'mu4e-headers-actions
-   '("gnus mode toggle" . mssola-toggle-gnus-mode) t)
 #+END_SRC
 
 Show images:

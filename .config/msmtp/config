@@ -45,5 +45,13 @@ from         sabatesm@capellades.cat
 user         dibasp\sabatesm
 passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpasssusede.gpg"
 
+# uoc.edu
+account      uoc
+host         smtp.gmail.com
+port         587
+from         mssola@uoc.edu
+user         mssola
+passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpassuoc.gpg"
+
 # Set a default account
 account default : gmail

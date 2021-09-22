@@ -175,3 +175,56 @@ Create Both
 Sync All
 Expunge Both
 SyncState *
+
+##
+# uoc.edu
+
+IMAPAccount uoc
+Host imap.gmail.com
+User mssola@uoc.edu
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpassuoc.gpg"
+SSLType IMAPS
+AuthMechs Login
+CertificateFile /etc/ssl/ca-bundle.pem
+
+# Use the account specified above as the remote storage.
+IMAPStore uoc-remote
+Account uoc
+
+# Let's use ~/.mail as the prefix for the local storage.
+MaildirStore uoc-local
+Path ~/.mail/uoc/
+Inbox ~/.mail/uoc/inbox
+SubFolders Verbatim
+
+Channel uoc-inbox
+Master :uoc-remote:
+Slave :uoc-local:
+Patterns "INBOX"
+Create Both
+Expunge Both
+Sync All
+SyncState *
+
+Channel uoc-all
+Master :uoc-remote:"[Gmail]/Tot el correu"
+Slave :uoc-local:"All"
+Create Both
+Expunge Both
+Sync All
+SyncState *
+
+Channel uoc-sent
+Master :uoc-remote:"[Gmail]/Enviats"
+Slave :uoc-local:"Sent"
+Create Both
+Expunge Both
+Sync All
+SyncState *
+
+# And finally group everything here.
+
+Group uoc
+Channel uoc-inbox
+Channel uoc-all
+Channel uoc-sent
