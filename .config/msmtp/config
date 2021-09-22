@@ -25,9 +25,9 @@ passwordeval ~/bin/mutt_oauth2.py ~/.mail/susecom/sessionfile
 account      susede
 host         imap.suse.de
 port         587
-from         msabate@suse.de
-user         msabate@suse.de
-passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpasssusede.gpg"
+from         msabate@imapsusede
+user         msabate@imapsusede
+passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.imapsusede.gpg"
 
 # cgtsuse.org
 account      cgtsuse
