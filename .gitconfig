@@ -8,7 +8,6 @@
   excludesfile = ~/.gitignore
   whitespace = trailing-space,space-before-tab
   abbrev = 12
-  autocrlf = true
 
 [help]
   autocorrect = 1
