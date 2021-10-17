@@ -64,7 +64,7 @@ Channel gmail-sent
 ##
 # suse.de
 
-IMAPAccount susede
+IMAPAccount desuse
 Host imap.suse.de
 User msabate@imapsusede
 PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.imapsusede.gpg"
@@ -72,17 +72,17 @@ SSLType IMAPS
 AuthMechs Login
 CertificateFile /etc/ssl/ca-bundle.pem
 
-IMAPStore susede-remote
-Account susede
+IMAPStore desuse-remote
+Account desuse
 
-MaildirStore susede-local
-Path ~/.mail/susede/
-Inbox ~/.mail/susede/inbox
+MaildirStore desuse-local
+Path ~/.mail/desuse/
+Inbox ~/.mail/desuse/inbox
 SubFolders Verbatim
 
-Channel susede
-Master :susede-remote:
-Slave :susede-local:
+Channel desuse
+Master :desuse-remote:
+Slave :desuse-local:
 Patterns *
 Create Both
 Sync All
@@ -92,26 +92,26 @@ SyncState *
 ##
 # suse.com
 
-IMAPAccount susecom
+IMAPAccount comsuse
 Host outlook.office365.com
 User msabate@suse.com
-PassCmd "~/bin/mutt_oauth2.py ~/.mail/susecom/sessionfile"
+PassCmd "~/bin/mutt_oauth2.py ~/.mail/comsuse/sessionfile"
 SSLType IMAPS
 AuthMechs XOAUTH2
 CertificateFile /etc/ssl/ca-bundle.pem
 Timeout 0
 
-IMAPStore susecom-remote
-Account susecom
+IMAPStore comsuse-remote
+Account comsuse
 
-MaildirStore susecom-local
-Path ~/.mail/susecom/
-Inbox ~/.mail/susecom/inbox
+MaildirStore comsuse-local
+Path ~/.mail/comsuse/
+Inbox ~/.mail/comsuse/inbox
 SubFolders Verbatim
 
-Channel susecom
-Master :susecom-remote:
-Slave :susecom-local:
+Channel comsuse
+Master :comsuse-remote:
+Slave :comsuse-local:
 Patterns * !Calendar
 Create Both
 Sync All
@@ -150,7 +150,7 @@ SyncState *
 ##
 # cgtsuse.org
 
-IMAPAccount cgtsuse
+IMAPAccount sindicat
 Host cgtsuse.org
 User msabate@cgtsuse.org
 PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpasssusede.gpg"
@@ -159,17 +159,17 @@ AuthMechs Login
 CertificateFile /etc/ssl/ca-bundle.pem
 Timeout 0
 
-IMAPStore cgtsuse-remote
-Account cgtsuse
+IMAPStore sindicat-remote
+Account sindicat
 
-MaildirStore cgtsuse-local
-Path ~/.mail/cgtsuse/
-Inbox ~/.mail/cgtsuse/inbox
+MaildirStore sindicat-local
+Path ~/.mail/sindicat/
+Inbox ~/.mail/sindicat/inbox
 SubFolders Verbatim
 
-Channel cgtsuse
-Master :cgtsuse-remote:
-Slave :cgtsuse-local:
+Channel sindicat
+Master :sindicat-remote:
+Slave :sindicat-local:
 Patterns * !Calendar
 Create Both
 Sync All

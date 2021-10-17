@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-#name : header
-# --
-#+TITLE:   ${1:<title>}
-#+AUTHOR:  `(user-full-name)`
-#+EMAIL:   `user-mail-address`
-
-* $0

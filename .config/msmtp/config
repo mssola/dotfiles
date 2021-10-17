@@ -13,16 +13,16 @@ user         mikisabate
 passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpassgmail.gpg"
 
 # suse.com
-account      susecom
+account      comsuse
 host         smtp.office365.com
 port         587
 auth         xoauth2
 from         msabate@suse.com
 user         msabate@suse.com
-passwordeval ~/bin/mutt_oauth2.py ~/.mail/susecom/sessionfile
+passwordeval ~/bin/mutt_oauth2.py ~/.mail/comsuse/sessionfile
 
 # suse.de
-account      susede
+account      desuse
 host         imap.suse.de
 port         587
 from         msabate@imapsusede
@@ -30,7 +30,7 @@ user         msabate@imapsusede
 passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.imapsusede.gpg"
 
 # cgtsuse.org
-account      cgtsuse
+account      sindicat
 host         cgtsuse.org
 port         587
 from         msabate@cgtsuse.org

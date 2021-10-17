@@ -1,0 +1,16 @@
+* GNU Emacs configuration
+
+Since [[7bfe3fe73208fa29a3fe4b7ddce675e79a70c246][this commit]] I have maintained my own configuration for GNU Emacs. This has
+been a hell of a ride for about five years. During this time I have learned a
+lot, including what I don't like: to maintain a huge blob of Lisp to keep this
+beast running. That is, along the way I've been frustrated by stuff that didn't
+quite work but I didn't have the time to actually fix them. Moreover, I knew
+that there were plenty of things that I was missing out but that I just didn't
+have enough time for it. Some time ago I discovered [[https://github.com/hlissner/doom-emacs][Doom Emacs]], a GNU Emacs
+distribution that had quite a lot of appealing features. I've been including
+some bits and pieces from Doom into my custom configuration, but then I decided
+that it was enough: let's leave the gory details to experienced people and I can
+work out on the specifics for myself.
+
+Thus, I'm using Doom Emacs. In order to install it you need to follow their
+instructions. This is the directory where my specific configuration resides.

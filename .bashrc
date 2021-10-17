@@ -153,3 +153,6 @@ alias ipb="ip --color --brief"
 
 # Needed by Alacritty
 export XDG_CONFIG_HOME="$HOME/.config"
+
+# Add the binaries of Doom Emacs into my PATH.
+export PATH=$PATH:$HOME/.emacs.d/bin
