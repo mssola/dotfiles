@@ -15,7 +15,7 @@ this at your own risk ;)
 
 ** GNU Emacs
 
-I am using [[https://github.com/hlissner/doom-emacs][Doom Emacs]], see [[./.emacs.d/README.org][.doom.d/README.org]]. For runtime dependencies just run:
+I am using [[https://github.com/hlissner/doom-emacs][Doom Emacs]], see [[./.doom.d][./doom.d/README.org]]. For runtime dependencies just run:
 
 #+BEGIN_SRC sh
 $ doom doctor

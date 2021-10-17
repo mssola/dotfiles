@@ -33,7 +33,8 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
           ~/.emacs.d/bin/doom install --no-config --no-env --no-fonts
+          ~/.emacs.d/bin/doom sync
 
       - name: Check GNU Emacs
         run: |
-          doom doctor
+          ~/.emacs.d/bin/doom doctor
