@@ -32,7 +32,7 @@ jobs:
       - name: Install Doom Emacs
         run: |
           git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
-          ~/.emacs.d/bin/doom install
+          ~/.emacs.d/bin/doom install --no-config --no-env --no-fonts
 
       - name: Check GNU Emacs
         run: |
