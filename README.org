@@ -2,7 +2,8 @@
 #+AUTHOR: Miquel Sabaté Solà
 #+EMAIL: mikisabate@gmail.com
 
-Download everything by performing the following command (notice the =--recursive= flag):
+Download everything by performing the following command (notice the
+=--recursive= flag):
 
 #+BEGIN_SRC bash
 $ git clone --recursive https://github.com/mssola/dotfiles.git

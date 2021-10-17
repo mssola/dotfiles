@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.emacs_version == 'snapshot' }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        emacs_version:
+          - '27.2'
+          - 'snapshot'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: purcell/setup-emacs@master
+        with:
+          version: ${{ matrix.emacs_version }}
+
+      - name: Run tests for scripts
+        run: |
+          ./bin/test/test.sh
+
+      - name: Install Doom Emacs
+        run: |
+          git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+          ~/.emacs.d/bin/doom install
+
+      - name: Check GNU Emacs
+        run: |
+          doom doctor
