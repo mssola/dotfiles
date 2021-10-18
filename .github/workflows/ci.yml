@@ -67,9 +67,5 @@ jobs:
       - name: Try to start Emacs
         run: |
           echo "Attempting startup..."
-          ${EMACS:=emacs} -nw --batch \
-            --eval '(let ((debug-on-error t)
-                          (url-show-status nil))
-                         (load-file user-init-file)
-                         (run-hooks (quote after-init-hook)))'
+          ${EMACS:=emacs} -nw -Q --batch --load $HOME/.emacs.d/init.el
           echo "Startup successful"
