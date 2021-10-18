@@ -6,33 +6,34 @@
 ---
 
 These are my personal dotfiles, use them at your own risk! You can download
-everything by performing the following command (notice the =--recursive= flag):
+everything by performing the following command (notice the `--recursive` flag):
 
-#+BEGIN_SRC bash
+```bash
 $ git clone --recursive https://github.com/mssola/dotfiles.git
-#+END_SRC
+```
 
-To install everything just run the =install.sh= script.
+To install everything just run the `install.sh` script.
 
 ** GNU Emacs
 
-I am using [[https://github.com/hlissner/doom-emacs][Doom Emacs]], see [[./.doom.d][.doom.d/README.org]]. For runtime dependencies just run:
+I am using [Doom Emacs](https://github.com/hlissner/doom-emacs), see
+[.doom.d/README.org](./.doom.d). For runtime dependencies just run:
 
-#+BEGIN_SRC sh
+```bash
 $ doom doctor
-#+END_SRC
+```
 
 This will give you everything you need to get right for my configuration.
 
-** License
+## License
 
 Every file is licensed under the GPLv3+ unless stated otherwise. I've tried to
-mention every major influence on my =dotfiles=, but most surely I've forgotten
+mention every major influence on my `dotfiles`, but most surely I've forgotten
 to add some people. If you feel like you should be mentioned somewhere in my
 config files, please send me an email. You can find the full license in the
-=LICENSE= file and below:
+`LICENSE` file and below:
 
-#+BEGIN_SRC text
+```
 Copyright (C) 2014-2021 Miquel Sabaté Solà <mikisabate@gmail.com>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -46,4 +47,4 @@ PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
-#+END_SRC
+```
