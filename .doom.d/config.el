@@ -15,6 +15,12 @@
 (map! "C-x v" #'split-window-right)
 (map! "C-x V" (lambda () (interactive) (split-window-right) (other-window 1)))
 
+;; The crux package offers quite a few goodies, and I'm particularly interested
+;; on the `crux-delete-file-and-buffer', which will delete the file related to
+;; the current buffer as well as the buffer itself.
+(use-package! crux
+  :bind (("C-c D" . crux-delete-file-and-buffer)))
+
 ;;; UI
 
 ;; Some time ago I created this title format, and now I prefer it over other

@@ -29,6 +29,10 @@ jobs:
         run: |
           ./bin/test/test.sh
 
+      - name: Install dependencies for Doom
+        run: |
+          apt-get install ripgrep
+
       - name: Install Doom Emacs
         run: |
           git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
@@ -38,4 +42,5 @@ jobs:
 
       - name: Check GNU Emacs
         run: |
-          ~/.emacs.d/bin/doom doctor | grep "errors!"
+          ~/.emacs.d/bin/doom doctor
+          test -z "$(~/.emacs.d/bin/doom doctor | grep 'errors!')"

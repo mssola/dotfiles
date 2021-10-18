@@ -9,13 +9,12 @@ Download everything by performing the following command (notice the
 $ git clone --recursive https://github.com/mssola/dotfiles.git
 #+END_SRC
 
-To install everything just run the =install.sh= script (check also the
-[[./.emacs.d/README.org][.emacs.d/README.org]] file to see the external dependencies for GNU Emacs). Use
-this at your own risk ;)
+To install everything just run the =install.sh= script. Use this at your own
+risk ;)
 
 ** GNU Emacs
 
-I am using [[https://github.com/hlissner/doom-emacs][Doom Emacs]], see [[./.doom.d][./doom.d/README.org]]. For runtime dependencies just run:
+I am using [[https://github.com/hlissner/doom-emacs][Doom Emacs]], see [[./.doom.d][.doom.d/README.org]]. For runtime dependencies just run:
 
 #+BEGIN_SRC sh
 $ doom doctor
