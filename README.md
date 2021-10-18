@@ -23,8 +23,6 @@ I am using [Doom Emacs](https://github.com/hlissner/doom-emacs), see
 $ doom doctor
 ```
 
-This will give you everything you need to get right for my configuration.
-
 ## License
 
 Every file is licensed under the GPLv3+ unless stated otherwise. I've tried to
