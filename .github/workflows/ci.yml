@@ -42,7 +42,8 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
           ~/.emacs.d/bin/doom install --no-config --no-env --no-fonts
-          ln -s $HOME/.doom.d $(realpath .doom.d)
+          set -x
+          cp -r $(realpath .doom.d) $HOME/.doom.d
           cat $HOME/.doom.d/packages.el
           ~/.emacs.d/bin/doom sync
 
