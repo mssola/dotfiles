@@ -1,16 +1,18 @@
-#+TITLE: dotfiles
-#+AUTHOR: Miquel Sabaté Solà
-#+EMAIL: mikisabate@gmail.com
+<p align="center">
+  <a href="https://github.com/mssola/dotfiles/actions?query=workflow%3Aci" title="CI status for the main branch"><img src="https://github.com/mssola/dotfiles/workflows/ci/badge.svg" alt="Build Status for main branch" /></a>
+  <a href="http://www.gnu.org/licenses/gpl-3.0.txt" rel="nofollow"><img alt="License GPL 3" src="https://img.shields.io/badge/license-GPL_3-blue.svg" style="max-width:100%;"></a>
+</p>
 
-Download everything by performing the following command (notice the
-=--recursive= flag):
+---
+
+These are my personal dotfiles, use them at your own risk! You can download
+everything by performing the following command (notice the =--recursive= flag):
 
 #+BEGIN_SRC bash
 $ git clone --recursive https://github.com/mssola/dotfiles.git
 #+END_SRC
 
-To install everything just run the =install.sh= script. Use this at your own
-risk ;)
+To install everything just run the =install.sh= script.
 
 ** GNU Emacs
 
