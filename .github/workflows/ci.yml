@@ -7,7 +7,20 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: purcell/setup-emacs@master
+        with:
+          version: ${{ matrix.emacs_version }}
+
+      - name: Run tests for scripts
+        run: |
+          ./bin/test/test.sh
+
+  emacs:
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.emacs_version == 'snapshot' }}
 
@@ -25,13 +38,9 @@ jobs:
         with:
           version: ${{ matrix.emacs_version }}
 
-      - name: Run tests for scripts
-        run: |
-          ./bin/test/test.sh
-
       - name: Install dependencies for Doom
         run: |
-          apt-get install ripgrep
+          sudo apt-get install ripgrep
 
       - name: Install Doom Emacs
         run: |
