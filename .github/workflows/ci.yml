@@ -46,7 +46,7 @@ jobs:
       - name: Setup my configuration
         run: |
           cp -r $(realpath .doom.d) $HOME/.doom.d
-          echo "(package! soria)" >> $HOME/.doom.d/packages.el
+          echo "(package! soria-theme)" >> $HOME/.doom.d/packages.el
           cat $HOME/.doom.d/packages.el
 
       - name: Sync
