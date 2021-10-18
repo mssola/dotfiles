@@ -12,10 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: purcell/setup-emacs@master
-        with:
-          version: ${{ matrix.emacs_version }}
-
       - name: Run tests for scripts
         run: |
           ./bin/test/test.sh
@@ -47,6 +43,7 @@ jobs:
           git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
           ~/.emacs.d/bin/doom install --no-config --no-env --no-fonts
           ln -s $HOME/.doom.d $(realpath .doom.d)
+          cat $HOME/.doom.d/packages.el
           ~/.emacs.d/bin/doom sync
 
       - name: Check GNU Emacs
