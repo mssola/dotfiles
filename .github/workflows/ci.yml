@@ -44,6 +44,7 @@ jobs:
           ~/.emacs.d/bin/doom install --no-config --no-env --no-fonts
           set -x
           cp -r $(realpath .doom.d) $HOME/.doom.d
+          echo "(package! soria)" >> $HOME/.doom.d/packages.el
           cat $HOME/.doom.d/packages.el
           ~/.emacs.d/bin/doom sync
 
