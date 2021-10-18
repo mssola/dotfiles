@@ -14,7 +14,7 @@ $ git clone --recursive https://github.com/mssola/dotfiles.git
 
 To install everything just run the `install.sh` script.
 
-** GNU Emacs
+## GNU Emacs
 
 I am using [Doom Emacs](https://github.com/hlissner/doom-emacs), see
 [.doom.d/README.org](./.doom.d). For runtime dependencies just run:

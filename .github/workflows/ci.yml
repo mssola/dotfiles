@@ -38,6 +38,12 @@ jobs:
         run: |
           sudo apt-get install ripgrep
 
+      - name: Install some other dependencies
+        run: |
+          mkdir -p $HOME/src/github.com/mssola
+          cd $HOME/src/github.com/mssola
+          git clone https://github.com/mssola/soria.git
+
       - name: Install Doom Emacs
         run: |
           git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
