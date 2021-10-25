@@ -156,3 +156,11 @@ export XDG_CONFIG_HOME="$HOME/.config"
 
 # Add the binaries of Doom Emacs into my PATH.
 export PATH=$PATH:$HOME/.emacs.d/bin
+
+# If we have Rust's source code, export the special `RUST_SRC_PATH`, since this
+# is useful for completion tools.
+if command -v rustc &> /dev/null; then
+  if [ -d "$(rustc --print sysroot)/lib/rustlib/src/rust/library" ]; then
+    export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/library"
+  fi
+fi
