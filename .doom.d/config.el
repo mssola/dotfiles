@@ -319,6 +319,11 @@ littering will happen locally."
     (mu4e-compose-signature . (mssola/mail-signature "pgp")))
   nil)
 
+;; My main account is properly accounted as a gmail one, but the UOC one is not.
+;; Let's add it here (we need to have them all listed).
+(setq +mu4e-gmail-accounts '(("mikisabate@gmail.com" . "/gmail")
+                             ("mssola@uoc.edu" . "/uoc")))
+
 ;; Last but not least, let's configure PGP with mu4e.
 (setq mml-secure-openpgp-signers '("0x96BE8C6FD89D6565")
       mml-secure-openpgp-sign-with-sender t)
