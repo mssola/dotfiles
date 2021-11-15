@@ -20,8 +20,8 @@
 layout=$(setxkbmap -query | awk '/layout/{print $2}')
 if [ "$layout" == 'mi' ]
 then
-    setxkbmap es
+    setxkbmap es -option ctrl:nocap
 else
-    setxkbmap mi
+    setxkbmap mi -option ctrl:nocap
 fi
 killall -SIGUSR1 i3status
