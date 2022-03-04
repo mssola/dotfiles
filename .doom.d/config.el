@@ -330,5 +330,24 @@ littering will happen locally."
 
 (add-hook 'message-send-hook 'mml-secure-message-sign-pgpmime)
 
+(defun mssola/clean-email-env ()
+  "Clean the maildir environment."
+
+  (interactive)
+
+  ;; The 'ajuntament' maildir is a bit special, since I have to handle it
+  ;; manually for embarrasing reasons.
+  (mapc (lambda (f)
+          (unless (file-directory-p f)
+            (delete-file f)))
+        (directory-files (concat (file-name-as-directory (getenv "HOME"))
+                                 ".mail/ajuntament/inbox/new")
+                         t)))
+
+;; This is the only hook that `mu4e' allows us to actually do something around
+;; fetching emails. Let's clean the environment before anything, which should be
+;; fine for stupid maildirs such as 'ajuntament'.
+(add-hook 'mu4e-update-pre-hook 'mssola/clean-email-env)
+
 ;; And a binding!
 (map! "C-c m" #'mu4e)

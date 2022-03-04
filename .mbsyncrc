@@ -119,7 +119,11 @@ Expunge Both
 SyncState *
 
 ##
-# ajuntament
+# ajuntament: notice that in this case the mailbox is configured to 'Pull' only
+# and that deletions are not propagated. This is done to workaround the
+# shamefully-low capacity given on this service, in a way that I have to
+# periodically *remove everything* on the server. This is hence manually backed
+# up.
 
 IMAPAccount ajuntament
 Host mail.diba.cat
@@ -142,9 +146,9 @@ Channel ajuntament
 Master :ajuntament-remote:
 Slave :ajuntament-local:
 Patterns * !Calendar
-Create Both
-Sync All
-Expunge Both
+Create None
+Sync Pull New Flags
+Expunge None
 SyncState *
 
 ##
