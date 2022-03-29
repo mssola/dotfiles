@@ -118,7 +118,7 @@ alias random_string="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -
 source_maybe "$HOME/.cargo/env"
 
 # SUSE
-export NODE_VERSION="10"
+export NODE_VERSION="14"
 
 # Finally RVM requires it to be the last thing on the PATH for whatever reason.
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
@@ -164,3 +164,5 @@ if command -v rustc &> /dev/null; then
     export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/library"
   fi
 fi
+
+export MB_PATH="$HOME/doc/bib"
