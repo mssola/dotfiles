@@ -19,7 +19,7 @@ port         587
 auth         xoauth2
 from         msabate@suse.com
 user         msabate@suse.com
-passwordeval ~/bin/mutt_oauth2.py ~/.mail/comsuse/sessionfile
+passwordeval ~/bin/mutt_oauth2.py /home/backup/mail/comsuse/sessionfile
 
 # suse.de
 account      desuse

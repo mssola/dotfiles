@@ -20,10 +20,10 @@ CertificateFile /etc/ssl/ca-bundle.pem
 IMAPStore gmail-remote
 Account gmail
 
-# Let's use ~/.mail as the prefix for the local storage.
+# Let's use /home/backup/mail as the prefix for the local storage.
 MaildirStore gmail-local
-Path ~/.mail/gmail/
-Inbox ~/.mail/gmail/inbox
+Path /home/backup/mail/gmail/
+Inbox /home/backup/mail/gmail/inbox
 SubFolders Verbatim
 
 # We could have one only channel, and filter them through the Patterns
@@ -66,7 +66,7 @@ Channel gmail-sent
 
 IMAPAccount desuse
 Host imap.suse.de
-User msabate@imapsusede
+User msabate@freezeezy
 PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.imapsusede.gpg"
 SSLType IMAPS
 AuthMechs Login
@@ -76,8 +76,8 @@ IMAPStore desuse-remote
 Account desuse
 
 MaildirStore desuse-local
-Path ~/.mail/desuse/
-Inbox ~/.mail/desuse/inbox
+Path /home/backup/mail/desuse/
+Inbox /home/backup/mail/desuse/inbox
 SubFolders Verbatim
 
 Channel desuse
@@ -95,7 +95,7 @@ SyncState *
 IMAPAccount comsuse
 Host outlook.office365.com
 User msabate@suse.com
-PassCmd "~/bin/mutt_oauth2.py ~/.mail/comsuse/sessionfile"
+PassCmd "~/bin/mutt_oauth2.py /home/backup/mail/comsuse/sessionfile"
 SSLType IMAPS
 AuthMechs XOAUTH2
 CertificateFile /etc/ssl/ca-bundle.pem
@@ -105,8 +105,8 @@ IMAPStore comsuse-remote
 Account comsuse
 
 MaildirStore comsuse-local
-Path ~/.mail/comsuse/
-Inbox ~/.mail/comsuse/inbox
+Path /home/backup/mail/comsuse/
+Inbox /home/backup/mail/comsuse/inbox
 SubFolders Verbatim
 
 Channel comsuse
@@ -138,8 +138,8 @@ IMAPStore ajuntament-remote
 Account ajuntament
 
 MaildirStore ajuntament-local
-Path ~/.mail/ajuntament/
-Inbox ~/.mail/ajuntament/inbox
+Path /home/backup/mail/ajuntament/
+Inbox /home/backup/mail/ajuntament/inbox
 SubFolders Verbatim
 
 Channel ajuntament
@@ -167,8 +167,8 @@ IMAPStore sindicat-remote
 Account sindicat
 
 MaildirStore sindicat-local
-Path ~/.mail/sindicat/
-Inbox ~/.mail/sindicat/inbox
+Path /home/backup/mail/sindicat/
+Inbox /home/backup/mail/sindicat/inbox
 SubFolders Verbatim
 
 Channel sindicat
@@ -195,10 +195,10 @@ CertificateFile /etc/ssl/ca-bundle.pem
 IMAPStore uoc-remote
 Account uoc
 
-# Let's use ~/.mail as the prefix for the local storage.
+# Let's use /home/backup/mail as the prefix for the local storage.
 MaildirStore uoc-local
-Path ~/.mail/uoc/
-Inbox ~/.mail/uoc/inbox
+Path /home/backup/mail/uoc/
+Inbox /home/backup/mail/uoc/inbox
 SubFolders Verbatim
 
 Channel uoc-inbox

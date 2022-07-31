@@ -2,6 +2,9 @@
 
 ;;; Basic information.
 
+(defconst mssola-backup-dir "/home/backup"
+  "Directory located in a big partition where I dump a lot of crap.")
+
 ;; There are some packages that expect us to have a `user-full-name' and a
 ;; `user-mail-address' defined.
 (setq user-full-name "Miquel Sabaté Solà"
@@ -221,6 +224,12 @@ littering will happen locally."
                  :query "maildir:/gmail/inbox OR maildir:/comsuse/inbox OR maildir:/desuse/inbox OR maildir:/ajuntament/inbox OR maildir:/sindicat/inbox OR maildir:/uoc/inbox"
                  :key   ?n))
 
+  ;; Things to look for when acting as a cootw.
+  (add-to-list 'mu4e-bookmarks
+               '(:name  "COOTW"
+                 :query "to:scc-feedback@suse.de"
+                 :key   ?c))
+
   ;; General mu4e settings.
   (setq message-kill-buffer-on-exit t
         mu4e-update-interval 600
@@ -340,8 +349,8 @@ littering will happen locally."
   (mapc (lambda (f)
           (unless (file-directory-p f)
             (delete-file f)))
-        (directory-files (concat (file-name-as-directory (getenv "HOME"))
-                                 ".mail/ajuntament/inbox/new")
+        (directory-files (concat (file-name-as-directory mssola-backup-dir)
+                                 "mail/ajuntament/inbox/new")
                          t)))
 
 ;; This is the only hook that `mu4e' allows us to actually do something around
