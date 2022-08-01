@@ -62,5 +62,5 @@ jobs:
       - name: Try to start Emacs
         run: |
           echo "Attempting startup..."
-          ${EMACS:=emacs} -nw -Q --batch --load $HOME/.emacs.d/init.el
+          ${EMACS:=emacs} -nw -Q --batch --load $HOME/.emacs.d/early-init.el
           echo "Startup successful"
