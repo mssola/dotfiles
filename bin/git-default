@@ -1,0 +1,45 @@
+#!/bin/bash
+# Copyright (C) 2022 Miquel Sabaté Solà <mikisabate@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+set -e
+
+# This script adds the `default` subcommand, which simply switches to the
+# default branch of the current repository. Note that this is done locally.
+# Hence, if you have changed your default branch just on your server, make sure
+# to update the git repository before running this command. That being said,
+# this should be a minor corner case.
+#
+# Moreover, this subcommand does not do *magical stuff*. That is, it won't try
+# to stash whatever you currently have before jumping or anything like that.
+# Consider this as an alias of `git checkout <my-default-branch>`, with all its
+# consequences. The entire point of this subcommand is to jump into the default
+# branch when you are so lost in your life that you no longer know if the
+# repository you are working on is using `main`, `master`, `development`, or
+# whatever.
+#
+# Last but not least, you can optionally pass an argument if your upstream is
+# not named "origin". Thus, the usage of this is:
+#
+#   $ git default           # equivalent to `git checkout main`
+#   $ git default upstream  # as before but your upstream is not `origin`.
+
+upstream="origin"
+if [ -n "$1" ]; then
+    upstream="$1"
+fi
+
+branch=$(git rev-parse --abbrev-ref "$upstream"/HEAD | cut -c8-)
+git checkout "$branch"
