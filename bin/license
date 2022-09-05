@@ -65,7 +65,7 @@ my $name = 'Miquel';
 # The current year. I previously thought to be clever and set it to `date +%Y`,
 # but then I decided that I didn't want to be clever here to avoid problems and
 # be more flexible.
-my $current_year = '2021';
+my $current_year = '2022';
 
 # The command that feeds this command if no command line argument was given.
 my $default_cmd = "git grep -l 'Copyright' | xargs";
