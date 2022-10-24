@@ -32,7 +32,7 @@ config files, please send me an email. You can find the full license in the
 `LICENSE` file and below:
 
 ```
-Copyright (C) 2014-2021 Miquel Sabaté Solà <mikisabate@gmail.com>
+Copyright (C) 2014-2022 Miquel Sabaté Solà <mikisabate@gmail.com>
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
