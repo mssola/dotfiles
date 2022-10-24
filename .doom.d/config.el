@@ -10,6 +10,13 @@
 (setq user-full-name "Miquel Sabaté Solà"
       user-mail-address "mikisabate@gmail.com")
 
+;;; General utility functions.
+
+(defun mssola/workstation-p ()
+  "Returns true if the current machine is my workstation."
+
+  (string= (system-name) "freezeezy"))
+
 ;;; General
 
 ;; Bindings for managing windows, buffers, etc.
@@ -356,7 +363,11 @@ littering will happen locally."
 ;; This is the only hook that `mu4e' allows us to actually do something around
 ;; fetching emails. Let's clean the environment before anything, which should be
 ;; fine for stupid maildirs such as 'ajuntament'.
-(add-hook 'mu4e-update-pre-hook 'mssola/clean-email-env)
+;;
+;; NOTE: this is only done for my workstation. For other machines this is not so
+;; relevant.
+(when (mssola/workstation-p)
+  (add-hook 'mu4e-update-pre-hook 'mssola/clean-email-env))
 
 ;; And a binding!
 (map! "C-c m" #'mu4e)
