@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# Copyright (C) 2014-2022 Miquel Sabaté Solà <mikisabate@gmail.com>
+# Copyright (C) 2014-2023 Miquel Sabaté Solà <mikisabate@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ my $name = 'Miquel';
 # The current year. I previously thought to be clever and set it to `date +%Y`,
 # but then I decided that I didn't want to be clever here to avoid problems and
 # be more flexible.
-my $current_year = '2022';
+my $current_year = '2023';
 
 # The command that feeds this command if no command line argument was given.
 my $default_cmd = "git grep -l 'Copyright' | xargs";
@@ -82,29 +82,28 @@ my $re = qr/
     (.*)$                   # Save the rest of the line.
 /x;
 
-
-sub update_file
-{
+sub update_file {
     my ($file) = @_;
 
     open my $in, '<', $file or die "Can't open file $file";
-    my $perm = (stat $in)[2] & 07777;
+    my $perm = ( stat $in )[2] & 07777;
     open my $out, '>', "$file.new" or die "Can't open file $file.new";
 
     while (<$in>) {
         my $line = $_;
-        if ($line =~ $re) {
+        if ( $line =~ $re ) {
+
             # Get the values from the regular expression safely.
             my $prev = ($1) ? $1 : '';
             my $year = ($3) ? $3 : $current_year;
-            my $c = ($2) ? $2 : '(C)';
+            my $c    = ($2) ? $2 : '(C)';
             my $next = ($6) ? $6 : '';
-            $c =~ s/^\s//;
+            $c    =~ s/^\s//;
             $year =~ s/^\s//;
 
             # Get the range of years straight.
-            my @years = split('-', $year);
-            if ($years[0] ne $current_year) {
+            my @years = split( '-', $year );
+            if ( $years[0] ne $current_year ) {
                 $year = "$years[0]-$current_year";
             }
 
@@ -119,15 +118,14 @@ sub update_file
     # And move the file while preserving the old permission bits.
     `mv $file.new $file`;
     open $in, '<', $file or die "Can't open file $file";
-    chmod($perm | 0600, $in);
+    chmod( $perm | 0600, $in );
     close($in);
 }
-
 
 ##
 # Main: get the files from the command line and update them.
 
-my @files = (@ARGV > 0) ? @ARGV : split(' ', `$default_cmd`);
+my @files = ( @ARGV > 0 ) ? @ARGV : split( ' ', `$default_cmd` );
 foreach my $f (@files) {
-   update_file($f);
+    update_file($f);
 }

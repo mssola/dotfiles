@@ -1,10 +1,10 @@
 /*
- * Copyright (C) 2015-2022 Miquel Sabaté Solà <mikisabate@gmail.com>
- * Copyright (c) 2015-2022 Miquel Sabaté Solà <mikisabate@gmail.com>
- * Copyright (C) 2015-2022 Miquel Sabaté Solà <mikisabate@gmail.com>
- * Copyright (C) 2013-2022 Miquel Sabaté Solà <mikisabate@gmail.com>
- * Copyright (C) 2014-2022 Miquel Sabaté Solà <mikisabate@gmail.com>
- * Copyright (C) 2015-2022 Miquel Sabaté Solà <mikisabate@gmail.com>
+ * Copyright (C) 2015-2023 Miquel Sabaté Solà <mikisabate@gmail.com>
+ * Copyright (c) 2015-2023 Miquel Sabaté Solà <mikisabate@gmail.com>
+ * Copyright (C) 2015-2023 Miquel Sabaté Solà <mikisabate@gmail.com>
+ * Copyright (C) 2013-2023 Miquel Sabaté Solà <mikisabate@gmail.com>
+ * Copyright (C) 2014-2023 Miquel Sabaté Solà <mikisabate@gmail.com>
+ * Copyright (C) 2015-2023 Miquel Sabaté Solà <mikisabate@gmail.com>
  */
 
 int main(int argc, char *argv[])
