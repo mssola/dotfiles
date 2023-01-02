@@ -32,7 +32,7 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+q kill
 
 # Start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+space exec --no-startup-id i3-dmenu-desktop
 
 # Change focus
 bindsym $mod+Up focus up
@@ -72,7 +72,7 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+# bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
