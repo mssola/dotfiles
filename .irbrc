@@ -18,7 +18,6 @@
 require 'irb/completion'
 require 'irb/ext/save-history'
 require 'rubygems'
-require 'pp'
 
 # Colorize!
 # rubocop:disable Lint/SuppressedException
@@ -44,19 +43,7 @@ IRB.conf[:AUTO_INDENT] = true
 # Use readline
 IRB.conf[:USE_READLINE] = true
 
-# List object methods
-def local_methods(obj = self)
-  (obj.methods - obj.class.superclass.instance_methods).sort
-end
-
 # Reload this .irbrc
 def reload!
   load __FILE__
 end
-
-# Beautify ls
-def ls
-  `ls`.split("\n")
-end
-
-alias p pp
