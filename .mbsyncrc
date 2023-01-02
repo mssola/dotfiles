@@ -232,3 +232,32 @@ Group uoc
 Channel uoc-inbox
 Channel uoc-all
 Channel uoc-sent
+
+##
+# urv: set to Pull only kind of for the same reasons
+
+IMAPAccount urv
+Host outlook.office365.com
+User 47108707-S@epp.urv.cat
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpass.gpg"
+SSLType IMAPS
+AuthMechs Login
+CertificateFile /etc/ssl/ca-bundle.pem
+Timeout 0
+
+IMAPStore urv-remote
+Account urv
+
+MaildirStore urv-local
+Path /home/backup/mail/urv/
+Inbox /home/backup/mail/urv/inbox
+SubFolders Verbatim
+
+Channel urv
+Master :urv-remote:
+Slave :urv-local:
+Patterns * !Calendar
+Create Both
+Sync All
+Expunge Both
+SyncState *

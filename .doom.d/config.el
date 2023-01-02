@@ -295,6 +295,16 @@ littering will happen locally."
     (mu4e-compose-signature . (mssola/mail-signature "pgp")))
   nil)
 
+(set-email-account! "rovira"
+  '((mu4e-sent-folder       . "/urv/Sent Items")
+    (mu4e-drafts-folder     . "/urv/Drafts")
+    (mu4e-trash-folder      . "/urv/Trash")
+    (mu4e-refile-folder     . "/urv/Archive")
+    (smtpmail-smtp-user     . "47108707-S@epp.urv.cat")
+    (user-mail-address      . "47108707-S@epp.urv.cat")
+    (mu4e-compose-signature . (mssola/mail-signature "pgp")))
+  nil)
+
 (set-email-account! "ajuntament"
   '((mu4e-sent-folder       . "/ajuntament/Elements enviats")
     (mu4e-drafts-folder     . "/ajuntament/Esborranys")
