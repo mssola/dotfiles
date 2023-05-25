@@ -43,6 +43,17 @@ alias ..='cd ..'
 alias cd..='cd ..'
 
 ##
+# If `bat` is available, use it as a drop-in replacement for `cat (1)`.
+
+if command -v bat &> /dev/null; then
+  alias cat='bat'
+
+  # Use it on man pages too.
+  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+  export MANROFFOPT="-c"
+fi
+
+##
 # Editors & terminals.
 
 # Set GNU Emacs as the default editor. You can find this `emacsclient-a-nw`
@@ -71,6 +82,9 @@ alias gti=git
 
 # Setting up PS1.
 PS1='\u:\w$(__git_ps1 "\[\033[0;32m\]@%s\[\033[0m\]\]") $ '
+
+# Introduce `cclip` as a fast way to use `xclip` but selecting the clipboard.
+alias cclip='xclip -selection clipboard'
 
 ##
 # Programming languages and environments.
