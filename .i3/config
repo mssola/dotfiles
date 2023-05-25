@@ -154,7 +154,7 @@ bindsym $mod+Shift+z move container to workspace back_and_forth; workspace back_
 focus_follows_mouse no
 
 # Scrot
-bindsym Print exec scrot -u
+bindsym Print exec flameshot gui
 
 # Toggle keyboard layout US <-> CAT
 bindsym $mod+F1 exec ~/bin/toggle-keyboard-layout.sh
