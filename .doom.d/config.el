@@ -216,6 +216,10 @@ littering will happen locally."
 ;;; Email
 
 (after! mu4e
+  ;; NOTE: hot fix for doomemacs#6891. This should be removed when upgrading out
+  ;; of mu4e 1.6.x.
+  (setq mu4e-headers-buffer-name mu4e~headers-buffer-name)
+
   ;; Use `msmtp' as the program for sending email.
   (setq sendmail-program (executable-find "msmtp")
         send-mail-function #'smtpmail-send-it
