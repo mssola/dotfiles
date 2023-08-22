@@ -18,10 +18,10 @@
 # to him.
 
 layout=$(setxkbmap -query | awk '/layout/{print $2}')
-if [ "$layout" == 'mi' ]
+if [ "$layout" == 'mao' ]
 then
     setxkbmap es -option ctrl:nocap
 else
-    setxkbmap mi -option ctrl:nocap
+    setxkbmap mao -option ctrl:nocap
 fi
 killall -SIGUSR1 i3status
