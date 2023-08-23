@@ -160,7 +160,7 @@
 (map! "C-c C-o"
       (lambda ()
         (interactive)
-        (find-file (concat (file-name-as-directory org-directory) "setmana.org"))))
+        (find-file (concat (file-name-as-directory org-directory) "index.org"))))
 
 ;; Remove some Doom defaults for org (yeah yeah, I'm boring, I know).
 (after! org
