@@ -134,10 +134,6 @@ source_maybe "$HOME/.cargo/env"
 # SUSE
 export NODE_VERSION="14"
 
-# Finally RVM requires it to be the last thing on the PATH for whatever reason.
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-export PATH="$PATH:$HOME/.rvm/bin"
-
 ##
 # Lastly I had some problems with the GPG agent recently. So I copied a solution
 # from https://github.com/jessfraz/dotfiles
@@ -165,9 +161,6 @@ alias ssh="gpg-connect-agent updatestartuptty /bye >/dev/null; ssh"
 alias ip="ip --color"
 alias ipb="ip --color --brief"
 
-# Needed by Alacritty
-export XDG_CONFIG_HOME="$HOME/.config"
-
 # Add the binaries of Doom Emacs into my PATH.
 export PATH=$PATH:$HOME/.emacs.d/bin
 
@@ -179,4 +172,9 @@ if command -v rustc &> /dev/null; then
   fi
 fi
 
-export MB_PATH="$HOME/doc/bib"
+# Yarn thingies.
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# Finally RVM requires it to be the last thing on the PATH.
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+export PATH="$PATH:$HOME/.rvm/bin"
