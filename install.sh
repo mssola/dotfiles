@@ -17,18 +17,15 @@
 set -e
 
 ##
-# First some checks: we need GNU Emacs and Vim because we are going to
-# initialize them right after installing their files.
+# Let's ask for some dependencies and nice-to-have binaries.
 
-if ! [ -x "$(command -v emacs)" ]; then
-  echo 'Error: GNU Emacs is not installed.' >&2
-  exit 1
-fi
-
-if ! [ -x "$(command -v vim)" ]; then
-  echo 'Error: Vim is not installed.' >&2
-  exit 1
-fi
+binaries=(git curl vim emacs)
+for bin in "${binaries[@]}"; do
+  if ! [ -x "$(command -v ${bin})" ]; then
+    echo "Error: the binary '${bin}' is not installed." >&2
+    exit 1
+  fi
+done
 
 ##
 # Main procedure: link as many files as possible.
@@ -52,7 +49,7 @@ done
 # And now let's go for the exceptional cases.
 
 # Link the global.gitignore file
-rm "${HOME:?}/.gitignore"
+rm -rf "${HOME:?}/.gitignore"
 ln -s "$(readlink -f .global.gitignore)" "${HOME:?}/.gitignore"
 
 # Copy entries of some of the directories inside of maybe existing ones.
@@ -61,16 +58,21 @@ for i in .config .gnupg; do
     cp -r "$i"/* "${HOME:?}/$i/"
 done
 
-# GNU Emacs: most files can be simply linked, the only exception being
-# init.el. To know why check .emacs.d/README.org.
-mkdir -p "${HOME:?}/.emacs.d"
-for i in abbrevs.el early-init.el lisp org-templates snippets custom.el gtkrc init.org; do
-    rm -rf "${HOME:?}/.emacs.d/$i"
-    ln -s "$(readlink -f .emacs.d/$i)" "${HOME:?}/.emacs.d/$i"
-done
-rm -f "${HOME:?}/.emacs.d/init.elc"
-cp .emacs.d/init.el "${HOME:?}/.emacs.d/init.el"
-emacs -l "${HOME:?}/.emacs.d/init.el" --eval "(kill-emacs)"
+##
+# GNU Emacs: just install Doom and take it from there.
+
+rm -rf "${HOME:?}/.doom.d"
+ln -s "$(readlink -f .doom.d)" "${HOME:?}/.doom.d"
+
+if [ -d "${HOME:?}/.config/emacs" ]; then
+    if [ -x "$(command -v doom)" ]; then
+        doom upgrade
+    fi
+else
+    git clone https://github.com/hlissner/doom-emacs "${HOME:?}/.config/emacs"
+fi
+
+"${HOME:?}/.config/emacs/bin/doom" install
 
 # i3 has a slightly different configuration on my workstation and on the laptop.
 cp -r .i3 "${HOME:?}"
@@ -78,6 +80,11 @@ cp -r .i3status.conf "${HOME:?}"
 
 ##
 # Other stuff
+
+# Get git completiom right.
+if ! [ -f "${HOME:?}/.git-prompt.sh" ]; then
+  curl -o "${HOME:?}/.git-prompt.sh" https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+fi
 
 # Initialize Vim plugins.
 vim +PluginInstall +qall

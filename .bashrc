@@ -24,6 +24,18 @@ source_maybe() {
 }
 
 ##
+# If we are inside of a VM, chances are that the TTY size is borked. Let's
+# resize the TTY to the actual terminal size.
+
+if grep -Fq "hypervisor" /proc/cpuinfo; then
+    if [ -x "$(command -v resize)" ]; then
+        eval `resize`
+    else
+      echo "Consider installing the `resize` binary if you want a proper TTY size."
+    fi
+fi
+
+##
 # XDG: sourcing the variables on $HOME/.config/user-dirs.dirs might ease up the
 # configuration of other tools.
 
@@ -109,7 +121,7 @@ export GOPATH=$HOME
 
 # The g utility. See: https://github.com/mssola/g
 source_maybe "$HOME/.g.sh"
-source_maybe "$HOME/.gcompletion.sh"
+source_maybe "$HOME/.git-prompt.sh"
 
 # Complete the `docker` command if possible.
 source_maybe "$HOME/.dockercompletion.sh"
@@ -161,8 +173,10 @@ alias ssh="gpg-connect-agent updatestartuptty /bye >/dev/null; ssh"
 alias ip="ip --color"
 alias ipb="ip --color --brief"
 
-# Add the binaries of Doom Emacs into my PATH.
+# Add the binaries of Doom Emacs into my PATH (either on the traditional
+# `~/.emacs.d` or the XDG-conformant `~/.config/emacs`).
 export PATH=$PATH:$HOME/.emacs.d/bin
+export PATH=$PATH:$HOME/.config/emacs/bin
 
 # If we have Rust's source code, export the special `RUST_SRC_PATH`, since this
 # is useful for completion tools.
