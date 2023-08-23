@@ -1,4 +1,5 @@
 .vim/bundle/*
+.vim/.netrwhist
 bin/*
 .fonts/.uuid
 .fonts/fonts/.uuid
