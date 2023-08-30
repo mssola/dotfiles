@@ -143,8 +143,9 @@ alias random_string="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -
 # Cargo environment.
 source_maybe "$HOME/.cargo/env"
 
-# SUSE
-export NODE_VERSION="14"
+# This is relevant for the alternative switching globally, otherwise I keep
+# linking shit up.
+export NODE_VERSION="20"
 
 ##
 # Lastly I had some problems with the GPG agent recently. So I copied a solution
