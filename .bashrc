@@ -98,6 +98,9 @@ PS1='\u:\w$(__git_ps1 "\[\033[0;32m\]@%s\[\033[0m\]\]") $ '
 # Introduce `cclip` as a fast way to use `xclip` but selecting the clipboard.
 alias cclip='xclip -selection clipboard'
 
+# g completion
+source_maybe "$HOME/.gcompletion.sh"
+
 ##
 # Programming languages and environments.
 
