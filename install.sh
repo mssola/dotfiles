@@ -46,6 +46,15 @@ for file in $(find "$(pwd)" -mindepth 1 -maxdepth 1 ! \( $ignore \)); do
 done
 
 ##
+# Some binaries are good to be installed globally.
+
+for i in bin/zypper-* e; do
+    if [ ! -f "/usr/bin/$(basename $i)" ]; then
+        sudo ln -s "$(readlink -f $i)" "/usr/bin/$(basename $i)"
+    fi
+done
+
+##
 # And now let's go for the exceptional cases.
 
 # Link the global.gitignore file
