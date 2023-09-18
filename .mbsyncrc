@@ -1,6 +1,6 @@
 # My credentials are encrypted with my GPG keys symmetrically. The login is done
 # through SSL and the certificate file is located where openSUSE puts it. This
-# configuration requires mbsync 1.3 (or current git master). I'm doing this
+# configuration requires mbsync 1.3 (or current git head). I'm doing this
 # because:
 #   1. I need to increase the timeout for imap.novell.com
 #   2. I need the improvements for subdirectories handling
@@ -20,18 +20,18 @@ CertificateFile /etc/ssl/ca-bundle.pem
 IMAPStore gmail-remote
 Account gmail
 
-# Let's use /home/backup/mail as the prefix for the local storage.
+# Let's use /home/mssola/data/mail as the prefix for the local storage.
 MaildirStore gmail-local
-Path /home/backup/mail/gmail/
-Inbox /home/backup/mail/gmail/inbox
+Path /home/mssola/data/mail/gmail/
+Inbox /home/mssola/data/mail/gmail/inbox
 SubFolders Verbatim
 
 # We could have one only channel, and filter them through the Patterns
 # directive. I prefer having multiple channels and then group them.
 
 Channel gmail-inbox
-Master :gmail-remote:
-Slave :gmail-local:
+Far :gmail-remote:
+Near :gmail-local:
 Patterns "INBOX"
 Create Both
 Expunge Both
@@ -39,16 +39,16 @@ Sync All
 SyncState *
 
 Channel gmail-all
-Master :gmail-remote:"[Gmail]/Tot el correu"
-Slave :gmail-local:"All"
+Far :gmail-remote:"[Gmail]/Tot el correu"
+Near :gmail-local:"All"
 Create Both
 Expunge Both
 Sync All
 SyncState *
 
 Channel gmail-sent
-Master :gmail-remote:"[Gmail]/Enviats"
-Slave :gmail-local:"Sent"
+Far :gmail-remote:"[Gmail]/Enviats"
+Near :gmail-local:"Sent"
 Create Both
 Expunge Both
 Sync All
@@ -62,40 +62,12 @@ Channel gmail-all
 Channel gmail-sent
 
 ##
-# suse.de
-
-IMAPAccount desuse
-Host imap.suse.de
-User msabate@freezeezy
-PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.imapsusede.gpg"
-SSLType IMAPS
-AuthMechs Login
-CertificateFile /etc/ssl/ca-bundle.pem
-
-IMAPStore desuse-remote
-Account desuse
-
-MaildirStore desuse-local
-Path /home/backup/mail/desuse/
-Inbox /home/backup/mail/desuse/inbox
-SubFolders Verbatim
-
-Channel desuse
-Master :desuse-remote:
-Slave :desuse-local:
-Patterns *
-Create Both
-Sync All
-Expunge Both
-SyncState *
-
-##
 # suse.com
 
 IMAPAccount comsuse
 Host outlook.office365.com
 User msabate@suse.com
-PassCmd "~/bin/mutt_oauth2.py /home/backup/mail/comsuse/sessionfile"
+PassCmd "~/bin/mutt_oauth2.py /home/mssola/data/mail/comsuse/sessionfile"
 SSLType IMAPS
 AuthMechs XOAUTH2
 CertificateFile /etc/ssl/ca-bundle.pem
@@ -105,13 +77,13 @@ IMAPStore comsuse-remote
 Account comsuse
 
 MaildirStore comsuse-local
-Path /home/backup/mail/comsuse/
-Inbox /home/backup/mail/comsuse/inbox
+Path /home/mssola/data/mail/comsuse/
+Inbox /home/mssola/data/mail/comsuse/inbox
 SubFolders Verbatim
 
 Channel comsuse
-Master :comsuse-remote:
-Slave :comsuse-local:
+Far :comsuse-remote:
+Near :comsuse-local:
 Patterns * !Calendar
 Create Both
 Sync All
@@ -138,13 +110,13 @@ IMAPStore ajuntament-remote
 Account ajuntament
 
 MaildirStore ajuntament-local
-Path /home/backup/mail/ajuntament/
-Inbox /home/backup/mail/ajuntament/inbox
+Path /home/mssola/data/mail/ajuntament/
+Inbox /home/mssola/data/mail/ajuntament/inbox
 SubFolders Verbatim
 
 Channel ajuntament
-Master :ajuntament-remote:
-Slave :ajuntament-local:
+Far :ajuntament-remote:
+Near :ajuntament-local:
 Patterns * !Calendar
 Create None
 Sync Pull New Flags
@@ -167,13 +139,13 @@ IMAPStore sindicat-remote
 Account sindicat
 
 MaildirStore sindicat-local
-Path /home/backup/mail/sindicat/
-Inbox /home/backup/mail/sindicat/inbox
+Path /home/mssola/data/mail/sindicat/
+Inbox /home/mssola/data/mail/sindicat/inbox
 SubFolders Verbatim
 
 Channel sindicat
-Master :sindicat-remote:
-Slave :sindicat-local:
+Far :sindicat-remote:
+Near :sindicat-local:
 Patterns * !Calendar
 Create Both
 Sync All
@@ -195,15 +167,15 @@ CertificateFile /etc/ssl/ca-bundle.pem
 IMAPStore uoc-remote
 Account uoc
 
-# Let's use /home/backup/mail as the prefix for the local storage.
+# Let's use /home/mssola/data/mail as the prefix for the local storage.
 MaildirStore uoc-local
-Path /home/backup/mail/uoc/
-Inbox /home/backup/mail/uoc/inbox
+Path /home/mssola/data/mail/uoc/
+Inbox /home/mssola/data/mail/uoc/inbox
 SubFolders Verbatim
 
 Channel uoc-inbox
-Master :uoc-remote:
-Slave :uoc-local:
+Far :uoc-remote:
+Near :uoc-local:
 Patterns "INBOX"
 Create Both
 Expunge Both
@@ -211,16 +183,16 @@ Sync All
 SyncState *
 
 Channel uoc-all
-Master :uoc-remote:"[Gmail]/Tot el correu"
-Slave :uoc-local:"All"
+Far :uoc-remote:"[Gmail]/Tot el correu"
+Near :uoc-local:"All"
 Create Both
 Expunge Both
 Sync All
 SyncState *
 
 Channel uoc-sent
-Master :uoc-remote:"[Gmail]/Enviats"
-Slave :uoc-local:"Sent"
+Far :uoc-remote:"[Gmail]/Enviats"
+Near :uoc-local:"Sent"
 Create Both
 Expunge Both
 Sync All
@@ -249,13 +221,13 @@ IMAPStore urv-remote
 Account urv
 
 MaildirStore urv-local
-Path /home/backup/mail/urv/
-Inbox /home/backup/mail/urv/inbox
+Path /home/mssola/data/mail/urv/
+Inbox /home/mssola/data/mail/urv/inbox
 SubFolders Verbatim
 
 Channel urv
-Master :urv-remote:
-Slave :urv-local:
+Far :urv-remote:
+Near :urv-local:
 Patterns * !Calendar
 Create Both
 Sync All
