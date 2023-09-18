@@ -215,11 +215,10 @@ littering will happen locally."
 
 ;;; Email
 
-(after! mu4e
-  ;; NOTE: hot fix for doomemacs#6891. This should be removed when upgrading out
-  ;; of mu4e 1.6.x.
-  (setq mu4e-headers-buffer-name mu4e~headers-buffer-name)
+;; Sometimes the load path is not properly set for RPM installs...
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 
+(after! mu4e
   ;; Use `msmtp' as the program for sending email.
   (setq sendmail-program (executable-find "msmtp")
         send-mail-function #'smtpmail-send-it
