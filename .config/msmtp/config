@@ -14,12 +14,11 @@ passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpassg
 
 # suse.com
 account      comsuse
-host         smtp.office365.com
+host         smtp.gmail.com
 port         587
-auth         xoauth2
 from         msabate@suse.com
-user         msabate@suse.com
-passwordeval ~/bin/mutt_oauth2.py /home/backup/mail/comsuse/sessionfile
+user         msabate
+passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpasssusecom.gpg"
 
 # suse.de
 account      desuse

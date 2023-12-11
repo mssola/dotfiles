@@ -65,30 +65,57 @@ Channel gmail-sent
 # suse.com
 
 IMAPAccount comsuse
-Host outlook.office365.com
+Host imap.gmail.com
 User msabate@suse.com
-PassCmd "~/bin/mutt_oauth2.py /home/mssola/data/mail/comsuse/sessionfile"
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpasssusecom.gpg"
 SSLType IMAPS
-AuthMechs XOAUTH2
+AuthMechs Login
 CertificateFile /etc/ssl/ca-bundle.pem
-Timeout 0
 
+# Use the account specified above as the remote storage.
 IMAPStore comsuse-remote
 Account comsuse
 
+# Let's use /home/mssola/data/mail as the prefix for the local storage.
 MaildirStore comsuse-local
 Path /home/mssola/data/mail/comsuse/
 Inbox /home/mssola/data/mail/comsuse/inbox
 SubFolders Verbatim
 
-Channel comsuse
+# We could have one only channel, and filter them through the Patterns
+# directive. I prefer having multiple channels and then group them.
+
+Channel comsuse-inbox
 Far :comsuse-remote:
 Near :comsuse-local:
-Patterns * !Calendar
+Patterns "INBOX"
 Create Both
-Sync All
 Expunge Both
+Sync All
 SyncState *
+
+Channel comsuse-all
+Far :comsuse-remote:"[Gmail]/Tot el correu"
+Near :comsuse-local:"All"
+Create Both
+Expunge Both
+Sync All
+SyncState *
+
+Channel comsuse-sent
+Far :comsuse-remote:"[Gmail]/Enviats"
+Near :comsuse-local:"Sent"
+Create Both
+Expunge Both
+Sync All
+SyncState *
+
+# And finally group everything here.
+
+Group comsuse
+Channel comsuse-inbox
+Channel comsuse-all
+Channel comsuse-sent
 
 ##
 # ajuntament: notice that in this case the mailbox is configured to 'Pull' only
