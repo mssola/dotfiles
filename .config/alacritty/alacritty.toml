@@ -1,0 +1,61 @@
+[colors.bright]
+black = "0x000000"
+blue = "0x87afd7"
+cyan = "0x87afd7"
+green = "0xb9dc92"
+magenta = "0xdfafdf"
+red = "0xd78787"
+white = "0xd0d0d0"
+yellow = "0xffffaf"
+
+[colors.footer_bar]
+background = "0x4e4e4e"
+foreground = "0xd0d0d0"
+
+[colors.normal]
+black = "0x000000"
+blue = "0x87afd7"
+cyan = "0x87afd7"
+green = "0xb9dc92"
+magenta = "0xdfafdf"
+red = "0xd78787"
+white = "0xd0d0d0"
+yellow = "0xffffaf"
+
+[colors.primary]
+background = "0x1c1c1c"
+foreground = "0xd0d0d0"
+
+[colors.search.matches]
+background = "0x875f87"
+foreground = "0xd0d0d0"
+
+[font]
+size = 10.0
+
+[font.bold]
+family = "Droid Sans Mono"
+
+[font.bold_italic]
+family = "Droid Sans Mono"
+
+[font.italic]
+family = "Droid Sans Mono"
+
+[font.normal]
+family = "Droid Sans Mono"
+
+[font.offset]
+y = 2
+
+[[keyboard.bindings]]
+action = "FirstOccupied"
+key = "A"
+mode = "Vi"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "Last"
+key = "E"
+mode = "Vi"
+mods = "Control"
