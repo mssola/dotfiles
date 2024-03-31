@@ -47,21 +47,21 @@ jobs:
 
       - name: Install Doom Emacs
         run: |
-          git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
-          ~/.emacs.d/bin/doom install --no-config --no-env --no-fonts
+          git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.config/emacs
+          ~/.config/emacs/bin/doom install --no-config --no-env --no-fonts
 
       - name: Sync
         run: |
-          cp -r $(realpath .doom.d) $HOME/.doom.d
-          ~/.emacs.d/bin/doom sync
+          cp -r $(realpath .config/doom) $HOME/.config/doom
+          ~/.config/emacs/bin/doom sync
 
       - name: Check Doom installation
         run: |
-          ~/.emacs.d/bin/doom doctor
-          test -z "$(~/.emacs.d/bin/doom doctor | grep 'errors!')"
+          ~/.config/emacs/bin/doom doctor
+          test -z "$(~/.config/emacs/bin/doom doctor | grep 'errors!')"
 
       - name: Try to start Emacs
         run: |
           echo "Attempting startup..."
-          ${EMACS:=emacs} -nw -Q --batch --load $HOME/.emacs.d/early-init.el
+          ${EMACS:=emacs} -nw -Q --batch --load $HOME/.config/emacs/early-init.el
           echo "Startup successful"

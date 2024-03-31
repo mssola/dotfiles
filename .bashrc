@@ -177,9 +177,7 @@ alias ssh="gpg-connect-agent updatestartuptty /bye >/dev/null; ssh"
 alias ip="ip --color"
 alias ipb="ip --color --brief"
 
-# Add the binaries of Doom Emacs into my PATH (either on the traditional
-# `~/.emacs.d` or the XDG-conformant `~/.config/emacs`).
-export PATH=$PATH:$HOME/.emacs.d/bin
+# Add the binaries of Doom Emacs into my PATH.
 export PATH=$PATH:$HOME/.config/emacs/bin
 
 # If we have Rust's source code, export the special `RUST_SRC_PATH`, since this

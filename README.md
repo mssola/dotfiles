@@ -1,10 +1,3 @@
-<p align="center">
-  <a href="https://github.com/mssola/dotfiles/actions?query=workflow%3Aci" title="CI status for the main branch"><img src="https://github.com/mssola/dotfiles/workflows/ci/badge.svg" alt="Build Status for main branch" /></a>
-  <a href="http://www.gnu.org/licenses/gpl-3.0.txt" rel="nofollow"><img alt="License GPL 3" src="https://img.shields.io/badge/license-GPL_3-blue.svg" style="max-width:100%;"></a>
-</p>
-
----
-
 These are my personal dotfiles, use them at your own risk! You can download
 everything by performing the following command (notice the `--recursive` flag):
 
@@ -17,7 +10,7 @@ To install everything just run the `install.sh` script.
 ## GNU Emacs
 
 I am using [Doom Emacs](https://github.com/hlissner/doom-emacs), see
-[.doom.d/README.org](./.doom.d). For runtime dependencies just run:
+[.config/doom/README.org](./.config/doom). For runtime dependencies just run:
 
 ```bash
 $ doom doctor
@@ -32,7 +25,7 @@ config files, please send me an email. You can find the full license in the
 `LICENSE` file and below:
 
 ```
-Copyright (C) 2014-2023 Miquel Sabaté Solà <mikisabate@gmail.com>
+Copyright (C) 2014-Ω Miquel Sabaté Solà <mikisabate@gmail.com>
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
