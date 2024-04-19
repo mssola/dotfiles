@@ -12,10 +12,10 @@
 
 ;;; General utility functions.
 
-(defun mssola/workstation-p ()
-  "Returns true if the current machine is my workstation."
+(defun mssola/email-p ()
+  "Returns true if the current machine is where my email lives."
 
-  (string= (system-name) "freezeezy"))
+  (string= (system-name) "lair"))
 
 ;;; General
 
@@ -271,82 +271,67 @@ littering will happen locally."
    ((string= key "town")
     (concat
      "Miquel Sabaté Solà,\n"
-     "Regidor de Joventut, Participació ciutadana i Transparència\n"
-     "\n"
-     "Ajuntament de Capellades\n"
-     "Carrer de Ramon Godó, 9, 08786 - Capellades\n"
-     "Tel. 93 801 10 01 – mòbil 677 12 72 07\n"
-     "sabatesm@capellades.cat\n"))))
+     "Regidor de l'Ajuntament de Capellades\n"))))
 
 (set-email-account! "gmail"
-  '((mu4e-sent-folder       . "/gmail/Sent")
-    (mu4e-drafts-folder     . "/gmail/Drafts")
-    (mu4e-trash-folder      . "/gmail/Trash")
-    (mu4e-refile-folder     . "/gmail/All")
-    (smtpmail-smtp-user     . "mikisabate@gmail.com")
-    (user-mail-address      . "mikisabate@gmail.com")
-    (mu4e-compose-signature . (mssola/mail-signature "pgp")))
-  t)
+                    '((mu4e-sent-folder       . "/gmail/Sent")
+                      (mu4e-drafts-folder     . "/gmail/Drafts")
+                      (mu4e-trash-folder      . "/gmail/Trash")
+                      (mu4e-refile-folder     . "/gmail/All")
+                      (smtpmail-smtp-user     . "mikisabate@gmail.com")
+                      (user-mail-address      . "mikisabate@gmail.com")
+                      (mu4e-compose-signature . (mssola/mail-signature "pgp")))
+                    t)
 
 (set-email-account! "uoc"
-  '((mu4e-sent-folder       . "/uoc/Sent")
-    (mu4e-drafts-folder     . "/uoc/Drafts")
-    (mu4e-trash-folder      . "/uoc/Trash")
-    (mu4e-refile-folder     . "/uoc/All")
-    (smtpmail-smtp-user     . "mssola@uoc.edu")
-    (user-mail-address      . "mssola@uoc.edu")
-    (mu4e-compose-signature . (mssola/mail-signature "pgp")))
-  nil)
-
-(set-email-account! "rovira"
-  '((mu4e-sent-folder       . "/urv/Sent Items")
-    (mu4e-drafts-folder     . "/urv/Drafts")
-    (mu4e-trash-folder      . "/urv/Trash")
-    (mu4e-refile-folder     . "/urv/Archive")
-    (smtpmail-smtp-user     . "47108707-S@epp.urv.cat")
-    (user-mail-address      . "47108707-S@epp.urv.cat")
-    (mu4e-compose-signature . (mssola/mail-signature "pgp")))
-  nil)
+                    '((mu4e-sent-folder       . "/uoc/Sent")
+                      (mu4e-drafts-folder     . "/uoc/Drafts")
+                      (mu4e-trash-folder      . "/uoc/Trash")
+                      (mu4e-refile-folder     . "/uoc/All")
+                      (smtpmail-smtp-user     . "mssola@uoc.edu")
+                      (user-mail-address      . "mssola@uoc.edu")
+                      (mu4e-compose-signature . (mssola/mail-signature "pgp")))
+                    nil)
 
 (set-email-account! "ajuntament"
-  '((mu4e-sent-folder       . "/ajuntament/Elements enviats")
-    (mu4e-drafts-folder     . "/ajuntament/Esborranys")
-    (mu4e-trash-folder      . "/ajuntament/Elements suprimits")
-    (mu4e-refile-folder     . "/ajuntament/Arxiu")
-    (smtpmail-smtp-user     . "sabatesm@capellades.cat")
-    (user-mail-address      . "sabatesm@capellades.cat")
-    (mu4e-compose-signature . (mssola/mail-signature "town")))
-  nil)
+                    '((mu4e-sent-folder       . "/ajuntament/Elements enviats")
+                      (mu4e-drafts-folder     . "/ajuntament/Esborranys")
+                      (mu4e-trash-folder      . "/ajuntament/Elements suprimits")
+                      (mu4e-refile-folder     . "/ajuntament/Arxiu")
+                      (smtpmail-smtp-user     . "sabatesm@capellades.cat")
+                      (user-mail-address      . "sabatesm@capellades.cat")
+                      (mu4e-compose-signature . (mssola/mail-signature "town")))
+                    nil)
 
 (set-email-account! "sindicat"
-  '((mu4e-sent-folder       . "/sindicat/inbox/Sent")
-    (mu4e-drafts-folder     . "/sindicat/inbox/Drafts")
-    (mu4e-trash-folder      . "/sindicat/inbox/Trash")
-    (mu4e-refile-folder     . "/sindicat/inbox/Archive")
-    (smtpmail-smtp-user     . "msabate@cgtsuse.org")
-    (user-mail-address      . "msabate@cgtsuse.org")
-    (mu4e-compose-signature . (mssola/mail-signature "pgp")))
-  nil)
+                    '((mu4e-sent-folder       . "/sindicat/inbox/Sent")
+                      (mu4e-drafts-folder     . "/sindicat/inbox/Drafts")
+                      (mu4e-trash-folder      . "/sindicat/inbox/Trash")
+                      (mu4e-refile-folder     . "/sindicat/inbox/Archive")
+                      (smtpmail-smtp-user     . "msabate@cgtsuse.org")
+                      (user-mail-address      . "msabate@cgtsuse.org")
+                      (mu4e-compose-signature . (mssola/mail-signature "pgp")))
+                    nil)
 
 (set-email-account! "comsuse"
-  '((mu4e-sent-folder       . "/comsuse/Elements enviats")
-    (mu4e-drafts-folder     . "/comsuse/Esborranys")
-    (mu4e-trash-folder      . "/comsuse/Elements suprimits")
-    (mu4e-refile-folder     . "/comsuse/Arxiu")
-    (smtpmail-smtp-user     . "msabate@suse.com")
-    (user-mail-address      . "msabate@suse.com")
-    (mu4e-compose-signature . (mssola/mail-signature "pgp")))
-  nil)
+                    '((mu4e-sent-folder       . "/comsuse/Elements enviats")
+                      (mu4e-drafts-folder     . "/comsuse/Esborranys")
+                      (mu4e-trash-folder      . "/comsuse/Elements suprimits")
+                      (mu4e-refile-folder     . "/comsuse/Arxiu")
+                      (smtpmail-smtp-user     . "msabate@suse.com")
+                      (user-mail-address      . "msabate@suse.com")
+                      (mu4e-compose-signature . (mssola/mail-signature "pgp")))
+                    nil)
 
 (set-email-account! "desuse"
-  '((mu4e-sent-folder       . "/desuse/Sent")
-    (mu4e-drafts-folder     . "/desuse/Drafts")
-    (mu4e-trash-folder      . "/desuse/Trash")
-    (mu4e-refile-folder     . "/desuse/Archives")
-    (smtpmail-smtp-user     . "msabate@suse.de")
-    (user-mail-address      . "msabate@suse.de")
-    (mu4e-compose-signature . (mssola/mail-signature "pgp")))
-  nil)
+                    '((mu4e-sent-folder       . "/desuse/Sent")
+                      (mu4e-drafts-folder     . "/desuse/Drafts")
+                      (mu4e-trash-folder      . "/desuse/Trash")
+                      (mu4e-refile-folder     . "/desuse/Archives")
+                      (smtpmail-smtp-user     . "msabate@suse.de")
+                      (user-mail-address      . "msabate@suse.de")
+                      (mu4e-compose-signature . (mssola/mail-signature "pgp")))
+                    nil)
 
 ;; My main account is properly accounted as a gmail one, but the UOC one is not.
 ;; Let's add it here (we need to have them all listed).
@@ -379,8 +364,5 @@ littering will happen locally."
 ;;
 ;; NOTE: this is only done for my workstation. For other machines this is not so
 ;; relevant.
-(when (mssola/workstation-p)
+(when (mssola/email-p)
   (add-hook 'mu4e-update-pre-hook 'mssola/clean-email-env))
-
-;; And a binding!
-(map! "C-c m" #'mu4e)
