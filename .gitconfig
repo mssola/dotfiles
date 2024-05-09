@@ -1,7 +1,13 @@
 [user]
   name = Miquel Sabaté Solà
-  email = msabate@suse.com
+  email = mikisabate@gmail.com
   signingkey = 0x96BE8C6FD89D6565
+
+[includeIf "gitdir:~/src/github.com/SUSE/"]
+  path = ~/.gitconfig-suse
+
+[includeIf "gitdir:~/src/gitlab.suse.de/"]
+  path = ~/.gitconfig-suse
 
 [core]
   editor = emacsclient-a-nw
