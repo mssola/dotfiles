@@ -2,7 +2,7 @@
 
 ;;; Basic information.
 
-(defconst mssola-backup-dir "/home/backup"
+(defconst mssola-data-dir "/home/mssola/data"
   "Directory located in a big partition where I dump a lot of crap.")
 
 ;; There are some packages that expect us to have a `user-full-name' and a
@@ -354,7 +354,7 @@ littering will happen locally."
   (mapc (lambda (f)
           (unless (file-directory-p f)
             (delete-file f)))
-        (directory-files (concat (file-name-as-directory mssola-backup-dir)
+        (directory-files (concat (file-name-as-directory mssola-data-dir)
                                  "mail/ajuntament/inbox/new")
                          t)))
 
