@@ -24,6 +24,7 @@
 [alias]
   a = commit -a -s -v
   down = pull --rebase --stat
+  fpush = push --force-with-lease
 
 [format]
   signoff = true
@@ -51,3 +52,13 @@
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f
   process = git-lfs filter-process
+
+[rerere]
+  enabled = true
+  autoUpdate = true
+
+[branch]
+  sort = -committerdate
+
+[column]
+  ui = auto
