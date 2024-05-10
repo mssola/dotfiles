@@ -70,8 +70,8 @@ done
 ##
 # GNU Emacs: just install Doom and take it from there.
 
-rm -rf "${HOME:?}/.doom.d"
-ln -s "$(readlink -f .doom.d)" "${HOME:?}/.doom.d"
+rm -rf "${HOME:?}/.config/doom"
+ln -s "$(readlink -f .config/doom)" "${HOME:?}/.config/doom"
 
 if [ -d "${HOME:?}/.config/emacs" ]; then
     if [ -x "$(command -v doom)" ]; then
@@ -82,10 +82,6 @@ else
 fi
 
 "${HOME:?}/.config/emacs/bin/doom" install
-
-# i3 has a slightly different configuration on my workstation and on the laptop.
-cp -r .i3 "${HOME:?}"
-cp -r .i3status.conf "${HOME:?}"
 
 ##
 # Other stuff
@@ -108,7 +104,7 @@ cp gcompletion.sh "${HOME:?}/.gcompletion.sh"
 popd
 
 echo ""
-if [ -e "${HOME:?}/.emacs.d/soria-theme.el" ]; then
+if [ -e "${HOME:?}/src/github.com/mssola/soria/soria-theme.el" ]; then
     echo "You are all set. Enjoy!"
 else
     echo "Note: you still need to install https://github.com/mssola/soria.git"
