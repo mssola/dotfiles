@@ -95,6 +95,10 @@
 ;; happens to vi was a good idea. I disagree.
 (remove-hook 'text-mode-hook #'vi-tilde-fringe-mode)
 
+;; Disable whitespace-mode.
+(after! whitespace
+  (global-whitespace-mode -1))
+
 ;; The modeline I was using even before switching to Doom. I modify quite a few
 ;; things from the default installation so it is simpler.
 (use-package! doom-modeline
@@ -135,6 +139,7 @@
 
 ;; Tweaking more defaults.
 (setq-default tab-width 4)
+(setq tab-width 4)
 (setq-default auto-save-default nil)
 
 ;;; Spell checking
