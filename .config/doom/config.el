@@ -155,6 +155,19 @@
   (map! "<f9>" #'langtool-check-buffer)
   (map! "M-<f9>" #'langtool-correct-buffer))
 
+;;; Programming languages.
+
+;; Flags to be passed to `clangd' for LSP integration.
+(after! lsp-clangd
+  (setq lsp-clients-clangd-args
+        '("-j=3"
+          "--background-index"
+          "--clang-tidy"
+          "--completion-style=detailed"
+          "--header-insertion=never"
+          "--header-insertion-decorators=0"))
+  (set-lsp-priority! 'clangd 2))
+
 ;;; Organization
 
 ;; Setting this variable before org-mode loads.
