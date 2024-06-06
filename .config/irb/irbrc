@@ -1,0 +1,18 @@
+# frozen_string_literal: true
+
+require 'rubygems'
+
+# Simple prompt
+IRB.conf[:PROMPT_MODE] = :SIMPLE
+
+# History
+IRB.conf[:SAVE_HISTORY] = 100
+IRB.conf[:HISTORY_FILE] = File.expand_path('~/.irb_history')
+
+# Use readline
+IRB.conf[:USE_READLINE] = true
+
+# Reload this .irbrc
+def reload!
+  load __FILE__
+end
