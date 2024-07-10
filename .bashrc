@@ -65,6 +65,9 @@ if command -v bat &> /dev/null; then
   export MANROFFOPT="-c"
 fi
 
+# Set up fzf key bindings and fuzzy completion
+eval "$(fzf --bash)"
+
 ##
 # Editors & terminals.
 
