@@ -66,7 +66,9 @@ if command -v bat &> /dev/null; then
 fi
 
 # Set up fzf key bindings and fuzzy completion
-eval "$(fzf --bash)"
+if command -v fzf &> /dev/null; then
+  eval "$(fzf --bash)"
+fi
 
 ##
 # Editors & terminals.
@@ -189,54 +191,56 @@ fi
 ##
 # $ mise activate bash >> .bashrc
 
-export MISE_SHELL=bash
-export __MISE_ORIG_PATH="$PATH"
+if command -v mise &> /dev/null; then
+  export MISE_SHELL=bash
+  export __MISE_ORIG_PATH="$PATH"
 
-mise() {
-  local command
-  command="${1:-}"
-  if [ "$#" = 0 ]; then
-    command mise
-    return
-  fi
-  shift
-
-  case "$command" in
-  deactivate|s|shell)
-    # if argv doesn't contains -h,--help
-    if [[ ! " $@ " =~ " --help " ]] && [[ ! " $@ " =~ " -h " ]]; then
-      eval "$(command mise "$command" "$@")"
-      return $?
+  mise() {
+    local command
+    command="${1:-}"
+    if [ "$#" = 0 ]; then
+      command mise
+      return
     fi
-    ;;
-  esac
-  command mise "$command" "$@"
-}
+    shift
 
-_mise_hook() {
-  local previous_exit_status=$?;
-  eval "$(mise hook-env -s bash)";
-  return $previous_exit_status;
-};
-if [[ ";${PROMPT_COMMAND:-};" != *";_mise_hook;"* ]]; then
-  PROMPT_COMMAND="_mise_hook${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
-fi
-if [ -z "${_mise_cmd_not_found:-}" ]; then
+    case "$command" in
+      deactivate|s|shell)
+        # if argv doesn't contains -h,--help
+        if [[ ! " $@ " =~ " --help " ]] && [[ ! " $@ " =~ " -h " ]]; then
+          eval "$(command mise "$command" "$@")"
+          return $?
+        fi
+        ;;
+    esac
+    command mise "$command" "$@"
+  }
+
+  _mise_hook() {
+    local previous_exit_status=$?;
+    eval "$(mise hook-env -s bash)";
+    return $previous_exit_status;
+  };
+  if [[ ";${PROMPT_COMMAND:-};" != *";_mise_hook;"* ]]; then
+    PROMPT_COMMAND="_mise_hook${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+  fi
+  if [ -z "${_mise_cmd_not_found:-}" ]; then
     _mise_cmd_not_found=1
     if [ -n "$(declare -f command_not_found_handle)" ]; then
-        _mise_cmd_not_found_handle=$(declare -f command_not_found_handle)
-        eval "${_mise_cmd_not_found_handle/command_not_found_handle/_command_not_found_handle}"
+      _mise_cmd_not_found_handle=$(declare -f command_not_found_handle)
+      eval "${_mise_cmd_not_found_handle/command_not_found_handle/_command_not_found_handle}"
     fi
 
     command_not_found_handle() {
-        if mise hook-not-found -s bash -- "$1"; then
-          _mise_hook
-          "$@"
-        elif [ -n "$(declare -f _command_not_found_handle)" ]; then
-            _command_not_found_handle "$@"
-        else
-            echo "bash: command not found: $1" >&2
-            return 127
-        fi
+      if mise hook-not-found -s bash -- "$1"; then
+        _mise_hook
+        "$@"
+      elif [ -n "$(declare -f _command_not_found_handle)" ]; then
+        _command_not_found_handle "$@"
+      else
+        echo "bash: command not found: $1" >&2
+        return 127
+      fi
     }
+  fi
 fi
