@@ -92,7 +92,6 @@ export LESS="FSRX"
 export PAGER=less
 
 # git thingies.
-source_maybe "$HOME/.gitcompletion.sh"
 alias gti=git
 
 # Setting up PS1.
@@ -100,9 +99,6 @@ PS1='\u:\w$(__git_ps1 "\[\033[0;32m\]@%s\[\033[0m\]\]") $ '
 
 # Introduce `cclip` as a fast way to use `xclip` but selecting the clipboard.
 alias cclip='xclip -selection clipboard'
-
-# g completion
-source_maybe "$HOME/.gcompletion.sh"
 
 ##
 # Programming languages and environments.
@@ -127,6 +123,9 @@ export GOPATH=$HOME
 
 # The g utility. See: https://github.com/mssola/g
 source_maybe "$HOME/.g.sh"
+source_maybe "$HOME/.gcompletion.sh"
+
+# Git prompt.
 source_maybe "$HOME/.git-prompt.sh"
 
 # Complete the `docker` command if possible.
@@ -148,10 +147,6 @@ alias random_string="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -
 
 # Cargo environment.
 source_maybe "$HOME/.cargo/env"
-
-# This is relevant for the alternative switching globally, otherwise I keep
-# linking shit up.
-export NODE_VERSION="20"
 
 ##
 # Lastly I had some problems with the GPG agent recently. So I copied a solution
@@ -191,9 +186,57 @@ if command -v rustc &> /dev/null; then
   fi
 fi
 
-# Yarn thingies.
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+##
+# $ mise activate bash >> .bashrc
 
-# Finally RVM requires it to be the last thing on the PATH.
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-export PATH="$PATH:$HOME/.rvm/bin"
+export MISE_SHELL=bash
+export __MISE_ORIG_PATH="$PATH"
+
+mise() {
+  local command
+  command="${1:-}"
+  if [ "$#" = 0 ]; then
+    command mise
+    return
+  fi
+  shift
+
+  case "$command" in
+  deactivate|s|shell)
+    # if argv doesn't contains -h,--help
+    if [[ ! " $@ " =~ " --help " ]] && [[ ! " $@ " =~ " -h " ]]; then
+      eval "$(command mise "$command" "$@")"
+      return $?
+    fi
+    ;;
+  esac
+  command mise "$command" "$@"
+}
+
+_mise_hook() {
+  local previous_exit_status=$?;
+  eval "$(mise hook-env -s bash)";
+  return $previous_exit_status;
+};
+if [[ ";${PROMPT_COMMAND:-};" != *";_mise_hook;"* ]]; then
+  PROMPT_COMMAND="_mise_hook${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+fi
+if [ -z "${_mise_cmd_not_found:-}" ]; then
+    _mise_cmd_not_found=1
+    if [ -n "$(declare -f command_not_found_handle)" ]; then
+        _mise_cmd_not_found_handle=$(declare -f command_not_found_handle)
+        eval "${_mise_cmd_not_found_handle/command_not_found_handle/_command_not_found_handle}"
+    fi
+
+    command_not_found_handle() {
+        if mise hook-not-found -s bash -- "$1"; then
+          _mise_hook
+          "$@"
+        elif [ -n "$(declare -f _command_not_found_handle)" ]; then
+            _command_not_found_handle "$@"
+        else
+            echo "bash: command not found: $1" >&2
+            return 127
+        fi
+    }
+fi
