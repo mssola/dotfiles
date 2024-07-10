@@ -159,6 +159,9 @@
 
 ;;; Programming languages.
 
+;; NOTE: workaround found in: https://github.com/emacs-lsp/lsp-mode/issues/3577#issuecomment-2064491363
+(require 'lsp-mode)
+
 ;; Flags to be passed to `clangd' for LSP integration.
 (after! lsp-clangd
   (setq lsp-clients-clangd-args
@@ -169,6 +172,12 @@
           "--header-insertion=never"
           "--header-insertion-decorators=0"))
   (set-lsp-priority! 'clangd 2))
+
+;; Go: ensure `goimports' is applied on save.
+(add-hook 'go-mode-hook #'lsp-deferred)
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-organize-imports))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 ;;; Organization
 
