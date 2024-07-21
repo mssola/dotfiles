@@ -1,0 +1,18 @@
+#!/bin/bash
+
+arch=$(uname -m)
+if [ "${arch}" != "x86_64" ]; then
+    echo "This tool is only meant to be used on x86_64!"
+    exit 1
+fi
+
+count=$(find /usr/bin/riscv64-*-gcc -printf "%f\n" | grep -v elf -c)
+if [ "$count" -lt 1 ]; then
+    echo "There are too many options for the compiler, not even trying... Bail!"
+    exit 1
+fi
+
+bin=$(find /usr/bin/riscv64-*-gcc  -printf "%f\n" | grep -v elf | rev | cut -c4- | rev)
+
+export ARCH="riscv"
+export CROSS_COMPILE="${bin}"
