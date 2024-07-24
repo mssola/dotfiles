@@ -151,6 +151,17 @@ alias random_string="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -
 source_maybe "$HOME/.cargo/env"
 
 ##
+# RISC-V
+
+# Setting this value as expected by the Linux Kernel when building it.
+export ARCH=riscv
+
+# If this is not a RISC-V machine, set up cross compilation for it.
+if [ "$(uname -m)" != "riscv64" ]; then
+  export CROSS_COMPILE=riscv64-suse-linux-
+fi
+
+##
 # Lastly I had some problems with the GPG agent recently. So I copied a solution
 # from https://github.com/jessfraz/dotfiles
 
