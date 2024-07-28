@@ -1,0 +1,176 @@
+#!/usr/bin/env bash
+# Copyright (C) 2024-Ω Miquel Sabaté Solà <mikisabate@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#####
+# Build the Linux Kernel and bundle it into a tarball that can then be used on
+# another machine. After you call this script it will:
+#   1. Either call `defconfig` or re-use an existing .config as per user request.
+#   2. Call `menuconfig` so the user can double check the configuration.
+#   3. Build the Kernel.
+#   4. Copy into a tarball the resulting image, modules, dtbs, and headers. An
+#      install.sh script is also bundled in.
+#
+# After that just send the resulting tarball to the machine where you want to
+# install this kernel. In there you just need to untar the given bundle and then
+# run the `install.sh` script from within the resulting directory. This will:
+#   1. Copy recursively all the files into their proper paths.
+#   2. Make an initramfs for the new image.
+#   3. Run your $EDITOR to update the /boot/extlinux/extlinux.conf file.
+#
+# *NOTE*: this script expects the `ARCH` environment variable to be set, and if
+# that doesn't match the current architecture, then it will expect to have
+# `CROSS_COMPILE` set as well.
+# *NOTE*: because of the funny machines I'm testing this in, only Debian was
+# tested. Hence, we assume tools such as `update-initramfs` exist instead of
+# using `dracut`.
+#####
+
+set -e
+
+##
+# Initial checks.
+
+# Most of the times, we are safer if we just set the `ARCH` env. variable.
+if [ -z "$ARCH" ]; then
+    echo "kbuild (error): \$ARCH has to be defined."
+    exit 1
+fi
+
+# Is cross compilation the thing we want?
+if [ "$ARCH" != "$(uname -m)" ]; then
+    # Confusingly enough, riscv64 is supposed to be passed as 'riscv' to the
+    # kernel. Hence, don't take that as being different.
+    if [ "$(uname -m)" != "riscv64" ] || [ "$ARCH" != "riscv" ]; then
+        # We are indeed cross compiling. If `CROSS_COMPILE` is not set at this
+        # point we should raise an error.
+        if [ -z "$CROSS_COMPILE" ]; then
+            echo "kbuild (error): \$CROSS_COMPILE has to be defined."
+            exit 1
+        fi
+    fi
+fi
+
+# To avoid embarrassing moments, let's make sure that we are in the Linux repo.
+if [ ! -f "Kbuild" ]; then
+    echo "kbuild (error): we are not in the Linux Kernel."
+    exit 1
+fi
+
+##
+# .config
+
+if [ ! -f  ".config" ]; then
+    echo "kbuild (info): no '.config' file found"
+    make defconfig
+fi
+
+config_options=("From a default configuration (defconfig)" "From an existing .config file")
+echo "kconfig (info): how do you want to configure the build?"
+PS3="> "
+select _opt in "${config_options[@]}" "Quit"; do 
+    case "$REPLY" in
+    1)
+        make defconfig
+        echo "kbuild (info): running 'menuconfig' to double check."
+        make menuconfig
+        break
+        ;;
+    2)
+        echo "kbuild (info): running 'menuconfig' to double check."
+        make menuconfig
+        break
+        ;;
+    3)
+        echo "kbuild (info): bye!"
+        exit 0
+        ;;
+    *)
+        echo "kbuild (info): not an option. Try again..."
+        continue
+        ;;
+    esac
+done
+
+##
+# Build the kernel.
+
+echo "kbuild (info): building the Linux kernel..."
+make -j "$(nproc)"
+
+##
+# Installing into a local bundle.
+
+name=$(cat include/config/kernel.release)
+
+if [ -z "$INSTALL_PATH" ]; then
+    INSTALL_PATH="buildroot-$name"
+fi
+mkdir -p "$INSTALL_PATH/usr/lib/modules/$name"
+pushd "$INSTALL_PATH" > /dev/null
+ln -s usr/lib lib
+popd > /dev/null
+
+make modules_install INSTALL_MOD_PATH="$INSTALL_PATH"
+make dtbs_install INSTALL_DTBS_PATH="$INSTALL_PATH/boot/dtbs/$name"
+make headers_install INSTALL_HDR_PATH="$INSTALL_PATH/usr"
+
+unlink "$INSTALL_PATH/lib"
+
+cp "arch/$ARCH/boot/Image.gz" "$INSTALL_PATH/boot/vmlinuz-$name"
+cp .config "$INSTALL_PATH/boot/config-$name"
+
+##
+# Setup install.sh script.
+
+cat <<SCRIPT > "$INSTALL_PATH/install.sh"
+#!/usr/bin/env bash
+
+set -ex
+
+if [ "\$EUID" -ne 0 ];then
+   echo "kbuild (error): run this as root."
+   exit 1
+fi
+
+if [ ! -f /sbin/update-initramfs ] && [ ! -f /usr/bin/dracut ]; then
+   echo "kbuild (error): you need either 'dracut' or 'update-initramfs'."
+   exit 1
+fi
+
+cp -rv usr /
+cp -rv boot /
+
+export PATH=/sbin:\$PATH
+if command -v dracut &> /dev/null
+then
+    dracut --kver=$name -f
+else
+    update-initramfs -k $name -u
+fi
+
+if [ -z "\$EDITOR" ]; then
+   EDITOR=vi
+fi
+\$EDITOR /boot/extlinux/extlinux.conf
+SCRIPT
+
+##
+# Create tarball.
+
+tar czf "$INSTALL_PATH.tar.gz" "$INSTALL_PATH"
+rm -r "$INSTALL_PATH"
+
+echo "kbuild (info): your build is now ready at '$INSTALL_PATH.tar.gz'."
