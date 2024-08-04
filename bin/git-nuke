@@ -24,13 +24,22 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
-# The `master` branch should not be removed.
-if [ "$1" = "master" ]; then
-    echo "You are not allowed to delete the 'master' branch."
+upstream="origin"
+if [ -n "$1" ]; then
+    upstream="$1"
+fi
+default=$(git rev-parse --abbrev-ref "$upstream"/HEAD | cut -c8-)
+
+# The `default` branch should not be removed.
+if [ "$1" = "$default" ]; then
+    echo "You are not allowed to delete the default branch."
     exit 1
 fi
 
-full_name="$(git symbolic-ref HEAD 2>/dev/null)" || (echo "Detached branch, bailing..."; exit 1)
+full_name="$(git symbolic-ref HEAD 2>/dev/null)" || (
+    echo "Detached branch, bailing..."
+    exit 1
+)
 name="$(basename "$full_name")"
 
 # If we are nuking the current branch, move to `master` first.

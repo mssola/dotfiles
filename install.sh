@@ -21,17 +21,17 @@ set -e
 
 binaries=(git curl vim emacs)
 for bin in "${binaries[@]}"; do
-  if ! [ -x "$(command -v ${bin})" ]; then
-    echo "Error: the binary '${bin}' is not installed." >&2
-    exit 1
-  fi
+    if ! [ -x "$(command -v ${bin})" ]; then
+        echo "Error: the binary '${bin}' is not installed." >&2
+        exit 1
+    fi
 done
 
 ##
 # Main procedure: link as many files as possible.
 
 ary=(.git .gitignore .gitmodules LICENSE *.gitignore *.yml *.org install.sh
-     update.sh .emacs.d .config .gnupg Images .i3 .i3status.conf)
+    update.sh .emacs.d .config .gnupg Images .i3 .i3status.conf README.md)
 ignore="-name ${ary[0]}"
 for i in "${ary[@]:1:${#ary[@]}}"; do
     ignore+=" -or -name $i"
@@ -88,7 +88,7 @@ fi
 
 # Get git completiom right.
 if ! [ -f "${HOME:?}/.git-prompt.sh" ]; then
-  curl -o "${HOME:?}/.git-prompt.sh" https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+    curl -o "${HOME:?}/.git-prompt.sh" https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 fi
 
 # Initialize Vim plugins.
