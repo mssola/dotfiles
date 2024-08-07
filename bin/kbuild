@@ -135,7 +135,14 @@ cp .config "$INSTALL_PATH/boot/config-$name"
 ##
 # Setup install.sh script.
 
-cat <<SCRIPT > "$INSTALL_PATH/install.sh"
+# Files that are going to be installed. Funnily enough, the pipeline will create
+# the "files.txt" first, so it will show on the `find` output. Hence the stupid
+# workaround you see of moving it in later.
+find "$INSTALL_PATH" -type f -printf "/%P\n" >files.txt
+mv files.txt "$INSTALL_PATH/files.txt"
+
+# Now write the actual install script.
+cat <<SCRIPT >"$INSTALL_PATH/install.sh"
 #!/usr/bin/env bash
 
 set -ex
@@ -165,6 +172,27 @@ if [ -z "\$EDITOR" ]; then
    EDITOR=vi
 fi
 \$EDITOR /boot/extlinux/extlinux.conf
+SCRIPT
+
+# And the uninstall script.
+cat <<SCRIPT >"$INSTALL_PATH/uninstall.sh"
+#!/usr/bin/env bash
+
+set -ex
+
+if [ "\$EUID" -ne 0 ];then
+   echo "kbuild (error): run this as root."
+   exit 1
+fi
+
+if [ ! -f files.txt ]; then
+   echo "kbuild (error): there must be a 'files.txt' file."
+   exit 1
+fi
+
+xargs rm -f < files.txt
+rmdir /boot/dtbs/$name
+rmdir /usr/lib/modules/$name
 SCRIPT
 
 ##
