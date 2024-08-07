@@ -72,7 +72,7 @@ fi
 ##
 # .config
 
-if [ ! -f  ".config" ]; then
+if [ ! -f ".config" ]; then
     echo "kbuild (info): no '.config' file found"
     make defconfig
 fi
@@ -80,7 +80,7 @@ fi
 config_options=("From a default configuration (defconfig)" "From an existing .config file")
 echo "kconfig (info): how do you want to configure the build?"
 PS3="> "
-select _opt in "${config_options[@]}" "Quit"; do 
+select _opt in "${config_options[@]}" "Quit"; do
     case "$REPLY" in
     1)
         make defconfig
@@ -119,9 +119,9 @@ if [ -z "$INSTALL_PATH" ]; then
     INSTALL_PATH="buildroot-$name"
 fi
 mkdir -p "$INSTALL_PATH/usr/lib/modules/$name"
-pushd "$INSTALL_PATH" > /dev/null
+pushd "$INSTALL_PATH" >/dev/null
 ln -s usr/lib lib
-popd > /dev/null
+popd >/dev/null
 
 make modules_install INSTALL_MOD_PATH="$INSTALL_PATH"
 make dtbs_install INSTALL_DTBS_PATH="$INSTALL_PATH/boot/dtbs/$name"
