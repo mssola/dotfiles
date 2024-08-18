@@ -62,3 +62,9 @@
 
 [column]
   ui = auto
+
+[sendemail]
+  smtpEncryption = tls
+  smtpServer = smtp.gmail.com
+  smtpUser = mikisabate@gmail.com
+  smtpServerPort = 587
