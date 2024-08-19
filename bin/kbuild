@@ -23,6 +23,10 @@
 #   4. Copy into a tarball the resulting image, modules, dtbs, and headers. An
 #      install.sh script is also bundled in.
 #
+# You can also pass the option `-s/--skip-build`, which skips the call to
+# `defconfig` and/or `menuconfig`. This is useful if you are just developing
+# over the same `.config` file again and again.
+#
 # After that just send the resulting tarball to the machine where you want to
 # install this kernel. In there you just need to untar the given bundle and then
 # run the `install.sh` script from within the resulting directory. This will:
@@ -33,12 +37,31 @@
 # *NOTE*: this script expects the `ARCH` environment variable to be set, and if
 # that doesn't match the current architecture, then it will expect to have
 # `CROSS_COMPILE` set as well.
-# *NOTE*: because of the funny machines I'm testing this in, only Debian was
-# tested. Hence, we assume tools such as `update-initramfs` exist instead of
-# using `dracut`.
+# *NOTE*: we assume that either `update-initramfs` or `dracut` exist. If you are
+# using something else, send me a patch.
 #####
 
 set -e
+
+##
+# Arguments that can be passed.
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -s | --skip-config)
+        SKIP_CONFIG="t"
+        shift
+        ;;
+    -*)
+        echo "kbuild (error): unknown option '$1'."
+        exit 1
+        ;;
+    *)
+        echo "kbuild (warning): argument '$1' will be ignored."
+        shift # past argument
+        ;;
+    esac
+done
 
 ##
 # Initial checks.
@@ -72,37 +95,41 @@ fi
 ##
 # .config
 
-if [ ! -f ".config" ]; then
-    echo "kbuild (info): no '.config' file found"
-    make defconfig
-fi
-
-config_options=("From a default configuration (defconfig)" "From an existing .config file")
-echo "kconfig (info): how do you want to configure the build?"
-PS3="> "
-select _opt in "${config_options[@]}" "Quit"; do
-    case "$REPLY" in
-    1)
+if [ -z "$SKIP_CONFIG" ]; then
+    if [ ! -f ".config" ]; then
+        echo "kbuild (info): no '.config' file found"
         make defconfig
-        echo "kbuild (info): running 'menuconfig' to double check."
-        make menuconfig
-        break
-        ;;
-    2)
-        echo "kbuild (info): running 'menuconfig' to double check."
-        make menuconfig
-        break
-        ;;
-    3)
-        echo "kbuild (info): bye!"
-        exit 0
-        ;;
-    *)
-        echo "kbuild (info): not an option. Try again..."
-        continue
-        ;;
-    esac
-done
+    fi
+
+    config_options=("From a default configuration (defconfig)" "From an existing .config file")
+    echo "kconfig (info): how do you want to configure the build?"
+    PS3="> "
+    select _opt in "${config_options[@]}" "Quit"; do
+        case "$REPLY" in
+        1)
+            make defconfig
+            echo "kbuild (info): running 'menuconfig' to double check."
+            make menuconfig
+            break
+            ;;
+        2)
+            echo "kbuild (info): running 'menuconfig' to double check."
+            make menuconfig
+            break
+            ;;
+        3)
+            echo "kbuild (info): bye!"
+            exit 0
+            ;;
+        *)
+            echo "kbuild (info): not an option. Try again..."
+            continue
+            ;;
+        esac
+    done
+else
+    echo "kbuild (info): skipping configuration step..."
+fi
 
 ##
 # Build the kernel.
