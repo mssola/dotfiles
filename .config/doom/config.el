@@ -196,52 +196,6 @@
   (setq! org-startup-indented nil
          org-hide-leading-stars nil))
 
-;;; Exporting: some functions I use when exporting to PDF cleanly.
-
-(defun mssola/move-file-to-out (dir name ext)
-  "Move out from `DIR' the given file `NAME' if it exists.
-Note that `EXT' must include the period character."
-
-  (when (file-exists-p (concat dir name ext))
-    (unless (file-directory-p (concat dir "out/"))
-      (make-directory (concat dir "out/")))
-    (when (file-exists-p (concat dir "out/" name ext))
-      (delete-file (concat dir "out/" name ext)))
-    (rename-file (concat dir name ext) (concat dir "out/" name ext))))
-
-(defun mssola/export-to-pdf ()
-  "Export the current org document to PDF.
-The generated file will live in an `out' directory (created if it
-isn't there already).  Everything else will be cleaned up, so no
-littering will happen locally."
-
-  (interactive)
-
-  (with-current-buffer (current-buffer)
-    (org-latex-export-to-pdf)
-
-    (let* ((fn (buffer-file-name (current-buffer)))
-           (dir (file-name-directory fn))
-           (name (file-name-base fn))
-           (autodir (concat dir "auto")))
-
-      (when (file-directory-p autodir)
-        (delete-directory autodir t))
-
-      (when (file-exists-p (concat dir name ".tex"))
-        (delete-file (concat dir name ".tex")))
-
-      (mssola/move-file-to-out dir name ".pdf"))))
-
-(map! "<f1>" #'mssola/export-to-pdf)
-
-;; Do funny things so both pdflatex and bibtex just work as expected.
-(setq org-latex-pdf-process
-      '("pdflatex -interaction nonstopmode -output-directory %o %f"
-        "bibtex %b"
-        "pdflatex -interaction nonstopmode -output-directory %o %f"
-        "pdflatex -interaction nonstopmode -output-directory %o %f"))
-
 ;;; Email
 
 ;; Sometimes the load path is not properly set for RPM installs...
