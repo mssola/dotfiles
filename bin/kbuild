@@ -23,9 +23,11 @@
 #   4. Copy into a tarball the resulting image, modules, dtbs, and headers. An
 #      install.sh script is also bundled in.
 #
-# You can also pass the option `-s/--skip-build`, which skips the call to
-# `defconfig` and/or `menuconfig`. This is useful if you are just developing
-# over the same `.config` file again and again.
+# You can also pass two options:
+#   1. `-s/--skip-build`: tell to skip the call to `defconfig` and/or
+#      `menuconfig`. This is useful if you are just developing over the same
+#      `.config` file again and again.
+#   2. `-n/--no-install`: do not prepare the install/uninstall bundle.
 #
 # After that just send the resulting tarball to the machine where you want to
 # install this kernel. In there you just need to untar the given bundle and then
@@ -50,6 +52,10 @@ while [[ $# -gt 0 ]]; do
     case $1 in
     -s | --skip-config)
         SKIP_CONFIG="t"
+        shift
+        ;;
+    -n | --no-install)
+        NO_INSTALL="t"
         shift
         ;;
     -*)
@@ -140,36 +146,39 @@ make -j "$(nproc)"
 ##
 # Installing into a local bundle.
 
-name=$(cat include/config/kernel.release)
+if [ -n "$NO_INSTALL" ]; then
+    echo "kbuild (info): done!"
+else
+    name=$(cat include/config/kernel.release)
 
-if [ -z "$INSTALL_PATH" ]; then
-    INSTALL_PATH="buildroot-$name"
-fi
-mkdir -p "$INSTALL_PATH/usr/lib/modules/$name"
-pushd "$INSTALL_PATH" >/dev/null
-ln -s usr/lib lib
-popd >/dev/null
+    if [ -z "$INSTALL_PATH" ]; then
+        INSTALL_PATH="buildroot-$name"
+    fi
+    mkdir -p "$INSTALL_PATH/usr/lib/modules/$name"
+    pushd "$INSTALL_PATH" >/dev/null
+    ln -s usr/lib lib
+    popd >/dev/null
 
-make modules_install INSTALL_MOD_PATH="$INSTALL_PATH"
-make dtbs_install INSTALL_DTBS_PATH="$INSTALL_PATH/boot/dtbs/$name"
-make headers_install INSTALL_HDR_PATH="$INSTALL_PATH/usr"
+    make modules_install INSTALL_MOD_PATH="$INSTALL_PATH"
+    make dtbs_install INSTALL_DTBS_PATH="$INSTALL_PATH/boot/dtbs/$name"
+    make headers_install INSTALL_HDR_PATH="$INSTALL_PATH/usr"
 
-unlink "$INSTALL_PATH/lib"
+    unlink "$INSTALL_PATH/lib"
 
-cp "arch/$ARCH/boot/Image.gz" "$INSTALL_PATH/boot/vmlinuz-$name"
-cp .config "$INSTALL_PATH/boot/config-$name"
+    cp "arch/$ARCH/boot/Image.gz" "$INSTALL_PATH/boot/vmlinuz-$name"
+    cp .config "$INSTALL_PATH/boot/config-$name"
 
-##
-# Setup install.sh script.
+    ##
+    # Setup install.sh script.
 
-# Files that are going to be installed. Funnily enough, the pipeline will create
-# the "files.txt" first, so it will show on the `find` output. Hence the stupid
-# workaround you see of moving it in later.
-find "$INSTALL_PATH" -type f -printf "/%P\n" >files.txt
-mv files.txt "$INSTALL_PATH/files.txt"
+    # Files that are going to be installed. Funnily enough, the pipeline will create
+    # the "files.txt" first, so it will show on the `find` output. Hence the stupid
+    # workaround you see of moving it in later.
+    find "$INSTALL_PATH" -type f -printf "/%P\n" >files.txt
+    mv files.txt "$INSTALL_PATH/files.txt"
 
-# Now write the actual install script.
-cat <<SCRIPT >"$INSTALL_PATH/install.sh"
+    # Now write the actual install script.
+    cat <<SCRIPT >"$INSTALL_PATH/install.sh"
 #!/usr/bin/env bash
 
 set -ex
@@ -232,8 +241,8 @@ fi
 \$EDITOR /boot/extlinux/extlinux.conf
 SCRIPT
 
-# And the uninstall script.
-cat <<SCRIPT >"$INSTALL_PATH/uninstall.sh"
+    # And the uninstall script.
+    cat <<SCRIPT >"$INSTALL_PATH/uninstall.sh"
 #!/usr/bin/env bash
 
 set -ex
@@ -258,10 +267,11 @@ fi
 \$EDITOR /boot/extlinux/extlinux.conf
 SCRIPT
 
-##
-# Create tarball.
+    ##
+    # Create tarball.
 
-tar czf "$INSTALL_PATH.tar.gz" "$INSTALL_PATH"
-rm -r "$INSTALL_PATH"
+    tar czf "$INSTALL_PATH.tar.gz" "$INSTALL_PATH"
+    rm -r "$INSTALL_PATH"
 
-echo "kbuild (info): your build is now ready at '$INSTALL_PATH.tar.gz'."
+    echo "kbuild (info): your build is now ready at '$INSTALL_PATH.tar.gz'."
+fi
