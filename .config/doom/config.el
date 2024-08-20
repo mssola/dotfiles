@@ -275,12 +275,18 @@
 
 ;;; Elfeed
 
-;; Update feeds when starting elfeed.
-(add-hook 'elfeed-search-mode-hook #'elfeed-update)
-
 ;; Key binding for starting Elfeed.
 (map! :leader "o e" #'elfeed)
 
-;; Only show unread items.
+;; Map 'C-c C-u' to `elfeed-update', just like in mu4e.
+(map! :after elfeed
+      :map elfeed-search-mode-map
+      :prefix "C-c"
+      "C-u" #'elfeed-update)
+
 (after! elfeed
+  ;; From now on run elfeed-update every 30 minutes.
+  (run-at-time nil (* 30 60) 'elfeed-update)
+
+  ;; Only show unread items.
   (setq elfeed-search-filter "@1-month-ago +unread"))
