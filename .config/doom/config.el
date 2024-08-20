@@ -318,3 +318,15 @@ littering will happen locally."
       mml-secure-openpgp-sign-with-sender t)
 
 (add-hook 'message-send-hook 'mml-secure-message-sign-pgpmime)
+
+;;; Elfeed
+
+;; Update feeds when starting elfeed.
+(add-hook 'elfeed-search-mode-hook #'elfeed-update)
+
+;; Key binding for starting Elfeed.
+(map! :leader "o e" #'elfeed)
+
+;; Only show unread items.
+(after! elfeed
+  (setq elfeed-search-filter "@1-month-ago +unread"))
