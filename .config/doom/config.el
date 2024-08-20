@@ -260,14 +260,8 @@ littering will happen locally."
   ;; gathers all inboxes.
   (add-to-list 'mu4e-bookmarks
                '(:name  "Inbox"
-                 :query "maildir:/gmail/inbox OR maildir:/comsuse/inbox OR maildir:/desuse/inbox OR maildir:/ajuntament/inbox OR maildir:/sindicat/inbox OR maildir:/uoc/inbox"
+                 :query "maildir:/gmail/inbox OR maildir:/comsuse/inbox OR maildir:/sindicat/inbox OR maildir:/uoc/inbox"
                  :key   ?n))
-
-  ;; Things to look for when acting as a cootw.
-  (add-to-list 'mu4e-bookmarks
-               '(:name  "COOTW"
-                 :query "to:scc-feedback@suse.de"
-                 :key   ?c))
 
   ;; General mu4e settings.
   (setq message-kill-buffer-on-exit t
@@ -285,22 +279,14 @@ littering will happen locally."
         mu4e-context-policy 'ask-if-none
         mu4e-compose-context-policy 'always-ask
 
-        mu4e-change-filenames-when-moving t))
+        mu4e-change-filenames-when-moving t)
+
+  ;; Set the cite style just like what it is on GMail.
+  ;; NOTE: not totally sure on this one.
+  (setq message-cite-style message-cite-style-gmail
+        message-citation-line-function 'message-insert-formatted-citation-line))
 
 ;; Let the account party begin!
-
-(defun mssola/mail-signature (key)
-  "Return the proper mail signature for the given `KEY'."
-
-  (cond
-   ((string= key "pgp")
-    (concat
-     "Miquel Sabaté Solà,\n"
-     "PGP: 4096R / 1BA5 3C7A C93D CA2A CFDF DA97 96BE 8C6F D89D 6565\n"))
-   ((string= key "town")
-    (concat
-     "Miquel Sabaté Solà,\n"
-     "Regidor de l'Ajuntament de Capellades\n"))))
 
 (set-email-account! "gmail"
                     '((mu4e-sent-folder       . "/gmail/Sent")
@@ -308,39 +294,8 @@ littering will happen locally."
                       (mu4e-trash-folder      . "/gmail/Trash")
                       (mu4e-refile-folder     . "/gmail/All")
                       (smtpmail-smtp-user     . "mikisabate@gmail.com")
-                      (user-mail-address      . "mikisabate@gmail.com")
-                      (mu4e-compose-signature . (mssola/mail-signature "pgp")))
+                      (user-mail-address      . "mikisabate@gmail.com"))
                     t)
-
-(set-email-account! "uoc"
-                    '((mu4e-sent-folder       . "/uoc/Sent")
-                      (mu4e-drafts-folder     . "/uoc/Drafts")
-                      (mu4e-trash-folder      . "/uoc/Trash")
-                      (mu4e-refile-folder     . "/uoc/All")
-                      (smtpmail-smtp-user     . "mssola@uoc.edu")
-                      (user-mail-address      . "mssola@uoc.edu")
-                      (mu4e-compose-signature . (mssola/mail-signature "pgp")))
-                    nil)
-
-(set-email-account! "ajuntament"
-                    '((mu4e-sent-folder       . "/ajuntament/Elements enviats")
-                      (mu4e-drafts-folder     . "/ajuntament/Esborranys")
-                      (mu4e-trash-folder      . "/ajuntament/Elements suprimits")
-                      (mu4e-refile-folder     . "/ajuntament/Arxiu")
-                      (smtpmail-smtp-user     . "sabatesm@capellades.cat")
-                      (user-mail-address      . "sabatesm@capellades.cat")
-                      (mu4e-compose-signature . (mssola/mail-signature "town")))
-                    nil)
-
-(set-email-account! "sindicat"
-                    '((mu4e-sent-folder       . "/sindicat/inbox/Sent")
-                      (mu4e-drafts-folder     . "/sindicat/inbox/Drafts")
-                      (mu4e-trash-folder      . "/sindicat/inbox/Trash")
-                      (mu4e-refile-folder     . "/sindicat/inbox/Archive")
-                      (smtpmail-smtp-user     . "msabate@cgtsuse.org")
-                      (user-mail-address      . "msabate@cgtsuse.org")
-                      (mu4e-compose-signature . (mssola/mail-signature "pgp")))
-                    nil)
 
 (set-email-account! "comsuse"
                     '((mu4e-sent-folder       . "/comsuse/Elements enviats")
@@ -348,50 +303,18 @@ littering will happen locally."
                       (mu4e-trash-folder      . "/comsuse/Elements suprimits")
                       (mu4e-refile-folder     . "/comsuse/Arxiu")
                       (smtpmail-smtp-user     . "msabate@suse.com")
-                      (user-mail-address      . "msabate@suse.com")
-                      (mu4e-compose-signature . (mssola/mail-signature "pgp")))
-                    nil)
-
-(set-email-account! "desuse"
-                    '((mu4e-sent-folder       . "/desuse/Sent")
-                      (mu4e-drafts-folder     . "/desuse/Drafts")
-                      (mu4e-trash-folder      . "/desuse/Trash")
-                      (mu4e-refile-folder     . "/desuse/Archives")
-                      (smtpmail-smtp-user     . "msabate@suse.de")
-                      (user-mail-address      . "msabate@suse.de")
-                      (mu4e-compose-signature . (mssola/mail-signature "pgp")))
+                      (user-mail-address      . "msabate@suse.com"))
                     nil)
 
 ;; My main account is properly accounted as a gmail one, but the UOC one is not.
 ;; Let's add it here (we need to have them all listed).
-(setq +mu4e-gmail-accounts '(("mikisabate@gmail.com" . "/gmail")
-                             ("mssola@uoc.edu" . "/uoc")))
+(setq +mu4e-gmail-accounts '(("mikisabate@gmail.com" . "/gmail")))
+
+;; Colorize patch-based emails
+(add-hook 'gnus-part-display-hook 'message-view-patch-highlight)
 
 ;; Last but not least, let's configure PGP with mu4e.
 (setq mml-secure-openpgp-signers '("0x96BE8C6FD89D6565")
       mml-secure-openpgp-sign-with-sender t)
 
 (add-hook 'message-send-hook 'mml-secure-message-sign-pgpmime)
-
-(defun mssola/clean-email-env ()
-  "Clean the maildir environment."
-
-  (interactive)
-
-  ;; The 'ajuntament' maildir is a bit special, since I have to handle it
-  ;; manually for embarrasing reasons.
-  (mapc (lambda (f)
-          (unless (file-directory-p f)
-            (delete-file f)))
-        (directory-files (concat (file-name-as-directory mssola-data-dir)
-                                 "mail/ajuntament/inbox/new")
-                         t)))
-
-;; This is the only hook that `mu4e' allows us to actually do something around
-;; fetching emails. Let's clean the environment before anything, which should be
-;; fine for stupid maildirs such as 'ajuntament'.
-;;
-;; NOTE: this is only done for my workstation. For other machines this is not so
-;; relevant.
-(when (mssola/email-p)
-  (add-hook 'mu4e-update-pre-hook 'mssola/clean-email-env))

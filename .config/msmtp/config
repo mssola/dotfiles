@@ -1,7 +1,9 @@
 # Set default values for all following accounts.
 defaults
-auth    on
-tls     on
+auth login
+tls on
+tls_certcheck off
+tls_starttls on
 logfile ~/.msmtp.log
 
 # gmail.com
@@ -9,7 +11,7 @@ account      gmail
 host         smtp.gmail.com
 port         587
 from         mikisabate@gmail.com
-user         mikisabate
+user         mikisabate@gmail.com
 passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpassgmail.gpg"
 
 # suse.com
@@ -17,40 +19,8 @@ account      comsuse
 host         smtp.gmail.com
 port         587
 from         msabate@suse.com
-user         msabate
+user         msabate@suse.com
 passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpasssusecom.gpg"
-
-# suse.de
-account      desuse
-host         imap.suse.de
-port         587
-from         msabate@imapsusede
-user         msabate@imapsusede
-passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.imapsusede.gpg"
-
-# cgtsuse.org
-account      sindicat
-host         cgtsuse.org
-port         587
-from         msabate@cgtsuse.org
-user         msabate@cgtsuse.org
-passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpasssusede.gpg"
-
-# capellades.cat
-account      ajuntament
-host         mail.diba.cat
-port         587
-from         sabatesm@capellades.cat
-user         dibasp\sabatesm
-passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpasssusede.gpg"
-
-# uoc.edu
-account      uoc
-host         smtp.gmail.com
-port         587
-from         mssola@uoc.edu
-user         mssola
-passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpassuoc.gpg"
 
 # Set a default account
 account default : gmail
