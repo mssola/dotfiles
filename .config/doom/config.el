@@ -2,20 +2,10 @@
 
 ;;; Basic information.
 
-(defconst mssola-data-dir "/home/mssola/data"
-  "Directory located in a big partition where I dump a lot of crap.")
-
 ;; There are some packages that expect us to have a `user-full-name' and a
 ;; `user-mail-address' defined.
 (setq user-full-name "Miquel Sabaté Solà"
       user-mail-address "mikisabate@gmail.com")
-
-;;; General utility functions.
-
-(defun mssola/email-p ()
-  "Returns true if the current machine is where my email lives."
-
-  (string= (system-name) "lair"))
 
 ;;; General
 
@@ -260,12 +250,9 @@
                       (user-mail-address      . "msabate@suse.com"))
                     nil)
 
-;; My main account is properly accounted as a gmail one, but the UOC one is not.
-;; Let's add it here (we need to have them all listed).
-(setq +mu4e-gmail-accounts '(("mikisabate@gmail.com" . "/gmail")))
-
 ;; Colorize patch-based emails
-(add-hook 'gnus-part-display-hook 'message-view-patch-highlight)
+(after! message-view-patch
+  (add-hook 'gnus-part-display-hook 'message-view-patch-highlight))
 
 ;; Last but not least, let's configure PGP with mu4e.
 (setq mml-secure-openpgp-signers '("0x96BE8C6FD89D6565")
