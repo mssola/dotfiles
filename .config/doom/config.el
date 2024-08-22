@@ -129,9 +129,12 @@
 (dolist (hook '(erc-mode-hook org-mode-hook text-mode-hook))
   (add-hook hook #'abbrev-mode))
 
-;; Tweaking more defaults.
+;; Set the default width of tabs. This can be tweaked away by `editorconfig'
+;; support, but at least set some defaults now.
 (setq-default tab-width 4)
 (setq tab-width 4)
+
+;; No auto save.
 (setq-default auto-save-default nil)
 
 ;;; Spell checking
