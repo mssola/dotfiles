@@ -280,3 +280,33 @@
 
   ;; Only show unread items.
   (setq elfeed-search-filter "@1-month-ago +unread"))
+
+;;; IRC
+
+;; Key binding for starting Circe.
+(map! :leader "o i" #'=irc)
+
+(after! circe
+  (setq auth-sources '((:source "~/org/authinfo.gpg")))
+
+  ;; Given a :user and a :machine, returns the password assigned to it on my
+  ;; personal authinfo.gpg file as defined in the `auth-sources'.
+  (defun mssola/fetch-password-from-auth (&rest params)
+    (require 'auth-source)
+    (let ((match (car (apply 'auth-source-search params))))
+      (if match
+          (let ((secret (plist-get match :secret)))
+            (if (functionp secret)
+                (funcall secret)
+              secret))
+        (error "Password not found for %S" params))))
+
+  (set-irc-server! "irc.libera.chat"
+    '(:tls t
+      :port 6697
+      :nick "mssola"
+      :sasl-username "mssola"
+      :sasl-password
+      (lambda (server)
+        (mssola/fetch-password-from-auth :user "mssola" :machine server))
+      :channels ("#riscv"))))
