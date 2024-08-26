@@ -3,14 +3,14 @@
 
 # Set LC_ALL always to UTF-8.
 if [ "$(locale -a | grep ca_ES.utf8)" != "" ]; then
-    export LC_ALL=ca_ES.utf8
+  export LC_ALL=ca_ES.utf8
 else
-    if [ "$(locale -a | grep en_US.utf8)" != "" ]; then
-        export LC_ALL=en_US.utf8
-    else
-        echo "[Warning] Could not set up a proper locale." \
-             "There is probably something missing on your host machine..."
-    fi
+  if [ "$(locale -a | grep en_US.utf8)" != "" ]; then
+    export LC_ALL=en_US.utf8
+  else
+    echo "[Warning] Could not set up a proper locale." \
+      "There is probably something missing on your host machine..."
+  fi
 fi
 
 ##
@@ -18,9 +18,9 @@ fi
 
 # Sources the given file if it really exists.
 source_maybe() {
-    if [ -f "$1" ]; then
-        source "$1"
-    fi
+  if [ -f "$1" ]; then
+    source "$1"
+  fi
 }
 
 ##
@@ -28,11 +28,11 @@ source_maybe() {
 # resize the TTY to the actual terminal size.
 
 if grep -Fq "hypervisor" /proc/cpuinfo; then
-    if [ -x "$(command -v resize)" ]; then
-        eval `resize`
-    else
-      echo "Consider installing the `resize` binary if you want a proper TTY size."
-    fi
+  if [ -x "$(command -v resize)" ]; then
+    eval $(resize)
+  else
+    echo "Consider installing the $(resize) binary if you want a proper TTY size."
+  fi
 fi
 
 ##
@@ -57,7 +57,7 @@ alias cd..='cd ..'
 ##
 # If `bat` is available, use it as a drop-in replacement for `cat (1)`.
 
-if command -v bat &> /dev/null; then
+if command -v bat &>/dev/null; then
   alias cat='bat'
 
   # Use it on man pages too.
@@ -107,7 +107,7 @@ alias cclip='xclip -selection clipboard'
 
 # Rake completion
 if [ -f "$HOME/.rake_completion" ]; then
-    complete -C "$HOME/.rake_completion" -o default rake
+  complete -C "$HOME/.rake_completion" -o default rake
 fi
 
 # Alias bundle exec
@@ -136,7 +136,7 @@ source_maybe "$HOME/.dockercompletion.sh"
 # Add the `bin` dir to the path if possible. See:
 # https://github.com/mssola/dotfiles.
 if [ -d "$HOME/bin" ]; then
-    export PATH=$HOME/bin:$PATH
+  export PATH=$HOME/bin:$PATH
 fi
 
 # Some packages install inside of ~/.local/bin
@@ -193,7 +193,7 @@ export PATH=$PATH:$HOME/.config/emacs/bin
 
 # If we have Rust's source code, export the special `RUST_SRC_PATH`, since this
 # is useful for completion tools.
-if command -v rustc &> /dev/null; then
+if command -v rustc &>/dev/null; then
   if [ -d "$(rustc --print sysroot)/lib/rustlib/src/rust/library" ]; then
     export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/library"
   fi
@@ -202,7 +202,7 @@ fi
 ##
 # $ mise activate bash >> .bashrc
 
-if command -v mise &> /dev/null; then
+if command -v mise &>/dev/null; then
   export MISE_SHELL=bash
   export __MISE_ORIG_PATH="$PATH"
 
@@ -216,22 +216,22 @@ if command -v mise &> /dev/null; then
     shift
 
     case "$command" in
-      deactivate|s|shell)
-        # if argv doesn't contains -h,--help
-        if [[ ! " $@ " =~ " --help " ]] && [[ ! " $@ " =~ " -h " ]]; then
-          eval "$(command mise "$command" "$@")"
-          return $?
-        fi
-        ;;
+    deactivate | s | shell)
+      # if argv doesn't contains -h,--help
+      if [[ ! " $@ " =~ " --help " ]] && [[ ! " $@ " =~ " -h " ]]; then
+        eval "$(command mise "$command" "$@")"
+        return $?
+      fi
+      ;;
     esac
     command mise "$command" "$@"
   }
 
   _mise_hook() {
-    local previous_exit_status=$?;
-    eval "$(mise hook-env -s bash)";
-    return $previous_exit_status;
-  };
+    local previous_exit_status=$?
+    eval "$(mise hook-env -s bash)"
+    return $previous_exit_status
+  }
   if [[ ";${PROMPT_COMMAND:-};" != *";_mise_hook;"* ]]; then
     PROMPT_COMMAND="_mise_hook${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
   fi
