@@ -108,19 +108,6 @@ set expandtab
 set backspace=indent,eol,start
 
 ""
-" Plugins.
-
-filetype off
-filetype indent plugin off
-
-" All the plugins are listed in my bundles file, that will be installed
-" inside the ~/.vim directory.
-source ~/.vim/bundles.vim
-
-" Enable plugins again.
-filetype indent plugin on
-
-""
 " Everything regarding filetypes: indentation rules, gofmt & friends.
 
 source ~/.vim/autocmd.vim

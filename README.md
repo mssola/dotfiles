@@ -1,11 +1,5 @@
-These are my personal dotfiles, use them at your own risk! You can download
-everything by performing the following command (notice the `--recursive` flag):
-
-```bash
-$ git clone --recursive https://github.com/mssola/dotfiles.git
-```
-
-To install everything just run the `install.sh` script.
+These are my personal dotfiles, use them at your own risk! To install everything
+just run the `install.sh` script.
 
 ## GNU Emacs
 
