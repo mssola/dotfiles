@@ -185,7 +185,7 @@ else
 
     unlink "$INSTALL_PATH/lib"
 
-    cp "arch/$ARCH/boot/Image.gz" "$INSTALL_PATH/boot/vmlinuz-$name"
+    make install INSTALL_PATH="$INSTALL_PATH/boot"
     cp .config "$INSTALL_PATH/boot/config-$name"
 
     ##
