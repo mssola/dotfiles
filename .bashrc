@@ -66,20 +66,17 @@ if command -v bat &>/dev/null; then
 fi
 
 # Set up fzf key bindings and fuzzy completion
-if command -v fzf &> /dev/null; then
+if command -v fzf &>/dev/null; then
   eval "$(fzf --bash)"
 fi
 
 ##
 # Editors & terminals.
 
-# Set GNU Emacs as the default editor. You can find this `emacsclient-a-nw`
-# executable in the `bin` directory of my dotfiles. That being said, in the
-# `bin` directory there is a globally installed script called `e`. This is the
-# script that will be called most of the times from the CLI for reaching out to
-# the default editor.
-export EDITOR=emacsclient-a-nw
-export VISUAL=emacsclient-a-nw
+# The default editor is simply called 'e', which is a shell script that will
+# call the proper editor depending on what's installed on the system.
+export EDITOR=e
+export VISUAL=e
 alias vi=vim
 
 # We want a full-fledged 256-color terminal.

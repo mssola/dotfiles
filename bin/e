@@ -14,14 +14,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# A handy shortcut for opening up the default editor with the given
-# arguments. If this script is run by root, then it will start GNU Emacs with
-# the --quick flag.
-#
-# NOTE: this script is meant to be installed globally.
+# The *default editor*, which is meant to be installed globally. It attempts to
+# write an editor with this preference:
+#   1. GNU Emacs in client mode.
+#   2. Vim -> Vi.
+#   3. Standalone GNU Emacs.
+#   4. Outta luck: print an error message.
 
-if [[ $EUID -eq 0 ]]; then
-    exec emacs --quick --no-window-system "$@"
+if [ -x "$(command -v emacsclient)" ]; then
+    exec emacsclient -a "" -nw "$@" -c
+elif [ -x "$(command -v vim)" ]; then
+    exec vim "$@"
+elif [ -x "$(command -v vi)" ]; then
+    exec vim "$@"
+elif [ -x "$(command -v emacs)" ]; then
+    exec emacs --quick "$@"
 else
-    exec "$EDITOR" "$@"
+    echo "No suitable editor found!"
+    exit 1
 fi
