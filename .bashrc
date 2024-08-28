@@ -46,12 +46,9 @@ source_maybe "$HOME/.config/user-dirs.dirs"
 
 # Beautifying ls command.
 alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias lisa='ls -lisa --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 
 # Alias related to cd
-alias ..='cd ..'
 alias cd..='cd ..'
 
 ##
@@ -77,7 +74,6 @@ fi
 # call the proper editor depending on what's installed on the system.
 export EDITOR=e
 export VISUAL=e
-alias vi=vim
 
 # We want a full-fledged 256-color terminal.
 TERM=xterm-256color
@@ -141,7 +137,6 @@ export PATH=$HOME/.local/bin:$PATH
 
 # Some other misc. alias.
 alias iosc="osc -A https://api.suse.de"
-alias ag='ag --nocolor --path-to-ignore ~/.agignore'
 alias random_string="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1"
 
 # Cargo environment.
@@ -183,7 +178,6 @@ alias ssh="gpg-connect-agent updatestartuptty /bye >/dev/null; ssh"
 
 # Handy alias for the ip command
 alias ip="ip --color"
-alias ipb="ip --color --brief"
 
 # Add the binaries of Doom Emacs into my PATH.
 export PATH=$PATH:$HOME/.config/emacs/bin
