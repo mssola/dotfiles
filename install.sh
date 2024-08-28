@@ -19,7 +19,7 @@ set -e
 ##
 # Let's ask for some dependencies and nice-to-have binaries.
 
-binaries=(git curl vim emacs)
+binaries=(git curl vim)
 for bin in "${binaries[@]}"; do
     if ! [ -x "$(command -v ${bin})" ]; then
         echo "Error: the binary '${bin}' is not installed." >&2
@@ -70,18 +70,22 @@ done
 ##
 # GNU Emacs: just install Doom and take it from there.
 
-rm -rf "${HOME:?}/.config/doom"
-ln -s "$(readlink -f .config/doom)" "${HOME:?}/.config/doom"
+if [ -x "$(command -v emacs)" ]; then
+    rm -rf "${HOME:?}/.config/doom"
+    ln -s "$(readlink -f .config/doom)" "${HOME:?}/.config/doom"
 
-if [ -d "${HOME:?}/.config/emacs" ]; then
-    if [ -x "$(command -v doom)" ]; then
-        doom upgrade
+    if [ -d "${HOME:?}/.config/emacs" ]; then
+        if [ -x "$(command -v doom)" ]; then
+            doom upgrade
+        fi
+    else
+        git clone https://github.com/hlissner/doom-emacs "${HOME:?}/.config/emacs"
     fi
-else
-    git clone https://github.com/hlissner/doom-emacs "${HOME:?}/.config/emacs"
-fi
 
-"${HOME:?}/.config/emacs/bin/doom" install
+    "${HOME:?}/.config/emacs/bin/doom" install
+else
+    echo "Skipping GNU Emacs setup."
+fi
 
 ##
 # Other stuff
