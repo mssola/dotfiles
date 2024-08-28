@@ -30,8 +30,8 @@ done
 ##
 # Main procedure: link as many files as possible.
 
-ary=(.git .gitignore .gitmodules LICENSE *.gitignore *.yml *.org install.sh
-    update.sh .emacs.d .config .gnupg Images .i3 .i3status.conf README.md)
+ary=(.git .github .gitignore LICENSE *.gitignore *.yml *.org
+    install.sh .config .gnupg README.md)
 ignore="-name ${ary[0]}"
 for i in "${ary[@]:1:${#ary[@]}}"; do
     ignore+=" -or -name $i"
@@ -90,9 +90,6 @@ fi
 if ! [ -f "${HOME:?}/.git-prompt.sh" ]; then
     curl -o "${HOME:?}/.git-prompt.sh" https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 fi
-
-# Initialize Vim plugins.
-vim +PluginInstall +qall
 
 # Download and install the g utility
 pushd /tmp
