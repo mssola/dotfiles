@@ -185,7 +185,7 @@ else
 
     unlink "$INSTALL_PATH/lib"
 
-    make install INSTALL_PATH="$INSTALL_PATH/boot"
+    make install INSTALL_PATH="$INSTALL_PATH/boot" &>/dev/null
     cp .config "$INSTALL_PATH/boot/config-$name"
 
     ##
