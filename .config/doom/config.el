@@ -214,6 +214,7 @@
   (setq message-kill-buffer-on-exit t
         mu4e-update-interval 600
         mu4e-use-fancy-chars nil
+        gnus-treat-display-smileys nil
 
         ;; doom-emacs adds a lot of clutter here and I'm a simple man.
         mu4e-headers-fields
@@ -254,8 +255,7 @@
                     nil)
 
 ;; Colorize patch-based emails
-(after! message-view-patch
-  (add-hook 'gnus-part-display-hook 'message-view-patch-highlight))
+(add-hook 'gnus-part-display-hook 'message-view-patch-highlight)
 
 ;; Last but not least, let's configure PGP with mu4e.
 (setq mml-secure-openpgp-signers '("0x96BE8C6FD89D6565")
