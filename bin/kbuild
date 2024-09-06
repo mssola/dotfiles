@@ -17,17 +17,18 @@
 #####
 # Build the Linux Kernel and bundle it into a tarball that can then be used on
 # another machine. After you call this script it will:
-#   1. Either call `defconfig` or re-use an existing .config as per user request.
+#   1. Call `defconfig`/`oldconfig` depending on whether the `.config` file
+#      exists or not.
 #   2. Call `menuconfig` so the user can double check the configuration.
 #   3. Build the Kernel.
-#   4. Copy into a tarball the resulting image, modules, dtbs, and headers. An
-#      install.sh script is also bundled in.
+#   4. Copy into a tarball the resulting image, modules, dtbs, and headers. Two
+#      scripts are bundled in: install.sh and uninstall.sh.
 #
 # You can also pass some options:
 #   1. `-s/--skip-build`: tell to skip the call to `defconfig` and/or
 #      `menuconfig`. This is useful if you are just developing over the same
 #      `.config` file again and again.
-#   2. `-n/--no-install`: do not prepare the install/uninstall bundle.
+#   2. `-n/--no-install`: don't generate the install/uninstall files.
 #   3. `-h/--help`: show the help message.
 #
 # After that just send the resulting tarball to the machine where you want to
@@ -40,8 +41,8 @@
 # *NOTE*: this script expects the `ARCH` environment variable to be set, and if
 # that doesn't match the current architecture, then it will expect to have
 # `CROSS_COMPILE` set as well.
-# *NOTE*: we assume that either `update-initramfs` or `dracut` exist. If you are
-# using something else, send me a patch.
+# *NOTE*: it's assumed that either `update-initramfs` or `dracut` exist. If you
+# are using something else, send me a patch.
 #####
 
 set -e
@@ -122,37 +123,16 @@ fi
 # .config
 
 if [ -z "$SKIP_CONFIG" ]; then
-    if [ ! -f ".config" ]; then
-        echo "kbuild (info): no '.config' file found"
+    if [ -f ".config" ]; then
+        echo "kbuild (info): running 'oldconfig'."
+        make oldconfig
+    else
+        echo "kbuild (info): running 'defconfig'."
         make defconfig
     fi
 
-    config_options=("From a default configuration (defconfig)" "From an existing .config file")
-    echo "kconfig (info): how do you want to configure the build?"
-    PS3="> "
-    select _opt in "${config_options[@]}" "Quit"; do
-        case "$REPLY" in
-        1)
-            make defconfig
-            echo "kbuild (info): running 'menuconfig' to double check."
-            make menuconfig
-            break
-            ;;
-        2)
-            echo "kbuild (info): running 'menuconfig' to double check."
-            make menuconfig
-            break
-            ;;
-        3)
-            echo "kbuild (info): bye!"
-            exit 0
-            ;;
-        *)
-            echo "kbuild (info): not an option. Try again..."
-            continue
-            ;;
-        esac
-    done
+    echo "kbuild (info): running 'menuconfig' to double check."
+    make menuconfig
 else
     echo "kbuild (info): skipping configuration step..."
 fi
