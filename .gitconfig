@@ -24,7 +24,7 @@
   sslVerify = true
 
 [alias]
-  a = commit -a -s -v
+  a = commit -a -s
   down = pull --rebase --stat
   fpush = push --force-with-lease
 
@@ -48,6 +48,7 @@
 
 [commit]
   gpgsign = true
+  verbose = true
 
 [filter "lfs"]
   required = true
