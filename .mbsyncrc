@@ -144,7 +144,7 @@ SubFolders Verbatim
 Channel ajuntament
 Far :ajuntament-remote:
 Near :ajuntament-local:
-Patterns * !Calendar
+Patterns * !Calendar !Calendari/Aniversaris !"Elements suprimits/Archive" !Arxivats
 Create None
 Sync Pull New Flags
 Expunge None
@@ -173,10 +173,10 @@ SubFolders Verbatim
 Channel sindicat
 Far :sindicat-remote:
 Near :sindicat-local:
-Patterns * !Calendar
-Create Both
+Patterns * !Calendar !INBOX/Archive !INBOX/Drafts !INBOX/Sent !INBOX/Trash
+Create None
 Sync All
-Expunge Both
+Expunge None
 SyncState *
 
 ##
