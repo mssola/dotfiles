@@ -259,8 +259,9 @@ if [ ! -f files.txt ]; then
 fi
 
 xargs rm -f < files.txt
-rm -r /boot/dtbs/$name
 rm -r /usr/lib/modules/$name
+rm -r /boot/dtbs/$name
+rm /boot/initrd.img-$name
 
 if [ -z "\$EDITOR" ]; then
    EDITOR=vi
