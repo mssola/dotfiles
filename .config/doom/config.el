@@ -230,7 +230,6 @@
         mu4e-change-filenames-when-moving t)
 
   ;; Set the cite style just like what it is on GMail.
-  ;; NOTE: not totally sure on this one.
   (setq message-cite-style message-cite-style-gmail
         message-citation-line-function 'message-insert-formatted-citation-line))
 
@@ -249,7 +248,7 @@
                     '((mu4e-sent-folder       . "/comsuse/Elements enviats")
                       (mu4e-drafts-folder     . "/comsuse/Esborranys")
                       (mu4e-trash-folder      . "/comsuse/Elements suprimits")
-                      (mu4e-refile-folder     . "/comsuse/Arxiu")
+                      (mu4e-refile-folder     . "/comsuse/All")
                       (smtpmail-smtp-user     . "msabate@suse.com")
                       (user-mail-address      . "msabate@suse.com"))
                     nil)
