@@ -210,6 +210,12 @@
                  :query "maildir:/gmail/inbox OR maildir:/comsuse/inbox OR maildir:/sindicat/inbox OR maildir:/uoc/inbox"
                  :key   ?n))
 
+  ;; For whatever reason I lost the "messages sent" bookmark. Let's re-add it.
+  (add-to-list 'mu4e-bookmarks
+               '(:name  "Sent"
+                 :query "from:mikisabate@gmail.com OR from:msabate@suse.com"
+                 :key   ?s))
+
   ;; General mu4e settings.
   (setq message-kill-buffer-on-exit t
         mu4e-update-interval 600
