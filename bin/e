@@ -15,20 +15,23 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # The *default editor*, which is meant to be installed globally. It attempts to
-# write an editor with this preference:
+# execute an editor with this preference:
 #   1. GNU Emacs in client mode.
 #   2. Vim -> Vi.
 #   3. Standalone GNU Emacs.
-#   4. Outta luck: print an error message.
+#   4. GNU nano
+#   5. Outta luck: print an error message.
 
 if [ -x "$(command -v emacsclient)" ]; then
     exec emacsclient -a "" -nw "$@" -c
 elif [ -x "$(command -v vim)" ]; then
     exec vim "$@"
 elif [ -x "$(command -v vi)" ]; then
-    exec vim "$@"
+    exec vi "$@"
 elif [ -x "$(command -v emacs)" ]; then
     exec emacs --quick "$@"
+elif [ -x "$(command -v nano)" ]; then
+    exec nano "$@"
 else
     echo "No suitable editor found!"
     exit 1
