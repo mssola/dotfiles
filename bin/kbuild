@@ -25,7 +25,7 @@
 #      scripts are bundled in: install.sh and uninstall.sh.
 #
 # You can also pass some options:
-#   1. `-s/--skip-build`: tell to skip the call to `defconfig` and/or
+#   1. `-s/--skip-config`: tell to skip the call to `defconfig` and/or
 #      `menuconfig`. This is useful if you are just developing over the same
 #      `.config` file again and again.
 #   2. `-n/--no-install`: don't generate the install/uninstall files.
