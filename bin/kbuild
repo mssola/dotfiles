@@ -225,7 +225,7 @@ label l1
 	initrd /initrd.img-$name
 
 	fdtdir /dtbs/$name
-	append  root=/dev/nvme0n1p4 rw console=tty0 console=ttyS0,115200 earlycon rootwait stmmaceth=chain_mode:1 selinux=0
+	append  root=/dev/nvme0n1p4 rw console=tty0 console=ttyS0,115200 earlycon rootwait debug
 
 label l1r
 	menu label Debian GNU/Linux bookworm/sid $name (rescue target)
@@ -233,7 +233,7 @@ label l1r
 	initrd /initrd.img-$name
 
 	fdtdir /dtbs/$name
-	append  root=/dev/nvme0n1p4 rw console=tty0 console=ttyS0,115200 earlycon rootwait stmmaceth=chain_mode:1 selinux=0 single
+	append  root=/dev/nvme0n1p4 rw console=tty0 console=ttyS0,115200 earlycon rootwait single debug
 EXT
 
 if [ -z "\$EDITOR" ]; then
