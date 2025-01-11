@@ -31,12 +31,11 @@
                                                    (abbreviate-file-name (buffer-file-name))
                                                  "%b"))))))
 
-;; Color theme: try to use my own theme called `soria', otherwise let's go for
-;; Doom's default one (`doom-one'). There are two paths where the `soria' theme
-;; might reside. The first path we are going to try is my local dev environment,
-;; otherwise we will try the global installation path (as pointed out on the
-;; documentation of the RPM package). If none of this worked, then just go with
-;; doom's default theme.
+;; Color theme: try to use my own theme called `soria'. There are two paths
+;; where the `soria' theme might reside. The first path we are going to try is
+;; my local dev environment, otherwise we will try the global installation path
+;; (as pointed out on the documentation of the RPM package). If none of this
+;; worked, then just go with doom's default theme.
 (let ((dev-dir (concat (getenv "HOME") "/src/github.com/mssola/soria"))
       (global-dir "/usr/share/emacs/site-lisp/themes"))
   (if (file-exists-p dev-dir)
@@ -46,13 +45,12 @@
 
   ;; If soria could be loaded as a theme, let's set the
   ;; `soria-theme-purple-identifiers' hook for the relevant modes.
-  (if (load-theme 'soria t)
-      (dolist (lang-hook '(ruby-mode-hook
-                           php-mode-hook
-                           perl-mode-hook
-                           emacs-lisp-mode-hook))
-        (add-hook lang-hook 'soria-theme-purple-identifiers))
-    (setq doom-theme 'doom-one)))
+  (when (load-theme 'soria t)
+    (dolist (lang-hook '(ruby-mode-hook
+                         php-mode-hook
+                         perl-mode-hook
+                         emacs-lisp-mode-hook))
+      (add-hook lang-hook 'soria-theme-purple-identifiers))))
 
 (defun mssola/face-at-point (pos)
   "Writes a message with the name of the face at the current
