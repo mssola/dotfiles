@@ -12,7 +12,7 @@ IMAPAccount gmail
 Host imap.gmail.com
 User mikisabate@gmail.com
 PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpassgmail.gpg"
-SSLType IMAPS
+TLSType IMAPS
 AuthMechs Login
 CertificateFile /etc/ssl/ca-bundle.pem
 
@@ -68,7 +68,7 @@ IMAPAccount comsuse
 Host imap.gmail.com
 User msabate@suse.com
 PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpasssusecom.gpg"
-SSLType IMAPS
+TLSType IMAPS
 AuthMechs Login
 CertificateFile /etc/ssl/ca-bundle.pem
 
@@ -128,7 +128,7 @@ IMAPAccount ajuntament
 Host mail.diba.cat
 User dibasp\\sabatesm
 PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpasssusede.gpg"
-SSLType IMAPS
+TLSType IMAPS
 AuthMechs Login
 CertificateFile /etc/ssl/ca-bundle.pem
 Timeout 0
@@ -157,7 +157,7 @@ IMAPAccount sindicat
 Host cgtsuse.org
 User msabate@cgtsuse.org
 PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpasssusede.gpg"
-SSLType IMAPS
+TLSType IMAPS
 AuthMechs Login
 CertificateFile /etc/ssl/ca-bundle.pem
 Timeout 0
@@ -186,7 +186,7 @@ IMAPAccount uoc
 Host imap.gmail.com
 User mssola@uoc.edu
 PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpassuoc.gpg"
-SSLType IMAPS
+TLSType IMAPS
 AuthMechs Login
 CertificateFile /etc/ssl/ca-bundle.pem
 
