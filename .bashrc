@@ -142,6 +142,21 @@ alias random_string="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -
 # Cargo environment.
 source_maybe "$HOME/.cargo/env"
 
+# Convert the given video into GIF. I have tested this with webM and it appears
+# to work fine. This is just a wrapper for ffmpeg, but oh boy it's hard to
+# remember anything ffmpeg-related...
+#
+# It accepts two parameters: scale (defaults to 320); and fps (defaults to 10).
+#
+# Taken from some random answer from StackOverflow, no longer remember from. If
+# you see this and recognize it: thanks! and just give me a ping for
+# acknowledging you.
+video2gif() {
+  ffmpeg -y -i "${1}" -vf fps=${3:-10},scale=${2:-320}:-1:flags=lanczos,palettegen "${1}.png"
+  ffmpeg -i "${1}" -i "${1}.png" -filter_complex "fps=${3:-10},scale=${2:-320}:-1:flags=lanczos[x];[x][1:v]paletteuse" "${1}".gif
+  rm "${1}.png"
+}
+
 ##
 # RISC-V
 
