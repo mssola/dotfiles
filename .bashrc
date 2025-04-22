@@ -168,6 +168,10 @@ if [ "$(uname -m)" != "riscv64" ]; then
   export CROSS_COMPILE=riscv64-suse-linux-
 fi
 
+# I have built a local busybox so I can generate an initramfs for various
+# hacking thingies, let's reference it into an environment variable.
+export BUSYBOX_SRC="$HOME/src/busybox/1.36.1"
+
 ##
 # Lastly I had some problems with the GPG agent recently. So I copied a solution
 # from https://github.com/jessfraz/dotfiles
