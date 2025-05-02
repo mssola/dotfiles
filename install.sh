@@ -30,7 +30,7 @@ done
 ##
 # Main procedure: link as many files as possible.
 
-ary=(.git .github .gitignore LICENSE *.gitignore *.yml *.org
+ary=(.git .gitignore LICENSE *.gitignore *.yml *.org
     install.sh .config .gnupg README.md)
 ignore="-name ${ary[0]}"
 for i in "${ary[@]:1:${#ary[@]}}"; do
