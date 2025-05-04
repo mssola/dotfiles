@@ -3,3 +3,4 @@
 bin/*
 .fonts/.uuid
 .fonts/fonts/.uuid
+.fonts/fonts/static/.uuid
