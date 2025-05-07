@@ -2,16 +2,20 @@
 
 set -e
 
-# Enfore the BUSYBOX_SRC path.
+# Enfore BUSYBOX_SRC and QEMU_KERNEL.
 if [ -z "$BUSYBOX_SRC" ]; then
     echo "run-qemu (error): you need to define BUSYBOX_SRC."
     exit 1
 fi
+if [ -z "$QEMU_KERNEL" ]; then
+    echo "run-qemu (error): you need to define QEMU_KERNEL with the Image to be used."
+    exit 1
+fi
 
-CORES=${CORES:-4}
+# Configurable variables.
+QEMU_CPU=${QEMU_CPU:-max}
+QEMU_SMP=${QEMU_SMP:-4}
 EXTRA=${EXTRA:-}
-REPO=${REPO:-riscv}
-KERNEL=${KERNEL:-~/src/git.kernel.org/linux/kernel/$REPO/arch/riscv/boot/Image}
 
 # Cleanup older environments.
 rm -rf "$BUSYBOX_SRC/initramfs/home"
@@ -50,10 +54,9 @@ Run QEMU/KVM tailored to my needs for testing the Linux Kernel.
 
 Environment variables that can be used the further configure the run:
 
-  - CORES: number of cores (i.e. argument for '-smp'). Default: 4.
   - EXTRA: extra arguments to pass. Default: (empty).
-  - KERNEL: the kernel to be passed (i.e. argument for '-kernel'). Default: "$KERNEL".
-  - REPO: the Linux repository to be used. Default: "riscv".
+  - QEMU_CPU: CPU model to use (i.e. argument for '-cpu'). Default: 'max'.
+  - QEMU_SMP: number of cores (i.e. argument for '-smp'). Default: 4.
 HERE
     exit 0
 fi
@@ -68,9 +71,12 @@ popd
 ##
 # Actual run.
 
+set -x
+
 qemu-system-riscv64 -machine virt -nographic \
-    -smp "$CORES" \
-    -kernel "$KERNEL" \
+    -cpu "$QEMU_CPU" \
+    -smp "$QEMU_SMP" \
+    -kernel "$QEMU_KERNEL" \
     -initrd "$BUSYBOX_SRC/initramfs.cpio.gz" \
     -append "root=/dev/ram" \
     -append nokaslr \

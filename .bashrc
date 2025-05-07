@@ -168,9 +168,10 @@ if [ "$(uname -m)" != "riscv64" ]; then
   export CROSS_COMPILE=riscv64-suse-linux-
 fi
 
-# I have built a local busybox so I can generate an initramfs for various
-# hacking thingies, let's reference it into an environment variable.
+# Local builds for busybox and the Linux kernel. Needed by scripts like
+# `bin/run-riscv-qemu.sh`.
 export BUSYBOX_SRC="$HOME/src/busybox/1.36.1"
+export QEMU_KERNEL="$HOME/src/git.kernel.org/linux/kernel/riscv/arch/riscv/boot/Image"
 
 ##
 # Lastly I had some problems with the GPG agent recently. So I copied a solution
