@@ -66,8 +66,31 @@
 [column]
   ui = auto
 
+##
+# git send-email
+
 [sendemail]
   smtpEncryption = tls
   smtpServer = smtp.gmail.com
   smtpUser = mikisabate@gmail.com
   smtpServerPort = 587
+
+##
+# Use difftastic.
+
+[difftool]
+  # Run the difftool immediately, don't ask 'are you sure' each time.
+  prompt = false
+
+[pager]
+  # Use a pager if the difftool output is larger than one screenful,
+  # consistent with the behaviour of `git diff`.
+  difftool = true
+
+[diff]
+  # Use `difft` by default.
+  external = difft
+
+  # Set difftastic as the default difftool, so we don't need to specify
+  # `-t difftastic` every time.
+  tool = difftastic
