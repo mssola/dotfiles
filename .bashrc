@@ -114,6 +114,22 @@ export CXX=/usr/bin/g++
 export GOPATH=$HOME
 
 ##
+# RISC-V
+
+# Setting this value as expected by the Linux Kernel when building it.
+export ARCH=riscv
+
+# If this is not a RISC-V machine, set up cross compilation for it.
+if [ "$(uname -m)" != "riscv64" ]; then
+  export CROSS_COMPILE=riscv64-suse-linux-
+fi
+
+# Local builds for busybox and the Linux kernel. Needed by scripts like
+# `bin/run-riscv-qemu.sh`.
+export BUSYBOX_SRC="$HOME/src/busybox/1.36.1"
+export QEMU_KERNEL="$HOME/src/git.kernel.org/linux/kernel/riscv/arch/riscv/boot/Image"
+
+##
 # Misc.
 
 # The g utility. See: https://github.com/mssola/g
@@ -156,45 +172,6 @@ video2gif() {
   ffmpeg -i "${1}" -i "${1}.png" -filter_complex "fps=${3:-10},scale=${2:-320}:-1:flags=lanczos[x];[x][1:v]paletteuse" "${1}".gif
   rm "${1}.png"
 }
-
-##
-# RISC-V
-
-# Setting this value as expected by the Linux Kernel when building it.
-export ARCH=riscv
-
-# If this is not a RISC-V machine, set up cross compilation for it.
-if [ "$(uname -m)" != "riscv64" ]; then
-  export CROSS_COMPILE=riscv64-suse-linux-
-fi
-
-# Local builds for busybox and the Linux kernel. Needed by scripts like
-# `bin/run-riscv-qemu.sh`.
-export BUSYBOX_SRC="$HOME/src/busybox/1.36.1"
-export QEMU_KERNEL="$HOME/src/git.kernel.org/linux/kernel/riscv/arch/riscv/boot/Image"
-
-##
-# Lastly I had some problems with the GPG agent recently. So I copied a solution
-# from https://github.com/jessfraz/dotfiles
-
-# Use a tty for gpg
-GPG_TTY=$(tty)
-export GPG_TTY
-
-# Start the gpg-agent if not already running
-if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
-  gpg-connect-agent /bye >/dev/null 2>&1
-  gpg-connect-agent updatestartuptty /bye >/dev/null
-fi
-
-# Set SSH to use gpg-agent
-unset SSH_AGENT_PID
-if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-  export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
-fi
-
-# Add alias for ssh to update the tty
-alias ssh="gpg-connect-agent updatestartuptty /bye >/dev/null; ssh"
 
 # Handy alias for the ip command
 alias ip="ip --color"
