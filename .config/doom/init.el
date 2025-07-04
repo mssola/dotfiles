@@ -29,7 +29,7 @@
        ;;ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
-       treemacs          ; a project drawer, like neotree but cooler
+       ;;treemacs            ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
        ;;vc-gutter         ; vcs diff in the fringe
        ;;vi-tilde-fringe   ; fringe tildes to mark beyond EOB
@@ -39,7 +39,7 @@
 
        :editor
        (evil +everywhere)  ; come to the dark side, we have cookies
-       file-templates      ; auto-snippets for empty files
+       ;;file-templates    ; auto-snippets for empty files
        ;;fold              ; (nigh) universal code folding
        (format +onsave)    ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
@@ -48,21 +48,21 @@
        ;;objed             ; text object editing for the innocent
        ;;parinfer          ; turn lisp into python, sort of
        ;;rotate-text       ; cycle region at point between text candidates
-       snippets            ; my elves. They type so I don't have to
+       ;;snippets          ; my elves. They type so I don't have to
        ;;word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       dired             ; making dired pretty [functional]
-       electric          ; smarter, keyword-based electric-indent
-       ;;ibuffer         ; interactive buffer management
-       undo              ; persistent, smarter undo for your inevitable mistakes
-       vc                ; version-control and Emacs, sitting in a tree
+       dired               ; making dired pretty [functional]
+       electric            ; smarter, keyword-based electric-indent
+       ;;ibuffer           ; interactive buffer management
+       undo                ; persistent, smarter undo for your inevitable mistakes
+       vc                  ; version-control and Emacs, sitting in a tree
 
        :term
        ;;eshell            ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
        ;;term              ; basic terminal emulator for Emacs
-       vterm               ; the best terminal emulation in Emacs
+       ;;vterm             ; the best terminal emulation in Emacs
 
        :checkers
        syntax              ; tasing you for every semicolon you forget
@@ -73,27 +73,27 @@
        ;;ansible
        ;;debugger          ; FIXME stepping through code, to help you add bugs
        ;;direnv
-       docker
+       ;; docker
        editorconfig        ; let someone else argue about tabs vs spaces
        ;;ein               ; tame Jupyter notebooks with emacs
-       (eval +overlay)     ; run code, run (also, repls)
+       ;;(eval +overlay)   ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        lookup              ; navigate your code and its documentation
        lsp                 ; M-x vscode
        magit               ; a git porcelain for Emacs
-       make                ; run make tasks from Emacs
+       ;;make                ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
-       pdf                 ; pdf enhancements
+       ;;pdf                 ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
        ;;rgb               ; creating color strings
        ;;taskrunner        ; taskrunner for all your projects
-       terraform         ; infrastructure as code
+       ;;terraform           ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
        tree-sitter
        ;;upload            ; map local to remote projects via ssh/ftp
 
        :os
-       (:if IS-MAC macos)  ; improve compatibility with macOS
+       ;;(:if IS-MAC macos)  ; improve compatibility with macOS
        (tty +osc)          ; improve the terminal Emacs experience
 
        :lang
@@ -101,11 +101,11 @@
        ;;beancount         ; mind the GAAP
        (cc +lsp +tree-sitter)           ; C > C++ == 1
        ;;clojure           ; java with a lisp
-       common-lisp         ; if you've seen one lisp, you've seen them all
+       ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
        ;;csharp            ; unity, .NET, and mono shenanigans
-       data                ; config/data formats
+       ;;;data                ; config/data formats
        ;;(dart +flutter)   ; paint ui and not much else
        ;;dhall
        ;;elixir            ; erlang done right
@@ -130,7 +130,7 @@
        latex               ; writing papers in Emacs has never been so fun
        ;;lean              ; for folks with too much to prove
        ;;ledger            ; be audit you can be
-       lua                 ; one-based indices? one-based indices
+       ;;lua                 ; one-based indices? one-based indices
        markdown            ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
@@ -156,7 +156,7 @@
        ;;terra             ; Earth and Moon in alignment for performance.
        web                 ; the tubes
        yaml                ; JSON, but readable
-       (zig +lsp +tree-sitter) ; C, but simpler
+       ;; (zig +lsp +tree-sitter) ; C, but simpler
 
        :email
        (mu4e +gmail)
@@ -167,8 +167,8 @@
        ;;calendar
        ;;emms
        ;;everywhere        ; *leave* Emacs!? You must be joking
-       irc                 ; how neckbeards socialize
-       (rss +org)          ; emacs as an RSS reader
+       ;;irc                 ; how neckbeards socialize
+       ;;(rss +org)          ; emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought
 
        :config

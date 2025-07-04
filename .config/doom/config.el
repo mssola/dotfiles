@@ -140,18 +140,7 @@
 (map! "<f8>" #'ispell-word)
 (map! "M-<f8>" #'flyspell-buffer)
 
-(let ((lt-path "/usr/share/languagetool"))
-  (setq langtool-language-tool-jar (concat lt-path "/languagetool-commandline.jar")
-        langtool-mother-tongue "ca"))
-
-(when (fboundp 'langtool-check)
-  (map! "<f9>" #'langtool-check-buffer)
-  (map! "M-<f9>" #'langtool-correct-buffer))
-
 ;;; Programming languages.
-
-;; NOTE: workaround found in: https://github.com/emacs-lsp/lsp-mode/issues/3577#issuecomment-2064491363
-(require 'lsp-mode)
 
 ;; Flags to be passed to `clangd' for LSP integration.
 (after! lsp-clangd
@@ -265,51 +254,3 @@
       mml-secure-openpgp-sign-with-sender t)
 
 (add-hook 'message-send-hook 'mml-secure-message-sign-pgpmime)
-
-;;; Elfeed
-
-;; Key binding for starting Elfeed.
-(map! :leader "o e" #'elfeed)
-
-;; Map 'C-c C-u' to `elfeed-update', just like in mu4e.
-(map! :after elfeed
-      :map elfeed-search-mode-map
-      :prefix "C-c"
-      "C-u" #'elfeed-update)
-
-(after! elfeed
-  ;; From now on run elfeed-update every 30 minutes.
-  (run-at-time nil (* 30 60) 'elfeed-update)
-
-  ;; Only show unread items.
-  (setq elfeed-search-filter "@1-month-ago +unread"))
-
-;;; IRC
-
-;; Key binding for starting Circe.
-(map! :leader "o i" #'=irc)
-
-(after! circe
-  (setq auth-sources '((:source "~/org/authinfo.gpg")))
-
-  ;; Given a :user and a :machine, returns the password assigned to it on my
-  ;; personal authinfo.gpg file as defined in the `auth-sources'.
-  (defun mssola/fetch-password-from-auth (&rest params)
-    (require 'auth-source)
-    (let ((match (car (apply 'auth-source-search params))))
-      (if match
-          (let ((secret (plist-get match :secret)))
-            (if (functionp secret)
-                (funcall secret)
-              secret))
-        (error "Password not found for %S" params))))
-
-  (set-irc-server! "irc.libera.chat"
-    '(:tls t
-      :port 6697
-      :nick "mssola"
-      :sasl-username "mssola"
-      :sasl-password
-      (lambda (server)
-        (mssola/fetch-password-from-auth :user "mssola" :machine server))
-      :channels ("#riscv"))))
