@@ -89,6 +89,9 @@
 
 (advice-add #'doom-highlight-non-default-indentation-h :override #'ignore)
 
+;; Doom Emacs eventually removed highlight-numbers, which was useful to me.
+(add-hook! '(prog-mode-hook conf-mode-hook) #'highlight-numbers-mode)
+
 ;; The modeline I was using even before switching to Doom. I modify quite a few
 ;; things from the default installation so it is simpler.
 (use-package! doom-modeline

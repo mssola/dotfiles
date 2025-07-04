@@ -3,3 +3,4 @@
 
 (package! crux)
 (package! message-view-patch)
+(package! highlight-numbers)
