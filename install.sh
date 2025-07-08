@@ -68,26 +68,6 @@ for i in .config .gnupg; do
 done
 
 ##
-# GNU Emacs: just install Doom and take it from there.
-
-if [ -x "$(command -v emacs)" ]; then
-    rm -rf "${HOME:?}/.config/doom"
-    ln -s "$(readlink -f .config/doom)" "${HOME:?}/.config/doom"
-
-    if [ -d "${HOME:?}/.config/emacs" ]; then
-        if [ -x "$(command -v doom)" ]; then
-            doom upgrade
-        fi
-    else
-        git clone https://github.com/hlissner/doom-emacs "${HOME:?}/.config/emacs"
-    fi
-
-    "${HOME:?}/.config/emacs/bin/doom" install
-else
-    echo "Skipping GNU Emacs setup."
-fi
-
-##
 # Other stuff
 
 # Get git completiom right.

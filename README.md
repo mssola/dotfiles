@@ -1,15 +1,6 @@
 These are my personal dotfiles, use them at your own risk! To install everything
 just run the `install.sh` script.
 
-## GNU Emacs
-
-I am using [Doom Emacs](https://github.com/hlissner/doom-emacs), see
-[.config/doom/README.org](./.config/doom). For runtime dependencies just run:
-
-```bash
-$ doom doctor
-```
-
 ## License
 
 Every file is licensed under the GPLv3+ unless stated otherwise. I've tried to

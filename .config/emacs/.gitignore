@@ -1,0 +1,8 @@
+.local/
+.lsp-session*
+auto-save-list/
+eln-cache/
+history
+projects
+straight/
+transient/
