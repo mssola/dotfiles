@@ -242,6 +242,7 @@
 (column-number-mode 1)
 (size-indication-mode 1)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'org-mode-hook 'display-line-numbers-mode)
 
 ;; Let's make scrolling suck less.
 (setq scroll-margin 0
@@ -491,10 +492,12 @@
 ;; adding support from modes which are not installed by default.
 
 (use-package markdown-mode
-  :defer t)
+  :defer t
+  :hook (markdown-mode . display-line-numbers-mode))
 
 (use-package adoc-mode
-  :defer t)
+  :defer t
+  :hook (adoc-mode . display-line-numbers-mode))
 
 (use-package yaml-mode
   :defer t)
