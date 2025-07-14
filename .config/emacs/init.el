@@ -185,9 +185,6 @@
 (use-package crux
   :bind (("C-c D" . crux-delete-file-and-buffer)))
 
-;; Org mode directory.
-(setq org-directory "~/org/")
-
 ;; Show me which functions are available for the key I half-pressed.
 (use-package which-key
   :custom
@@ -418,6 +415,22 @@
 ;; And apply abbrevs.el where relevant.
 (dolist (hook '(org-mode-hook text-mode-hook))
   (add-hook hook #'abbrev-mode))
+
+;;;
+;; org
+
+;; Basic variables.
+(setq org-directory "~/org/"
+      org-return-follows-link t)
+
+;; Make sure org follows links even in evil mode and that the `org-cycle'
+;; mapping is preserved.
+(with-eval-after-load 'general
+  (general-define-key
+   :keymaps '(org-mode-map)
+   :states '(normal motion)
+   "RET" 'org-open-at-point
+   "TAB" 'org-cycle))
 
 ;;;
 ;; Tools
