@@ -12,7 +12,7 @@ host         smtp.gmail.com
 port         587
 from         mikisabate@gmail.com
 user         mikisabate@gmail.com
-passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpassgmail.gpg"
+passwordeval "kwallet-query --read-password gmail kdewallet --folder email"
 
 # suse.com
 account      comsuse
@@ -20,7 +20,7 @@ host         smtp.gmail.com
 port         587
 from         msabate@suse.com
 user         msabate@suse.com
-passwordeval "gpg --quiet --for-your-eyes-only --no-tty --decrypt ~/.mbsyncpasssusecom.gpg"
+passwordeval "kwallet-query --read-password susecom kdewallet --folder email"
 
 # Set a default account
 account default : gmail
