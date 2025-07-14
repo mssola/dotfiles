@@ -1,3 +1,6 @@
+AllCops:
+  NewCops: enable
+
 # Allow me to write me own name on the copyright notice :)
 Style/AsciiComments:
   AllowedChars: ['é', 'à']

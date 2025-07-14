@@ -1,13 +1,12 @@
 These are my personal dotfiles, use them at your own risk! To install everything
-just run the `install.sh` script.
+and keep it up-to-date, I run `bin/doctor.rb`.
 
-## License
-
-Every file is licensed under the GPLv3+ unless stated otherwise. I've tried to
-mention every major influence on my `dotfiles`, but most surely I've forgotten
-to add some people. If you feel like you should be mentioned somewhere in my
-config files, please send me an email. You can find the full license in the
-`LICENSE` file and below:
+Every file is licensed under the
+[GPLv3+](https://www.gnu.org/licenses/gpl-3.0.html) unless stated
+otherwise. I've tried to mention every major influence but most surely I've
+forgotten to add some people. If you feel like you should be mentioned somewhere
+in my config files, please send me an email. You can find the full license in
+the `LICENSE` file and below:
 
 ```
 Copyright (C) 2014-Ω Miquel Sabaté Solà <mikisabate@gmail.com>
@@ -24,3 +23,6 @@ PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 ```
+
+And cheers to the many people who have contributed to free software and that
+have ventured to share their knowledge and expertise selflessly. Thanks!
