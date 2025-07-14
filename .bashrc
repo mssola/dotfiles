@@ -176,9 +176,6 @@ video2gif() {
 # Handy alias for the ip command
 alias ip="ip --color"
 
-# Add the binaries of Doom Emacs into my PATH.
-export PATH=$PATH:$HOME/.config/emacs/bin
-
 # If we have Rust's source code, export the special `RUST_SRC_PATH`, since this
 # is useful for completion tools.
 if command -v rustc &>/dev/null; then
