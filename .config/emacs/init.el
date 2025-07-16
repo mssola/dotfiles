@@ -183,7 +183,8 @@
 ;; on the `crux-delete-file-and-buffer', which will delete the file related to
 ;; the current buffer as well as the buffer itself.
 (use-package crux
-  :bind (("C-c D" . crux-delete-file-and-buffer)))
+  :bind (("C-c D" . crux-delete-file-and-buffer))
+  :general ([remap move-beginning-of-line] #'crux-move-beginning-of-line))
 
 ;; Show me which functions are available for the key I half-pressed.
 (use-package which-key
