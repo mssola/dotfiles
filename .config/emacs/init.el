@@ -556,6 +556,13 @@
   :hook ((go-mode . lsp-deferred)
          (go-mode . mssola/golang-before-save-hooks)))
 
+;; Rust development environment with everything already cooked in.
+(use-package rustic
+  :mode ("\\.rs\\'" . rust-mode)
+  :mode ("\\.rs\\'" . rustic-mode)
+  :custom
+  (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
+
 ;; Utils
 
 ;; Provide the `xref-find-definitions' interactive function which can be used to
