@@ -107,6 +107,11 @@
    :states '(insert normal)
    "C-z" #'evil-escape))
 
+(defun run-q-macro (n)
+  "Run the macro stored on the 'q' key `N' times."
+  (interactive "p")
+  (evil-execute-macro n "@q"))
+
 ;; Sane key-binding management.
 (use-package general
   :after evil
@@ -117,9 +122,8 @@
    :states 'normal
    "C-s" #'save-buffer
    "C-e" #'evil-end-of-line
-   "C-2" (lambda (n)
-           (interactive "p")
-           (evil-execute-macro n "@q")))
+   "C-2" #'run-q-macro
+   "C-@" #'run-q-macro)
 
   ;; And being cheeky with a C-s for saving even in insert mode.
   (general-define-key
