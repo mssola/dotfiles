@@ -565,7 +565,8 @@
   :mode ("\\.rs\\'" . rust-mode)
   :mode ("\\.rs\\'" . rustic-mode)
   :custom
-  (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
+  (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer"))
+  (rustic-format-trigger 'on-save))
 
 ;; Utils
 
