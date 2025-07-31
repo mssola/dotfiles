@@ -523,6 +523,9 @@
 (use-package dockerfile-mode
   :defer t)
 
+(use-package haml-mode
+  :defer t)
+
 ;; I don't want to go LSP all the way, but for certain languages is almost
 ;; required (e.g. Go). In any case, let's keep it simple.
 
