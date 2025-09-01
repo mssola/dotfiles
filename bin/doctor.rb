@@ -79,11 +79,13 @@ files.each do |f|
   FileUtils.rm_f(dst)
 
   src = File.join(SOURCE, f)
+  puts dst if ENV['VERBOSE'].to_s == '1'
   File.symlink(src, dst)
 end
 
 # The global .gitignore needs a rename.
 dst = File.join(Dir.home, '.gitignore')
+puts dst if ENV['VERBOSE'].to_s == '1'
 FileUtils.rm_f(dst)
 File.symlink(File.join(SOURCE, '.global.gitignore'), dst)
 
@@ -108,6 +110,7 @@ end
 # And link the relevant files from 'g'.
 %w[g.sh gcompletion.sh].each do |file|
   dst = File.join(Dir.home, ".#{file}")
+  puts dst if ENV['VERBOSE'].to_s == '1'
   FileUtils.rm_f(dst) if File.exist?(dst)
   File.symlink(File.join(src_home, "g/#{file}"), dst)
 end
@@ -126,6 +129,7 @@ end
 # git-prompt
 puts ">> downloading git-prompt.sh from git/contrib..."
 dst = File.join(Dir.home, '.git-prompt.sh')
+puts dst if ENV['VERBOSE'].to_s == '1'
 FileUtils.rm_f(dst) if File.exist?(dst)
 system("curl -o #{dst} https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh")
 puts ''
