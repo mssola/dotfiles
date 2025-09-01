@@ -21,7 +21,8 @@ require 'pathname'
 ##
 # Early checks.
 
-raise 'Only Linux on x86 supported!' if RUBY_PLATFORM != 'x86_64-linux'
+raise 'Only Linux on x86/ARM64 supported!' if RUBY_PLATFORM != 'x86_64-linux' &&
+                                              RUBY_PLATFORM != 'aarch64-linux'
 raise 'Only CRuby, sorry!' if RUBY_ENGINE != 'ruby'
 
 ##
