@@ -67,6 +67,9 @@ if command -v fzf &>/dev/null; then
   eval "$(fzf --bash)"
 fi
 
+# Some tools allow me to use another diff tool by using this environment variable.
+export DIFF=difft
+
 ##
 # Editors & terminals.
 
