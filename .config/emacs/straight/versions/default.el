@@ -30,6 +30,7 @@
  ("hl-todo" . "7ed8bbcadb5229d648b194e0e4c4d261825aa91b")
  ("ht.el" . "1c49aad1c820c86f7ee35bf9fff8429502f60fef")
  ("hydra" . "59a2a45a35027948476d1d7751b0f0215b1e61aa")
+ ("kconfig-mode" . "cd87b71c8c1739d026645ece0bbd20055a7a2d4a")
  ("let-alist" . "35a1dae3c540705433a510c13c8af80206b29b5f")
  ("llama" . "0cc2daffded18eea7f00a318cfa3e216977ffe50")
  ("lsp-mode" . "147233313576c844e2bf56640827b0d0e5c2ee6c")

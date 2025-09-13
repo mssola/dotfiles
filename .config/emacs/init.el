@@ -526,6 +526,11 @@
 (use-package haml-mode
   :defer t)
 
+;; Kconfig files from the Linux kernel source.
+(use-package kconfig-mode
+  :mode (("Kconfig\\." . kconfig-mode))
+  :defer t)
+
 ;; I don't want to go LSP all the way, but for certain languages is almost
 ;; required (e.g. Go). In any case, let's keep it simple.
 
