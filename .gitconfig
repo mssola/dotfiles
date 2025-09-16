@@ -1,6 +1,6 @@
 [user]
   name = Miquel Sabaté Solà
-  email = mikisabate@gmail.com
+  email = mssola@mssola.com
   signingkey = 0x96BE8C6FD89D6565
 
 [includeIf "gitdir:~/src/github.com/SUSE/"]
@@ -71,8 +71,8 @@
 
 [sendemail]
   smtpEncryption = tls
-  smtpServer = smtp.gmail.com
-  smtpUser = mikisabate@gmail.com
+  smtpServer = smtp.mailbox.org
+  smtpUser = mssola@mssola.com
   smtpServerPort = 587
 
 ##

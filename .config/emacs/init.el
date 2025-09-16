@@ -65,7 +65,7 @@
 ;; There are some packages that expect us to have a `user-full-name' and a
 ;; `user-mail-address' defined.
 (setq user-full-name "Miquel Sabaté Solà"
-      user-mail-address "mikisabate@gmail.com")
+      user-mail-address "mssola@mssola.com")
 
 ;;;
 ;; Key bindings: using Evil mode and general.el for the key binding shenanigans.
@@ -634,7 +634,7 @@
     ;; General mu4e settings.
     (setq message-kill-buffer-on-exit t
           mu4e-get-mail-command "mbsync --all"
-          mu4e-update-interval 600
+          mu4e-update-interval (* 10 60)
           mu4e-use-fancy-chars nil
           gnus-treat-display-smileys nil
           mu4e-sent-messages-behavior 'sent
