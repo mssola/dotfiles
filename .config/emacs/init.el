@@ -598,6 +598,11 @@
 ;; Set the maildir directory in any case.
 (setq mu4e-maildir "~/data/mail")
 
+(defun mssola/append-current-year-to (prefix)
+  "Append the current year to the given `prefix'."
+
+  (concat prefix (format-time-string "%Y" (current-time))))
+
 (defun mssola/mu4e ()
   "Configure mu4e in-place and launch it."
 
@@ -608,7 +613,6 @@
 
     ;; Use `msmtp' as the program for sending email.
     (setq sendmail-program (executable-find "msmtp")
-          send-mail-function #'smtpmail-send-it
           starttls-use-gnutls t
           message-sendmail-f-is-evil t
           message-sendmail-extra-arguments '("--read-envelope-from")
@@ -618,13 +622,13 @@
     ;; gathers all inboxes.
     (add-to-list 'mu4e-bookmarks
                  '(:name  "Inbox"
-                          :query "maildir:/gmail/inbox OR maildir:/comsuse/inbox OR maildir:/sindicat/inbox OR maildir:/uoc/inbox"
+                          :query "maildir:/gmail/inbox OR maildir:/comsuse/inbox OR maildir:/sindicat/inbox OR maildir:/uoc/inbox OR maildir:/mailbox/inbox"
                           :key   ?n))
 
     ;; For whatever reason I lost the "messages sent" bookmark. Let's re-add it.
     (add-to-list 'mu4e-bookmarks
                  '(:name  "Sent"
-                          :query "from:mikisabate@gmail.com OR from:msabate@suse.com"
+                          :query "from:mikisabate@gmail.com OR from:msabate@suse.com OR from:mssola@mssola.com"
                           :key   ?s))
 
     ;; General mu4e settings.
@@ -694,6 +698,24 @@
                       (mu4e-sent-folder      . "/gmail/Sent")
                       (mu4e-refile-folder    . "/gmail/All")
                       (mu4e-trash-folder     . "/gmail/Trash")))
+
+            ;; mailbox.org
+            ,(make-mu4e-context
+              :name "mailbox"
+              :enter-func (lambda ()
+                            (mu4e-message "Switching to mailbox.org")
+                            (setq mu4e-sent-messages-behavior 'delete))
+              :match-func
+              (lambda (msg)
+                (when msg
+                  (string-prefix-p "/mailbox" (mu4e-message-field msg :maildir))))
+              :vars `(
+                      (user-mail-address     . "mssola@mssola.com")
+                      (mu4e-reply-to-address . "mssola@mssola.com")
+                      (mu4e-drafts-folder    . "/mailbox/Drafts")
+                      (mu4e-sent-folder      . "/mailbox/sent")
+                      (mu4e-refile-folder    . ,(mssola/append-current-year-to "/mailbox/Archive/"))
+                      (mu4e-trash-folder     . "/mailbox/Trash")))
 
             ;; suse.com
             ,(make-mu4e-context

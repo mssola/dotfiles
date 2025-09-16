@@ -14,6 +14,14 @@ from         mikisabate@gmail.com
 user         mikisabate@gmail.com
 passwordeval "kwallet-query --read-password gmail kdewallet --folder email"
 
+# mailbox.org
+account      mailbox
+host         smtp.mailbox.org
+port         587
+from         mssola@mssola.com
+user         mssola@mssola.com
+passwordeval "kwallet-query --read-password mailbox kdewallet --folder email"
+
 # suse.com
 account      comsuse
 host         smtp.gmail.com
@@ -23,4 +31,4 @@ user         msabate@suse.com
 passwordeval "kwallet-query --read-password susecom kdewallet --folder email"
 
 # Set a default account
-account default : gmail
+account default : mailbox
