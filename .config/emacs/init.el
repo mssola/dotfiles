@@ -633,7 +633,7 @@
 
     ;; General mu4e settings.
     (setq message-kill-buffer-on-exit t
-          mu4e-get-mail-command "mbsync --all"
+          mu4e-get-mail-command "fetch-email"
           mu4e-update-interval (* 10 60)
           mu4e-use-fancy-chars nil
           gnus-treat-display-smileys nil
