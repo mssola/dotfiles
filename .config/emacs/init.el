@@ -540,7 +540,10 @@
   (setq lsp-enable-folding nil
         lsp-enable-text-document-color nil
         lsp-enable-on-type-formatting nil
-        lsp-headerline-breadcrumb-enable nil))
+        lsp-headerline-breadcrumb-enable nil)
+
+  ;; And just with that C/C++ seem to work :)
+  :hook ((c-mode c++-mode) . lsp-deferred))
 
 ;; Better LSP integration, configuration taken from Doom.
 (use-package lsp-ui
