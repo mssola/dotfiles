@@ -47,7 +47,7 @@ end
 puts '0. Checking on binaries needed for the system.'
 
 pending = []
-%w[git curl emacs vim mise go cargo ruby rg].each do |bin|
+%w[git curl emacs vim mise go cargo ruby rg mbsync parallel notify-send].each do |bin|
   pending << bin unless has?(executable: bin)
 end
 
