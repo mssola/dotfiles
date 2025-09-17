@@ -1,9 +1,16 @@
-# My credentials are encrypted with my GPG keys symmetrically. The login is done
-# through SSL and the certificate file is located where openSUSE puts it. This
-# configuration requires mbsync 1.3 (or current git head). I'm doing this
-# because:
-#   1. I need to increase the timeout for imap.novell.com
-#   2. I need the improvements for subdirectories handling
+# My credentials used to be encrypted via GPG symmetric keys, but that turned
+# out to be quite tiresome. Luckily though, it seems that 'kwalletmanager' is
+# actually quite nice, and 'kwallet-query' seems to work flawlessly. So
+# everything is safe and fast.
+#
+# As for the version of mbsync, it has to be the latest, as versions prior to
+# 1.3 where lacking support for fetching subdirectories, and that was simply a
+# nightmare. That being said, even Debian stable has a version higher than this,
+# so I'm probably just ranting on memories from the good ol' days.
+#
+# You could call this whole thing directly, but I have the special
+# 'bin/fetch-email' script which does the job better. In the end it's a
+# glorified one-liner that uses GNU parallel to sync each channel in parallel.
 
 ##
 # GMail
