@@ -65,11 +65,16 @@ raise 'Dude, something is really funky on your HOME!' unless Dir.exist?(Dir.home
 
 SOURCE = Pathname.new("#{File.dirname(__FILE__)}/..").realpath
 
+# Create the systemd local configuration if it doesn't exist already.
+systemd_user_path = File.join(Dir.home, '.config/systemd/user/')
+FileUtils.mkdir_p(systemd_user_path) unless File.exist?(systemd_user_path)
+
 files = %w[
   bin .vim
   .gnupg/gpg-agent.conf .gnupg/gpg.conf
   .config/alacritty .config/emacs  .config/gdb  .config/ghostty  .config/irb
   .config/mise  .config/msmtp  .config/mimeapps.list  .config/user-dirs.dirs
+  .config/systemd/user/do-backup.service .config/systemd/user/do-backup.timer
   .bash_profile .bashrc .clang-format .gemrc .gitconfig .gitconfig-suse
   .hunspell_ca_ES .inputrc .mbsyncrc .psqlrc .rvmrc .tmux.conf .valgrindrc .vimrc
 ]

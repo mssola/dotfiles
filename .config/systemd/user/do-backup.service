@@ -1,0 +1,6 @@
+[Unit]
+Description=Create a backup for the month
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /home/mssola/bin/do-backup.sh
