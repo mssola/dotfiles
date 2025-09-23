@@ -4,12 +4,25 @@ set -e
 
 # Enfore BUSYBOX_SRC and QEMU_KERNEL.
 if [ -z "$BUSYBOX_SRC" ]; then
-    echo "run-qemu (error): you need to define BUSYBOX_SRC."
+    echo "run-riscv-qemu (error): you need to define BUSYBOX_SRC."
     exit 1
 fi
+
+# If the $QEMU_KERNEL environment variable is not explicitely set, then guess
+# one based on the current working directory.
 if [ -z "$QEMU_KERNEL" ]; then
-    echo "run-qemu (error): you need to define QEMU_KERNEL with the Image to be used."
-    exit 1
+    if [ ! -z "$ARCH" ]; then
+        if [ -f "arch/$ARCH/boot/Image" ]; then
+            QEMU_KERNEL=$(realpath "arch/$ARCH/boot/Image")
+        else
+            echo "run-riscv-qemu (error): you need to define QEMU_KERNEL with the Image to be used."
+            exit 1
+        fi
+        echo "run-riscv-qemu (info): using '$QEMU_KERNEL' as the Linux kernel Image."
+    else
+        echo "run-riscv-qemu (error): you need to define QEMU_KERNEL with the Image to be used."
+        exit 1
+    fi
 fi
 
 # Configurable variables.
@@ -31,7 +44,7 @@ while [[ $# -gt 0 ]]; do
         shift
         ;;
     -*)
-        echo "run-qemu (error): unknown option '$1'."
+        echo "run-riscv-qemu (error): unknown option '$1'."
         exit 1
         ;;
     *)

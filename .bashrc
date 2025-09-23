@@ -130,7 +130,6 @@ fi
 # Local builds for busybox and the Linux kernel. Needed by scripts like
 # `bin/run-riscv-qemu.sh`.
 export BUSYBOX_SRC="$HOME/src/busybox/1.36.1"
-export QEMU_KERNEL="$HOME/src/git.kernel.org/linux/kernel/riscv/arch/riscv/boot/Image"
 
 ##
 # Misc.
