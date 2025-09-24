@@ -88,6 +88,7 @@ set -x
 
 qemu-system-riscv64 -machine virt -nographic \
     -cpu "$QEMU_CPU" \
+    -m 8G \
     -smp "$QEMU_SMP" \
     -kernel "$QEMU_KERNEL" \
     -initrd "$BUSYBOX_SRC/initramfs.cpio.gz" \
