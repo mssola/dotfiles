@@ -1,6 +1,7 @@
 (("adoc-mode" . "20772277b8a5b8c08d49bd03043d5d4dd7a815e9")
  ("annalist.el" . "e1ef5dad75fa502d761f70d9ddf1aeb1c423f41d")
  ("bind-key" . "ec9d0505febe2556b47457355763f5f1408a35ac")
+ ("circe" . "754a59fa06bdbf03cc47567c04c97ee49d8aa1f1")
  ("company-mode" . "1924eabfa7438974da0500e85fff5fb32c27282c")
  ("compat" . "97f24af413a38a7f1aaedb29f5aaaa333796a5b4")
  ("consult" . "d32cccdcb5559b503306291fa9f52df19594d687")

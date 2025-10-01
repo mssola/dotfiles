@@ -742,3 +742,37 @@
 ;; Nice highlighting for patches inside of emails.
 (use-package message-view-patch
   :hook (gnus-part-display . message-view-patch-highlight))
+
+;;;
+;; IRC
+
+(require 'auth-source)
+(setq auth-sources '("~/org/authinfo.gpg"))
+
+(use-package circe
+  :ensure t
+  :bind (("C-c i" . mssola/connect-libera-chat))
+  :config
+
+  ;; Helper function to securely fetch password via auth-source.
+  (defun mssola/irc-fetch-password (host port username)
+    (let ((data (auth-source-search :host host :port port :user username)))
+      (when data
+        (let ((secret (plist-get (car data) :secret)))
+          (if (functionp secret) (funcall secret) secret)))))
+
+  (defun mssola/connect-libera-chat ()
+    "Connect to the pre-configured Libera Chat network using Circe."
+    (interactive)
+    (circe "Libera Chat"))
+
+  (setq circe-network-options
+        '(("Libera Chat"
+           :host "irc.libera.chat"
+           :port 6697
+           :tls t
+           :nick "mssola"
+           :sasl-username "mssola"
+           :sasl-password (lambda (&rest _)
+                            (mssola/irc-fetch-password "irc.libera.chat" 6697 "mssola"))
+           :channels ("#riscv" "#btrfs")))))
