@@ -22,15 +22,16 @@ PassCmd "kwallet-query --read-password gmail kdewallet --folder email"
 TLSType IMAPS
 AuthMechs Login
 CertificateFile /etc/ssl/ca-bundle.pem
+TLSVersions +1.2 +1.3
 
 # Use the account specified above as the remote storage.
 IMAPStore gmail-remote
 Account gmail
 
-# Let's use /home/mssola/data/mail as the prefix for the local storage.
+# Let's use ~/data/mail as the prefix for the local storage.
 MaildirStore gmail-local
-Path /home/mssola/data/mail/gmail/
-Inbox /home/mssola/data/mail/gmail/inbox
+Path ~/data/mail/gmail/
+Inbox ~/data/mail/gmail/inbox
 SubFolders Verbatim
 
 # We could have one only channel, and filter them through the Patterns
@@ -43,23 +44,23 @@ Patterns "INBOX"
 Create Both
 Expunge Both
 Sync All
-SyncState *
+CopyArrivalDate yes
 
 Channel gmail-all
 Far :gmail-remote:"[Gmail]/Tot el correu"
 Near :gmail-local:"All"
 Create Both
-Expunge Both
-Sync All
-SyncState *
+Expunge None
+Sync Pull
+CopyArrivalDate yes
 
 Channel gmail-sent
 Far :gmail-remote:"[Gmail]/Enviats"
 Near :gmail-local:"Sent"
 Create Both
-Expunge Both
-Sync All
-SyncState *
+Expunge None
+Sync Pull
+CopyArrivalDate yes
 
 # And finally group everything here.
 
@@ -148,6 +149,7 @@ Create Both
 Expunge Both
 Sync All
 SyncState *
+CopyArrivalDate yes
 
 Channel comsuse-all
 Far :comsuse-remote:"[Gmail]/Tot el correu"
@@ -156,6 +158,7 @@ Create Both
 Expunge Both
 Sync All
 SyncState *
+CopyArrivalDate yes
 
 Channel comsuse-sent
 Far :comsuse-remote:"[Gmail]/Enviats"
@@ -164,6 +167,7 @@ Create Both
 Expunge Both
 Sync All
 SyncState *
+CopyArrivalDate yes
 
 # And finally group everything here.
 
@@ -180,11 +184,13 @@ Channel comsuse-sent
 # up.
 
 IMAPAccount ajuntament
-Host mail.diba.cat
-User dibasp\\sabatesm
+Host outlook.office365.com
+Port 993
+User sabatesm@capellades.cat
+# TODO
 PassCmd "kwallet-query --read-password susede kdewallet --folder email"
 TLSType IMAPS
-AuthMechs Login
+AuthMechs Plain
 CertificateFile /etc/ssl/ca-bundle.pem
 Timeout 0
 
@@ -204,6 +210,7 @@ Create None
 Sync Pull New Flags
 Expunge None
 SyncState *
+CopyArrivalDate yes
 
 ##
 # cgtsuse.org
@@ -233,6 +240,7 @@ Create None
 Sync All
 Expunge None
 SyncState *
+CopyArrivalDate yes
 
 ##
 # uoc.edu
@@ -244,15 +252,16 @@ PassCmd "kwallet-query --read-password uoc kdewallet --folder email"
 TLSType IMAPS
 AuthMechs Login
 CertificateFile /etc/ssl/ca-bundle.pem
+TLSVersions +1.2 +1.3
 
 # Use the account specified above as the remote storage.
 IMAPStore uoc-remote
 Account uoc
 
-# Let's use /home/mssola/data/mail as the prefix for the local storage.
+# Let's use ~/data/mail as the prefix for the local storage.
 MaildirStore uoc-local
-Path /home/mssola/data/mail/uoc/
-Inbox /home/mssola/data/mail/uoc/inbox
+Path ~/data/mail/uoc/
+Inbox ~/data/mail/uoc/inbox
 SubFolders Verbatim
 
 Channel uoc-inbox
@@ -262,23 +271,24 @@ Patterns "INBOX"
 Create Both
 Expunge Both
 Sync All
-SyncState *
+CopyArrivalDate yes
 
 Channel uoc-all
 Far :uoc-remote:"[Gmail]/Tot el correu"
 Near :uoc-local:"All"
 Create Both
-Expunge Both
-Sync All
-SyncState *
+Expunge None
+Sync Pull
+CopyArrivalDate yes
 
 Channel uoc-sent
 Far :uoc-remote:"[Gmail]/Enviats"
 Near :uoc-local:"Sent"
 Create Both
-Expunge Both
-Sync All
+Expunge None
+Sync Pull
 SyncState *
+CopyArrivalDate yes
 
 # And finally group everything here.
 
