@@ -177,42 +177,6 @@ Channel comsuse-all
 Channel comsuse-sent
 
 ##
-# ajuntament: notice that in this case the mailbox is configured to 'Pull' only
-# and that deletions are not propagated. This is done to workaround the
-# shamefully-low capacity given on this service, in a way that I have to
-# periodically *remove everything* on the server. This is hence manually backed
-# up.
-
-IMAPAccount ajuntament
-Host outlook.office365.com
-Port 993
-User sabatesm@capellades.cat
-# TODO
-PassCmd "kwallet-query --read-password susede kdewallet --folder email"
-TLSType IMAPS
-AuthMechs Plain
-CertificateFile /etc/ssl/ca-bundle.pem
-Timeout 0
-
-IMAPStore ajuntament-remote
-Account ajuntament
-
-MaildirStore ajuntament-local
-Path /home/mssola/data/mail/ajuntament/
-Inbox /home/mssola/data/mail/ajuntament/inbox
-SubFolders Verbatim
-
-Channel ajuntament
-Far :ajuntament-remote:
-Near :ajuntament-local:
-Patterns * !Calendar !Calendari/Aniversaris !"Elements suprimits/Archive" !Arxivats
-Create None
-Sync Pull New Flags
-Expunge None
-SyncState *
-CopyArrivalDate yes
-
-##
 # cgtsuse.org
 
 IMAPAccount sindicat
