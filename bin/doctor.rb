@@ -186,6 +186,11 @@ if extra.size.positive?
 end
 
 ##
+# User systemd units.
+
+system('systemctl --user enable do-backup.timer')
+
+##
 # Binaries which need to go global.
 
 extra = []
