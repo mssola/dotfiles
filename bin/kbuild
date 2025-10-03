@@ -29,14 +29,15 @@
 #      `menuconfig`. This is useful if you are just developing over the same
 #      `.config` file again and again.
 #   2. `-n/--no-install`: don't generate the install/uninstall files.
-#   3. `-h/--help`: show the help message.
+#   3. `-p/--profile`: the kind of machine you are building the kernel for.
+#   4. `-h/--help`: show the help message.
 #
 # After that just send the resulting tarball to the machine where you want to
 # install this kernel. In there you just need to untar the given bundle and then
 # run the `install.sh` script from within the resulting directory. This will:
 #   1. Copy recursively all the files into their proper paths.
 #   2. Make an initramfs for the new image.
-#   3. Run your $EDITOR to update the /boot/extlinux/extlinux.conf file.
+#   3. Run your $EDITOR to update the boot loader configuration.
 #
 # *NOTE*: this script expects the `ARCH` environment variable to be set, and if
 # that doesn't match the current architecture, then it will expect to have
@@ -52,28 +53,51 @@ set -e
 
 while [[ $# -gt 0 ]]; do
     case $1 in
-    -s | --skip-config)
-        SKIP_CONFIG="t"
-        shift
-        ;;
-    -n | --no-install)
-        NO_INSTALL="t"
-        shift
-        ;;
-    -h | --help)
-        SHOW_HELP=1
-        shift
-        ;;
-    -*)
-        echo "kbuild (error): unknown option '$1'."
+        -s | --skip-config)
+            SKIP_CONFIG="t"
+            shift
+            ;;
+        -n | --no-install)
+            NO_INSTALL="t"
+            shift
+            ;;
+        -p | --profile)
+            if [ -z "$2" ]; then
+                echo "kbuild (error): the 'profile' option expects a value."
+                exit 1
+            fi
+
+            PROFILE="$2"
+            shift 2
+            ;;
+        -h | --help)
+            SHOW_HELP=1
+            shift
+            ;;
+        -*)
+            echo "kbuild (error): unknown option '$1'."
+            exit 1
+            ;;
+        *)
+            echo "kbuild (warning): argument '$1' will be ignored."
+            shift # past argument
+            ;;
+    esac
+done
+
+# Hard check on the profile being picked.
+case "$PROFILE" in
+    "vf2" | "suse")
+    ;;
+    "")
+        echo "kbuild (error): you have to profile one of these profiles: vf2, suse."
         exit 1
         ;;
     *)
-        echo "kbuild (warning): argument '$1' will be ignored."
-        shift # past argument
+        echo "kbuild (error): uknown profile '$PROFILE'. Possible values: vf2, suse."
+        exit 1
         ;;
-    esac
-done
+esac
 
 # Print the show message if needed.
 if [ -n "$SHOW_HELP" ]; then
@@ -85,6 +109,7 @@ following options:
 
   -h, --help            Show this message.
   -n, --no-install      Don't generate the install/uninstall files.
+  -p, --profile         The profile to be picked up (values: vf2, suse).
   -s, --skip-config     Skip the configuration step.
 HERE
     exit 0
@@ -148,37 +173,39 @@ make -j "$(nproc)"
 
 if [ -n "$NO_INSTALL" ]; then
     echo "kbuild (info): done!"
-else
-    name=$(cat include/config/kernel.release)
+    exit 0
+fi
 
-    if [ -z "$INSTALL_PATH" ]; then
-        INSTALL_PATH="buildroot-$name"
-    fi
-    mkdir -p "$INSTALL_PATH/usr/lib/modules/$name"
-    pushd "$INSTALL_PATH" >/dev/null
-    ln -s usr/lib lib
-    popd >/dev/null
+name=$(cat include/config/kernel.release)
 
-    make modules_install INSTALL_MOD_PATH="$INSTALL_PATH"
-    make dtbs_install INSTALL_DTBS_PATH="$INSTALL_PATH/boot/dtbs/$name"
-    make headers_install INSTALL_HDR_PATH="$INSTALL_PATH/usr"
+if [ -z "$INSTALL_PATH" ]; then
+    INSTALL_PATH="buildroot-$name"
+fi
+mkdir -p "$INSTALL_PATH/usr/lib/modules/$name"
+pushd "$INSTALL_PATH" >/dev/null
+ln -s usr/lib lib
+popd >/dev/null
 
-    unlink "$INSTALL_PATH/lib"
+make modules_install INSTALL_MOD_PATH="$INSTALL_PATH"
+make dtbs_install INSTALL_DTBS_PATH="$INSTALL_PATH/boot/dtbs/$name"
+make headers_install INSTALL_HDR_PATH="$INSTALL_PATH/usr"
 
-    make install INSTALL_PATH="$INSTALL_PATH/boot" &>/dev/null
-    cp .config "$INSTALL_PATH/boot/config-$name"
+unlink "$INSTALL_PATH/lib"
 
-    ##
-    # Setup install.sh script.
+make install INSTALL_PATH="$INSTALL_PATH/boot" &>/dev/null
+cp .config "$INSTALL_PATH/boot/config-$name"
 
-    # Files that are going to be installed. Funnily enough, the pipeline will create
-    # the "files.txt" first, so it will show on the `find` output. Hence the stupid
-    # workaround you see of moving it in later.
-    find "$INSTALL_PATH" -type f -printf "/%P\n" >files.txt
-    mv files.txt "$INSTALL_PATH/files.txt"
+##
+# Setup install.sh script.
 
-    # Now write the actual install script.
-    cat <<SCRIPT >"$INSTALL_PATH/install.sh"
+# Files that are going to be installed. Funnily enough, the pipeline will create
+# the "files.txt" first, so it will show on the `find` output. Hence the stupid
+# workaround you see of moving it in later.
+find "$INSTALL_PATH" -type f -printf "/%P\n" >files.txt
+mv files.txt "$INSTALL_PATH/files.txt"
+
+# Now write the actual install script.
+cat <<SCRIPT >"$INSTALL_PATH/install.sh"
 #!/usr/bin/env bash
 
 set -ex
@@ -228,8 +255,11 @@ fi
 if [ -z "\$EDITOR" ]; then
    EDITOR=vi
 fi
+SCRIPT
 
-if [ -f /boot/extlinux/extlinux.conf ]; then
+case "$PROFILE" in
+    "vf2")
+        cat <<SCRIPT >>"$INSTALL_PATH/install.sh"
    cat <<EXT >>/boot/extlinux/extlinux.conf
 
 ###
@@ -253,10 +283,11 @@ label l1r
 	append  root=/dev/nvme0n1p4 rw console=tty0 console=ttyS0,115200 earlycon rootwait single debug
 EXT
 
-    \$EDITOR /boot/extlinux/extlinux.conf
-else
-    # The other possibility is Grub. If that is not available, then do nothing.
-    if [ -f /boot/grub/grub.cfg ]; then
+\$EDITOR /boot/extlinux/extlinux.conf
+SCRIPT
+        ;;
+    "suse")
+        cat <<SCRIPT >> "$INSTALL_PATH/install.sh"
         cat <<EXT >/etc/grub.d/40_custom
 #!/bin/sh
 exec tail -n +3 \\\$0
@@ -265,28 +296,33 @@ exec tail -n +3 \\\$0
 ### NOTE: generated by kbuild.
 ###
 
-menuentry 'Ubuntu on Linux $name' --class ubuntu --class gnu-linux --class gnu --class os {
+menuentry 'openSUSE on Linux $name' --class opensuse --class gnu-linux --class gnu --class os \\\$menuentry_id_option 'gnulinux-simple-22391c4c-ad76-c05c-84b3-535dc2efaf97' {
 	load_video
+	set gfxpayload=keep
 	insmod gzio
-	if [ x\\\$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
 	insmod part_gpt
-	insmod ext2
-	search --no-floppy --fs-uuid --set=root b68f5a83-3f28-4178-b0f5-195a309eef3a
+	insmod btrfs
+	search --no-floppy --fs-uuid --set=root 22391c4c-ad76-c05c-84b3-535dc2efaf97
 	echo	'Loading Linux $name ...'
-	linux 	/boot/vmlinuz-$name root=UUID=b68f5a83-3f28-4178-b0f5-195a309eef3a rw console=tty0 console=ttyS0,115200 earlycon rootwait debug
+	linux	/boot/vmlinuz-$name root=UUID=22391c4c-ad76-c05c-84b3-535dc2efaf97 \\\${extra_cmdline} security=selinux selinux=1 loglevel=3 splash=silent systemd.show_status=1
 	echo	'Loading initial ramdisk ...'
-	initrd 	/boot/initrd.img-$name
-	echo	'Loading device tree blob...'
-	devicetree	/boot/dtbs/$name/starfive/jh7110-starfive-visionfive-2-v1.3b.dtb
+	initrd	/boot/initrd-$name
 }
 EXT
-        update-grub
-    fi
-fi
-SCRIPT
 
-    # And the uninstall script.
-    cat <<SCRIPT >"$INSTALL_PATH/uninstall.sh"
+# Edit the configuration file we just produced just in case.
+\$EDITOR /etc/grub.d/40_custom
+
+# And update grub itself.
+update-grub
+SCRIPT
+        ;;
+    *)
+        ;;
+esac
+
+# And the uninstall script.
+cat <<SCRIPT >"$INSTALL_PATH/uninstall.sh"
 #!/usr/bin/env bash
 
 set -ex
@@ -318,11 +354,10 @@ else
 fi
 SCRIPT
 
-    ##
-    # Create tarball.
+##
+# Create tarball.
 
-    tar czf "$INSTALL_PATH.tar.gz" "$INSTALL_PATH"
-    rm -r "$INSTALL_PATH"
+tar czf "$INSTALL_PATH.tar.gz" "$INSTALL_PATH"
+rm -r "$INSTALL_PATH"
 
-    echo "kbuild (info): your build is now ready at '$INSTALL_PATH.tar.gz'."
-fi
+echo "kbuild (info): your build is now ready at '$INSTALL_PATH.tar.gz'."
