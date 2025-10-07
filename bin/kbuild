@@ -314,7 +314,7 @@ EXT
 \$EDITOR /etc/grub.d/40_custom
 
 # And update grub itself.
-update-grub
+update-bootloader
 SCRIPT
         ;;
     *)
@@ -338,21 +338,32 @@ if [ ! -f files.txt ]; then
 fi
 
 xargs rm -f < files.txt
-rm -r /usr/lib/modules/$name
-rm -r /boot/dtbs/$name
-rm -r /usr/lib/firmware/$name
-rm /boot/initrd.img-$name
+rm -rf /usr/lib/modules/$name
+rm -rf /boot/dtbs/$name
+rm -rf /usr/lib/firmware/$name
+rm -f /boot/initrd-$name
+rm -f /boot/initrd.img-$name
 
 if [ -z "\$EDITOR" ]; then
    EDITOR=vi
 fi
-if [ -f /boot/extlinux/extlinux.conf ]; then
-   \$EDITOR /boot/extlinux/extlinux.conf
-else
-   \$EDITOR /etc/grub.d/40_custom
-   update-grub
-fi
+
 SCRIPT
+
+case "$PROFILE" in
+    "vf2")
+cat <<SCRIPT >>"$INSTALL_PATH/uninstall.sh"
+\$EDITOR /boot/extlinux/extlinux.conf
+SCRIPT
+        ;;
+    "suse")
+cat <<SCRIPT >>"$INSTALL_PATH/uninstall.sh"
+\$EDITOR /etc/grub.d/40_custom
+update-bootloader
+SCRIPT
+        ;;
+esac
+
 
 ##
 # Create tarball.
