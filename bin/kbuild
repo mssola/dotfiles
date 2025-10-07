@@ -140,7 +140,7 @@ fi
 
 # To avoid embarrassing moments, let's make sure that we are in the Linux repo.
 if [ ! -f "Kbuild" ]; then
-    echo "kbuild (error): we are not in the Linux Kernel."
+    echo "kbuild (error): we are not at the root of the Linux Kernel repository."
     exit 1
 fi
 
