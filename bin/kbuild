@@ -85,20 +85,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Hard check on the profile being picked.
-case "$PROFILE" in
-    "vf2" | "suse")
-    ;;
-    "")
-        echo "kbuild (error): you have to profile one of these profiles: vf2, suse."
-        exit 1
-        ;;
-    *)
-        echo "kbuild (error): uknown profile '$PROFILE'. Possible values: vf2, suse."
-        exit 1
-        ;;
-esac
-
 # Print the show message if needed.
 if [ -n "$SHOW_HELP" ]; then
     cat <<HERE
@@ -114,6 +100,20 @@ following options:
 HERE
     exit 0
 fi
+
+# Hard check on the profile being picked.
+case "$PROFILE" in
+    "vf2" | "suse")
+    ;;
+    "")
+        echo "kbuild (error): you have to profile one of these profiles: vf2, suse."
+        exit 1
+        ;;
+    *)
+        echo "kbuild (error): uknown profile '$PROFILE'. Possible values: vf2, suse."
+        exit 1
+        ;;
+esac
 
 ##
 # Initial checks.
