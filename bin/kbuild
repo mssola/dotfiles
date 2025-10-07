@@ -25,10 +25,10 @@
 #      scripts are bundled in: install.sh and uninstall.sh.
 #
 # You can also pass some options:
-#   1. `-s/--skip-config`: tell to skip the call to `defconfig` and/or
+#   1. `--skip-config`: tell to skip the call to `defconfig` and/or
 #      `menuconfig`. This is useful if you are just developing over the same
 #      `.config` file again and again.
-#   2. `-n/--no-install`: don't generate the install/uninstall files.
+#   2. `--skip-install`: don't generate the install/uninstall files.
 #   3. `-p/--profile`: the kind of machine you are building the kernel for.
 #   4. `-h/--help`: show the help message.
 #
@@ -53,11 +53,11 @@ set -e
 
 while [[ $# -gt 0 ]]; do
     case $1 in
-        -s | --skip-config)
+        --skip-config)
             SKIP_CONFIG="t"
             shift
             ;;
-        -n | --no-install)
+        --skip-install)
             NO_INSTALL="t"
             shift
             ;;
@@ -94,9 +94,9 @@ Build the Linux Kernel located at the current directory. You may pass the
 following options:
 
   -h, --help            Show this message.
-  -n, --no-install      Don't generate the install/uninstall files.
   -p, --profile         The profile to be picked up (values: vf2, suse).
-  -s, --skip-config     Skip the configuration step.
+  --skip-install        Don't generate the install/uninstall files.
+  --skip-config         Skip the configuration step.
 HERE
     exit 0
 fi
