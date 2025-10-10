@@ -618,18 +618,19 @@
           message-sendmail-extra-arguments '("--read-envelope-from")
           message-send-mail-function #'message-send-mail-with-sendmail)
 
-    ;; The default bookmarks are cool and all, but they lack a proper sink that
-    ;; gathers all inboxes.
-    (add-to-list 'mu4e-bookmarks
-                 '(:name  "Inbox"
-                          :query "maildir:/gmail/inbox OR maildir:/comsuse/inbox OR maildir:/sindicat/inbox OR maildir:/uoc/inbox OR maildir:/mailbox/inbox"
-                          :key   ?n))
-
     ;; For whatever reason I lost the "messages sent" bookmark. Let's re-add it.
     (add-to-list 'mu4e-bookmarks
                  '(:name  "Sent"
                           :query "from:mikisabate@gmail.com OR from:msabate@suse.com OR from:mssola@mssola.com"
                           :key   ?s))
+
+    ;; The default bookmarks are cool and all, but they lack a proper sink that
+    ;; gathers all inboxes.
+    (add-to-list 'mu4e-bookmarks
+                 '(:name  "Inbox"
+                          :query "maildir:/gmail/inbox OR maildir:/comsuse/inbox OR maildir:/sindicat/inbox OR maildir:/uoc/inbox OR maildir:/mailbox/inbox"
+                          :key   ?n
+                          :favorite t))
 
     ;; General mu4e settings.
     (setq message-kill-buffer-on-exit t
