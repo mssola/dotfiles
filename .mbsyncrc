@@ -157,8 +157,8 @@ Channel comsuse-all
 Far :comsuse-remote:"[Gmail]/Tot el correu"
 Near :comsuse-local:"All"
 Create Both
-Expunge Both
-Sync All
+Expunge None
+Sync Pull
 SyncState *
 CopyArrivalDate yes
 
@@ -166,8 +166,8 @@ Channel comsuse-sent
 Far :comsuse-remote:"[Gmail]/Enviats"
 Near :comsuse-local:"Sent"
 Create Both
-Expunge Both
-Sync All
+Expunge None
+Sync Pull
 SyncState *
 CopyArrivalDate yes
 
