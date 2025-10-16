@@ -48,6 +48,8 @@
 
 set -e
 
+# TODO: add a -u/--uuid flag, which can specify: suse-virt, suse-vf2
+
 ##
 # Arguments that can be passed.
 
@@ -94,7 +96,7 @@ Build the Linux Kernel located at the current directory. You may pass the
 following options:
 
   -h, --help            Show this message.
-  -p, --profile         The profile to be picked up (values: vf2, suse).
+  -p, --profile         The profile to be picked up (values: debian, suse).
   --skip-install        Don't generate the install/uninstall files.
   --skip-config         Skip the configuration step.
 HERE
@@ -103,14 +105,14 @@ fi
 
 # Hard check on the profile being picked.
 case "$PROFILE" in
-    "vf2" | "suse")
+    "debian" | "suse")
     ;;
     "")
-        echo "kbuild (error): you have to profile one of these profiles: vf2, suse."
+        echo "kbuild (error): you have to profile one of these profiles: debian, suse."
         exit 1
         ;;
     *)
-        echo "kbuild (error): uknown profile '$PROFILE'. Possible values: vf2, suse."
+        echo "kbuild (error): uknown profile '$PROFILE'. Possible values: debian, suse."
         exit 1
         ;;
 esac
@@ -258,7 +260,7 @@ fi
 SCRIPT
 
 case "$PROFILE" in
-    "vf2")
+    "debian")
         cat <<SCRIPT >>"$INSTALL_PATH/install.sh"
    cat <<EXT >>/boot/extlinux/extlinux.conf
 
@@ -351,7 +353,7 @@ fi
 SCRIPT
 
 case "$PROFILE" in
-    "vf2")
+    "debian")
 cat <<SCRIPT >>"$INSTALL_PATH/uninstall.sh"
 \$EDITOR /boot/extlinux/extlinux.conf
 SCRIPT
