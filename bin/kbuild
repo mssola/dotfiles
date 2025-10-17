@@ -316,7 +316,7 @@ EXT
 \$EDITOR /etc/grub.d/40_custom
 
 # And update grub itself.
-update-bootloader
+grub2-mkconfig -o /boot/grub2/grub.cfg
 SCRIPT
         ;;
     *)
