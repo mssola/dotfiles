@@ -737,6 +737,15 @@
                       (mu4e-trash-folder     . "/comsuse/Elements suprimits")))))
     )
 
+  ;; Whenever we enter mu4e-view mode, ensure that text/plain is preferred by
+  ;; default.
+  (with-eval-after-load "mm-decode"
+    (if (null mm-discouraged-alternatives)
+        (progn
+          (add-to-list 'mm-discouraged-alternatives "text/html")
+          (add-to-list 'mm-discouraged-alternatives "text/richtext"))))
+
+
   ;; And finally call the real deal.
   (mu4e))
 
