@@ -488,11 +488,18 @@
   ;; Turn ref links into clickable buttons.
   (add-hook 'magit-process-mode-hook #'goto-address-mode)
 
-  ;; Git commit mode.
+  ;; Git commit mode. These `git-commit-*' variables are picked up by Magit
+  ;; automatically.
   (setq git-commit-summary-max-length 50
+        git-commit-fill-column 75
         git-commit-style-convention-checks '(overlong-summary-line non-empty-second-line))
 
   (add-hook 'git-commit-mode-hook 'mssola/git-commit-hook))
+
+;; Set the fill-column to 75 for diff buffers (e.g. editing cover letters for
+;; `git-send-email').
+(add-hook 'diff-mode-hook
+          (lambda () (setq-local fill-column 75)))
 
 ;; Nicer diffs.
 (use-package magit-delta
