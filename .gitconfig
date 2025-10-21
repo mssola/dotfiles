@@ -3,12 +3,6 @@
   email = mssola@mssola.com
   signingkey = 0x96BE8C6FD89D6565
 
-[includeIf "gitdir:~/src/github.com/SUSE/"]
-  path = ~/.gitconfig-suse
-
-[includeIf "gitdir:~/src/gitlab.suse.de/"]
-  path = ~/.gitconfig-suse
-
 [core]
   excludesfile = ~/.gitignore
   whitespace = trailing-space,space-before-tab
@@ -94,3 +88,12 @@
   # Set difftastic as the default difftool, so we don't need to specify
   # `-t difftastic` every time.
   tool = difftastic
+
+##
+# Overrides in case my @suse.com should apply.
+
+[includeIf "gitdir:~/src/github.com/SUSE/"]
+  path = ~/.gitconfig-suse
+
+[includeIf "gitdir:~/src/gitlab.suse.de/"]
+  path = ~/.gitconfig-suse
