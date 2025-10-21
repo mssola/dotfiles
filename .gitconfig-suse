@@ -1,2 +1,6 @@
 [user]
     email = msabate@suse.com
+
+[sendemail]
+  smtpServer = smtp.gmail.com
+  smtpUser = msabate@suse.com
