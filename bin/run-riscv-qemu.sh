@@ -72,15 +72,15 @@ if [ -z "$KERNEL" ]; then
         if [ -f "arch/$ARCH/boot/Image" ]; then
             KERNEL=$(realpath "arch/$ARCH/boot/Image")
         else
-            echo "run-riscv-qemu (error): you need to define QEMU_KERNEL with the Image to be used."
+            echo "run-riscv-qemu (error): you need to define '-k/--kernel'."
             exit 1
         fi
-        echo "run-riscv-qemu (info): using '$QEMU_KERNEL' as the Linux kernel Image."
     else
-        echo "run-riscv-qemu (error): you need to define QEMU_KERNEL with the Image to be used."
+        echo "run-riscv-qemu (error): you need to define '-k/--kernel'."
         exit 1
     fi
 fi
+echo "run-riscv-qemu (info): using '\$KERNEL' as the Linux kernel Image."
 
 ##
 # If the user provided a disk option, run QEMU with that disk in mind.
@@ -112,6 +112,7 @@ fi
 
 # Cleanup older environments.
 rm -rf "$BUSYBOX_SRC/initramfs/home"
+mkdir -p "$BUSYBOX_SRC/initramfs/home"
 
 pushd "$BUSYBOX_SRC/initramfs"
 find . -print0 | cpio --null -o --format=newc | gzip -9 >../initramfs.cpio.gz
