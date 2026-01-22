@@ -53,6 +53,12 @@ echo "do-backup (info): Backing up 'doc'."
 cp -r ~/doc "$backup_dir/"
 
 ##
+# Applications.
+
+echo "do-backup (info): apps."
+cp -r ~/.config/mihi "$backup_dir/"
+
+##
 # Compress things, remove the old directory and announce things.
 
 tar czf "$backup_base_dir/$backup_name.tar.gz" -C "$backup_base_dir/" "$backup_name"
