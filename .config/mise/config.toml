@@ -1,6 +1,6 @@
 [tools]
 node = "20"
-ruby = "3.4"
+ruby = "latest"
 python = "3.14"
 mitmproxy = "latest"
 go = "1.24"
