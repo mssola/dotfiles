@@ -719,7 +719,7 @@
               :name "mailbox"
               :enter-func (lambda ()
                             (mu4e-message "Switching to mailbox.org")
-                            (setq mu4e-sent-messages-behavior 'delete))
+                            (setq mu4e-sent-messages-behavior 'sent))
               :match-func
               (lambda (msg)
                 (when msg
