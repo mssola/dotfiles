@@ -35,7 +35,7 @@ mkdir $backup_dir
 # Email.
 
 mkdir -p "$backup_dir/mail"
-mail_stores=("ajuntament" "comsuse" "desuse" "mailbox" "gmail" "sindicat" "urv" "uoc")
+mail_stores=("comsuse" "mailbox" "gmail" "sindicat" "uoc")
 for store in "${mail_stores[@]}"; do
     store_dir="$HOME/data/mail/$store"
 
