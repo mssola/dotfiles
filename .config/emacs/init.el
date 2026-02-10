@@ -465,10 +465,9 @@
 
 ;; Extra configuration for project.el.
 (with-eval-after-load 'project
-  ;; If a directory has a Makefile, chances are that it's its own project. Also
-  ;; add a ".project" file which can be added as a last resource (i.e. just like
-  ;; with ".projectile").
-  (setq project-vc-extra-root-markers '("Makefile" ".project")))
+  ;; If a directory has a ".project" file load it as well (i.e. just like with
+  ;; ".projectile").
+  (setq project-vc-extra-root-markers '(".project")))
 
 ;; I mostly stick to Git CLI, but it's really nice when staging chunks, checking
 ;; diffs, showing logs; and similar scenarios where Git can be tedious.
