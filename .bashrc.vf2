@@ -1,0 +1,38 @@
+##
+# .bashrc file to be used on my Starfive VisionFive2 board. This is a
+# minimalistic setup but it already does a couple of nice-to-have thingies like
+# a prompt that I like and sets up the editor to my hacky 'e' one.
+
+export EDITOR=e
+export VISUAL=e
+
+# We want a full-fledged 256-color terminal.
+TERM=xterm-256color
+
+# Setup the prompt command for terminals that don't touch it by themselves
+# (e.g. alacritty).
+PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
+
+# Set the LESS and the PAGER environment variables.
+export LESS="FSRX"
+export PAGER=less
+
+# Setting up PS1.
+export PS1='\$ '
+
+# Add the `bin` dir to the path if possible. See:
+# https://github.com/mssola/dotfiles.
+if [ -d "$HOME/bin" ]; then
+  export PATH=$HOME/bin:$PATH
+fi
+
+##
+# RISC-V
+
+# Setting this value as expected by the Linux Kernel when building it.
+export ARCH=riscv
+
+# If this is not a RISC-V machine, set up cross compilation for it.
+if [ "$(uname -m)" != "riscv64" ]; then
+  export CROSS_COMPILE=riscv64-suse-linux-
+fi
