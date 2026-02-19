@@ -19,8 +19,9 @@
 #   1. GNU Emacs in client mode.
 #   2. Vim -> Vi.
 #   3. Standalone GNU Emacs.
-#   4. GNU nano
-#   5. Outta luck: print an error message.
+#   4. MicroEmacs.
+#   5. GNU nano
+#   6. Outta luck: print an error message.
 
 if [ -x "$(command -v emacsclient)" ]; then
     exec emacsclient -a "" -nw "$@" -c
@@ -30,6 +31,8 @@ elif [ -x "$(command -v vi)" ]; then
     exec vi "$@"
 elif [ -x "$(command -v emacs)" ]; then
     exec emacs --quick "$@"
+elif [ -x "$(command -v em)" ]; then
+    exec em "$@"
 elif [ -x "$(command -v nano)" ]; then
     exec nano "$@"
 else
