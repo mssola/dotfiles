@@ -159,7 +159,6 @@
     "m" 'mssola/mu4e
     "p" 'project-switch-project
     "s" 'consult-ripgrep
-    "u" 'xref-find-references ; TODO: in vertico buffer
     "SPC" 'project-find-file))
 
 ;;;
