@@ -1,9 +1,13 @@
+# Temporary/lock/backup files
 *.~
 *.swp
+*.lock~
 
-# CMake
+# Project files
 build/
 compile_commands.json
+.project
+PERFER.md
 
 # Ruby thingies
 .rbx/
@@ -19,5 +23,3 @@ compile_commands.json
 *.kate-swp
 *.kilepr
 .kateconfig
-
-.project
