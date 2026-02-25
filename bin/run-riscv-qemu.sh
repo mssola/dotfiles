@@ -39,6 +39,9 @@ while [[ $# -gt 0 ]]; do
         ;;
     *)
         if [ ! -z "$BUSYBOX_SRC" ]; then
+            echo "run-riscv-qemu (info): including '$1' to the VM"
+
+            rm -rf "$BUSYBOX_SRC/initramfs/home"
             mkdir -p "$BUSYBOX_SRC/initramfs/home/$(whoami)"
             cp "$1" "$BUSYBOX_SRC/initramfs/home/$(whoami)/"
         fi
@@ -80,7 +83,7 @@ if [ -z "$KERNEL" ]; then
         exit 1
     fi
 fi
-echo "run-riscv-qemu (info): using '\$KERNEL' as the Linux kernel Image."
+echo "run-riscv-qemu (info): using '$KERNEL' as the Linux kernel Image."
 
 ##
 # If the user provided a disk option, run QEMU with that disk in mind.
@@ -109,10 +112,6 @@ if [ -z "$BUSYBOX_SRC" ]; then
     echo "run-riscv-qemu (error): you need to define BUSYBOX_SRC."
     exit 1
 fi
-
-# Cleanup older environments.
-rm -rf "$BUSYBOX_SRC/initramfs/home"
-mkdir -p "$BUSYBOX_SRC/initramfs/home"
 
 pushd "$BUSYBOX_SRC/initramfs"
 find . -print0 | cpio --null -o --format=newc | gzip -9 >../initramfs.cpio.gz
