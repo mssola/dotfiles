@@ -30,7 +30,8 @@
 #      `.config` file again and again.
 #   2. `--skip-install`: don't generate the install/uninstall files.
 #   3. `-p/--profile`: the kind of machine you are building the kernel for.
-#   4. `-h/--help`: show the help message.
+#   4. `-l/--local`: this is a local build, just generate install/uninstall scripts.
+#   5. `-h/--help`: show the help message.
 #
 # After that just send the resulting tarball to the machine where you want to
 # install this kernel. In there you just need to untar the given bundle and then
@@ -68,6 +69,10 @@ while [[ $# -gt 0 ]]; do
             PROFILE="$2"
             shift 2
             ;;
+        -l | --local)
+            IS_LOCAL=1
+            shift
+            ;;
         -h | --help)
             SHOW_HELP=1
             shift
@@ -93,6 +98,7 @@ following options:
 
   -h, --help            Show this message.
   -p, --profile         The profile to be picked up (values: debian, suse).
+  -l, --local           This is a local build, just generatel install/uninstall files.
   --skip-install        Don't generate the install/uninstall files.
   --skip-config         Skip the configuration step.
 HERE
@@ -116,7 +122,15 @@ fi
 ##
 # Initial checks.
 
-# Most of the times, we are safer if we just set the `ARCH` env. variable.
+# If this is a local build, then force `ARCH` To match the current system's
+# architecture and unset any `CROSS_COMPILE` business.
+if [ ! -z "$IS_LOCAL" ]; then
+    ARCH="$(uname -m)"
+    unset CROSS_COMPILE
+fi
+
+# Most of the times, we are safer if we just set the `ARCH` environment
+# variable.
 if [ -z "$ARCH" ]; then
     echo "kbuild (error): \$ARCH has to be defined."
     exit 1
@@ -167,7 +181,7 @@ echo "kbuild (info): building the Linux kernel..."
 make -j "$(nproc)"
 
 ##
-# Installing into a local bundle.
+# Installing.
 
 if [ -n "$NO_INSTALL" ]; then
     echo "kbuild (info): done!"
@@ -175,6 +189,25 @@ if [ -n "$NO_INSTALL" ]; then
 fi
 
 name=$(cat include/config/kernel.release)
+
+if [ ! -z "$IS_LOCAL" ]; then
+    # Just generate install/uninstall scripts and go.
+
+    cp "$HOME/.config/kbuild/$PROFILE/install.sh" install.sh
+    sed -i "s/\$name/$name/g" install.sh
+    chmod +x install.sh
+
+    cp "$HOME/.config/kbuild/$PROFILE/uninstall.sh" uninstall.sh
+    sed -i "s/\$name/$name/g" uninstall.sh
+    chmod +x uninstall.sh
+
+    echo "kbuild (info): generated 'install.sh' and 'uninstall.sh'."
+
+    exit 0
+fi
+
+##
+# Into a bundle.
 
 if [ -z "$INSTALL_PATH" ]; then
     INSTALL_PATH="buildroot-$name"
