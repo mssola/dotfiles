@@ -25,7 +25,7 @@ if [ "$EUID" -ne 0 ];then
 fi
 
 if [ ! -f /usr/bin/dracut ]; then
-   echo "kbuild (error): you need either 'dracut'."
+   echo "kbuild (error): you need 'dracut'."
    exit 1
 fi
 
