@@ -34,20 +34,33 @@ if [ ! -f /usr/sbin/btrfs ]; then
    exit 1
 fi
 
+if [ ! -f /usr/bin/sbsign ]; then
+   echo "kbuild (error): you need 'sbsign'."
+   exit 1
+fi
+
+if [ ! -f ../certs/dev_key.pem ]; then
+   echo "kbuild (error): you need your developer key to sign vmlinuz in '../certs/dev_key.pem'."
+   exit 1
+fi
+
 ##
 # Before anything at all, create a snapshot.
 
 btrfs subvolume snapshot / /.snapshots/pre-kernel-$name
 
 ##
-# Copy files into filesystem and generate initramfs.
+# The actual install.
 
 make modules_install
 # NOTE: headers are not installed on purpose.
-# Manual make install
-cp arch/x86/boot/bzImage /boot/vmlinuz-$name
+
+# Manual make install: sign the compressed image and move files into /boot.
+sbsign --key ../certs/dev_key.pem --cert ../certs/dev_key.pem arch/x86/boot/bzImage --output /boot/vmlinuz-$name
 cp .config /boot/config-$name
 cp System.map /boot/System.map-$name
+
+# Generate initramfs.
 dracut --kver=$name -f
 
 ##
