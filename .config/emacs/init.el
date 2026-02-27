@@ -654,6 +654,7 @@
           mu4e-notification-support t
           mu4e-hide-index-messages t
           mu4e-confirm-quit nil
+          mu4e-trash-without-flag t
 
           mu4e-headers-date-format "%Y-%m-%d %H:%M"
           mu4e-headers-skip-duplicates t
