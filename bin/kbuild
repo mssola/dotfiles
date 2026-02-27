@@ -238,8 +238,11 @@ mv files.txt "$INSTALL_PATH/files.txt"
 # Copy install/uninstall scripts.
 cp "$HOME/.config/kbuild/$PROFILE/install.sh" "$INSTALL_PATH/install.sh"
 sed -i "s/\$name/$name/g" "$INSTALL_PATH/install.sh"
+chmod +x "$INSTALL_PATH/install.sh"
+
 cp "$HOME/.config/kbuild/$PROFILE/uninstall.sh" "$INSTALL_PATH/uninstall.sh"
 sed -i "s/\$name/$name/g" "$INSTALL_PATH/uninstall.sh"
+chmod +x "$INSTALL_PATH/uninstall.sh"
 
 ##
 # Create tarball.
