@@ -74,7 +74,6 @@ files = %w[
   .gnupg/gpg-agent.conf .gnupg/gpg.conf
   .config/alacritty .config/emacs  .config/gdb  .config/ghostty  .config/irb
   .config/mise  .config/msmtp  .config/mimeapps.list  .config/user-dirs.dirs
-  .config/systemd/user/do-backup.service .config/systemd/user/do-backup.timer
   .bash_profile .bashrc .clang-format .gemrc .gitconfig .gitconfig-suse
   .hunspell_ca_ES .inputrc .mbsyncrc .psqlrc .rvmrc .tmux.conf .valgrindrc .vimrc
 ]
@@ -184,11 +183,6 @@ if extra.size.positive?
   print "\n=> You can install all of that with:\n"
   puts "    => zypper in #{extra.join(' ')}"
 end
-
-##
-# User systemd units.
-
-system('systemctl --user enable do-backup.timer')
 
 ##
 # Binaries which need to go global.
