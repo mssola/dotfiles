@@ -31,7 +31,7 @@ background = "0x875f87"
 foreground = "0xd0d0d0"
 
 [font]
-size = 14.0
+size = 16.0
 
 [font.bold]
 family = "Droid Sans Mono"
