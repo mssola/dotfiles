@@ -14,14 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if ! command -v parallel &> /dev/null; then
-   echo "fetch-email (error): you need 'parallel' installed."
-   exit 1
-fi
-
 if ! command -v mbsync &> /dev/null; then
    echo "fetch-email (error): you need 'mbsync' installed."
    exit 1
 fi
 
-grep '^Channel' ~/.mbsyncrc | awk '{ print $2; }' | sort | uniq | parallel -j12 mbsync {}
+grep '^Channel' ~/.mbsyncrc | awk '{ print $2; }' | sort | uniq | xargs -n 1 -P 12 mbsync
