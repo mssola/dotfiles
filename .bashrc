@@ -54,12 +54,20 @@ alias cd..='cd ..'
 ##
 # If `bat` is available, use it as a drop-in replacement for `cat (1)`.
 
-if command -v bat &>/dev/null; then
-  alias cat='bat'
+if command -v bat &>/dev/null || command -v batcat &>/dev/null; then
+  if command -v batcat &>/dev/null; then
+    _bat_cmd="batcat"
+  else
+    _bat_cmd="bat"
+  fi
+
+  alias cat="$_bat_cmd"
 
   # Use it on man pages too.
-  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+  export MANPAGER="sh -c 'col -bx | $_bat_cmd -l man -p'"
   export MANROFFOPT="-c"
+
+  unset _bat_cmd
 fi
 
 # Set up fzf key bindings and fuzzy completion
