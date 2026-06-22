@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 
-set -e
+set -ex
 
 TUI=""
-BASE=${BASE:-~/src/git.kernel.org/linux/kernel}
+BASE=${BASE:-~/src/linux}
 PROFILE=${PROFILE:-riscv}
 REPO=${REPO:-riscv}
 VMLINUX=${VMLINUX:-$BASE/$REPO/vmlinux}
