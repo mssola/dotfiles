@@ -2,6 +2,7 @@
 .lsp-session*
 auto-save-list/
 eln-cache/
+.cache/
 history
 projects
 straight/
