@@ -95,9 +95,7 @@ if [ ! -z "$DISK" ]; then
                         -device virtio-net-device,netdev=usernet \
                         -netdev user,id=usernet,hostfwd=tcp::22222-:22 \
                         -kernel "$KERNEL" \
-                        -append nokaslr \
-                        -append ftrace_dump_on_oops \
-                        -append sysctl.kernel.panic_on_rcu_stall=1 \
+                        -append "nokaslr ftrace_dump_on_oops sysctl.kernel.panic_on_rcu_stall=1" \
                         $EXTRA
 
     exit 0
@@ -128,8 +126,5 @@ qemu-system-riscv64 -machine virt -nographic \
     -netdev user,id=usernet,hostfwd=tcp::22222-:22 \
     -kernel "$KERNEL" \
     -initrd "$BUSYBOX_SRC/initramfs.cpio.gz" \
-    -append "root=/dev/ram" \
-    -append nokaslr \
-    -append ftrace_dump_on_oops \
-    -append sysctl.kernel.panic_on_rcu_stall=1 \
+    -append "root=/dev/ram nokaslr ftrace_dump_on_oops sysctl.kernel.panic_on_rcu_stall=1" \
     $EXTRA
