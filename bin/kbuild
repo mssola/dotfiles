@@ -98,7 +98,7 @@ following options:
 
   -h, --help            Show this message.
   -p, --profile         The profile to be picked up (values: debian, suse).
-  -l, --local           This is a local build, just generatel install/uninstall files.
+  -l, --local           This is a local build, just generate install/uninstall files.
   --skip-install        Don't generate the install/uninstall files.
   --skip-config         Skip the configuration step.
 HERE
