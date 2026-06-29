@@ -686,6 +686,10 @@
           mu4e-attachment-dir (concat (expand-file-name (or (getenv "XDG_DOWNLOAD_DIR") "www") "~") "/")
           mu4e-change-filenames-when-moving t)
 
+    ;; When interacting with the linux kernel mailing lists, it's useful to see
+    ;; the Message-ID.
+    (add-to-list 'mu4e-view-fields :message-id)
+
     ;; PGP thingies.
     (setq mml-secure-openpgp-signers '("0x96BE8C6FD89D6565")
           mml-secure-openpgp-sign-with-sender t)
