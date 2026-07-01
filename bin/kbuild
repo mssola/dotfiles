@@ -108,14 +108,29 @@ fi
 ##
 # Profile select.
 
+KBUILD_CONFIG_PATH="$HOME/.config/kbuild"
+
+# If the configuration directory doesn't exist, create it now.
+if [ ! -d "$KBUILD_CONFIG_PATH" ]; then
+    echo "kbuild (info): creating the '$KBUILD_CONFIG_PATH' directory."
+    mkdir -p $KBUILD_CONFIG_PATH
+fi
+
+list_available_profiles() {
+    dirs="$(find $KBUILD_CONFIG_PATH/ -mindepth 1 -maxdepth 1 -type d -printf '%P\n' | sort | awk '{printf "%s%s", (NR==1?"":", "), $0} END {print ""}')"
+    echo "kbuild (info): available profiles: $dirs."
+}
+
 if [ -z "$PROFILE" ]; then
     echo "kbuild (error): you have to provide a profile."
+    list_available_profiles
     exit 1
 fi
 
-PROFILE_DIR="$HOME/.config/kbuild/$PROFILE"
+PROFILE_DIR="$KBUILD_CONFIG_PATH/$PROFILE"
 if [ ! -d "$PROFILE_DIR" ]; then
     echo "kbuild (error): given profile does not exist."
+    list_available_profiles
     exit 1
 fi
 
@@ -193,11 +208,11 @@ name=$(cat include/config/kernel.release)
 if [ ! -z "$IS_LOCAL" ]; then
     # Just generate install/uninstall scripts and go.
 
-    cp "$HOME/.config/kbuild/$PROFILE/install.sh" install.sh
+    cp "$KBUILD_CONFIG_PATH/$PROFILE/install.sh" install.sh
     sed -i "s/\$name/$name/g" install.sh
     chmod +x install.sh
 
-    cp "$HOME/.config/kbuild/$PROFILE/uninstall.sh" uninstall.sh
+    cp "$KBUILD_CONFIG_PATH/$PROFILE/uninstall.sh" uninstall.sh
     sed -i "s/\$name/$name/g" uninstall.sh
     chmod +x uninstall.sh
 
@@ -236,11 +251,11 @@ find "$INSTALL_PATH" -type f -printf "/%P\n" >files.txt
 mv files.txt "$INSTALL_PATH/files.txt"
 
 # Copy install/uninstall scripts.
-cp "$HOME/.config/kbuild/$PROFILE/install.sh" "$INSTALL_PATH/install.sh"
+cp "$KBUILD_CONFIG_PATH/$PROFILE/install.sh" "$INSTALL_PATH/install.sh"
 sed -i "s/\$name/$name/g" "$INSTALL_PATH/install.sh"
 chmod +x "$INSTALL_PATH/install.sh"
 
-cp "$HOME/.config/kbuild/$PROFILE/uninstall.sh" "$INSTALL_PATH/uninstall.sh"
+cp "$KBUILD_CONFIG_PATH/$PROFILE/uninstall.sh" "$INSTALL_PATH/uninstall.sh"
 sed -i "s/\$name/$name/g" "$INSTALL_PATH/uninstall.sh"
 chmod +x "$INSTALL_PATH/uninstall.sh"
 
