@@ -15,8 +15,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #####
-# Build the Linux Kernel and bundle it into a tarball that can then be used on
-# another machine. After you call this script it will:
+# Build the Linux Kernel with different install options. After you call this
+# script it will:
+#
 #   1. Call `defconfig`/`oldconfig` depending on whether the `.config` file
 #      exists or not.
 #   2. Call `menuconfig` so the user can double check the configuration.
@@ -27,12 +28,17 @@
 # You can also pass some additional options, check the -h/--help message to read
 # more about them.
 #
-# After that just send the resulting tarball to the machine where you want to
-# install this kernel. In there you just need to untar the given bundle and then
-# run the `install.sh` script from within the resulting directory. This will:
+# By default kbuild will produce a tarball so you can install the kernel on a
+# target machine. In there you just need to untar the given bundle and then run
+# the 'install.sh' script from within the resulting directory. This will:
+#
 #   1. Copy recursively all the files into their proper paths.
 #   2. Make an initramfs for the new image.
 #   3. Run your $EDITOR to update the boot loader configuration.
+#
+# If you provide the '-l/--local' option then the tarball is not produced, and
+# the 'install.sh' and 'uninstall.sh' scripts are left in the current
+# directory so you can run them on your current machine.
 #
 # *NOTE*: this script expects the `ARCH` environment variable to be set, and if
 # that doesn't match the current architecture, then it will expect to have
