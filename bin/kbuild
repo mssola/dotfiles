@@ -24,14 +24,8 @@
 #   4. Copy into a tarball the resulting image, modules, dtbs, and headers. Two
 #      scripts are bundled in: install.sh and uninstall.sh.
 #
-# You can also pass some options:
-#   1. `--skip-config`: tell to skip the call to `defconfig` and/or
-#      `menuconfig`. This is useful if you are just developing over the same
-#      `.config` file again and again.
-#   2. `--skip-install`: don't generate the install/uninstall files.
-#   3. `-p/--profile`: the kind of machine you are building the kernel for.
-#   4. `-l/--local`: this is a local build, just generate install/uninstall scripts.
-#   5. `-h/--help`: show the help message.
+# You can also pass some additional options, check the -h/--help message to read
+# more about them.
 #
 # After that just send the resulting tarball to the machine where you want to
 # install this kernel. In there you just need to untar the given bundle and then
@@ -46,6 +40,14 @@
 #####
 
 set -e
+
+KBUILD_CONFIG_PATH="$HOME/.config/kbuild"
+
+# Helper function to list the available profiles in the system.
+list_available_profiles() {
+    dirs="$(find $KBUILD_CONFIG_PATH/ -mindepth 1 -maxdepth 1 -type d -printf '%P\n' | sort | awk '{printf "%s%s", (NR==1?"":", "), $0} END {print ""}')"
+    echo "kbuild (info): available profiles: $dirs."
+}
 
 ##
 # Arguments that can be passed.
@@ -73,6 +75,10 @@ while [[ $# -gt 0 ]]; do
             IS_LOCAL=1
             shift
             ;;
+        --list-profiles)
+            list_available_profiles
+            exit 0
+            ;;
         -h | --help)
             SHOW_HELP=1
             shift
@@ -99,6 +105,7 @@ following options:
   -h, --help            Show this message.
   -p, --profile         The profile to be picked up.
   -l, --local           This is a local build, just generate install/uninstall files.
+  --list-profiles       List the profiles that are available on the system.
   --skip-install        Don't generate the install/uninstall files.
   --skip-config         Skip the configuration step.
 HERE
@@ -108,18 +115,11 @@ fi
 ##
 # Profile select.
 
-KBUILD_CONFIG_PATH="$HOME/.config/kbuild"
-
 # If the configuration directory doesn't exist, create it now.
 if [ ! -d "$KBUILD_CONFIG_PATH" ]; then
     echo "kbuild (info): creating the '$KBUILD_CONFIG_PATH' directory."
     mkdir -p $KBUILD_CONFIG_PATH
 fi
-
-list_available_profiles() {
-    dirs="$(find $KBUILD_CONFIG_PATH/ -mindepth 1 -maxdepth 1 -type d -printf '%P\n' | sort | awk '{printf "%s%s", (NR==1?"":", "), $0} END {print ""}')"
-    echo "kbuild (info): available profiles: $dirs."
-}
 
 if [ -z "$PROFILE" ]; then
     echo "kbuild (error): you have to provide a profile."
