@@ -674,7 +674,7 @@
           message-kill-buffer-on-exit t
           mu4e-view-show-addresses t
 
-          mu4e-context-policy 'ask-if-none
+          mu4e-context-policy 'pick-first
           mu4e-compose-context-policy 'always-ask
           mu4e-compose-dont-reply-to-self t
 
@@ -699,24 +699,6 @@
     ;; And here comes the account shenanigans.
     (setq mu4e-contexts
           `(
-            ;; GMail
-            ,(make-mu4e-context
-              :name "gmail"
-              :enter-func (lambda ()
-                            (mu4e-message "Switching to gmail.com")
-                            (setq mu4e-sent-messages-behavior 'delete))
-              :match-func
-              (lambda (msg)
-                (when msg
-                  (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
-              :vars '(
-                      (user-mail-address     . "mikisabate@gmail.com")
-                      (mu4e-reply-to-address . "mikisabate@gmail.com")
-                      (mu4e-drafts-folder    . "/gmail/Drafts")
-                      (mu4e-sent-folder      . "/gmail/Sent")
-                      (mu4e-refile-folder    . "/gmail/All")
-                      (mu4e-trash-folder     . "/gmail/Trash")))
-
             ;; mailbox.org
             ,(make-mu4e-context
               :name "mailbox"
@@ -734,6 +716,24 @@
                       (mu4e-sent-folder      . "/mailbox/sent")
                       (mu4e-refile-folder    . ,(mssola/append-current-year-to "/mailbox/Archive/"))
                       (mu4e-trash-folder     . "/mailbox/Trash")))
+
+            ;; GMail
+            ,(make-mu4e-context
+              :name "gmail"
+              :enter-func (lambda ()
+                            (mu4e-message "Switching to gmail.com")
+                            (setq mu4e-sent-messages-behavior 'delete))
+              :match-func
+              (lambda (msg)
+                (when msg
+                  (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
+              :vars '(
+                      (user-mail-address     . "mikisabate@gmail.com")
+                      (mu4e-reply-to-address . "mikisabate@gmail.com")
+                      (mu4e-drafts-folder    . "/gmail/Drafts")
+                      (mu4e-sent-folder      . "/gmail/Sent")
+                      (mu4e-refile-folder    . "/gmail/All")
+                      (mu4e-trash-folder     . "/gmail/Trash")))
 
             ;; suse.com
             ,(make-mu4e-context
